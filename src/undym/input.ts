@@ -27,7 +27,7 @@ export class Input{
         const setXYTouch = (ev:TouchEvent)=>{
             let rect = this.canvas.getBoundingClientRect();
             if(rotate){
-                this._x = ev.touches[0].clientY- rect.top;
+                this._x = ev.touches[0].clientY - rect.top;
                 this._y = this.canvas.clientHeight - ev.touches[0].clientX - rect.left;
             }else{
                 this._x = ev.touches[0].clientX - rect.left;
@@ -89,7 +89,7 @@ export class Input{
 
             this._click = true;
             
-            setXYTouch(ev);
+            // setXYTouch(ev);
         });
 
 

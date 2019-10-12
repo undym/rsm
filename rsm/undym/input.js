@@ -81,7 +81,7 @@ export class Input {
                 return;
             }
             this._click = true;
-            setXYTouch(ev);
+            // setXYTouch(ev);
         });
     }
     static update() {
