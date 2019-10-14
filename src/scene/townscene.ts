@@ -1,7 +1,7 @@
 
 import { Scene } from "../undym/scene.js";
 import { RatioLayout, XLayout, YLayout, ILayout, VariableLayout, Label, FlowLayout } from "../undym/layout.js";
-import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
+import { Place, Util, PlayData, Debug, SceneType, Qlace } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Rect, Color, Point } from "../undym/type.js";
@@ -24,6 +24,7 @@ import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
 import { Battle, BattleType } from "../battle.js";
 import { PartySkillScene } from "./partyskillscene.js";
+import { List } from "../widget/list.js";
 
 
 let choosedDungeon:Dungeon;
@@ -41,34 +42,18 @@ export class TownScene extends Scene{
 
     init(){
         super.clear();
+
+
         
-        super.add(Place.TOP, DrawPlayInfo.ins);
+        // super.add(Place.TOP, DrawPlayInfo.ins);
         
-        // const drawBG:(bounds:Rect)=>void = (()=>{
-        //     if(Battle.type === BattleType.BOSS){
+        super.add(Qlace.MAIN, Util.msg);
 
-        //     }
-        //     if(Battle.type === BattleType.EX){
 
-        //     }
-
-        //     // return (bounds)=>{};
-        // })();
-        // super.add(Place.MAIN, ILayout.create({draw:(bounds)=>{
-        //     Graphics.clip(bounds,()=>{
-        //         drawBG(bounds); 
-        //     });
-        // }}));
+        super.add(Qlace.BTN,new VariableLayout(()=>TownBtn.ins));
         
-        super.add(Place.MSG, Util.msg);
-
-
-        super.add(Place.BTN,new VariableLayout(()=>TownBtn.ins));
-        
-        super.add(Place.P_BOX, DrawSTBoxes.players);
-        super.add(Place.MAIN, DrawUnitDetail.ins);
-
-
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MSG, DrawUnitDetail.ins);
         //----------------------------------------------------
 
         SceneType.TOWN.set();
@@ -103,151 +88,163 @@ class TownBtn{
     private static dungeonPage = 0;
 
     static reset(){
-        const l = new FlowLayout(4,3);
-            l.add(new Btn("ダンジョン",()=>{
-                this.setDungeonBtn();
-            }));
-            
-            if(PlayData.masteredAnyJob || Debug.debugMode){
-                l.add(new Btn("職業",()=>{
-                    Scene.load(new JobChangeScene());
-                }));
-                l.add(new Btn("技のセット",()=>{
-                    Scene.load(new SetTecScene());
-                }));
+        const l = new List(6);
+            l.add({
+                center:()=>"ダンジョン",
+                push:elm=>{
+                    this.setDungeonList();
+                },
+            });
+            l.add({
+                center:()=>"アイテム",
+                push:elm=>{
+                    Scene.load( ItemScene.ins({
+                        selectUser:true,
+                        user:Unit.players[0],
+                        use:async(item,user)=>{
+                            if(item.targetings & Targeting.SELECT){
+                                await item.use( user, [user] );
+                            }else{
+                                let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
+                                
+                                if(targets.length > 0){
+                                    await item.use( user, targets );
+                                }
+                            }
+                        },
+                        returnScene:()=>{
+                            Scene.load( TownScene.ins );
+                        }, 
+                    }) );
+                },
+            });
+            l.add({
+                center:()=>"お店",
+                push:elm=>{
+                    Scene.load(new ShopScene());
+                },
+            });
+            if(Item.合成許可証.num > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"合成",
+                    push:elm=>{
+                        Scene.load(new MixScene());
+                    },
+                });
             }
             if(PlayData.gotAnyEq || Debug.debugMode){
-                l.add(new Btn("装備",()=>{
-                    Scene.load(new EqScene());
-                }));
+                l.add({
+                    center:()=>"装備",
+                    push:elm=>{
+                        Scene.load(new EqScene());
+                    },
+                });
             }
-            if(Item.合成許可証.num > 0 || Debug.debugMode){
-                l.add(new Btn("合成", ()=>{
-                    Scene.load(new MixScene());
-                }));
+            if(PlayData.masteredAnyJob || Debug.debugMode){
+                l.add({
+                    center:()=>"職業",
+                    push:elm=>{
+                        Scene.load(new JobChangeScene());
+                    },
+                });
+                l.add({
+                    center:()=>"技のセット",
+                    push:elm=>{
+                        Scene.load(new SetTecScene());
+                    },
+                });
             }
             if(Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode){
-                l.add(new Btn("パーティースキル",()=>{
-                    Scene.load(new PartySkillScene());
-                }));
-            }
-
-            l.add(new Btn("お店", ()=>{
-                Scene.load(new ShopScene());
-            }));
-            
-            l.add(new Btn("アイテム", ()=>{
-                Scene.load( ItemScene.ins({
-                    selectUser:true,
-                    user:Unit.players[0],
-                    use:async(item,user)=>{
-                        if(item.targetings & Targeting.SELECT){
-                            await item.use( user, [user] );
-                        }else{
-                            let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
-                            
-                            if(targets.length > 0){
-                                await item.use( user, targets );
-                            }
-                        }
+                l.add({
+                    center:()=>"パーティースキル",
+                    push:elm=>{
+                        Scene.load(new PartySkillScene());
                     },
-                    returnScene:()=>{
-                        Scene.load( TownScene.ins );
-                    }, 
-                }) );
-            }));
-            l.add(new Btn("OPTION", ()=>{
-                this._ins = createOptionBtn();
-            }));
+                });
+            }
+            l.add({
+                center:()=>"OPTION",
+                push:elm=>{
+                    this._ins = createOptionBtn();
+                },
+            });
+
+            
+            // l.add(new Btn("アイテム", ()=>{
+            //     Scene.load( ItemScene.ins({
+            //         selectUser:true,
+            //         user:Unit.players[0],
+            //         use:async(item,user)=>{
+            //             if(item.targetings & Targeting.SELECT){
+            //                 await item.use( user, [user] );
+            //             }else{
+            //                 let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
+                            
+            //                 if(targets.length > 0){
+            //                     await item.use( user, targets );
+            //                 }
+            //             }
+            //         },
+            //         returnScene:()=>{
+            //             Scene.load( TownScene.ins );
+            //         }, 
+            //     }) );
+            // }));
+            // l.add(new Btn("OPTION", ()=>{
+            //     this._ins = createOptionBtn();
+            // }));
         this._ins = l;
         visibleDungeonEnterBtn = false;
     }
 
-    private static setDungeonBtn(){
-        const w = 4;
-        const h = 3;
-        const l = new FlowLayout(w,h);
-        const onePageDrawDungeonNum = w * (h - 1);
-        let num = 0;
-        // 0, 1, 2, 3,
-        // 4, 5, 6, 7,
-        // 8, 9,10,11,
+    private static setDungeonList(){
+        let choosedDungeon:Dungeon|undefined;
+        const list = new List(8);
         const visibleDungeons = Dungeon.values.filter(d=> d.isVisible() || Debug.debugMode);
-        for(let i = this.dungeonPage * onePageDrawDungeonNum; i < visibleDungeons.length; i++){
-            const d = visibleDungeons[i];
+        for(const d of visibleDungeons){
+            list.add({
+                center:()=>d.toString(),
+                groundColor:()=> d === choosedDungeon ? Color.D_CYAN : Color.BLACK,
+                push:elm=>{
+                    Util.msg.set("");
+                    Util.msg.set(`[${d}]`);
+                    Util.msg.set(`Rank:${d.rank}`);
+                    Util.msg.set(`Lv:${d.enemyLv}`);
+                    Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
+                    Util.msg.set(`鍵:${d.treasureKey}`);
 
-            l.add(new Btn(()=>`${d}`,()=>{
-                choosedDungeon = d;
-                visibleDungeonEnterBtn = true;
-
-                Util.msg.set("");
-                Util.msg.set(`[${d}]`);
-                Util.msg.set(`Rank:${d.rank}`);
-                Util.msg.set(`Lv:${d.enemyLv}`);
-                Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
-                Util.msg.set(`鍵:${d.treasureKey}`);
-                for(const treasure of d.treasures){
-                    if(treasure.totalGetCount > 0){
-                        Util.msg.set(`財宝:${treasure}(${treasure.num}個)`);
-                    }else{
-                        Util.msg.set(`財宝:${"？".repeat(treasure.toString().length)}`, Color.GRAY);
-                    }
-                }
-                Util.msg.set(`EX討伐回数:${d.exKillCount}` , d.exKillCount > 0 ? Color.WHITE : Color.GRAY);
-            }));
-
-            if(++num >= onePageDrawDungeonNum){
-                break;
-            }
+                    choosedDungeon = d;
+                },
+            })
         }
-        const pageLim = ((visibleDungeons.length - 1) / onePageDrawDungeonNum)|0;
-        
 
 
-        
-        l.addFromLast(new Btn(()=>"<<",()=>{
-            this.reset();
-        }));
-        
-        const enter = new Btn("侵入", ()=>{
-            if(!choosedDungeon){return;}
-
-
-            Dungeon.now = choosedDungeon;
-            Dungeon.auNow = 0;
-            DungeonEvent.now = DungeonEvent.empty;
-            for(let item of Item.consumableValues()){
-                item.remainingUseNum = item.num;
-            }
-
-            Util.msg.set(`${choosedDungeon}に侵入しました`);
-            FX_DungeonName( choosedDungeon.toString(), Place.E_BOX );
-
-            Scene.load( DungeonScene.ins );
-        });
-        l.addFromLast(new VariableLayout(()=>{
-            return visibleDungeonEnterBtn ? enter : ILayout.empty;
-        }));
-
-        const toNewer = new Btn(">", ()=>{
-            this.dungeonPage++;
-            visibleDungeonEnterBtn = false;
-        });
-        l.addFromLast(new VariableLayout(()=>{
-            return this.dungeonPage < pageLim ? toNewer : ILayout.empty;
-        }));
-
-        const toOlder = new Btn("<", ()=>{
-            this.dungeonPage--;
-            visibleDungeonEnterBtn = false;
-        });
-        l.addFromLast(new VariableLayout(()=>{
-            return this.dungeonPage > 0 ? toOlder : ILayout.empty;
-        }));
-
-        
-        visibleDungeonEnterBtn = false;
-        this._ins = l;
+        const listH = 0.85;
+        this._ins = new RatioLayout()
+                        .add(new Rect(0, 0, 1, listH), list)
+                        .add(new Rect(0, listH, 1, 1-listH), 
+                            new YLayout()
+                                .add(new Btn("侵入", ()=>{
+                                    if(!choosedDungeon){return;}
+                        
+                                    Dungeon.now = choosedDungeon;
+                                    Dungeon.auNow = 0;
+                                    DungeonEvent.now = DungeonEvent.empty;
+                                    for(let item of Item.consumableValues()){
+                                        item.remainingUseNum = item.num;
+                                    }
+                        
+                                    Util.msg.set(`${choosedDungeon}に侵入しました`);
+                                    FX_DungeonName( choosedDungeon.toString(), Place.E_BOX );
+                        
+                                    Scene.load( DungeonScene.ins );
+                                }))
+                                .add(new Btn("<<", ()=>{
+                                    this.reset();
+                                }))
+                        )
+                        ;
+        ;
     }
 
 }

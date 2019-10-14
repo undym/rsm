@@ -15,9 +15,11 @@
     <style>
         .canvas{
             position:fixed;
-            width:100vw;
-            height:100vh;
+            width:100vh;
+            height:100vw;
             image-rendering: pixelated;
+            transform-origin: top left;
+            transform: translateX(100vw) rotate(90deg);
         }
         .loading{
             width:100vw;
@@ -25,6 +27,7 @@
             text-align: center;
             display: table-cell;
             vertical-align: middle;
+            transform:rotate(90deg);
         }
     </style>
 </head>

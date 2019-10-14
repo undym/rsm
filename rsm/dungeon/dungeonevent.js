@@ -254,15 +254,12 @@ DungeonEvent._values = [];
             };
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, (() => {
-                const btn = new Btn("汲む", () => __awaiter(this, void 0, void 0, function* () {
-                    this.汲む = false;
+                const drink = () => __awaiter(this, void 0, void 0, function* () {
                     yield openBox(ItemDrop.LAKE, Dungeon.now.rank / 2);
-                }));
-                return new VariableLayout(() => this.汲む ? btn : ReturnBtn.ins);
-            })())
-                .set(5, (() => {
-                const btn = new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
+                });
+                const fishingBtn = new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
                     this.釣る = false;
+                    this.汲む = false;
                     let doneAnyFishing = false;
                     const fishing = (baseRank) => __awaiter(this, void 0, void 0, function* () {
                         const itemRank = Item.fluctuateRank(baseRank);
@@ -289,8 +286,22 @@ DungeonEvent._values = [];
                     if (!doneAnyFishing) {
                         Util.msg.set("釣り竿をもっていなかった...");
                     }
+                    yield drink();
                 }));
-                return new VariableLayout(() => this.釣る ? btn : ILayout.empty);
+                const drinkBtn = new Btn("汲む", () => __awaiter(this, void 0, void 0, function* () {
+                    this.汲む = false;
+                    yield drink();
+                }));
+                // return new VariableLayout(()=>this.汲む ? drinkBtn : ReturnBtn.ins);
+                return new VariableLayout(() => {
+                    if (this.釣る) {
+                        return fishingBtn;
+                    }
+                    if (this.汲む) {
+                        return drinkBtn;
+                    }
+                    return ReturnBtn.ins;
+                });
             })());
         }
     };
@@ -403,15 +414,13 @@ DungeonEvent._values = [];
     };
 })(DungeonEvent || (DungeonEvent = {}));
 const createDefLayout = () => {
-    //0,1,2,
-    //3,4,5,
-    return new FlowLayout(3, 2)
+    return new FlowLayout(1, 3)
         .set(ItemBtn.index, ItemBtn.ins)
         .set(ReturnBtn.index, ReturnBtn.ins)
         .set(AdvanceBtn.index, AdvanceBtn.ins);
 };
 class AdvanceBtn {
-    static get index() { return 1; }
+    static get index() { return 2; }
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "進む", () => __awaiter(this, void 0, void 0, function* () {
@@ -429,7 +438,7 @@ class AdvanceBtn {
     }
 }
 class ReturnBtn {
-    static get index() { return 4; }
+    static get index() { return 1; }
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "戻る", () => __awaiter(this, void 0, void 0, function* () {
@@ -447,7 +456,7 @@ class ReturnBtn {
     }
 }
 class ItemBtn {
-    static get index() { return 3; }
+    static get index() { return 0; }
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "アイテム", () => __awaiter(this, void 0, void 0, function* () {

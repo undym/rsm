@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { Place } from "../util.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { ILayout, RatioLayout, VariableLayout, FlowLayout, XLayout, Labels } from "../undym/layout.js";
+import { Qlace } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
+import { YLayout, ILayout, RatioLayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Unit } from "../unit.js";
 import { List } from "../widget/list.js";
@@ -35,67 +35,100 @@ export class ItemScene extends Scene {
         this.selected = false;
         this.selectedItem = Item.石;
         super.clear();
-        super.add(Place.TOP, DrawPlayInfo.ins);
-        const pboxBounds = new Rect(0, 1 - Place.ST_H, 1, Place.ST_H);
-        const mainBounds = new Rect(0, Place.TOP.yh, 1, 1 - Place.TOP.h - pboxBounds.h);
-        super.add(mainBounds, new XLayout()
+        super.add(Qlace.LIST_MAIN, new XLayout()
             .add(this.list)
+            .add(new Layout()
+            .add(ILayout.create({ draw: (bounds) => {
+                Graphics.fillRect(bounds, Color.D_GRAY);
+            } }))
             .add((() => {
-            const infoBounds = new Rect(0, 0, 1, 0.4);
-            const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
+            const info = new Labels(Font.def)
+                .add(() => `[${this.selectedItem}]`, () => Color.WHITE)
+                .add(() => {
+                const num = this.selectedItem.consumable
+                    ? `${this.selectedItem.remainingUseNum}/${this.selectedItem.num}`
+                    : `${this.selectedItem.num}`;
+                const limit = this.selectedItem.num >= this.selectedItem.numLimit ? "（所持上限）" : "";
+                return `${num}個${limit}`;
+            }, () => Color.WHITE)
+                .add(() => `<${this.selectedItem.itemType}>`, () => Color.WHITE)
+                .add(() => `Rank:${this.selectedItem.rank}`, () => Color.WHITE)
+                .addln(() => this.selectedItem.info, () => Color.WHITE);
+            return new VariableLayout(() => this.selected ? info : ILayout.empty);
+        })())));
+        super.add(Qlace.BTN, (() => {
+            // const otherBtns:ILayout[] = [
+            //     new Btn("<<", ()=>{
+            //         this.returnScene();
+            //     }),
+            //     (()=>{
+            //         const canUse = new Btn(()=>"使用",async()=>{
+            //             await this.use( this.selectedItem, this.user );
+            //         });
+            //         const cantUse = new Btn(()=>"-",()=>{});
+            //         return new VariableLayout(()=>{
+            //             if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
+            //                 return cantUse;
+            //             }
+            //             return canUse;
+            //         });
+            //     })(),
+            // ];
+            // const w = 2;
+            // const h = ((otherBtns.length + ItemParentType.values.length + 1) / w)|0;
+            // const l = new FlowLayout(w,h);
+            // for(let type of ItemParentType.values){
+            //     l.add(new Btn(type.toString(), ()=>{
+            //         this.setList(type);
+            //     }));
+            // }
+            // for(const o of otherBtns){
+            //     l.addFromLast(o);
+            // }
+            const listH = 1 - Qlace.P_BOX.h;
             return new RatioLayout()
-                .add(infoBounds, ILayout.create({ draw: (bounds) => {
-                    Graphics.fillRect(bounds, Color.D_GRAY);
-                } }))
-                .add(infoBounds, (() => {
-                const info = new Labels(Font.def)
-                    .add(() => `[${this.selectedItem}]`, () => Color.WHITE)
-                    .add(() => {
-                    const num = this.selectedItem.consumable
-                        ? `${this.selectedItem.remainingUseNum}/${this.selectedItem.num}`
-                        : `${this.selectedItem.num}`;
-                    const limit = this.selectedItem.num >= this.selectedItem.numLimit ? "（所持上限）" : "";
-                    return `${num}個${limit}`;
-                }, () => Color.WHITE)
-                    .add(() => `<${this.selectedItem.itemType}>`, () => Color.WHITE)
-                    .add(() => `Rank:${this.selectedItem.rank}`, () => Color.WHITE)
-                    .addln(() => this.selectedItem.info, () => Color.WHITE);
-                return new VariableLayout(() => this.selected ? info : ILayout.empty);
-            })())
-                .add(btnBounds, (() => {
-                const otherBtns = [
-                    new Btn("<<", () => {
-                        this.returnScene();
-                    }),
-                    (() => {
-                        const canUse = new Btn(() => "使用", () => __awaiter(this, void 0, void 0, function* () {
-                            yield this.use(this.selectedItem, this.user);
-                        }));
-                        const cantUse = new Btn(() => "-", () => { });
-                        return new VariableLayout(() => {
-                            if (!this.selected || !this.selectedItem.canUse(this.user, [this.user])) {
-                                return cantUse;
-                            }
-                            return canUse;
-                        });
-                    })(),
-                ];
-                const w = 2;
-                const h = ((otherBtns.length + ItemParentType.values.length + 1) / w) | 0;
-                const l = new FlowLayout(w, h);
+                .add(new Rect(0, 0, 1, listH), new List()
+                .init(list => {
+                const push = (() => {
+                    let pushedElm;
+                    return (elm) => {
+                        if (pushedElm !== undefined) {
+                            pushedElm.groundColor = () => Color.BLACK;
+                        }
+                        pushedElm = elm;
+                        pushedElm.groundColor = () => Color.D_CYAN;
+                    };
+                })();
                 for (let type of ItemParentType.values) {
-                    l.add(new Btn(type.toString(), () => {
-                        this.setList(type);
-                    }));
+                    list.add({
+                        center: () => type.toString(),
+                        push: elm => {
+                            push(elm);
+                            this.setList(type);
+                        },
+                    });
                 }
-                for (const o of otherBtns) {
-                    l.addFromLast(o);
-                }
-                return l;
-            })());
-        })()));
-        super.add(pboxBounds, DrawSTBoxes.players);
-        super.add(new Rect(pboxBounds.x, pboxBounds.y - Place.MAIN.h, pboxBounds.w, Place.MAIN.h), DrawUnitDetail.ins);
+            })
+                .fit())
+                .add(new Rect(0, listH, 1, 1 - listH), new YLayout()
+                .add((() => {
+                const canUse = new Btn(() => "使用", () => __awaiter(this, void 0, void 0, function* () {
+                    yield this.use(this.selectedItem, this.user);
+                }));
+                const cantUse = new Btn(() => "-", () => { });
+                return new VariableLayout(() => {
+                    if (!this.selected || !this.selectedItem.canUse(this.user, [this.user])) {
+                        return cantUse;
+                    }
+                    return canUse;
+                });
+            })())
+                .add(new Btn("<<", () => {
+                this.returnScene();
+            })));
+        })());
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(this.user.bounds, new Color(0, 1, 1, 0.2));
             } }));

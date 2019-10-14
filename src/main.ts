@@ -64,7 +64,7 @@ window.onload = ()=>{
 
     
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const rotate = false;
+    const rotate = true;
     // const rotate:boolean = window.navigator.userAgent.indexOf("Mobile") !== -1;
     
     // if(rotate){
@@ -78,13 +78,16 @@ window.onload = ()=>{
     canvas.height = canvas.clientHeight;
 
 
-    setInput();
 
     const texture = new Texture({canvas:canvas});
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
 
+    setInput();
+
     init();
+
+    Util.msg.set( `Version{${Version.NOW}}` );
 
     if(SaveData.exists()){
         continueGame();

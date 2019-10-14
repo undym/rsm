@@ -16,7 +16,7 @@ import { Dungeon } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color } from "./undym/type.js";
 import { Graphics, Texture } from "./graphics/graphics.js";
-import { SaveData } from "./savedata.js";
+import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
 {
@@ -62,7 +62,7 @@ window.onload = () => {
     }
     console.log("start");
     const canvas = document.getElementById("canvas");
-    const rotate = false;
+    const rotate = true;
     // const rotate:boolean = window.navigator.userAgent.indexOf("Mobile") !== -1;
     // if(rotate){
     //     canvas.style.width = "100vh";
@@ -72,11 +72,12 @@ window.onload = () => {
     // }
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
-    setInput();
     const texture = new Texture({ canvas: canvas });
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
+    setInput();
     init();
+    Util.msg.set(`Version{${Version.NOW}}`);
     if (SaveData.exists()) {
         continueGame();
         ctrl();

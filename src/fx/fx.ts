@@ -191,7 +191,7 @@ export const FX_RotateStr = (font:Font, str:string, center:{x:number,y:number}, 
         for(let i = 0; i < strings.length; i++){
             let rad = -Math.PI - PI2 * (count - i) / rotateOver;
             if(rad < -PI2){rad = 0;}
-            Graphics.rotate(/*rad*/rad, /*center*/{x:x2, y:y2}, ()=>{
+            Graphics.rotate(/*rad*/rad, /*center*/new Point(x2, y2), ()=>{
                 font.draw( strings[i], new Point(x2 - measures[i] / 2, y2 - font.ratioH / 2), col );
             });
             x2 += measures[i];
@@ -337,7 +337,7 @@ export const FX_魔法 = (center:{x:number, y:number}) => {
 FXTest.add(FX_魔法.name, () => FX_魔法(FXTest.target));
 
 
-export const FX_神格 = (center:{x:number, y:number})=>{
+export const FX_神格 = (center:Point)=>{
     FX.add(count=>{
         const over = 20;
 

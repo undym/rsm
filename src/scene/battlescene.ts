@@ -1,5 +1,5 @@
 import { Scene, wait, cwait } from "../undym/scene.js";
-import { Place, Util, PlayData, SceneType } from "../util.js";
+import { Place, Util, PlayData, SceneType, Qlace } from "../util.js";
 import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
 import { VariableLayout, ILayout, Layout, YLayout, RatioLayout, FlowLayout, Labels, XLayout, Label } from "../undym/layout.js";
 import { Rect, Color, Point } from "../undym/type.js";
@@ -21,7 +21,7 @@ import { Font, Graphics } from "../graphics/graphics.js";
 import { PartySkillWin, PartySkill } from "../partyskill.js";
 
 let btnSpace:Layout;
-
+let chooseTargetLayout:ILayout;
 
 export class BattleScene extends Scene{
     private static _ins:BattleScene;
@@ -34,14 +34,14 @@ export class BattleScene extends Scene{
         super();
 
         btnSpace = new Layout();
+        chooseTargetLayout = ILayout.empty;
     }
 
 
     init(){
 
         super.clear();
-
-        super.add(Place.TOP, DrawPlayInfo.ins);
+        // super.add(Place.TOP, DrawPlayInfo.ins);
 
         const drawBG:(bounds:Rect)=>void = (()=>{
             if(Battle.type === BattleType.BOSS){
@@ -52,7 +52,7 @@ export class BattleScene extends Scene{
             }
             return (bounds)=>{};
         })();
-        super.add(Place.MAIN, ILayout.create({draw:(bounds)=>{
+        super.add(Qlace.MAIN, ILayout.create({draw:(bounds)=>{
             Graphics.clip(bounds, ()=>{
                 drawBG(bounds);
             });
@@ -64,7 +64,7 @@ export class BattleScene extends Scene{
         // }));
 
         
-        super.add(Place.DUNGEON_DATA,(()=>{
+        super.add(Qlace.DUNGEON_DATA,(()=>{
             const info = new Labels(Font.def)
                             .add(()=>`[${this.tecInfo.tec}]`)
                             .addLayout(
@@ -120,53 +120,14 @@ export class BattleScene extends Scene{
                 return this.tecInfo.tec !== Tec.empty ? info : DrawDungeonData.ins;
             });
         })());
-        // super.add(Place.DUNGEON_DATA, ILayout.create({draw:(bounds)=>{
-        //     if(this.tecInfo.tec === Tec.empty){return;}
 
-        //     const tec = this.tecInfo.tec;
-        //     const f = Font.def;
-        //     let p = bounds.upperLeft;
+        super.add(Qlace.MSG, Util.msg);
 
-        //     f.draw( `[${tec}]`, p, Color.GREEN );
-            
-        //     p = p.move(0,f.ratioH);
-        //     if(tec instanceof ActiveTec){
-        //         let mpW = 0;
-        //         let tpW = 0;
-        //         const user = this.tecInfo.user;
-        //         if(tec.mpCost > 0){
-        //             let col = tec.mpCost <= user.mp ? Color.WHITE : Color.GRAY;
-        //             const s = `MP:${tec.mpCost} `;
-        //             f.draw(s, p, col);
-        //             mpW = f.measureRatioW(s);
-        //         }
+        super.add(Qlace.BTN, btnSpace);
 
-        //         if(tec.tpCost > 0){
-        //             let col = tec.tpCost <= user.tp ? Color.WHITE : Color.GRAY;
-        //             const s = `TP:${tec.tpCost} `;
-        //             f.draw(s, p.move(mpW, 0), col);
-        //             tpW = f.measureRatioW(s);
-        //         }
-
-        //         if(tec.epCost > 0){
-        //             let col = tec.epCost <= user.ep ? Color.WHITE : Color.GRAY;
-        //             f.draw(`EP:${tec.epCost}`, p.move(tpW, 0), col);
-        //         }
-        //     }else{
-        //     }
-
-        //     for(let s of tec.info){
-        //         f.draw(s, p = p.move(0, f.ratioH), Color.WHITE);
-        //     }
-        // }}));
-
-        super.add(Place.MSG, Util.msg);
-
-        super.add(Place.BTN, btnSpace);
-
-        super.add(Place.E_BOX, DrawSTBoxes.enemies);
-        super.add(Place.P_BOX, DrawSTBoxes.players);
-        super.add(Place.MAIN, DrawUnitDetail.ins);
+        super.add(Qlace.E_BOX, DrawSTBoxes.enemies);
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MAIN, DrawUnitDetail.ins);
 
         super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
             if(!Battle.getPhaseUnit().exists){return;}
@@ -174,6 +135,7 @@ export class BattleScene extends Scene{
             Graphics.fillRect(Battle.getPhaseUnit().bounds, new Color(0,1,1,0.2));
         }}));
 
+        super.add(Rect.FULL, new VariableLayout(()=> chooseTargetLayout));
 
         super.add(Rect.FULL, ILayout.create({ctrl:async(bounds)=>{
             if(Battle.start){
@@ -265,6 +227,7 @@ export class BattleScene extends Scene{
         
                         Util.msg.set(`[${tec}]のターゲットを選択してください`);
                         
+                        
                         await this.setChooseTargetBtn(attacker, async(targets)=>{
                             if(
                                    !targets[0].dead 
@@ -275,6 +238,8 @@ export class BattleScene extends Scene{
                                 await this.phaseEnd();
                             }
                         });
+
+                        await wait(1);
         
                         return;
                     }else{
@@ -376,36 +341,35 @@ export class BattleScene extends Scene{
 
     private async setChooseTargetBtn(attacker:Unit, chooseAction:(targets:Unit[])=>void){
 
-        const l = new FlowLayout(4,3);
-        const addBtn = async(unit:Unit)=>{
-            if(!unit.exists){
-                l.add(ILayout.empty);
-                return;
-            }
+        chooseTargetLayout = ILayout.create({
+            ctrl:async bounds=>{
+                if(Input.click){
+                    for(const u of Unit.all){
+                        if(!u.exists){continue;}
+                        if(!u.bounds.contains( Input.point )){continue;}
 
-            const btn = new Btn(unit.name, async()=>{
-                await chooseAction([unit]);
-            })
-            if(unit.dead){
-                btn.groundColor = ()=>new Color(1,0.3,0.3);
-            }
-            l.add(btn);
-        }
-        for(let e of Unit.enemies){
-            addBtn(e);
-        }
-        for(let p of Unit.players){
-            addBtn(p);
-        }
-        
-        l.addFromLast(new Btn("<<", async()=>{
-            Util.msg.set("＞キャンセル");
-            await this.setPlayerPhase(attacker);
-        }));
+                        chooseTargetLayout = ILayout.empty;
+                        await chooseAction([u]);
 
-        
-        btnSpace.clear();
-        btnSpace.add(l);
+                        return;
+                    }
+
+                    //誰もいない場所をタップするとキャンセル
+                    Util.msg.set("＞キャンセル");
+                    chooseTargetLayout = ILayout.empty;
+                    await this.setPlayerPhase(attacker);
+                }
+            },
+            draw:bounds=>{
+                Graphics.setLineWidth(2, ()=>{
+                    for(const u of Unit.all){
+                        if(!u.exists){continue;}
+
+                        Graphics.drawRect( u.bounds, Color.RED );
+                    }
+                });
+            },
+        });
     }
 }
 

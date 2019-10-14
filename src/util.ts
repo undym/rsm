@@ -29,6 +29,23 @@ export class Util{
 }
 
 
+export class Qlace{
+    private constructor(){}
+
+    static readonly ST_H = 0.15;
+    static readonly MAIN = new Rect(0, Qlace.ST_H, 0.7, 1 - Qlace.ST_H * 2);
+    static readonly MSG = new Rect(Qlace.MAIN.x, Qlace.MAIN.y, Qlace.MAIN.w, Qlace.MAIN.w * 0.85);
+    static readonly DUNGEON_DATA = new Rect(Qlace.MSG.x, Qlace.MSG.yh, Qlace.MSG.w, Qlace.MAIN.h - Qlace.MSG.h);
+
+    static readonly E_BOX = new Rect(0, 0, Qlace.MAIN.w, Qlace.ST_H);
+    static readonly P_BOX = new Rect(0, Qlace.MAIN.yh, Qlace.MAIN.w, Qlace.ST_H);
+    static readonly BTN = new Rect(Qlace.MAIN.xw, 0, 1-Qlace.MAIN.xw, 1);
+
+    static readonly LIST_MAIN = new Rect(0, 0, Qlace.MAIN.w, 1-Qlace.ST_H);
+    static readonly LIST_TYPE = new Rect(Qlace.BTN.x, 0, Qlace.BTN.w, 1-Qlace.ST_H);
+    static readonly LIST_BTN  = new Rect(Qlace.LIST_TYPE.x, Qlace.LIST_TYPE.yh, Qlace.LIST_TYPE.w, 1-Qlace.LIST_TYPE.yh);
+}
+
 export class Place{
     private constructor(){}
     

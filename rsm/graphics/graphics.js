@@ -111,6 +111,7 @@ export class Img {
 }
 export class Graphics {
     constructor() { }
+    static get context() { return this.texture.ctx; }
     static getRenderTarget() { return this.texture; }
     static setRenderTarget(texture) { this.texture = texture; }
     static set lineWidth(pixelWidth) { this.texture.ctx.lineWidth = pixelWidth; }

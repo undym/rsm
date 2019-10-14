@@ -7,11 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, YLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
-import { Rect, Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { Place, PlayData } from "../util.js";
+import { Color } from "../undym/type.js";
+import { DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
+import { PlayData, Qlace } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
@@ -37,67 +37,105 @@ export class ShopScene extends Scene {
     }
     init() {
         super.clear();
-        super.add(Place.TOP, DrawPlayInfo.ins);
-        const pboxBounds = new Rect(0, 1 - Place.ST_H, 1, Place.ST_H);
-        const mainBounds = new Rect(0, Place.TOP.yh, 1, 1 - Place.TOP.h - pboxBounds.h);
-        super.add(mainBounds, new XLayout()
+        super.add(Qlace.LIST_MAIN, new XLayout()
             .add(this.list)
-            .add((() => {
-            const infoBounds = new Rect(0, 0, 1, 0.7);
-            const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
-            return new RatioLayout()
-                .add(infoBounds, ILayout.create({ draw: (bounds) => {
-                    Graphics.fillRect(bounds, Color.D_GRAY);
-                    const goods = this.choosedGoods;
-                    if (!goods) {
-                        return;
-                    }
-                    let font = Font.def;
-                    let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
-                    const moveP = () => p = p.move(0, font.ratioH);
-                    font.draw(`[${goods}]`, moveP(), Color.WHITE);
-                    font.draw(`[${goods.type}]`, moveP(), Color.WHITE);
-                    font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
-                    if (goods.num()) {
-                        font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
-                    }
-                    else {
-                        moveP();
-                    }
+            .add(ILayout.create({ draw: (bounds) => {
+                Graphics.fillRect(bounds, Color.D_GRAY);
+                const goods = this.choosedGoods;
+                if (!goods) {
+                    return;
+                }
+                let font = Font.def;
+                let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
+                const moveP = () => p = p.move(0, font.ratioH);
+                font.draw(`[${goods}]`, moveP(), Color.WHITE);
+                font.draw(`[${goods.type}]`, moveP(), Color.WHITE);
+                font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
+                if (goods.num()) {
+                    font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
+                }
+                else {
                     moveP();
-                    font.draw(goods.info, moveP(), Color.WHITE);
-                } }))
-                .add(btnBounds, (() => {
-                const l = new FlowLayout(2, 1);
-                l.addFromLast(new Btn("<<", () => {
-                    Scene.load(TownScene.ins);
-                }));
-                // const choosedTecIsSetting = ()=> this.target.tecs.some(t=> t === this.choosedTec)
-                const buy = new Btn("買う", () => __awaiter(this, void 0, void 0, function* () {
-                    if (!this.choosedGoods) {
-                        return;
-                    }
-                    const goods = this.choosedGoods;
-                    if (!goods.isVisible()) {
-                        return;
-                    }
-                    if (PlayData.yen >= goods.price()) {
-                        PlayData.yen -= goods.price();
-                        goods.buy();
-                    }
-                }));
-                const no = new Btn("-", () => __awaiter(this, void 0, void 0, function* () { }));
-                l.addFromLast(new VariableLayout(() => {
-                    if (this.choosedGoods && this.choosedGoods.isVisible()) {
-                        return buy;
-                    }
-                    return no;
-                }));
-                return l;
-            })());
-        })()));
-        super.add(pboxBounds, DrawSTBoxes.players);
-        super.add(new Rect(pboxBounds.x, pboxBounds.y - Place.MAIN.h, pboxBounds.w, Place.MAIN.h), DrawUnitDetail.ins);
+                }
+                moveP();
+                font.draw(goods.info, moveP(), Color.WHITE);
+            } }))
+        // .add((()=>{
+        //     const infoBounds = new Rect(0, 0, 1, 0.7);
+        //     const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
+        //     return new RatioLayout()
+        //         .add(infoBounds, ILayout.create({draw:(bounds)=>{
+        //             Graphics.fillRect(bounds, Color.D_GRAY);
+        //             const goods = this.choosedGoods;
+        //             if(!goods){return;}
+        //             let font = Font.def;
+        //             let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
+        //             const moveP = ()=> p = p.move(0, font.ratioH);
+        //             font.draw(`[${goods}]`, moveP(), Color.WHITE);
+        //             font.draw(`[${goods.type}]`, moveP(), Color.WHITE);
+        //             font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
+        //             if(goods.num()){
+        //                 font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
+        //             }else{
+        //                 moveP();
+        //             }
+        //             moveP();
+        //             font.draw(goods.info, moveP(), Color.WHITE);
+        //         }}))
+        //         .add(btnBounds, (()=>{
+        //             const l = new FlowLayout(2,1);
+        //             l.addFromLast(new Btn("<<", ()=>{
+        //                 Scene.load( TownScene.ins );
+        //             }));
+        //             // const choosedTecIsSetting = ()=> this.target.tecs.some(t=> t === this.choosedTec)
+        //             const buy = new Btn("買う",async()=>{
+        //                 if(!this.choosedGoods){return;}
+        //                 const goods = this.choosedGoods;
+        //                 if(!goods.isVisible()){return;}
+        //                 if(PlayData.yen >= goods.price()){
+        //                     PlayData.yen -= goods.price();
+        //                     goods.buy();
+        //                 }
+        //             });
+        //             const no = new Btn("-",async()=>{});
+        //             l.addFromLast(new VariableLayout(()=>{
+        //                 if(this.choosedGoods && this.choosedGoods.isVisible()){
+        //                     return buy;
+        //                 }
+        //                 return no;
+        //             }));
+        //             return l;
+        //         })());
+        // })())
+        );
+        super.add(Qlace.LIST_BTN, new YLayout()
+            .add((() => {
+            const buy = new Btn("買う", () => __awaiter(this, void 0, void 0, function* () {
+                if (!this.choosedGoods) {
+                    return;
+                }
+                const goods = this.choosedGoods;
+                if (!goods.isVisible()) {
+                    return;
+                }
+                if (PlayData.yen >= goods.price()) {
+                    PlayData.yen -= goods.price();
+                    goods.buy();
+                }
+            }));
+            const no = new Btn("-", () => __awaiter(this, void 0, void 0, function* () { }));
+            return new VariableLayout(() => {
+                if (this.choosedGoods && this.choosedGoods.isVisible()) {
+                    return buy;
+                }
+                return no;
+            });
+        })())
+            .add(new Btn("<<", () => {
+            Scene.load(TownScene.ins);
+        })));
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MAIN, DrawUnitDetail.ins);
     }
     setList() {
         this.list.clear();

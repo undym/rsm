@@ -7,13 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout, Labels } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, Labels, Layout, YLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Unit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { Rect, Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { Place, Debug } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
+import { Debug, Qlace } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
@@ -22,24 +22,23 @@ export class JobChangeScene extends Scene {
     constructor() {
         super();
         this.list = new List();
-    }
-    init() {
         this.choosed = false;
         this.choosedJob = Job.しんまい;
         this.target = Unit.getFirstPlayer();
+    }
+    init() {
         super.clear();
-        super.add(Place.TOP, DrawPlayInfo.ins);
-        const pboxBounds = new Rect(0, 1 - Place.ST_H, 1, Place.ST_H);
-        const mainBounds = new Rect(0, Place.TOP.yh, 1, 1 - Place.TOP.h - pboxBounds.h);
-        const infoBounds = new Rect(0, 0, 1, 0.7);
-        const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
-        super.add(mainBounds, new XLayout()
+        // super.add(Place.TOP, DrawPlayInfo.ins);
+        // const mainBounds = new Rect(0, Place.TOP.yh, 1, 1 - Place.TOP.h - Qlace.P_BOX.h);
+        // const infoBounds = new Rect(0, 0, 1, 0.7);
+        // const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
+        super.add(Qlace.LIST_MAIN, new XLayout()
             .add(this.list)
-            .add(new RatioLayout()
-            .add(infoBounds, ILayout.create({ draw: (bounds) => {
+            .add(new Layout()
+            .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
             } }))
-            .add(infoBounds, (() => {
+            .add((() => {
             const info = new Labels(Font.def)
                 .add(() => `[${this.choosedJob}]`)
                 .add(() => this.target.getJobLv(this.choosedJob) >= this.choosedJob.maxLv ? "Lv:★" : `Lv:${this.target.getJobLv(this.choosedJob)}`)
@@ -59,12 +58,9 @@ export class JobChangeScene extends Scene {
                 }
                 return ILayout.empty;
             });
-        })())
-            .add(btnBounds, (() => {
-            const l = new FlowLayout(2, 1);
-            l.addFromLast(new Btn("<<", () => {
-                Scene.load(TownScene.ins);
-            }));
+        })())));
+        super.add(new Rect(Qlace.BTN.x, 1 - Qlace.P_BOX.h, Qlace.BTN.w, Qlace.P_BOX.h), new YLayout()
+            .add((() => {
             const checkCanChange = () => {
                 if (!this.choosed) {
                     return false;
@@ -84,16 +80,18 @@ export class JobChangeScene extends Scene {
                 this.target.job = this.choosedJob;
             }));
             const cantChange = new Btn(() => "-", () => { });
-            l.addFromLast(new VariableLayout(() => {
+            return new VariableLayout(() => {
                 if (!checkCanChange()) {
                     return cantChange;
                 }
                 return canChange;
-            }));
-            return l;
-        })())));
-        super.add(pboxBounds, DrawSTBoxes.players);
-        super.add(new Rect(pboxBounds.x, pboxBounds.y - Place.MAIN.h, pboxBounds.w, Place.MAIN.h), DrawUnitDetail.ins);
+            });
+        })())
+            .add(new Btn("<<", () => {
+            Scene.load(TownScene.ins);
+        })));
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(this.target.bounds, new Color(0, 1, 1, 0.2));
             } }));

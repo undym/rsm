@@ -1,11 +1,11 @@
 import { Scene } from "../undym/scene.js";
-import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout, Labels } from "../undym/layout.js";
+import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout, Labels, Layout, YLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Rect, Color } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { Place } from "../util.js";
+import { Place, Qlace } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
-import { List } from "../widget/list.js";
+import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { Item } from "../item.js";
 import { Num, Mix } from "../mix.js";
@@ -32,24 +32,70 @@ export class MixScene extends Scene{
     }
 
     init(){
-        super.clear();
+        const typeList = new List()
+                            .init(list=>{
+                                const push = (()=>{
+                                    let pushedElm:ListElm;
+                                    return (elm:ListElm)=>{
+                                        if(pushedElm !== undefined){
+                                            pushedElm.groundColor = ()=>Color.BLACK;
+                                        }
+                        
+                                        pushedElm = elm;
+                                        pushedElm.groundColor = ()=>Color.D_CYAN;
+                                    };
+                                })();
+            
+                                list.add({
+                                    center:()=>"建築",
+                                    push:elm=>{
+                                        push(elm);
+                                        const values = Mix.values
+                                                            .filter(m=> !m.result && m.isVisible());
+                                        this.setList("建築", values);
+                                    },
+                                });
+                                list.add({
+                                    center:()=>"装備",
+                                    push:elm=>{
+                                        push(elm);
+                                        const values = Mix.values
+                                                            .filter(m=>{
+                                                                const result = m.result;
+                                                                if(result && result.object instanceof Eq && m.isVisible()){return true;}
+                                                                return false;
+                                                            });
+                                        this.setList("装備", values);
+                                    },
+                                });
+                                list.add({
+                                    center:()=>"アイテム",
+                                    push:elm=>{
+                                        push(elm);
+                                        const values = Mix.values
+                                                            .filter(m=>{
+                                                                const result = m.result;
+                                                                if(result && result.object instanceof Item && m.isVisible()){return true;}
+                                                                return false;
+                                                            });
+                                        this.setList("アイテム", values);
+                                    },
+                                });
+                            })
+                            .fit()
+                            ;
 
-        super.add(Place.TOP, DrawPlayInfo.ins);
+        super.clear();
         
-        const pboxBounds = new Rect(0, 1 - Place.ST_H, 1, Place.ST_H);
-        const mainBounds = new Rect(0, Place.TOP.yh, 1, 1 - Place.TOP.h - pboxBounds.h);
-        
-        super.add(mainBounds, 
+        super.add(Qlace.LIST_MAIN, 
             new XLayout()
                 .add(this.list)
-                .add((()=>{
-                    const infoBounds = new Rect(0, 0, 1, 0.4);
-                    const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
-                    return new RatioLayout()
-                        .add(infoBounds, ILayout.create({draw:(bounds)=>{
+                .add(
+                    new Layout()
+                        .add(ILayout.create({draw:(bounds)=>{
                             Graphics.fillRect(bounds, Color.D_GRAY);
                         }}))
-                        .add(infoBounds, (()=>{
+                        .add((()=>{
                             const info = new Labels(Font.def)
                                                 .add(()=>{
                                                     if(this.choosedMix.countLimit === Mix.LIMIT_INF){
@@ -92,67 +138,40 @@ export class MixScene extends Scene{
                                 return this.choosed ? info : ILayout.empty;
                             });
                         })())
-                        .add(btnBounds, (()=>{
-                            const l = new FlowLayout(2,3);
-                            
-                            l.add(new Btn("建築", ()=>{
-                                const values = Mix.values
-                                                    .filter(m=> !m.result && m.isVisible());
-                                this.setList("建築", values);
-                            }));
-                            l.add(new Btn("装備", ()=>{
-                                const values = Mix.values
-                                                    .filter(m=>{
-                                                        const result = m.result;
-                                                        if(result && result.object instanceof Eq && m.isVisible()){return true;}
-                                                        return false;
-                                                    });
-                                this.setList("装備", values);
-                            }));
-                            l.add(new Btn("アイテム", ()=>{
-                                const values = Mix.values
-                                                    .filter(m=>{
-                                                        const result = m.result;
-                                                        if(result && result.object instanceof Item && m.isVisible()){return true;}
-                                                        return false;
-                                                    });
-                                this.setList("アイテム", values);
-                            }));
+                )
+        );
 
-                
-                            l.addFromLast(new Btn("<<", ()=>{
-                                if(this.doneAnyMix){
-                                    SaveData.save();
-                                }
-                                Scene.load( TownScene.ins );
-                            }));
-                            
-                            const canMix = ()=>{
-                                if(!this.choosedMix){return false;}
+        super.add(Qlace.LIST_TYPE, typeList);
+        super.add(Qlace.LIST_BTN,
+            new YLayout()
+                .add((()=>{
+                    const canMix = ()=>{
+                        if(!this.choosedMix){return false;}
 
-                                return this.choosedMix.canRun();
-                            };
-                            const run = new Btn("合成",async()=>{
-                                if(!this.choosedMix){return;}
+                        return this.choosedMix.canRun();
+                    };
+                    const run = new Btn("合成",async()=>{
+                        if(!this.choosedMix){return;}
 
-                                this.choosedMix.run();
+                        this.choosedMix.run();
 
-                                this.doneAnyMix = true;
-                            });
-                            const noRun = new Btn("-",async()=>{
-                            });
-                
-                            l.addFromLast(new VariableLayout(()=>{
-                                return canMix() ? run : noRun;
-                            }));
-
-                            return l;
-                        })());
+                        this.doneAnyMix = true;
+                    });
+                    const noRun = new Btn("-",async()=>{});
+                    return new VariableLayout(()=>{
+                        return canMix() ? run : noRun;
+                    });
                 })())
+                .add(new Btn("<<", ()=>{
+                    if(this.doneAnyMix){
+                        SaveData.save();
+                    }
+                    Scene.load( TownScene.ins );
+                }))
         );
         
-        super.add(pboxBounds, DrawSTBoxes.players);
-        super.add(new Rect(pboxBounds.x, pboxBounds.y - Place.MAIN.h, pboxBounds.w, Place.MAIN.h), DrawUnitDetail.ins);
+        super.add(Qlace.P_BOX, DrawSTBoxes.players);
+        super.add(Qlace.MAIN, DrawUnitDetail.ins);
         
         
         
@@ -190,4 +209,5 @@ export class MixScene extends Scene{
                 });
             });
     }
+
 }

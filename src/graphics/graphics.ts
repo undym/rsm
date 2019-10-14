@@ -1,3 +1,4 @@
+import { Point } from "../undym/type";
 
 
 
@@ -158,6 +159,7 @@ export class Graphics{
 
     private static texture:Texture;
     
+    static get context(){return this.texture.ctx;}
 
     static getRenderTarget()                {return this.texture;}
     static setRenderTarget(texture:Texture) {this.texture = texture;}
@@ -321,7 +323,7 @@ export class Graphics{
         ctx.restore();
     }
 
-    static rotate(rad:number, centerRatio:{x:number, y:number}, run:()=>void){
+    static rotate(rad:number, centerRatio:Point, run:()=>void){
         const ctx = this.texture.ctx;
         const pw = centerRatio.x * this.pixelW;
         const ph = centerRatio.y * this.pixelH;

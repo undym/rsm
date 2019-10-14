@@ -17,6 +17,8 @@ export class List extends ILayout{
     //scrollの値1につき1項目スクロールする。少数有効。
     private scroll = 0;
     private vec = 0;
+    private scrolled:boolean = false;
+    private fitting:boolean;
 
     constructor(aPageElmNum:number = 14){
         super();
@@ -30,6 +32,40 @@ export class List extends ILayout{
 
     }
 
+    init(run:(list:List)=>void):this{
+        run(this);
+        return this;
+    }
+    /** 
+     * this.aPageElmNum = this.elms.length;
+     * スクロールしなくなる。
+     * */
+    fit():this{
+        this.aPageElmNum = this.elms.length;
+        this.fitting = true;
+        return this;
+    }
+
+    unfit(){
+        this.fitting = false;
+    }
+
+    search(anyMatch:{
+        left?:string,
+        right?:string,
+        center?:string,
+    }):ListElm[]{
+        const res:ListElm[] = [];
+        for(const e of this.elms){
+            if(e instanceof ListElm){
+                if(anyMatch.left   !== undefined && e.left   && anyMatch.left   === e.left())  {res.push(e); continue;}
+                if(anyMatch.right  !== undefined && e.right  && anyMatch.right  === e.right()) {res.push(e); continue;}
+                if(anyMatch.center !== undefined && e.center && anyMatch.center === e.center()){res.push(e); continue;}
+            }
+        }
+        return res;
+    }
+
     clear(keepScroll = false){
         this.elms = [];
         
@@ -40,8 +76,8 @@ export class List extends ILayout{
     }
 
     add(args:{
-        push?:(elm:Elm)=>void,
-        hold?:(elm:Elm)=>void,
+        push?:(elm:ListElm)=>void,
+        hold?:(elm:ListElm)=>void,
 
         left?:()=>string,
         leftColor?:()=>Color,
@@ -55,8 +91,8 @@ export class List extends ILayout{
         groundColor?:()=>Color,
         frameColor?:()=>Color,
         stringColor?:()=>Color,
-    }):Elm{
-        const e = new Elm(args);
+    }):ListElm{
+        const e = new ListElm(args);
         
         this.elms.push(e);
 
@@ -79,7 +115,7 @@ export class List extends ILayout{
             this.hold = false;
         }
 
-        if(contains && Input.holding === 1){
+        if(contains && Input.holding === 1 && !this.fitting){
             this.hold = true;
             this.holdY = Input.y;
         }
@@ -88,7 +124,8 @@ export class List extends ILayout{
             this.vec = 0;
             const min = bounds.h / this.aPageElmNum;
             const addScroll = (this.holdY - Input.y) / min;
-            if(addScroll !== 0){
+            if(Math.abs(addScroll) >= 0.05){
+                this.scrolled = true;
                 this.scroll += addScroll;
                 this.vec = addScroll;
                 this.holdY = Input.y;
@@ -118,6 +155,9 @@ export class List extends ILayout{
                 this.scroll += this.vec;
                 this.vec *= 0.7;
                 this.update = true;
+                if(this.vec < 0.01){
+                    this.vec = 0;
+                }
             }
 
 
@@ -142,10 +182,13 @@ export class List extends ILayout{
 
         }
 
-        if(contains){
+        if(contains && !this.scrolled){
             await this.panel.ctrl( this.scrolledBounds(bounds) );
         }
 
+        if(Input.holding === 0){
+            this.scrolled = false;
+        }
     }
 
     drawInner(bounds:Rect){
@@ -167,7 +210,7 @@ export class List extends ILayout{
 
 
 
-class Elm extends ILayout{
+export class ListElm extends ILayout{
     left:(()=>string) | undefined;
     leftColor:()=>Color;
 
@@ -177,8 +220,8 @@ class Elm extends ILayout{
     right:(()=>string) | undefined;
     rightColor:()=>Color;
     
-    push:(elm:Elm)=>void;
-    hold:(elm:Elm)=>void;
+    push:(elm:ListElm)=>void;
+    hold:(elm:ListElm)=>void;
 
     font:Font;
 
@@ -186,9 +229,10 @@ class Elm extends ILayout{
     frameColor:()=>Color;
     stringColor:()=>Color;
 
+    
     constructor(args:{
-        push?:(elm:Elm)=>void,
-        hold?:(elm:Elm)=>void,
+        push?:(elm:ListElm)=>void,
+        hold?:(elm:ListElm)=>void,
         left?:()=>string,
         leftColor?:()=>Color,
         center?:()=>string,
@@ -237,16 +281,13 @@ class Elm extends ILayout{
         Graphics.drawRect(bounds, this.frameColor());
 
         if(this.left !== undefined){
-            const color = this.leftColor ? this.leftColor() : Color.WHITE;
-            this.font.draw( this.left(), bounds.left, color, Font.LEFT );
+            this.font.draw( this.left(), bounds.left, this.leftColor(), Font.LEFT );
         }
         if(this.right !== undefined){
-            const color = this.rightColor ? this.rightColor() : Color.WHITE;
-            this.font.draw( this.right(), bounds.right, color, Font.RIGHT );
+            this.font.draw( this.right(), bounds.right, this.rightColor(), Font.RIGHT );
         }
         if(this.center !== undefined){
-            const color = this.centerColor ? this.centerColor() : Color.WHITE;
-            this.font.draw( this.center(), bounds.center, color, Font.CENTER );
+            this.font.draw( this.center(), bounds.center, this.centerColor(), Font.CENTER );
         }
     }
 

@@ -240,15 +240,12 @@ export namespace DungeonEvent{
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, (()=>{
-                                    const btn = new Btn("汲む", async()=>{
-                                        this.汲む = false;
+                                    const drink = async()=>{
                                         await openBox( ItemDrop.LAKE, Dungeon.now.rank / 2 );
-                                    });
-                                    return new VariableLayout(()=>this.汲む ? btn : ReturnBtn.ins);
-                                })())
-                                .set(5, (()=>{
-                                    const btn = new Btn("釣る", async()=>{
+                                    };
+                                    const fishingBtn = new Btn("釣る", async()=>{
                                         this.釣る = false;
+                                        this.汲む = false;
                                         let doneAnyFishing = false;
                                         
                                         const fishing = async(baseRank:number)=>{
@@ -277,9 +274,24 @@ export namespace DungeonEvent{
                                         if(!doneAnyFishing){
                                             Util.msg.set("釣り竿をもっていなかった...");
                                         }
+                                        
+                                        await drink();
                                     });
-                                    return new VariableLayout(()=>this.釣る ? btn : ILayout.empty);
+                                    const drinkBtn = new Btn("汲む", async()=>{
+                                        this.汲む = false;
+
+                                        await drink();
+                                    });
+                                    // return new VariableLayout(()=>this.汲む ? drinkBtn : ReturnBtn.ins);
+                                    return new VariableLayout(()=>{
+                                        if(this.釣る){return fishingBtn;}
+                                        if(this.汲む){return drinkBtn;}
+                                        return ReturnBtn.ins;
+                                    })
                                 })())
+                                // .set(5, (()=>{
+                                //     return new VariableLayout(()=>this.釣る ? btn : ILayout.empty);
+                                // })())
                                 ;
     };
     export const BATTLE:DungeonEvent = new class extends DungeonEvent{
@@ -386,9 +398,7 @@ export namespace DungeonEvent{
 
 
 const createDefLayout = ()=>{
-    //0,1,2,
-    //3,4,5,
-    return new FlowLayout(3,2)
+    return new FlowLayout(1,3)
             .set(ItemBtn.index, ItemBtn.ins)
             .set(ReturnBtn.index, ReturnBtn.ins)
             .set(AdvanceBtn.index, AdvanceBtn.ins)
@@ -396,7 +406,7 @@ const createDefLayout = ()=>{
 };
 
 class AdvanceBtn{
-    static get index(){return 1;}
+    static get index(){return 2;}
 
     private static _ins:Btn;
     static get ins():Btn{
@@ -421,7 +431,7 @@ class AdvanceBtn{
 
 
 class ReturnBtn{
-    static get index(){return 4;}
+    static get index(){return 1;}
     
     private static _ins:Btn;
     static get ins():Btn{
@@ -444,7 +454,7 @@ class ReturnBtn{
 
 
 class ItemBtn{
-    static get index(){return 3;}
+    static get index(){return 0;}
 
     private static _ins:Btn;
     static get ins():Btn{
