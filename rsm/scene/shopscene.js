@@ -7,28 +7,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout, YLayout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
-import { PlayData, Qlace } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
+import { Place, PlayData } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
+import { Tec } from "../tec.js";
 import { Player } from "../player.js";
 import { EqEar } from "../eq.js";
 import { Item } from "../item.js";
 import { Dungeon } from "../dungeon/dungeon.js";
-import { Job } from "../job.js";
 import { PartySkill } from "../partyskill.js";
-let 砲撃手master = false;
-let クピドmaster = false;
+let ショットガンmaster = false;
+let ヤクシャmaster = false;
 export class ShopScene extends Scene {
     constructor() {
         super();
         this.list = new List();
-        クピドmaster = Player.values.some(p => p.ins.getJobLv(Job.クピド) > 0);
-        砲撃手master = Player.values.some(p => p.ins.getJobLv(Job.砲撃手) > 0);
+        ヤクシャmaster = Player.values.some(p => p.ins.isMasteredTec(Tec.ヤクシャ));
+        ショットガンmaster = Player.values.some(p => p.ins.isMasteredTec(Tec.ショットガン));
         if (!ShopScene.completedInitGoods) {
             ShopScene.completedInitGoods = true;
             initGoods();
@@ -37,7 +37,7 @@ export class ShopScene extends Scene {
     }
     init() {
         super.clear();
-        super.add(Qlace.LIST_MAIN, new XLayout()
+        super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)
             .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
@@ -108,7 +108,8 @@ export class ShopScene extends Scene {
         //         })());
         // })())
         );
-        super.add(Qlace.LIST_BTN, new YLayout()
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_BTN, new XLayout()
             .add((() => {
             const buy = new Btn("買う", () => __awaiter(this, void 0, void 0, function* () {
                 if (!this.choosedGoods) {
@@ -134,8 +135,8 @@ export class ShopScene extends Scene {
             .add(new Btn("<<", () => {
             Scene.load(TownScene.ins);
         })));
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
     }
     setList() {
         this.list.clear();
@@ -202,8 +203,8 @@ const initGoods = () => {
     createItemGoods(Item.脱出ポッド, () => 10, () => Item.脱出ポッド.totalGetCount < 1);
     createItemGoods(Item.赤い水, () => (Item.赤い水.num + 1) * 100, () => Item.赤い水.totalGetCount < 10 && Dungeon.再構成トンネル.dungeonClearCount > 0);
     createItemGoods(Item.サンタクララ薬, () => (Item.サンタクララ薬.num + 1) * 50, () => Item.サンタクララ薬.totalGetCount < 4 && Dungeon.再構成トンネル.dungeonClearCount > 0);
-    createItemGoods(Item.夜叉の矢, () => (Item.夜叉の矢.num + 1) * 500, () => クピドmaster);
-    createItemGoods(Item.散弾, () => (Item.散弾.num + 1) * 500, () => 砲撃手master);
+    createItemGoods(Item.夜叉の矢, () => (Item.夜叉の矢.num + 1) * 500, () => ヤクシャmaster);
+    createItemGoods(Item.散弾, () => (Item.散弾.num + 1) * 500, () => ショットガンmaster);
     createItemGoods(Item.ボロい釣竿, () => 300, () => Dungeon.マーザン森.dungeonClearCount > 0);
     createItemGoods(Item.マーザン竿, () => 700, () => Dungeon.マーザン森.dungeonClearCount > 10);
     createEarGoods(EqEar.おにく, () => 100, () => Dungeon.はじまりの丘.dungeonClearCount > 0 && EqEar.おにく.totalGetCount < 2);
@@ -212,7 +213,7 @@ const initGoods = () => {
     createEarGoods(EqEar.エメラルドのピアス, () => 100, () => Dungeon.リテの門.dungeonClearCount > 0 && EqEar.エメラルドのピアス.totalGetCount < 2);
     createItemGoods(Item.パーティースキル取り扱い許可証, () => 1000, () => Dungeon.黒遺跡.dungeonClearCount > 0 && Item.パーティースキル取り扱い許可証.num === 0);
     createPartySkill(PartySkill.入手経験値増加, () => 1000, () => Item.パーティースキル取り扱い許可証.num > 0);
-    createPartySkill(PartySkill.入手ジョブ経験値増加, () => 1000, () => Item.パーティースキル取り扱い許可証.num > 0);
+    createPartySkill(PartySkill.入手BP増加, () => 1000, () => Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.入手金増加, () => 2000, () => Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.宝箱チェーン増加, () => 3000, () => Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.宝箱ランク増加, () => 4000, () => Item.パーティースキル取り扱い許可証.num > 0);

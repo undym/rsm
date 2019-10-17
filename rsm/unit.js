@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Player } from "./player.js";
-import { Util, PlayData } from "./util.js";
+import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
@@ -79,8 +79,8 @@ export class Unit {
         this.exists = false;
         this.dead = false;
         this.tecs = [];
-        /**戦闘時の技ページ。 */
-        this.tecPage = 0;
+        /**戦闘時の。 */
+        this.tecListScroll = 0;
         // protected prmSets = new Map<Prm,PrmSet>();
         this.prmSets = [];
         this.equips = [];
@@ -442,7 +442,9 @@ export class PUnit extends Unit {
                     this.growPrm(Prm.MAX_MP, 1);
                     this.growPrm(Prm.MAX_TP, 1);
                 }
-                this.bp += 1 + this.prm(Prm.LV).base / 100;
+                const addBP = (1 + this.prm(Prm.LV).base / 5) | 0;
+                this.bp += addBP;
+                Util.msg.set(`BP+${addBP}`, Color.GREEN.bright);
             }
         });
     }
@@ -456,55 +458,45 @@ export class PUnit extends Unit {
     //
     //
     //---------------------------------------------------------
-    getJobLvSet(job) { return this.jobLvs.get(job); }
-    setJobExp(job, exp) { this.getJobLvSet(job).exp = exp; }
-    getJobExp(job) { return this.getJobLvSet(job).exp; }
-    addJobExp(value) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.isMasteredJob(this.job)) {
-                return;
-            }
-            const set = this.getJobLvSet(this.job);
-            set.exp += value;
-            if (set.exp >= this.job.lvupExp) {
-                set.lv += 1;
-                set.exp = 0;
-                Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright);
-                yield wait();
-                for (let grow of this.job.growthPrms) {
-                    this.growPrm(grow.prm, grow.value);
-                }
-                const learnings = this.job.learningTecs;
-                const ratio = set.lv / this.job.maxLv;
-                for (let i = 0; i < learnings.length; i++) {
-                    if (i + 1 > ((learnings.length * ratio) | 0)) {
-                        break;
-                    }
-                    if (this.isMasteredTec(learnings[i])) {
-                        continue;
-                    }
-                    this.setMasteredTec(learnings[i], true);
-                    Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright);
-                    yield wait();
-                    //技スロットに空きがあれば覚えた技をセット
-                    for (let ei = 0; ei < this.tecs.length; ei++) {
-                        if (this.tecs[ei] === Tec.empty) {
-                            this.tecs[ei] = learnings[i];
-                            break;
-                        }
-                    }
-                }
-                if (set.lv >= this.job.maxLv) {
-                    Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright);
-                    yield wait();
-                    PlayData.masteredAnyJob = true;
-                }
-            }
-        });
-    }
-    setJobLv(job, lv) { this.getJobLvSet(job).lv = lv; }
-    getJobLv(job) { return this.getJobLvSet(job).lv; }
-    isMasteredJob(job) { return this.getJobLvSet(job).lv >= job.maxLv; }
+    // private getJobLvSet(job:Job):{lv:number, exp:number}{return this.jobLvs.get(job) as {lv:number, exp:number};}
+    // setJobExp(job:Job, exp:number){this.getJobLvSet(job).exp = exp;}
+    // getJobExp(job:Job):number     {return this.getJobLvSet(job).exp;}
+    // async addJobExp(value:number){
+    //     if(this.isMasteredJob(this.job)){return;}
+    //     const set = this.getJobLvSet(this.job);
+    //     set.exp += value;
+    //     if(set.exp >= this.job.lvupExp){
+    //         set.lv += 1;
+    //         set.exp = 0;
+    //         Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
+    //         for(let grow of this.job.growthPrms){
+    //             this.growPrm( grow.prm, grow.value );
+    //         }
+    //         const learnings:Tec[] = this.job.learningTecs;
+    //         const ratio = set.lv / this.job.maxLv;
+    //         for(let i = 0; i < learnings.length; i++){
+    //             if(i+1 > ((learnings.length * ratio)|0)){break;}
+    //             if(learnings[i] === Tec.empty){continue;}
+    //             if(this.isMasteredTec(learnings[i])){continue;}
+    //             this.setMasteredTec(learnings[i], true);
+    //             Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright); await wait();
+    //             //技スロットに空きがあれば覚えた技をセット
+    //             for(let ei = 0; ei < this.tecs.length; ei++){
+    //                 if(this.tecs[ei] === Tec.empty){
+    //                     this.tecs[ei] = learnings[i];
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //         if(set.lv >= this.job.maxLv){
+    //             Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
+    //             PlayData.masteredAnyJob = true;
+    //         }
+    //     }
+    // }
+    // setJobLv(job:Job, lv:number){this.getJobLvSet(job).lv = lv;}
+    // getJobLv(job:Job):number    {return this.getJobLvSet(job).lv;}
+    // isMasteredJob(job:Job):boolean{return this.getJobLvSet(job).lv >= job.maxLv;}
     //---------------------------------------------------------
     //
     //

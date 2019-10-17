@@ -4,8 +4,8 @@ import { Btn } from "../widget/btn.js";
 import { Unit, PUnit, Prm } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { Rect, Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { Place, PlayData, Qlace } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
+import { Place, PlayData } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
@@ -19,9 +19,8 @@ import { Job } from "../job.js";
 import { PartySkill } from "../partyskill.js";
 
 
-let 砲撃手master = false;
-let クピドmaster = false;
-
+let ショットガンmaster = false;
+let ヤクシャmaster = false;
 
 
 export class ShopScene extends Scene{
@@ -33,8 +32,8 @@ export class ShopScene extends Scene{
     constructor(){
         super();
 
-        クピドmaster = Player.values.some(p=> p.ins.getJobLv(Job.クピド) > 0);
-        砲撃手master = Player.values.some(p=> p.ins.getJobLv(Job.砲撃手) > 0);
+        ヤクシャmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ヤクシャ));
+        ショットガンmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ショットガン));
 
         if(!ShopScene.completedInitGoods){
             ShopScene.completedInitGoods = true;
@@ -49,7 +48,7 @@ export class ShopScene extends Scene{
         super.clear();
 
 
-        super.add(Qlace.LIST_MAIN, 
+        super.add(Place.LIST_MAIN, 
             new XLayout()
                 .add(this.list)
                 .add(
@@ -136,9 +135,11 @@ export class ShopScene extends Scene{
                 //         })());
                 // })())
         );
+        
+        super.add(Place.YEN, DrawYen.ins);
 
-        super.add(Qlace.LIST_BTN,
-            new YLayout()
+        super.add(Place.LIST_BTN,
+            new XLayout()
                 .add((()=>{
                     const buy = new Btn("買う",async()=>{
                         if(!this.choosedGoods){return;}
@@ -165,8 +166,8 @@ export class ShopScene extends Scene{
                 }))
         );
         
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         
     }
 
@@ -279,8 +280,8 @@ const initGoods = ()=>{
     createItemGoods(Item.赤い水,        ()=>(Item.赤い水.num+1) * 100,        ()=>Item.赤い水.totalGetCount < 10 && Dungeon.再構成トンネル.dungeonClearCount > 0);
     createItemGoods(Item.サンタクララ薬, ()=>(Item.サンタクララ薬.num+1) * 50, ()=>Item.サンタクララ薬.totalGetCount < 4 && Dungeon.再構成トンネル.dungeonClearCount > 0);
 
-    createItemGoods(Item.夜叉の矢, ()=>(Item.夜叉の矢.num+1) * 500, ()=>クピドmaster);
-    createItemGoods(Item.散弾, ()=>(Item.散弾.num+1) * 500, ()=>砲撃手master);
+    createItemGoods(Item.夜叉の矢, ()=>(Item.夜叉の矢.num+1) * 500, ()=>ヤクシャmaster);
+    createItemGoods(Item.散弾, ()=>(Item.散弾.num+1) * 500, ()=>ショットガンmaster);
     
     createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);
     createItemGoods(Item.マーザン竿, ()=>700, ()=>Dungeon.マーザン森.dungeonClearCount > 10);
@@ -292,9 +293,9 @@ const initGoods = ()=>{
 
 
     createItemGoods(Item.パーティースキル取り扱い許可証, ()=>1000, ()=>Dungeon.黒遺跡.dungeonClearCount > 0 && Item.パーティースキル取り扱い許可証.num === 0);
-    createPartySkill(PartySkill.入手経験値増加,          ()=>1000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
-    createPartySkill(PartySkill.入手ジョブ経験値増加,     ()=>1000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
-    createPartySkill(PartySkill.入手金増加,              ()=>2000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
+    createPartySkill(PartySkill.入手経験値増加,         ()=>1000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
+    createPartySkill(PartySkill.入手BP増加,            ()=>1000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
+    createPartySkill(PartySkill.入手金増加,            ()=>2000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.宝箱チェーン増加, ()=>3000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.宝箱ランク増加,   ()=>4000, ()=>Item.パーティースキル取り扱い許可証.num > 0);
     createPartySkill(PartySkill.伐採チェーン増加, ()=>5000, ()=>PartySkill.宝箱チェーン増加.has);

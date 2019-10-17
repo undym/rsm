@@ -1,6 +1,6 @@
 import { Scene, wait } from "../undym/scene.js";
-import { Place, Util, Qlace } from "../util.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
+import { Place, Util } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { YLayout, ILayout, RatioLayout, VariableLayout, FlowLayout, XLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Unit } from "../unit.js";
@@ -55,7 +55,7 @@ export class ItemScene extends Scene{
         
 
 
-        super.add(Qlace.LIST_MAIN, 
+        super.add(Place.LIST_MAIN, 
             new XLayout()
                 .add(this.list)
                 .add(
@@ -82,93 +82,60 @@ export class ItemScene extends Scene{
                         })())
                 )
         );
-
-        super.add(Qlace.BTN,  (()=>{
-            // const otherBtns:ILayout[] = [
-            //     new Btn("<<", ()=>{
-            //         this.returnScene();
-            //     }),
-            //     (()=>{
-            //         const canUse = new Btn(()=>"使用",async()=>{
-            //             await this.use( this.selectedItem, this.user );
-            //         });
-            //         const cantUse = new Btn(()=>"-",()=>{});
-
-            //         return new VariableLayout(()=>{
-            //             if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
-            //                 return cantUse;
-            //             }
-            //             return canUse;
-            //         });
-            //     })(),
-            // ];
-
-            // const w = 2;
-            // const h = ((otherBtns.length + ItemParentType.values.length + 1) / w)|0;
-            // const l = new FlowLayout(w,h);
-            // for(let type of ItemParentType.values){
-            //     l.add(new Btn(type.toString(), ()=>{
-            //         this.setList(type);
-            //     }));
-            // }
-
-            // for(const o of otherBtns){
-            //     l.addFromLast(o);
-            // }
-            const listH = 1 - Qlace.P_BOX.h;
-            return new RatioLayout()
-                .add(new Rect(0, 0, 1, listH), 
-                    new List()
-                        .init(list=>{
-                            const push = (()=>{
-                                let pushedElm:ListElm;
-                                return (elm:ListElm)=>{
-                                    if(pushedElm !== undefined){
-                                        pushedElm.groundColor = ()=>Color.BLACK;
-                                    }
-                    
-                                    pushedElm = elm;
-                                    pushedElm.groundColor = ()=>Color.D_CYAN;
-                                };
-                            })();
-                            
-                            for(let type of ItemParentType.values){
-                                list.add({
-                                    center:()=>type.toString(),
-                                    push:elm=>{
-                                        push(elm);
-
-                                        this.setList(type);
-                                    },
-                                })
-                            }
-                        })
-                        .fit()
-                )
-                .add(new Rect(0, listH, 1, 1-listH), 
-                    new YLayout()
-                        .add((()=>{
-                            const canUse = new Btn(()=>"使用",async()=>{
-                                await this.use( this.selectedItem, this.user );
-                            });
-                            const cantUse = new Btn(()=>"-",()=>{});
         
-                            return new VariableLayout(()=>{
-                                if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
-                                    return cantUse;
-                                }
-                                return canUse;
-                            });
-                        })())
-                        .add(new Btn("<<", ()=>{
-                            this.returnScene();
-                        }))
-                )
-            ;
-        })());
+        super.add(Place.YEN, DrawYen.ins);
 
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.LIST_TYPE,
+            new List()
+                .init(list=>{
+                    const push = (()=>{
+                        let pushedElm:ListElm;
+                        return (elm:ListElm)=>{
+                            if(pushedElm !== undefined){
+                                pushedElm.groundColor = ()=>Color.BLACK;
+                            }
+            
+                            pushedElm = elm;
+                            pushedElm.groundColor = ()=>Color.D_CYAN;
+                        };
+                    })();
+                    
+                    for(let type of ItemParentType.values){
+                        list.add({
+                            center:()=>type.toString(),
+                            push:elm=>{
+                                push(elm);
+
+                                this.setList(type);
+                            },
+                        })
+                    }
+                })
+                .fit()
+        );
+
+        super.add(Place.LIST_BTN,
+            new XLayout()
+                .add((()=>{
+                    const canUse = new Btn(()=>"使用",async()=>{
+                        await this.use( this.selectedItem, this.user );
+                    });
+                    const cantUse = new Btn(()=>"-",()=>{});
+
+                    return new VariableLayout(()=>{
+                        if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
+                            return cantUse;
+                        }
+                        return canUse;
+                    });
+                })())
+                .add(new Btn("<<", ()=>{
+                    this.returnScene();
+                }))
+        );
+
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
             
         super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
             Graphics.fillRect(this.user.bounds, new Color(0,1,1,0.2));

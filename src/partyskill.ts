@@ -4,7 +4,7 @@ import { ItemDrop } from "./item.js";
 
 export class PartySkillWin{
     exp     = {base:0, mul:1};
-    jobExp  = {base:0, mul:1};
+    bp      = {base:0, mul:1};
     yen     = {base:0, mul:1};
 }
 
@@ -67,10 +67,10 @@ export namespace PartySkill{
             arg.exp.mul += 1;
         }
     }
-    export const                         入手ジョブ経験値増加:PartySkill = new class extends PartySkill{
-        constructor(){super({uniqueName:"入手ジョブ経験値増加", toString:"入手ジョブ経験値+1"});}
+    export const                         入手BP増加:PartySkill = new class extends PartySkill{
+        constructor(){super({uniqueName:"入手BP増加", toString:"入手BP+1"});}
         win(arg:PartySkillWin){
-            arg.jobExp.base += 1;
+            arg.bp.base += 1;
         }
     }
     export const                         入手金増加:PartySkill = new class extends PartySkill{

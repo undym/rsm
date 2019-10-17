@@ -2,8 +2,8 @@ import { Scene } from "../undym/scene.js";
 import { ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { Util, SceneType, Qlace } from "../util.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData } from "./sceneutil.js";
+import { Place, Util, SceneType } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen } from "./sceneutil.js";
 import { Img } from "../graphics/graphics.js";
 export default class DungeonScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new DungeonScene()); }
@@ -13,11 +13,11 @@ export default class DungeonScene extends Scene {
     }
     init() {
         super.clear();
-        // super.add(Place.TOP, DrawPlayInfo.ins);
-        super.add(Qlace.MAIN, DrawEvent.ins);
-        super.add(Qlace.MSG, Util.msg);
-        super.add(Qlace.DUNGEON_DATA, DrawDungeonData.ins);
-        super.add(Qlace.BTN, (() => {
+        super.add(Place.MAIN, DrawEvent.ins);
+        super.add(Place.MSG, Util.msg);
+        super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN, (() => {
             let dungeonEventBak;
             let btnLayout = ILayout.empty;
             return new VariableLayout(() => {
@@ -28,8 +28,8 @@ export default class DungeonScene extends Scene {
                 return btnLayout;
             });
         })());
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         SceneType.DUNGEON.set();
     }
 }
@@ -43,8 +43,8 @@ class DrawEvent extends InnerLayout {
         super.add(ILayout.create({ draw: (bounds) => {
                 if (evBak != DungeonEvent.now) {
                     evBak = DungeonEvent.now;
-                    img = evBak.getImg();
-                    if (evBak.isZoomImg()) {
+                    img = DungeonEvent.now.getImg();
+                    if (DungeonEvent.now.isZoomImg()) {
                         zoomCount = 0;
                     }
                 }

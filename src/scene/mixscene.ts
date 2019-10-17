@@ -2,8 +2,8 @@ import { Scene } from "../undym/scene.js";
 import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout, Labels, Layout, YLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Rect, Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
-import { Place, Qlace } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
+import { Place } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
@@ -87,7 +87,7 @@ export class MixScene extends Scene{
 
         super.clear();
         
-        super.add(Qlace.LIST_MAIN, 
+        super.add(Place.LIST_MAIN, 
             new XLayout()
                 .add(this.list)
                 .add(
@@ -140,10 +140,12 @@ export class MixScene extends Scene{
                         })())
                 )
         );
+        
+        super.add(Place.YEN, DrawYen.ins);
 
-        super.add(Qlace.LIST_TYPE, typeList);
-        super.add(Qlace.LIST_BTN,
-            new YLayout()
+        super.add(Place.LIST_TYPE, typeList);
+        super.add(Place.LIST_BTN,
+            new XLayout()
                 .add((()=>{
                     const canMix = ()=>{
                         if(!this.choosedMix){return false;}
@@ -170,8 +172,8 @@ export class MixScene extends Scene{
                 }))
         );
         
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         
         
         

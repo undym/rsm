@@ -143,8 +143,8 @@ export abstract class Unit{
     get center(){return this.bounds.center;}
 
     tecs:Tec[] = [];
-    /**戦闘時の技ページ。 */
-    tecPage = 0;
+    /**戦闘時の。 */
+    tecListScroll = 0;
     // protected prmSets = new Map<Prm,PrmSet>();
     protected prmSets:PrmSet[] = [];
     protected equips:Eq[] = [];
@@ -473,7 +473,9 @@ export class PUnit extends Unit{
                 this.growPrm( Prm.MAX_TP, 1 );
             }
 
-            this.bp += 1 + this.prm(Prm.LV).base / 100;
+            const addBP = (1 + this.prm(Prm.LV).base / 5)|0;
+            this.bp += addBP;
+            Util.msg.set(`BP+${addBP}`, Color.GREEN.bright);
         }
     }
 
@@ -487,54 +489,55 @@ export class PUnit extends Unit{
     //
     //
     //---------------------------------------------------------
-    private getJobLvSet(job:Job):{lv:number, exp:number}{return this.jobLvs.get(job) as {lv:number, exp:number};}
-    setJobExp(job:Job, exp:number){this.getJobLvSet(job).exp = exp;}
-    getJobExp(job:Job):number     {return this.getJobLvSet(job).exp;}
-    async addJobExp(value:number){
-        if(this.isMasteredJob(this.job)){return;}
+    // private getJobLvSet(job:Job):{lv:number, exp:number}{return this.jobLvs.get(job) as {lv:number, exp:number};}
+    // setJobExp(job:Job, exp:number){this.getJobLvSet(job).exp = exp;}
+    // getJobExp(job:Job):number     {return this.getJobLvSet(job).exp;}
+    // async addJobExp(value:number){
+    //     if(this.isMasteredJob(this.job)){return;}
 
-        const set = this.getJobLvSet(this.job);
+    //     const set = this.getJobLvSet(this.job);
 
-        set.exp += value;
-        if(set.exp >= this.job.lvupExp){
-            set.lv += 1;
-            set.exp = 0;
+    //     set.exp += value;
+    //     if(set.exp >= this.job.lvupExp){
+    //         set.lv += 1;
+    //         set.exp = 0;
 
-            Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
+    //         Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
             
-            for(let grow of this.job.growthPrms){
-                this.growPrm( grow.prm, grow.value );
-            }
+    //         for(let grow of this.job.growthPrms){
+    //             this.growPrm( grow.prm, grow.value );
+    //         }
 
-            const learnings:Tec[] = this.job.learningTecs;
-            const ratio = set.lv / this.job.maxLv;
-            for(let i = 0; i < learnings.length; i++){
-                if(i+1 > ((learnings.length * ratio)|0)){break;}
-                if(this.isMasteredTec(learnings[i])){continue;}
+    //         const learnings:Tec[] = this.job.learningTecs;
+    //         const ratio = set.lv / this.job.maxLv;
+    //         for(let i = 0; i < learnings.length; i++){
+    //             if(i+1 > ((learnings.length * ratio)|0)){break;}
+    //             if(learnings[i] === Tec.empty){continue;}
+    //             if(this.isMasteredTec(learnings[i])){continue;}
 
-                this.setMasteredTec(learnings[i], true);
-                Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright); await wait();
+    //             this.setMasteredTec(learnings[i], true);
+    //             Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright); await wait();
 
-                //技スロットに空きがあれば覚えた技をセット
-                for(let ei = 0; ei < this.tecs.length; ei++){
-                    if(this.tecs[ei] === Tec.empty){
-                        this.tecs[ei] = learnings[i];
-                        break;
-                    }
-                }
-            }
+    //             //技スロットに空きがあれば覚えた技をセット
+    //             for(let ei = 0; ei < this.tecs.length; ei++){
+    //                 if(this.tecs[ei] === Tec.empty){
+    //                     this.tecs[ei] = learnings[i];
+    //                     break;
+    //                 }
+    //             }
+    //         }
 
-            if(set.lv >= this.job.maxLv){
-                Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
-                PlayData.masteredAnyJob = true;
-            }
-        }
-    }
+    //         if(set.lv >= this.job.maxLv){
+    //             Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
+    //             PlayData.masteredAnyJob = true;
+    //         }
+    //     }
+    // }
 
-    setJobLv(job:Job, lv:number){this.getJobLvSet(job).lv = lv;}
-    getJobLv(job:Job):number    {return this.getJobLvSet(job).lv;}
+    // setJobLv(job:Job, lv:number){this.getJobLvSet(job).lv = lv;}
+    // getJobLv(job:Job):number    {return this.getJobLvSet(job).lv;}
 
-    isMasteredJob(job:Job):boolean{return this.getJobLvSet(job).lv >= job.maxLv;}
+    // isMasteredJob(job:Job):boolean{return this.getJobLvSet(job).lv >= job.maxLv;}
     //---------------------------------------------------------
     //
     //

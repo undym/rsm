@@ -1,13 +1,13 @@
 
 import { Scene } from "../undym/scene.js";
 import { RatioLayout, XLayout, YLayout, ILayout, VariableLayout, Label, FlowLayout } from "../undym/layout.js";
-import { Place, Util, PlayData, Debug, SceneType, Qlace } from "../util.js";
+import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Rect, Color, Point } from "../undym/type.js";
 import DungeonScene from "./dungeonscene.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo } from "./sceneutil.js";
+import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
 import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
@@ -15,7 +15,6 @@ import { Input } from "../undym/input.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics, Texture } from "../graphics/graphics.js";
 import { Item } from "../item.js";
-import { JobChangeScene } from "./jobchangescene.js";
 import { SetTecScene } from "./settecscene.js";
 import { MixScene } from "./mixscene.js";
 import { EqScene } from "./eqscene.js";
@@ -27,8 +26,8 @@ import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
 
 
-let choosedDungeon:Dungeon;
-let visibleDungeonEnterBtn = false;
+// let choosedDungeon:Dungeon;
+// let visibleDungeonEnterBtn = false;
 
 
 export class TownScene extends Scene{
@@ -43,17 +42,14 @@ export class TownScene extends Scene{
     init(){
         super.clear();
 
-
         
-        // super.add(Place.TOP, DrawPlayInfo.ins);
-        
-        super.add(Qlace.MAIN, Util.msg);
+        super.add(Place.MAIN, Util.msg);
 
-
-        super.add(Qlace.BTN,new VariableLayout(()=>TownBtn.ins));
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN,new VariableLayout(()=>TownBtn.ins));
         
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MSG, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MSG, DrawUnitDetail.ins);
         //----------------------------------------------------
 
         SceneType.TOWN.set();
@@ -85,14 +81,20 @@ class TownBtn{
     private static _ins:ILayout;
     static get ins(){return this._ins;}
 
-    private static dungeonPage = 0;
+    // private static dungeonPage = 0;
 
     static reset(){
-        const l = new List(6);
+        const l = new List(8);
             l.add({
                 center:()=>"ダンジョン",
                 push:elm=>{
                     this.setDungeonList();
+                },
+            });
+            l.add({
+                center:()=>"技のセット",
+                push:elm=>{
+                    Scene.load(new SetTecScene());
                 },
             });
             l.add({
@@ -140,20 +142,14 @@ class TownBtn{
                     },
                 });
             }
-            if(PlayData.masteredAnyJob || Debug.debugMode){
-                l.add({
-                    center:()=>"職業",
-                    push:elm=>{
-                        Scene.load(new JobChangeScene());
-                    },
-                });
-                l.add({
-                    center:()=>"技のセット",
-                    push:elm=>{
-                        Scene.load(new SetTecScene());
-                    },
-                });
-            }
+            // if(PlayData.masteredAnyJob || Debug.debugMode){
+            //     l.add({
+            //         center:()=>"職業",
+            //         push:elm=>{
+            //             Scene.load(new JobChangeScene());
+            //         },
+            //     });
+            // }
             if(Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode){
                 l.add({
                     center:()=>"パーティースキル",
@@ -170,31 +166,7 @@ class TownBtn{
             });
 
             
-            // l.add(new Btn("アイテム", ()=>{
-            //     Scene.load( ItemScene.ins({
-            //         selectUser:true,
-            //         user:Unit.players[0],
-            //         use:async(item,user)=>{
-            //             if(item.targetings & Targeting.SELECT){
-            //                 await item.use( user, [user] );
-            //             }else{
-            //                 let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
-                            
-            //                 if(targets.length > 0){
-            //                     await item.use( user, targets );
-            //                 }
-            //             }
-            //         },
-            //         returnScene:()=>{
-            //             Scene.load( TownScene.ins );
-            //         }, 
-            //     }) );
-            // }));
-            // l.add(new Btn("OPTION", ()=>{
-            //     this._ins = createOptionBtn();
-            // }));
         this._ins = l;
-        visibleDungeonEnterBtn = false;
     }
 
     private static setDungeonList(){

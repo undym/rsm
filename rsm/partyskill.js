@@ -2,7 +2,7 @@ import { ItemDrop } from "./item.js";
 export class PartySkillWin {
     constructor() {
         this.exp = { base: 0, mul: 1 };
-        this.jobExp = { base: 0, mul: 1 };
+        this.bp = { base: 0, mul: 1 };
         this.yen = { base: 0, mul: 1 };
     }
 }
@@ -52,10 +52,10 @@ PartySkill.skills = [];
             arg.exp.mul += 1;
         }
     };
-    PartySkill.入手ジョブ経験値増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "入手ジョブ経験値増加", toString: "入手ジョブ経験値+1" }); }
+    PartySkill.入手BP増加 = new class extends PartySkill {
+        constructor() { super({ uniqueName: "入手BP増加", toString: "入手BP+1" }); }
         win(arg) {
-            arg.jobExp.base += 1;
+            arg.bp.base += 1;
         }
     };
     PartySkill.入手金増加 = new class extends PartySkill {

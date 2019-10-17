@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { Util, Debug, PlayData, Qlace } from "../util.js";
+import { Place, Util, Debug, PlayData } from "../util.js";
 import { Rect, Color } from "../undym/type.js";
 import { ILayout, RatioLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
@@ -28,7 +28,7 @@ export const createOptionBtn = () => {
     // const h = 3;
     // const l = new FlowLayout(w,h);
     setOptionBtn();
-    const listH = 1 - Qlace.P_BOX.h;
+    const listH = 1 - Place.P_BOX.h;
     return new RatioLayout()
         .add(new Rect(0, 0, 1, listH), list)
         .add(new Rect(0, listH, 1, 1 - listH), new Btn("<<", () => {

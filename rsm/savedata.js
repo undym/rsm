@@ -39,7 +39,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 15, 0);
+Version.NOW = new Version(0, 16, 0);
 let saveDataVersion;
 export class SaveData {
     static exists() {
@@ -222,14 +222,6 @@ const stragePlayer = (save, p) => {
     for (const tec of ActiveTec.values) {
         ioBool(save, `${name}_masteredActiveTec_${tec.uniqueName}`, u.isMasteredTec(tec), load => {
             u.setMasteredTec(tec, load);
-        });
-    }
-    for (const job of Job.values) {
-        ioInt(save, `${name}_${job.uniqueName}_exp`, u.getJobExp(job), load => {
-            u.setJobExp(job, load);
-        });
-        ioInt(save, `${name}_${job.uniqueName}_lv`, u.getJobLv(job), load => {
-            u.setJobLv(job, load);
         });
     }
     { //condition

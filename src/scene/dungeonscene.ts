@@ -2,8 +2,8 @@ import { Scene, cwait } from "../undym/scene.js";
 import { RatioLayout, YLayout, ILayout, XLayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect, Color } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { Place, Util, SceneType, Qlace } from "../util.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawPlayInfo } from "./sceneutil.js";
+import { Place, Util, SceneType } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { Unit } from "../unit.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { TownScene } from "./townscene.js";
@@ -25,15 +25,13 @@ export default class DungeonScene extends Scene{
     init(){
         super.clear();
 
-        // super.add(Place.TOP, DrawPlayInfo.ins);
-
-
         
-        super.add(Qlace.MAIN, DrawEvent.ins);
-        super.add(Qlace.MSG, Util.msg);
-        super.add(Qlace.DUNGEON_DATA, DrawDungeonData.ins);
+        super.add(Place.MAIN, DrawEvent.ins);
+        super.add(Place.MSG, Util.msg);
+        super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
 
-        super.add(Qlace.BTN,(()=>{
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN,(()=>{
             let dungeonEventBak:DungeonEvent;
             let btnLayout:ILayout = ILayout.empty;
 
@@ -46,8 +44,8 @@ export default class DungeonScene extends Scene{
             })
         })());
         
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
 
         SceneType.DUNGEON.set();
     }
@@ -70,8 +68,8 @@ class DrawEvent extends InnerLayout{
             if(evBak != DungeonEvent.now){
                 evBak = DungeonEvent.now;
 
-                img = evBak.getImg();
-                if(evBak.isZoomImg()){
+                img = DungeonEvent.now.getImg();
+                if(DungeonEvent.now.isZoomImg()){
                     zoomCount = 0;
                 }
             }

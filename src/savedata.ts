@@ -14,7 +14,7 @@ import { PartySkill } from "./partyskill.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,15,0);
+    static readonly NOW = new Version(0,16,0);
 
     private values:number[];
 
@@ -252,16 +252,6 @@ const stragePlayer = (save:boolean, p:Player)=>{
             u.setMasteredTec(tec, load);
         });
     }
-
-    for(const job of Job.values){
-        ioInt(save, `${name}_${job.uniqueName}_exp`, u.getJobExp(job), load=>{
-            u.setJobExp(job, load);
-        })
-        ioInt(save, `${name}_${job.uniqueName}_lv`, u.getJobLv(job), load=>{
-            u.setJobLv(job, load);
-        })
-    }
-
     {//condition
         let savedConditions:{condition:Condition, value:number}[] = [];
         for(const type of ConditionType.values){

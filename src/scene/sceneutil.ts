@@ -35,6 +35,17 @@ export class DrawPlayInfo extends InnerLayout{
     }
 }
 
+export class DrawYen extends InnerLayout{
+    private static _ins:DrawYen;
+    static get ins(){return this._ins ? this._ins
+        : (this._ins = new DrawYen());}
+    private constructor(){
+        super();
+
+        super.add(new Label(Font.def, ()=>`${PlayData.yen|0}円`, ()=>Color.YELLOW).setBase(Font.RIGHT));
+    }
+}
+
 
 export class DrawDungeonData extends InnerLayout{
     private static _ins:DrawDungeonData;
@@ -82,10 +93,10 @@ export class DrawSTBox extends InnerLayout{
                         new Label(
                             font,
                             ()=>`Lv${ getUnit().prm(Prm.LV).total|0 }`,
-                            ()=>{
-                                const u = getUnit();
-                                return (u instanceof PUnit && u.isMasteredJob( u.job )) ? Color.YELLOW : Color.WHITE;
-                            }
+                            // ()=>{
+                            //     const u = getUnit();
+                            //     return (u instanceof PUnit && u.isMasteredJob( u.job )) ? Color.YELLOW : Color.WHITE;
+                            // }
                         ).setBase(Font.RIGHT)
                     )
                 )
@@ -252,12 +263,12 @@ export class DrawUnitDetail extends InnerLayout{
                             }))
                             .add(new Label(font, ()=>{
                                 let u = getUnit();
-                                if(u instanceof PUnit){
-                                    return u.isMasteredJob( u.job )
-                                        ? `${getUnit().job}:★`
-                                        : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
-                                        ;
-                                }
+                                // if(u instanceof PUnit){
+                                //     return u.isMasteredJob( u.job )
+                                //         ? `${getUnit().job}:★`
+                                //         : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
+                                //         ;
+                                // }
                                 return `${getUnit().job}`;
                             }))
                             .add(new XLayout()

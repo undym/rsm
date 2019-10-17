@@ -1,6 +1,6 @@
 import { Scene, wait, cwait } from "../undym/scene.js";
-import { Place, Util, PlayData, SceneType, Qlace } from "../util.js";
-import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawPlayInfo } from "./sceneutil.js";
+import { Place, Util, PlayData, SceneType } from "../util.js";
+import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { VariableLayout, ILayout, Layout, YLayout, RatioLayout, FlowLayout, Labels, XLayout, Label } from "../undym/layout.js";
 import { Rect, Color, Point } from "../undym/type.js";
 import { Unit, PUnit, Prm, EUnit } from "../unit.js";
@@ -52,7 +52,7 @@ export class BattleScene extends Scene{
             }
             return (bounds)=>{};
         })();
-        super.add(Qlace.MAIN, ILayout.create({draw:(bounds)=>{
+        super.add(Place.MAIN, ILayout.create({draw:(bounds)=>{
             Graphics.clip(bounds, ()=>{
                 drawBG(bounds);
             });
@@ -64,7 +64,7 @@ export class BattleScene extends Scene{
         // }));
 
         
-        super.add(Qlace.DUNGEON_DATA,(()=>{
+        super.add(Place.DUNGEON_DATA,(()=>{
             const info = new Labels(Font.def)
                             .add(()=>`[${this.tecInfo.tec}]`)
                             .addLayout(
@@ -121,13 +121,14 @@ export class BattleScene extends Scene{
             });
         })());
 
-        super.add(Qlace.MSG, Util.msg);
+        super.add(Place.MSG, Util.msg);
 
-        super.add(Qlace.BTN, btnSpace);
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN, btnSpace);
 
-        super.add(Qlace.E_BOX, DrawSTBoxes.enemies);
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.E_BOX, DrawSTBoxes.enemies);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
 
         super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
             if(!Battle.getPhaseUnit().exists){return;}
@@ -217,125 +218,97 @@ export class BattleScene extends Scene{
     
 
     private async setPlayerPhase(attacker:Unit){
-        const createTecBtn = (tec:Tec)=>{
-            let btn:Btn;
+        const list = new List();
+
+        attacker.tecs.forEach((tec,index)=>{
             if(tec instanceof ActiveTec){
-                btn = new Btn(tec.toString(), async()=>{
-                    this.tecInfo.tec = Tec.empty;
-                    
-                    if(tec.targetings & Targeting.SELECT){
-        
-                        Util.msg.set(`[${tec}]のターゲットを選択してください`);
+                list.add({
+                    center:()=>tec.toString(),
+                    push:async elm=>{
+                        attacker.tecListScroll = index;
+
+                        this.tecInfo.tec = Tec.empty;
                         
-                        
-                        await this.setChooseTargetBtn(attacker, async(targets)=>{
-                            if(
-                                   !targets[0].dead 
-                                || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
-                            ){
-                                Util.msg.set(`＞${targets[0].name}を選択`);
-                                await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
-                                await this.phaseEnd();
-                            }
-                        });
-
-                        await wait(1);
-        
-                        return;
-                    }else{
-                        let targets:Unit[] = [];
-                        targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
-                        await tec.use(attacker, targets);
-                        await this.phaseEnd();
-                    }
-                });
-
-                if(!tec.checkCost(attacker)){
-                    btn.groundColor = ()=>Color.GRAY;
-                    btn.stringColor = ()=>Color.D_RED;
-                }
-            }else if(tec instanceof PassiveTec){
-                btn = new Btn(`-${tec}-`, ()=>{
-
-                });
-                btn.groundColor = ()=>Color.D_GRAY;
-                btn.stringColor = ()=>Color.L_GRAY;
-            }else{
-                return ILayout.empty;
-            }
-            return new Layout()
-                    .add(btn)
-                    .add(ILayout.create({ctrl:(bounds)=>{
-                        if(bounds.contains(Input.point) && Input.holding >= 4){
-                            this.tecInfo.tec = tec;
-                            this.tecInfo.user = attacker;
-                        }
-                    }}))
-                    ;
-        };
+                        if(tec.targetings & Targeting.SELECT){
+            
+                            Util.msg.set(`[${tec}]のターゲットを選択してください`);
+                            
+                            
+                            await this.setChooseTargetBtn(attacker, async(targets)=>{
+                                if(
+                                       !targets[0].dead 
+                                    || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
+                                ){
+                                    Util.msg.set(`＞${targets[0].name}を選択`);
+                                    await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
+                                    await this.phaseEnd();
+                                }
+                            });
     
+                            await wait(1);
+            
+                            return;
+                        }else{
+                            let targets:Unit[] = [];
+                            targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
+                            await tec.use(attacker, targets);
+                            await this.phaseEnd();
+                        }
+                    },
+                    hold:elm=>{
+                        this.tecInfo.tec = tec;
+                        this.tecInfo.user = attacker;
+                    },
+                    groundColor:()=>tec.checkCost(attacker) ? Color.BLACK : Color.GRAY,
+                    stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_GRAY,
+                });
+            }else if(tec instanceof PassiveTec){
+                list.add({
+                    center:()=>tec.toString(),
+                    hold:elm=>{
+                        this.tecInfo.tec = tec;
+                        this.tecInfo.user = attacker;
+                    },
+                    groundColor:()=>Color.D_GRAY,
+                    stringColor:()=>Color.L_GRAY,
+                });
+            }
+        });
 
-        const w = 4;
-        const h = 3;
-        const l = new FlowLayout(w,h);
-        const drawOnePage = w * (h-1);
-
-        for(let i = attacker.tecPage * drawOnePage; i < (attacker.tecPage+1) * drawOnePage; i++){
-            if(i >= attacker.tecs.length){break;}
-
-            l.add( createTecBtn(attacker.tecs[i]) );
-        }
-
-        l.addFromLast(new Btn("アイテム", async()=>{
-            Scene.load( ItemScene.ins({
-                user:attacker,
-                selectUser:false,
-                use:async(item, user)=>{
-                    Scene.set(this);
-
-                    if(item.targetings & Targeting.SELECT){
-                        Util.msg.set(`[${item}]のターゲットを選択してください`);
-
-                        this.setChooseTargetBtn(attacker, async(targets)=>{
+        list.add({
+            center:()=>"アイテム",
+            push:async elm=>{
+                Scene.load( ItemScene.ins({
+                    user:attacker,
+                    selectUser:false,
+                    use:async(item, user)=>{
+                        Scene.set(this);
+    
+                        if(item.targetings & Targeting.SELECT){
+                            Util.msg.set(`[${item}]のターゲットを選択してください`);
+    
+                            this.setChooseTargetBtn(attacker, async(targets)=>{
+                                await item.use( user, targets );
+                                await this.phaseEnd();
+                            });
+                        }else{
+                            let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
+                            
                             await item.use( user, targets );
                             await this.phaseEnd();
-                        });
-                    }else{
-                        let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
-                        
-                        await item.use( user, targets );
-                        await this.phaseEnd();
-                    }
-                },
-                returnScene:()=>{
-                    Scene.set( BattleScene.ins );
-                },
-            }))
-        }));
-
-        l.addFromLast(new Btn("何もしない", async()=>{
-            await Tec.何もしない.use( attacker, [attacker] );
-            await this.phaseEnd();
-        }));
-
-        const tecPageLim = ((attacker.tecs.length - 1) / drawOnePage)|0;
-        const newerTecPage = new Btn(">", async()=>{
-            attacker.tecPage++;
-            await this.setPlayerPhase( attacker );
+                        }
+                    },
+                    returnScene:()=>{
+                        Scene.set( BattleScene.ins );
+                    },
+                }));
+            },
         });
-        l.addFromLast(new VariableLayout(()=>{
-            return attacker.tecPage < tecPageLim ? newerTecPage : ILayout.empty;
-        }));
-        const olderTecPage = new Btn("<", async()=>{
-            attacker.tecPage--;
-            await this.setPlayerPhase( attacker );
-        });
-        l.addFromLast(new VariableLayout(()=>{
-            return attacker.tecPage > 0 ? olderTecPage : ILayout.empty;
-        }));
+
+        list.setScroll( attacker.tecListScroll, "center" );
 
         btnSpace.clear();
-        btnSpace.add(l);
+        btnSpace.add(list);
     }
 
 
@@ -384,7 +357,7 @@ const win = async()=>{
         .filter(e=> e.exists)
         .forEach(e=>{
             partySkill.exp.base += e.prm(Prm.EXP).base;
-            partySkill.jobExp.base += 1;
+            partySkill.bp.base += 1;
             partySkill.yen.base += e.yen;
         });
 
@@ -398,9 +371,9 @@ const win = async()=>{
         await p.addExp( exp );
     }
 
-    const jobExp = (partySkill.jobExp.base * partySkill.jobExp.mul)|0;
+    const bp = (partySkill.bp.base * partySkill.bp.mul)|0;
     for(let p of Unit.players.filter(p=> p.exists)){
-        await p.addJobExp( jobExp );
+        p.bp += bp;
     }
 
     const yen = (partySkill.yen.base * partySkill.yen.mul)|0;

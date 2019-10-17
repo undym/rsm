@@ -7,11 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout, Labels, Layout, YLayout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Color } from "../undym/type.js";
-import { DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
-import { Qlace } from "../util.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
+import { Place } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
@@ -83,7 +83,7 @@ export class MixScene extends Scene {
         })
             .fit();
         super.clear();
-        super.add(Qlace.LIST_MAIN, new XLayout()
+        super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)
             .add(new Layout()
             .add(ILayout.create({ draw: (bounds) => {
@@ -135,8 +135,9 @@ export class MixScene extends Scene {
                 return this.choosed ? info : ILayout.empty;
             });
         })())));
-        super.add(Qlace.LIST_TYPE, typeList);
-        super.add(Qlace.LIST_BTN, new YLayout()
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_TYPE, typeList);
+        super.add(Place.LIST_BTN, new XLayout()
             .add((() => {
             const canMix = () => {
                 if (!this.choosedMix) {
@@ -162,8 +163,8 @@ export class MixScene extends Scene {
             }
             Scene.load(TownScene.ins);
         })));
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
     }
     setList(name, values) {
         this.list.clear();

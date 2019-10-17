@@ -45,8 +45,6 @@ export abstract class Player{
             res.setMasteredTec(tec, true);
         }
 
-        res.setJobLv( res.job, 1 );
-
         return res;
     }
     /**プレイヤーの加入処理。 */
@@ -74,7 +72,7 @@ export namespace Player{
     export const             スメラギ = new class extends Player{
         constructor(){super("スメラギ");}
         createInner(p:PUnit){
-            p.job = Job.しんまい;
+            p.job = Job.スメラギ;
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 3;
             p.prm(Prm.MAX_TP).base = 5;
@@ -94,7 +92,7 @@ export namespace Player{
     export const             よしこ = new class extends Player{
         constructor(){super("よしこ");}
         createInner(p:PUnit){
-            p.job = Job.魔法使い;
+            p.job = Job.よしこ;
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 10;
             p.prm(Prm.MAX_TP).base = 2;

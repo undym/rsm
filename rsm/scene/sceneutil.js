@@ -31,6 +31,16 @@ export class DrawPlayInfo extends InnerLayout {
             .add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase(Font.RIGHT)));
     }
 }
+export class DrawYen extends InnerLayout {
+    static get ins() {
+        return this._ins ? this._ins
+            : (this._ins = new DrawYen());
+    }
+    constructor() {
+        super();
+        super.add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase(Font.RIGHT));
+    }
+}
 export class DrawDungeonData extends InnerLayout {
     static get ins() { return this._ins ? this._ins : (this._ins = new DrawDungeonData()); }
     constructor() {
@@ -56,10 +66,7 @@ export class DrawSTBox extends InnerLayout {
             .setOutsidePixelMargin(1, 1, 1, 1)
             .add(new XLayout()
             .add(new Label(font, () => getUnit().name))
-            .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`, () => {
-            const u = getUnit();
-            return (u instanceof PUnit && u.isMasteredJob(u.job)) ? Color.YELLOW : Color.WHITE;
-        }).setBase(Font.RIGHT)))
+            .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`).setBase(Font.RIGHT)))
             .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font))
             .add(new XLayout()
             .setPixelMargin(4)
@@ -164,11 +171,12 @@ export class DrawUnitDetail extends InnerLayout {
         }))
             .add(new Label(font, () => {
             let u = getUnit();
-            if (u instanceof PUnit) {
-                return u.isMasteredJob(u.job)
-                    ? `${getUnit().job}:★`
-                    : `${getUnit().job}:Lv${u.getJobLv(u.job)}`;
-            }
+            // if(u instanceof PUnit){
+            //     return u.isMasteredJob( u.job )
+            //         ? `${getUnit().job}:★`
+            //         : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
+            //         ;
+            // }
             return `${getUnit().job}`;
         }))
             .add(new XLayout()

@@ -28,7 +28,6 @@ export class Player {
         for (let tec of res.tecs) {
             res.setMasteredTec(tec, true);
         }
-        res.setJobLv(res.job, 1);
         return res;
     }
     /**プレイヤーの加入処理。 */
@@ -54,7 +53,7 @@ Player._valueOf = new Map();
     Player.スメラギ = new class extends Player {
         constructor() { super("スメラギ"); }
         createInner(p) {
-            p.job = Job.しんまい;
+            p.job = Job.スメラギ;
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 3;
             p.prm(Prm.MAX_TP).base = 5;
@@ -72,7 +71,7 @@ Player._valueOf = new Map();
     Player.よしこ = new class extends Player {
         constructor() { super("よしこ"); }
         createInner(p) {
-            p.job = Job.魔法使い;
+            p.job = Job.よしこ;
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 10;
             p.prm(Prm.MAX_TP).base = 2;

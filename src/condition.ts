@@ -134,9 +134,21 @@ export namespace Condition{
     export const             盾:Condition = new class extends Condition{
         constructor(){super("盾", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type === TecType.格闘){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)){
                 
                 Util.msg.set("＞盾"); await wait();
+                dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
+
+                target.addConditionValue(this, -1);
+            }
+        }
+    };
+    export const             雲:Condition = new class extends Condition{
+        constructor(){super("雲", ConditionType.GOOD_LV2);}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓術)){
+                
+                Util.msg.set("＞雲"); await wait();
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
 
                 target.addConditionValue(this, -1);

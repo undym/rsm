@@ -1,5 +1,5 @@
 import { Scene } from "../undym/scene.js";
-import { Place, Util, Debug, PlayData, Qlace } from "../util.js";
+import { Place, Util, Debug, PlayData } from "../util.js";
 import { Rect, Color, Size } from "../undym/type.js";
 import { YLayout, ILayout, Layout, Label, FlowLayout, RatioLayout, VariableLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
@@ -25,7 +25,7 @@ export const createOptionBtn = ()=>{
 
     setOptionBtn();
 
-    const listH = 1 - Qlace.P_BOX.h;
+    const listH = 1 - Place.P_BOX.h;
     return new RatioLayout()
         .add(new Rect(0, 0, 1, listH), list)
         .add(new Rect(0, listH, 1, 1-listH), new Btn("<<", ()=>{

@@ -7,16 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene, wait } from "../undym/scene.js";
-import { Util, PlayData, SceneType, Qlace } from "../util.js";
-import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail } from "./sceneutil.js";
-import { VariableLayout, ILayout, Layout, FlowLayout, Labels, XLayout, Label } from "../undym/layout.js";
+import { Place, Util, PlayData, SceneType } from "../util.js";
+import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawYen } from "./sceneutil.js";
+import { VariableLayout, ILayout, Layout, Labels, XLayout, Label } from "../undym/layout.js";
 import { Rect, Color } from "../undym/type.js";
 import { Unit, PUnit, Prm } from "../unit.js";
 import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec } from "../tec.js";
 import { Input } from "../undym/input.js";
-import { Btn } from "../widget/btn.js";
 import { Targeting } from "../force.js";
+import { List } from "../widget/list.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
 import { PartySkillWin, PartySkill } from "../partyskill.js";
@@ -42,7 +42,7 @@ export class BattleScene extends Scene {
             }
             return (bounds) => { };
         })();
-        super.add(Qlace.MAIN, ILayout.create({ draw: (bounds) => {
+        super.add(Place.MAIN, ILayout.create({ draw: (bounds) => {
                 Graphics.clip(bounds, () => {
                     drawBG(bounds);
                 });
@@ -51,7 +51,7 @@ export class BattleScene extends Scene {
         //     if(this.tecInfo.tec === Tec.empty){return DrawDungeonData.ins;}
         //     return ILayout.empty;
         // }));
-        super.add(Qlace.DUNGEON_DATA, (() => {
+        super.add(Place.DUNGEON_DATA, (() => {
             const info = new Labels(Font.def)
                 .add(() => `[${this.tecInfo.tec}]`)
                 .addLayout(new XLayout()
@@ -117,11 +117,12 @@ export class BattleScene extends Scene {
                 return this.tecInfo.tec !== Tec.empty ? info : DrawDungeonData.ins;
             });
         })());
-        super.add(Qlace.MSG, Util.msg);
-        super.add(Qlace.BTN, btnSpace);
-        super.add(Qlace.E_BOX, DrawSTBoxes.enemies);
-        super.add(Qlace.P_BOX, DrawSTBoxes.players);
-        super.add(Qlace.MAIN, DrawUnitDetail.ins);
+        super.add(Place.MSG, Util.msg);
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN, btnSpace);
+        super.add(Place.E_BOX, DrawSTBoxes.enemies);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
                 if (!Battle.getPhaseUnit().exists) {
                     return;
@@ -198,109 +199,84 @@ export class BattleScene extends Scene {
     }
     setPlayerPhase(attacker) {
         return __awaiter(this, void 0, void 0, function* () {
-            const createTecBtn = (tec) => {
-                let btn;
+            const list = new List();
+            attacker.tecs.forEach((tec, index) => {
                 if (tec instanceof ActiveTec) {
-                    btn = new Btn(tec.toString(), () => __awaiter(this, void 0, void 0, function* () {
-                        this.tecInfo.tec = Tec.empty;
-                        if (tec.targetings & Targeting.SELECT) {
-                            Util.msg.set(`[${tec}]のターゲットを選択してください`);
-                            yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
-                                if (!targets[0].dead
-                                    || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
-                                    Util.msg.set(`＞${targets[0].name}を選択`);
-                                    yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
-                                    yield this.phaseEnd();
-                                }
-                            }));
-                            yield wait(1);
-                            return;
-                        }
-                        else {
-                            let targets = [];
-                            targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
-                            yield tec.use(attacker, targets);
-                            yield this.phaseEnd();
-                        }
-                    }));
-                    if (!tec.checkCost(attacker)) {
-                        btn.groundColor = () => Color.GRAY;
-                        btn.stringColor = () => Color.D_RED;
-                    }
-                }
-                else if (tec instanceof PassiveTec) {
-                    btn = new Btn(`-${tec}-`, () => {
-                    });
-                    btn.groundColor = () => Color.D_GRAY;
-                    btn.stringColor = () => Color.L_GRAY;
-                }
-                else {
-                    return ILayout.empty;
-                }
-                return new Layout()
-                    .add(btn)
-                    .add(ILayout.create({ ctrl: (bounds) => {
-                        if (bounds.contains(Input.point) && Input.holding >= 4) {
+                    list.add({
+                        center: () => tec.toString(),
+                        push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                            attacker.tecListScroll = index;
+                            this.tecInfo.tec = Tec.empty;
+                            if (tec.targetings & Targeting.SELECT) {
+                                Util.msg.set(`[${tec}]のターゲットを選択してください`);
+                                yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
+                                    if (!targets[0].dead
+                                        || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
+                                        Util.msg.set(`＞${targets[0].name}を選択`);
+                                        yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
+                                        yield this.phaseEnd();
+                                    }
+                                }));
+                                yield wait(1);
+                                return;
+                            }
+                            else {
+                                let targets = [];
+                                targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
+                                yield tec.use(attacker, targets);
+                                yield this.phaseEnd();
+                            }
+                        }),
+                        hold: elm => {
                             this.tecInfo.tec = tec;
                             this.tecInfo.user = attacker;
-                        }
-                    } }));
-            };
-            const w = 4;
-            const h = 3;
-            const l = new FlowLayout(w, h);
-            const drawOnePage = w * (h - 1);
-            for (let i = attacker.tecPage * drawOnePage; i < (attacker.tecPage + 1) * drawOnePage; i++) {
-                if (i >= attacker.tecs.length) {
-                    break;
+                        },
+                        groundColor: () => tec.checkCost(attacker) ? Color.BLACK : Color.GRAY,
+                        stringColor: () => tec.checkCost(attacker) ? Color.WHITE : Color.D_GRAY,
+                    });
                 }
-                l.add(createTecBtn(attacker.tecs[i]));
-            }
-            l.addFromLast(new Btn("アイテム", () => __awaiter(this, void 0, void 0, function* () {
-                Scene.load(ItemScene.ins({
-                    user: attacker,
-                    selectUser: false,
-                    use: (item, user) => __awaiter(this, void 0, void 0, function* () {
-                        Scene.set(this);
-                        if (item.targetings & Targeting.SELECT) {
-                            Util.msg.set(`[${item}]のターゲットを選択してください`);
-                            this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
+                else if (tec instanceof PassiveTec) {
+                    list.add({
+                        center: () => tec.toString(),
+                        hold: elm => {
+                            this.tecInfo.tec = tec;
+                            this.tecInfo.user = attacker;
+                        },
+                        groundColor: () => Color.D_GRAY,
+                        stringColor: () => Color.L_GRAY,
+                    });
+                }
+            });
+            list.add({
+                center: () => "アイテム",
+                push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                    Scene.load(ItemScene.ins({
+                        user: attacker,
+                        selectUser: false,
+                        use: (item, user) => __awaiter(this, void 0, void 0, function* () {
+                            Scene.set(this);
+                            if (item.targetings & Targeting.SELECT) {
+                                Util.msg.set(`[${item}]のターゲットを選択してください`);
+                                this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
+                                    yield item.use(user, targets);
+                                    yield this.phaseEnd();
+                                }));
+                            }
+                            else {
+                                let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
                                 yield item.use(user, targets);
                                 yield this.phaseEnd();
-                            }));
-                        }
-                        else {
-                            let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
-                            yield item.use(user, targets);
-                            yield this.phaseEnd();
-                        }
-                    }),
-                    returnScene: () => {
-                        Scene.set(BattleScene.ins);
-                    },
-                }));
-            })));
-            l.addFromLast(new Btn("何もしない", () => __awaiter(this, void 0, void 0, function* () {
-                yield Tec.何もしない.use(attacker, [attacker]);
-                yield this.phaseEnd();
-            })));
-            const tecPageLim = ((attacker.tecs.length - 1) / drawOnePage) | 0;
-            const newerTecPage = new Btn(">", () => __awaiter(this, void 0, void 0, function* () {
-                attacker.tecPage++;
-                yield this.setPlayerPhase(attacker);
-            }));
-            l.addFromLast(new VariableLayout(() => {
-                return attacker.tecPage < tecPageLim ? newerTecPage : ILayout.empty;
-            }));
-            const olderTecPage = new Btn("<", () => __awaiter(this, void 0, void 0, function* () {
-                attacker.tecPage--;
-                yield this.setPlayerPhase(attacker);
-            }));
-            l.addFromLast(new VariableLayout(() => {
-                return attacker.tecPage > 0 ? olderTecPage : ILayout.empty;
-            }));
+                            }
+                        }),
+                        returnScene: () => {
+                            Scene.set(BattleScene.ins);
+                        },
+                    }));
+                }),
+            });
+            list.setScroll(attacker.tecListScroll, "center");
             btnSpace.clear();
-            btnSpace.add(l);
+            btnSpace.add(list);
         });
     }
     setChooseTargetBtn(attacker, chooseAction) {
@@ -348,7 +324,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
         .filter(e => e.exists)
         .forEach(e => {
         partySkill.exp.base += e.prm(Prm.EXP).base;
-        partySkill.jobExp.base += 1;
+        partySkill.bp.base += 1;
         partySkill.yen.base += e.yen;
     });
     for (const skill of PartySkill.skills) {
@@ -360,9 +336,9 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     for (let p of Unit.players.filter(p => p.exists)) {
         yield p.addExp(exp);
     }
-    const jobExp = (partySkill.jobExp.base * partySkill.jobExp.mul) | 0;
+    const bp = (partySkill.bp.base * partySkill.bp.mul) | 0;
     for (let p of Unit.players.filter(p => p.exists)) {
-        yield p.addJobExp(jobExp);
+        p.bp += bp;
     }
     const yen = (partySkill.yen.base * partySkill.yen.mul) | 0;
     PlayData.yen += yen;
