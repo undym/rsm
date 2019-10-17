@@ -184,7 +184,7 @@ export class List extends ILayout{
 
             if(this.vec !== 0){
                 this.scroll += this.vec;
-                this.vec *= 0.7;
+                this.vec *= 0.8;
                 this.update = true;
                 if(this.vec < 0.01){
                     this.vec = 0;
@@ -223,8 +223,28 @@ export class List extends ILayout{
 
     drawInner(bounds:Rect){
         
-        Graphics.clip(bounds, ()=>{ 
-            this.panel.draw( this.scrolledBounds(bounds) );
+        Graphics.clip(bounds, ()=>{
+            const barW = Graphics.dotW * 3;
+            const barX = bounds.xw - barW;
+            const s = this.scrolledBounds(bounds);
+            const listBounds = new Rect(s.x, s.y, s.w - barW, s.h);
+            this.panel.draw( listBounds );
+
+            const drawBar = (rect:Rect)=>{
+                Graphics.fillRect(rect, Color.GRAY);
+            };
+
+            if(this.elms.length <= this.aPageElmNum){
+                drawBar(new Rect(barX, bounds.y, barW, bounds.h));
+            }else{    
+                let barH = bounds.h * this.aPageElmNum / this.elms.length;
+                const barSpaceH = bounds.h - barH;
+                let ratio = this.scroll / (this.elms.length - this.aPageElmNum);
+                if(ratio < 0){ratio = 0;}
+                if(ratio > 1){ratio = 1;}
+                const y = barSpaceH * ratio;
+                drawBar(new Rect(barX, bounds.y + y, barW, barH));
+            }
         });
     }
 

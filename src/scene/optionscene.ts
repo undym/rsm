@@ -130,7 +130,6 @@ const setDebugBtn = ()=>{
                 item.num = item.numLimit;
             }
             Util.msg.set("素材入手");
-            Util.msg.set("アイテム入手");
         },
     });
     list.add({
