@@ -87,31 +87,19 @@ export class ItemScene extends Scene{
 
         super.add(Place.LIST_TYPE,
             new List()
-                .init(list=>{
-                    const push = (()=>{
-                        let pushedElm:ListElm;
-                        return (elm:ListElm)=>{
-                            if(pushedElm !== undefined){
-                                pushedElm.groundColor = ()=>Color.BLACK;
-                            }
-            
-                            pushedElm = elm;
-                            pushedElm.groundColor = ()=>Color.D_CYAN;
-                        };
-                    })();
-                    
+                .init(typeList=>{
                     for(let type of ItemParentType.values){
-                        list.add({
+                        typeList.add({
                             center:()=>type.toString(),
                             push:elm=>{
-                                push(elm);
-
                                 this.setList(type);
                             },
                         })
                     }
                 })
                 .fit()
+                .setRadioBtnMode(true, ()=>Color.BLACK, ()=>Color.D_CYAN)
+                .push(0)
         );
 
         super.add(Place.LIST_BTN,
@@ -151,9 +139,6 @@ export class ItemScene extends Scene{
                 }
             }
         }}));
-
-
-        this.setList( ItemParentType.回復 );
     }
 
 

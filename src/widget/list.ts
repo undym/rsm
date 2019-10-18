@@ -19,6 +19,10 @@ export class List extends ILayout{
     private vec = 0;
     private scrolled:boolean = false;
     private fitting:boolean;
+    private pushed:ListElm;
+    private radioBtnMode:boolean = false;
+    private radioBtnModeOffGroundColor:()=>Color = ()=>Color.BLACK;
+    private radioBtnModeOnGroundColor:()=>Color = ()=>Color.D_CYAN;
 
     constructor(aPageElmNum:number = 10){
         super();
@@ -48,6 +52,21 @@ export class List extends ILayout{
 
     unfit(){
         this.fitting = false;
+    }
+
+    setRadioBtnMode(b:boolean, offGroundColor?:()=>Color, onGroundColor?:()=>Color):this{
+        this.radioBtnMode = b;
+        if(offGroundColor){this.radioBtnModeOffGroundColor = offGroundColor;}
+        if(onGroundColor) {this.radioBtnModeOnGroundColor = onGroundColor;}
+        return this;
+    }
+
+    push(index:number):this{
+        const e = this.elms[index];
+        if(e instanceof ListElm){
+            e.push();
+        }
+        return this;
     }
 
     /**pos: "top"|"center"|"bottom". */
@@ -123,8 +142,24 @@ export class List extends ILayout{
         frameColor?:()=>Color,
         stringColor?:()=>Color,
     }):ListElm{
+        if(args.push){
+            const push = args.push;
+            args.push = elm=>{
+                if(this.radioBtnMode){
+                    if(this.pushed){
+                        this.pushed.groundColor = this.radioBtnModeOffGroundColor;
+                    }
+
+                    elm.groundColor = this.radioBtnModeOnGroundColor;
+                    this.pushed = elm;
+                }
+                push(elm);
+            };
+        }
+
         const e = new ListElm(args);
         
+
         this.elms.push(e);
 
         this.update = true;
@@ -184,7 +219,7 @@ export class List extends ILayout{
 
             if(this.vec !== 0){
                 this.scroll += this.vec;
-                this.vec *= 0.8;
+                this.vec *= 0.75;
                 this.update = true;
                 if(this.vec < 0.01){
                     this.vec = 0;
@@ -231,7 +266,7 @@ export class List extends ILayout{
             this.panel.draw( listBounds );
 
             const drawBar = (rect:Rect)=>{
-                Graphics.fillRect(rect, Color.GRAY);
+                Graphics.fillRect(rect, Color.D_CYAN);
             };
 
             if(this.elms.length <= this.aPageElmNum){
@@ -270,8 +305,8 @@ export class ListElm extends ILayout{
     right:(()=>string) | undefined;
     rightColor:()=>Color;
     
-    push:(elm:ListElm)=>void;
-    hold:(elm:ListElm)=>void;
+    push:()=>void;
+    hold:()=>void;
 
     font:Font;
 
@@ -295,8 +330,10 @@ export class ListElm extends ILayout{
     }){
         super();
 
-        this.push = args.push ? args.push : (elm)=>{};
-        this.hold = args.hold ? args.hold : (elm)=>{};
+        const _push = args.push;
+        this.push = _push ? async()=> await _push(this) : ()=>{};
+        const _hold = args.hold;
+        this.hold = _hold ? async()=> await _hold(this) : ()=>{};
 
         this.left = args.left;
         this.leftColor   = args.leftColor   ? args.leftColor   : ()=>Color.WHITE;
@@ -318,10 +355,10 @@ export class ListElm extends ILayout{
     async ctrlInner(bounds:Rect){
         if(bounds.contains( Input.point )){
             if(Input.holding > 4){
-                await this.hold(this);
+                await this.hold();
             }
             if(Input.click){
-                await this.push(this);
+                await this.push();
             }
         }
     }

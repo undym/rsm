@@ -35,14 +35,14 @@ export class Place{
     static readonly ST_H = 0.15;
     static get MAIN(){return new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2);}
     // static readonly MAIN = new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2);
-    static get MSG(){return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.w * 0.85);}
+    static get MSG(){return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.w * 0.8);}
     static get DUNGEON_DATA(){return new Rect(Place.MSG.x, Place.MSG.yh, Place.MSG.w, Place.MAIN.h - Place.MSG.h);}
     
 
     static get E_BOX(){return new Rect(0, 0, Place.MAIN.w, Place.ST_H);}
     static get P_BOX(){return new Rect(0, Place.MAIN.yh, Place.MAIN.w, Place.ST_H);}
     
-    static get YEN(){return new Rect(Place.MAIN.xw + Graphics.dotW, 0, 1-Place.MAIN.xw - Graphics.dotW * 2, 0.03);}
+    static get YEN(){return new Rect(Place.MAIN.xw + Graphics.dotW * 2, 0, 1-Place.MAIN.xw - Graphics.dotW * 3, 0.03);}
     static get BTN(){return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH);}
 
     static get LIST_MAIN(){return new Rect(0, 0, Place.MAIN.w, 1 - Place.ST_H - Graphics.dotH);}

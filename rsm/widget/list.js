@@ -21,6 +21,9 @@ export class List extends ILayout {
         this.scroll = 0;
         this.vec = 0;
         this.scrolled = false;
+        this.radioBtnMode = false;
+        this.radioBtnModeOffGroundColor = () => Color.BLACK;
+        this.radioBtnModeOnGroundColor = () => Color.D_CYAN;
         this.aPageElmNum = aPageElmNum | 0;
         this.elmPanel = new YLayout();
         this.panel = new RatioLayout()
@@ -41,6 +44,23 @@ export class List extends ILayout {
     }
     unfit() {
         this.fitting = false;
+    }
+    setRadioBtnMode(b, offGroundColor, onGroundColor) {
+        this.radioBtnMode = b;
+        if (offGroundColor) {
+            this.radioBtnModeOffGroundColor = offGroundColor;
+        }
+        if (onGroundColor) {
+            this.radioBtnModeOnGroundColor = onGroundColor;
+        }
+        return this;
+    }
+    push(index) {
+        const e = this.elms[index];
+        if (e instanceof ListElm) {
+            e.push();
+        }
+        return this;
     }
     /**pos: "top"|"center"|"bottom". */
     setScroll(a, pos) {
@@ -105,6 +125,19 @@ export class List extends ILayout {
         }
     }
     add(args) {
+        if (args.push) {
+            const push = args.push;
+            args.push = elm => {
+                if (this.radioBtnMode) {
+                    if (this.pushed) {
+                        this.pushed.groundColor = this.radioBtnModeOffGroundColor;
+                    }
+                    elm.groundColor = this.radioBtnModeOnGroundColor;
+                    this.pushed = elm;
+                }
+                push(elm);
+            };
+        }
         const e = new ListElm(args);
         this.elms.push(e);
         this.update = true;
@@ -159,7 +192,7 @@ export class List extends ILayout {
                 }
                 if (this.vec !== 0) {
                     this.scroll += this.vec;
-                    this.vec *= 0.8;
+                    this.vec *= 0.75;
                     this.update = true;
                     if (this.vec < 0.01) {
                         this.vec = 0;
@@ -196,7 +229,7 @@ export class List extends ILayout {
             const listBounds = new Rect(s.x, s.y, s.w - barW, s.h);
             this.panel.draw(listBounds);
             const drawBar = (rect) => {
-                Graphics.fillRect(rect, Color.GRAY);
+                Graphics.fillRect(rect, Color.D_CYAN);
             };
             if (this.elms.length <= this.aPageElmNum) {
                 drawBar(new Rect(barX, bounds.y, barW, bounds.h));
@@ -226,8 +259,10 @@ export class List extends ILayout {
 export class ListElm extends ILayout {
     constructor(args) {
         super();
-        this.push = args.push ? args.push : (elm) => { };
-        this.hold = args.hold ? args.hold : (elm) => { };
+        const _push = args.push;
+        this.push = _push ? () => __awaiter(this, void 0, void 0, function* () { return yield _push(this); }) : () => { };
+        const _hold = args.hold;
+        this.hold = _hold ? () => __awaiter(this, void 0, void 0, function* () { return yield _hold(this); }) : () => { };
         this.left = args.left;
         this.leftColor = args.leftColor ? args.leftColor : () => Color.WHITE;
         this.center = args.center;
@@ -243,10 +278,10 @@ export class ListElm extends ILayout {
         return __awaiter(this, void 0, void 0, function* () {
             if (bounds.contains(Input.point)) {
                 if (Input.holding > 4) {
-                    yield this.hold(this);
+                    yield this.hold();
                 }
                 if (Input.click) {
-                    yield this.push(this);
+                    yield this.push();
                 }
             }
         });

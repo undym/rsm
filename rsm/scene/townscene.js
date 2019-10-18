@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { RatioLayout, YLayout, VariableLayout } from "../undym/layout.js";
+import { RatioLayout, XLayout, VariableLayout } from "../undym/layout.js";
 import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -170,7 +170,7 @@ class TownBtn {
         const listH = 0.85;
         this._ins = new RatioLayout()
             .add(new Rect(0, 0, 1, listH), list)
-            .add(new Rect(0, listH, 1, 1 - listH), new YLayout()
+            .add(new Rect(0, listH, 1, 1 - listH), new XLayout()
             .add(new Btn("侵入", () => {
             if (!choosedDungeon) {
                 return;

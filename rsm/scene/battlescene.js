@@ -199,7 +199,7 @@ export class BattleScene extends Scene {
     }
     setPlayerPhase(attacker) {
         return __awaiter(this, void 0, void 0, function* () {
-            const list = new List();
+            const list = new List(8);
             attacker.tecs.forEach((tec, index) => {
                 if (tec instanceof ActiveTec) {
                     list.add({
@@ -342,7 +342,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     }
     const yen = (partySkill.yen.base * partySkill.yen.mul) | 0;
     PlayData.yen += yen;
-    Util.msg.set(`${yen}円入手`, Color.YELLOW.bright);
+    Util.msg.set(`BP${bp}、${yen}円入手`, Color.YELLOW.bright);
     yield wait();
     yield finish();
     yield Battle.battleEndAction(BattleResult.WIN);

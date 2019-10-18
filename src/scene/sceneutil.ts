@@ -56,7 +56,6 @@ export class DrawDungeonData extends InnerLayout{
 
         super.add(new YLayout()
             .setOutsidePixelMargin(1,1,2,1)
-            .add(ILayout.empty)
             .add(new Label(Font.def, ()=>`[${Dungeon.now}] Rank:${Dungeon.now.rank}`))
             .add(new Gage(
                 ()=> Dungeon.auNow

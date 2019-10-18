@@ -58,28 +58,19 @@ export class ItemScene extends Scene {
         })())));
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, new List()
-            .init(list => {
-            const push = (() => {
-                let pushedElm;
-                return (elm) => {
-                    if (pushedElm !== undefined) {
-                        pushedElm.groundColor = () => Color.BLACK;
-                    }
-                    pushedElm = elm;
-                    pushedElm.groundColor = () => Color.D_CYAN;
-                };
-            })();
+            .init(typeList => {
             for (let type of ItemParentType.values) {
-                list.add({
+                typeList.add({
                     center: () => type.toString(),
                     push: elm => {
-                        push(elm);
                         this.setList(type);
                     },
                 });
             }
         })
-            .fit());
+            .fit()
+            .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
+            .push(0));
         super.add(Place.LIST_BTN, new XLayout()
             .add((() => {
             const canUse = new Btn(() => "使用", () => __awaiter(this, void 0, void 0, function* () {
@@ -115,7 +106,6 @@ export class ItemScene extends Scene {
                     }
                 }
             } }));
-        this.setList(ItemParentType.回復);
     }
     setList(parentType) {
         this.list.clear();

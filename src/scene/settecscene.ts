@@ -7,7 +7,7 @@ import { Rect, Color, Point } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { Place } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
-import { List } from "../widget/list.js";
+import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { TecType, Tec, ActiveTec } from "../tec.js";
 import { FX_Str } from "../fx/fx.js";
@@ -31,11 +31,11 @@ export class SetTecScene extends Scene{
         super();
         
         this.setSettingTecList(this.target, true);
-        (this.resetList = keepScroll=>{
-            const type = TecType.格闘;
-            this.list.clear(keepScroll);
-            this.setList( this.target, `${type}`, type.tecs );
-        })(false);
+        // (this.resetList = keepScroll=>{
+        //     const type = TecType.格闘;
+        //     this.list.clear(keepScroll);
+        //     this.setList( this.target, `${type}`, type.tecs );
+        // })(false);
     }
 
     init(){
@@ -50,10 +50,11 @@ export class SetTecScene extends Scene{
                                 })())
                                 ;
         const typeList = new List()
-                            .init(list=>{
-                                list.add({
+                            .init(typeList=>{
+                                typeList.add({
                                     center:()=>"全て",
-                                    push:elm=>{  
+                                    push:elm=>{
+
                                         (this.resetList = keepScroll=>{
                                             this.list.clear(keepScroll);
                                             for(let type of TecType.values()){
@@ -65,9 +66,10 @@ export class SetTecScene extends Scene{
                                 });
 
                                 for(const type of TecType.values()){
-                                    list.add({
+                                    typeList.add({
                                         center:()=>type.toString(),
                                         push:elm=>{
+
                                             (this.resetList = keepScroll=>{
                                                 this.list.clear(keepScroll);
                                                 this.setList( this.target, `${type}`, type.tecs);
@@ -75,54 +77,12 @@ export class SetTecScene extends Scene{
                                         },
                                     });
                                 }
+
                             })
                             .fit()
+                            .setRadioBtnMode(true)
+                            .push(0)
                             ;
-        
-        // const listBtnLayout = new XLayout()
-        //                         .add((()=>{
-        //                             const choosedTecIsSetting = ()=> this.target.tecs.some(t=> t === this.choosedTec)
-        //                             const set = new Btn("セット",async()=>{
-        //                                 if(!this.choosedTec){return;}
-                                        
-        //                                 for(let i = 0; i < this.target.tecs.length; i++){
-        //                                     if(this.target.tecs[i] === Tec.empty){
-        //                                             this.target.tecs[i] = this.choosedTec;
-        //                                             FX_Str(Font.def, `${this.choosedTec}をセットしました`, {x:0.5, y:0.5}, Color.WHITE);
-
-        //                                             this.setSettingTecList(this.target, true);
-        //                                             return;
-        //                                     }
-        //                                 }
-                                        
-        //                                 FX_Str(Font.def, `技欄に空きがありません`, {x:0.5, y:0.5}, Color.WHITE);
-        //                             });
-        //                             const unset = new Btn("外す",async()=>{
-        //                                 if(!this.choosedTec){return;}
-
-        //                                 for(let i = 0; i < this.target.tecs.length; i++){
-        //                                     if(this.target.tecs[i] === this.choosedTec){
-        //                                         this.target.tecs[i] = Tec.empty;
-        //                                         FX_Str(Font.def, `${this.choosedTec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
-
-        //                                         this.setSettingTecList(this.target, true);
-        //                                         this.resetList(true);
-        //                                         return;
-        //                                     }
-        //                                 }
-        //                             });
-
-        //                             return new VariableLayout(()=>{
-        //                                 if(choosedTecIsSetting()){
-        //                                     return unset;
-        //                                 }
-        //                                 return set;
-        //                             });
-        //                         })())
-        //                         .add(new Btn("<<", ()=>{
-        //                             Scene.load( TownScene.ins );
-        //                         }))
-        //                         ;
 
         super.clear();
 
@@ -334,11 +294,12 @@ const createTecInfo = (tec:Tec, unit:PUnit)=>{
                     .addln(()=>tec.info)
                     ;
     if(!unit.isMasteredTec(tec)){
-        l.add(()=>"習得ボーナス");
+        l.br();
+        l.add(()=>"習得ボーナス", ()=>Color.ORANGE);
         const learning = tec.learning;
         if(learning){
             for(const gp of learning.growthPrms){
-                l.add(()=>` ${gp.prm}+${gp.value}`);
+                l.add(()=>` ${gp.prm}+${gp.value}` ,()=>Color.ORANGE);
             }
         }
     }

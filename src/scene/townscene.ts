@@ -1,6 +1,6 @@
 
 import { Scene } from "../undym/scene.js";
-import { RatioLayout, XLayout, YLayout, ILayout, VariableLayout, Label, FlowLayout } from "../undym/layout.js";
+import { RatioLayout, XLayout, YLayout, ILayout, VariableLayout } from "../undym/layout.js";
 import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -11,7 +11,6 @@ import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo, DrawYen } from "./sceneutil.
 import { Unit, Prm } from "../unit.js";
 import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
-import { Input } from "../undym/input.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics, Texture } from "../graphics/graphics.js";
 import { Item } from "../item.js";
@@ -21,7 +20,6 @@ import { EqScene } from "./eqscene.js";
 import { ConditionType, Condition } from "../condition.js";
 import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
-import { Battle, BattleType } from "../battle.js";
 import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
 
@@ -195,7 +193,7 @@ class TownBtn{
         this._ins = new RatioLayout()
                         .add(new Rect(0, 0, 1, listH), list)
                         .add(new Rect(0, listH, 1, 1-listH), 
-                            new YLayout()
+                            new XLayout()
                                 .add(new Btn("侵入", ()=>{
                                     if(!choosedDungeon){return;}
                         

@@ -30,30 +30,18 @@ export class MixScene extends Scene {
     }
     init() {
         const typeList = new List()
-            .init(list => {
-            const push = (() => {
-                let pushedElm;
-                return (elm) => {
-                    if (pushedElm !== undefined) {
-                        pushedElm.groundColor = () => Color.BLACK;
-                    }
-                    pushedElm = elm;
-                    pushedElm.groundColor = () => Color.D_CYAN;
-                };
-            })();
-            list.add({
+            .init(typeList => {
+            typeList.add({
                 center: () => "建築",
                 push: elm => {
-                    push(elm);
                     const values = Mix.values
                         .filter(m => !m.result && m.isVisible());
                     this.setList("建築", values);
                 },
             });
-            list.add({
+            typeList.add({
                 center: () => "装備",
                 push: elm => {
-                    push(elm);
                     const values = Mix.values
                         .filter(m => {
                         const result = m.result;
@@ -65,10 +53,9 @@ export class MixScene extends Scene {
                     this.setList("装備", values);
                 },
             });
-            list.add({
+            typeList.add({
                 center: () => "アイテム",
                 push: elm => {
-                    push(elm);
                     const values = Mix.values
                         .filter(m => {
                         const result = m.result;
@@ -81,7 +68,9 @@ export class MixScene extends Scene {
                 },
             });
         })
-            .fit();
+            .fit()
+            .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
+            .push(0);
         super.clear();
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)

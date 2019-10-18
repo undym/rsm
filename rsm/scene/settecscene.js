@@ -29,11 +29,11 @@ export class SetTecScene extends Scene {
         this.info = ILayout.empty;
         this.useBtn = ILayout.empty;
         this.setSettingTecList(this.target, true);
-        (this.resetList = keepScroll => {
-            const type = TecType.格闘;
-            this.list.clear(keepScroll);
-            this.setList(this.target, `${type}`, type.tecs);
-        })(false);
+        // (this.resetList = keepScroll=>{
+        //     const type = TecType.格闘;
+        //     this.list.clear(keepScroll);
+        //     this.setList( this.target, `${type}`, type.tecs );
+        // })(false);
     }
     init() {
         const infoLayout = new Layout()
@@ -46,8 +46,8 @@ export class SetTecScene extends Scene {
             });
         })());
         const typeList = new List()
-            .init(list => {
-            list.add({
+            .init(typeList => {
+            typeList.add({
                 center: () => "全て",
                 push: elm => {
                     (this.resetList = keepScroll => {
@@ -60,7 +60,7 @@ export class SetTecScene extends Scene {
                 },
             });
             for (const type of TecType.values()) {
-                list.add({
+                typeList.add({
                     center: () => type.toString(),
                     push: elm => {
                         (this.resetList = keepScroll => {
@@ -71,45 +71,9 @@ export class SetTecScene extends Scene {
                 });
             }
         })
-            .fit();
-        // const listBtnLayout = new XLayout()
-        //                         .add((()=>{
-        //                             const choosedTecIsSetting = ()=> this.target.tecs.some(t=> t === this.choosedTec)
-        //                             const set = new Btn("セット",async()=>{
-        //                                 if(!this.choosedTec){return;}
-        //                                 for(let i = 0; i < this.target.tecs.length; i++){
-        //                                     if(this.target.tecs[i] === Tec.empty){
-        //                                             this.target.tecs[i] = this.choosedTec;
-        //                                             FX_Str(Font.def, `${this.choosedTec}をセットしました`, {x:0.5, y:0.5}, Color.WHITE);
-        //                                             this.setSettingTecList(this.target, true);
-        //                                             return;
-        //                                     }
-        //                                 }
-        //                                 FX_Str(Font.def, `技欄に空きがありません`, {x:0.5, y:0.5}, Color.WHITE);
-        //                             });
-        //                             const unset = new Btn("外す",async()=>{
-        //                                 if(!this.choosedTec){return;}
-        //                                 for(let i = 0; i < this.target.tecs.length; i++){
-        //                                     if(this.target.tecs[i] === this.choosedTec){
-        //                                         this.target.tecs[i] = Tec.empty;
-        //                                         FX_Str(Font.def, `${this.choosedTec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
-        //                                         this.setSettingTecList(this.target, true);
-        //                                         this.resetList(true);
-        //                                         return;
-        //                                     }
-        //                                 }
-        //                             });
-        //                             return new VariableLayout(()=>{
-        //                                 if(choosedTecIsSetting()){
-        //                                     return unset;
-        //                                 }
-        //                                 return set;
-        //                             });
-        //                         })())
-        //                         .add(new Btn("<<", ()=>{
-        //                             Scene.load( TownScene.ins );
-        //                         }))
-        //                         ;
+            .fit()
+            .setRadioBtnMode(true)
+            .push(0);
         super.clear();
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.settingTecList)
@@ -304,11 +268,12 @@ const createTecInfo = (tec, unit) => {
     })
         .addln(() => tec.info);
     if (!unit.isMasteredTec(tec)) {
-        l.add(() => "習得ボーナス");
+        l.br();
+        l.add(() => "習得ボーナス", () => Color.ORANGE);
         const learning = tec.learning;
         if (learning) {
             for (const gp of learning.growthPrms) {
-                l.add(() => ` ${gp.prm}+${gp.value}`);
+                l.add(() => ` ${gp.prm}+${gp.value}`, () => Color.ORANGE);
             }
         }
     }

@@ -80,24 +80,10 @@ export class EqScene extends Scene{
 
         super.add(Place.LIST_TYPE,
         new List()
-            .init(list=>{
-                const push = (()=>{
-                    let pushedElm:ListElm;
-                    return (elm:ListElm)=>{
-                        if(pushedElm !== undefined){
-                            pushedElm.groundColor = ()=>Color.BLACK;
-                        }
-        
-                        pushedElm = elm;
-                        pushedElm.groundColor = ()=>Color.D_CYAN;
-                    };
-                })();
-
-                const all = list.add({
+            .init(typeList=>{
+                typeList.add({
                     center:()=>"全て",
                     push:elm=>{
-                        push(elm);
-
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -107,11 +93,9 @@ export class EqScene extends Scene{
                         })();
                     },
                 });
-                list.add({
+                typeList.add({
                     center:()=>"耳",
                     push:elm=>{
-                        push(elm);
-                        
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -120,11 +104,9 @@ export class EqScene extends Scene{
                 });
             
                 for(let pos of EqPos.values()){
-                    list.add({
+                    typeList.add({
                         center:()=>`${pos}`,
                         push:elm=>{
-                            push(elm);
-
                             (this.resetList = ()=>{
                                 this.list.clear();
                                 this.setList( pos );
@@ -132,10 +114,10 @@ export class EqScene extends Scene{
                         },
                     });
                 }
-
-                all.push(all);
             })
             .fit()
+            .setRadioBtnMode(true, ()=>Color.BLACK, ()=>Color.D_CYAN)
+            .push(0)
         );
 
         super.add(Place.LIST_BTN,
