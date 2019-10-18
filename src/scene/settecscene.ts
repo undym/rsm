@@ -270,6 +270,7 @@ export class SetTecScene extends Scene{
             }
             
             this.useBtn = this.createSetBtn(tec, unit);
+            // this.resetList(true);
         });
     }
 }

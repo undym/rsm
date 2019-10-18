@@ -326,7 +326,7 @@ export namespace Job{
                                 appearLv:50,
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.MP自動回復, Tec.殴る, Tec.殴る, Tec.やる気ゼロ];
+            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.MP自動回復, Tec.殴る, Tec.殴る, Tec.やる気0];
         }
     };
     export const                         ハイパー:Job = new class extends Job{
@@ -334,7 +334,7 @@ export namespace Job{
                                 appearLv:80,
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.ネガティヴフィードバック, Tec.MP自動回復, Tec.弱体液, Tec.やる気ゼロ];
+            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.ネガティヴフィードバック, Tec.MP自動回復, Tec.弱体液, Tec.やる気0];
         }
     };
 

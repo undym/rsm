@@ -126,6 +126,18 @@ export namespace Condition{
             }
         }
     };
+    export const             闇:Condition = new class extends Condition{
+        constructor(){super("闇", ConditionType.GOOD_LV1);}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec){
+                
+                Util.msg.set("＞闇"); await wait();
+                dmg.pow.add += attacker.prm(Prm.DRK).total;
+
+                attacker.addConditionValue(this, -1);
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV2
