@@ -327,7 +327,7 @@ Job.DEF_LVUP_EXP = 5;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.MP自動回復, Tec.殴る, Tec.殴る, Tec.やる気ゼロ];
+            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.MP自動回復, Tec.殴る, Tec.殴る, Tec.やる気0];
         }
     };
     Job.ハイパー = new class extends Job {
@@ -337,7 +337,7 @@ Job.DEF_LVUP_EXP = 5;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.ネガティヴフィードバック, Tec.MP自動回復, Tec.弱体液, Tec.やる気ゼロ];
+            e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.ネガティヴフィードバック, Tec.MP自動回復, Tec.弱体液, Tec.やる気0];
         }
     };
     Job.ガンマン = new class extends Job {

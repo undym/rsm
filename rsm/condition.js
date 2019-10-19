@@ -118,6 +118,19 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.闇 = new class extends Condition {
+        constructor() { super("闇", ConditionType.GOOD_LV1); }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec) {
+                    Util.msg.set("＞闇");
+                    yield wait();
+                    dmg.pow.add += attacker.prm(Prm.DRK).total;
+                    attacker.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV2

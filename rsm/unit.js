@@ -442,7 +442,7 @@ export class PUnit extends Unit {
                     this.growPrm(Prm.MAX_MP, 1);
                     this.growPrm(Prm.MAX_TP, 1);
                 }
-                const addBP = (1 + this.prm(Prm.LV).base / 5) | 0;
+                const addBP = (1 + this.prm(Prm.LV).base / 2) | 0;
                 this.bp += addBP;
                 Util.msg.set(`BP+${addBP}`, Color.GREEN.bright);
             }
@@ -505,7 +505,7 @@ export class PUnit extends Unit {
     setMasteredTec(tec, b) { this.masteredTecs.set(tec, b); }
     isMasteredTec(tec) {
         const b = this.masteredTecs.get(tec);
-        return b === undefined ? false : b;
+        return b ? b : false;
     }
     //---------------------------------------------------------
     //

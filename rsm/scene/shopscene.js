@@ -49,7 +49,7 @@ export class ShopScene extends Scene {
                 let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
                 const moveP = () => p = p.move(0, font.ratioH);
                 font.draw(`[${goods}]`, moveP(), Color.WHITE);
-                font.draw(`[${goods.type}]`, moveP(), Color.WHITE);
+                font.draw(`${goods.type}`, moveP(), Color.WHITE);
                 font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
                 if (goods.num()) {
                     font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
@@ -59,55 +59,7 @@ export class ShopScene extends Scene {
                 }
                 moveP();
                 font.draw(goods.info, moveP(), Color.WHITE);
-            } }))
-        // .add((()=>{
-        //     const infoBounds = new Rect(0, 0, 1, 0.7);
-        //     const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
-        //     return new RatioLayout()
-        //         .add(infoBounds, ILayout.create({draw:(bounds)=>{
-        //             Graphics.fillRect(bounds, Color.D_GRAY);
-        //             const goods = this.choosedGoods;
-        //             if(!goods){return;}
-        //             let font = Font.def;
-        //             let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
-        //             const moveP = ()=> p = p.move(0, font.ratioH);
-        //             font.draw(`[${goods}]`, moveP(), Color.WHITE);
-        //             font.draw(`[${goods.type}]`, moveP(), Color.WHITE);
-        //             font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
-        //             if(goods.num()){
-        //                 font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
-        //             }else{
-        //                 moveP();
-        //             }
-        //             moveP();
-        //             font.draw(goods.info, moveP(), Color.WHITE);
-        //         }}))
-        //         .add(btnBounds, (()=>{
-        //             const l = new FlowLayout(2,1);
-        //             l.addFromLast(new Btn("<<", ()=>{
-        //                 Scene.load( TownScene.ins );
-        //             }));
-        //             // const choosedTecIsSetting = ()=> this.target.tecs.some(t=> t === this.choosedTec)
-        //             const buy = new Btn("買う",async()=>{
-        //                 if(!this.choosedGoods){return;}
-        //                 const goods = this.choosedGoods;
-        //                 if(!goods.isVisible()){return;}
-        //                 if(PlayData.yen >= goods.price()){
-        //                     PlayData.yen -= goods.price();
-        //                     goods.buy();
-        //                 }
-        //             });
-        //             const no = new Btn("-",async()=>{});
-        //             l.addFromLast(new VariableLayout(()=>{
-        //                 if(this.choosedGoods && this.choosedGoods.isVisible()){
-        //                     return buy;
-        //                 }
-        //                 return no;
-        //             }));
-        //             return l;
-        //         })());
-        // })())
-        );
+            } })));
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_BTN, new XLayout()
             .add((() => {
@@ -140,6 +92,10 @@ export class ShopScene extends Scene {
     }
     setList() {
         this.list.clear();
+        this.list.add({
+            center: () => "お店",
+            groundColor: () => Color.D_GRAY,
+        });
         Goods.values()
             .filter(g => g.isVisible())
             .forEach(goods => {
@@ -177,7 +133,7 @@ class Goods {
 Goods._values = [];
 const initGoods = () => {
     const createItemGoods = (item, price, isVisible) => {
-        new Goods(item.toString(), "アイテム", item.info, price, isVisible, () => item.add(1), () => item.num);
+        new Goods(item.toString(), "＜アイテム＞", item.info, price, isVisible, () => item.add(1), () => item.num);
     };
     // const createItemGoodsNum = (item:Item, num:number, price:()=>number, isVisible:()=>boolean)=>{
     //     new Goods(
