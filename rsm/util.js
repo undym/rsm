@@ -22,7 +22,7 @@ export class Place {
     static get DUNGEON_DATA() { return new Rect(Place.MSG.x, Place.MSG.yh, Place.MSG.w, Place.MAIN.h - Place.MSG.h); }
     static get E_BOX() { return new Rect(0, 0, Place.ST_W, 1); }
     static get P_BOX() { return new Rect(Place.MAIN.xw + Graphics.dotW, 0, Place.ST_W, 1); }
-    static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
+    static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
     static get BTN() { return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH); }
     static get LIST_MAIN() { return new Rect(0, 0, Place.MAIN.xw, 1); }
     static get LIST_TYPE() { return new Rect(Place.BTN.x, Place.BTN.y, Place.BTN.w, 1 - Place.BTN.y - Place.LIST_BTN_H); }

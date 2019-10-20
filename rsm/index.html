@@ -21,6 +21,22 @@
             transform-origin: top left;
             transform: translateX(100vw) rotate(90deg);
         }
+        .reloadbutton{
+            position:fixed;
+            width:8vh;
+            height:3vw;
+            transform-origin: top left;
+            transform: translateX(100vw) translateY(90vh) rotate(90deg);
+        }
+        .runreload{
+            position:fixed;
+            width:33vh;
+            height:33vw;
+            transform-origin: top left;
+            transform: translateX(66vw) translateY(33vh) rotate(90deg);
+            visibility: hidden;
+            font-size: 30px;
+        }
         .loading{
             width:100vw;
             height:100vh;
@@ -34,6 +50,8 @@
 </head>
 <body>
 <canvas id="canvas" class="canvas"></canvas>
+<button id="reloadbutton" class="reloadbutton">再読み込み</button>
+<button id="runreload" class="runreload">再読み込み実行</button>
 <div id="loading" class="loading">読み込み中</div>
 <script type="module" src="main.js"></script>
 

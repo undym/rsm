@@ -27,9 +27,9 @@ import { PartySkill } from "./partyskill.js";
 //         res.innerText = "再読み込み実行";
 //         res.style.position = "absolute";
 //         res.style.left = "33vw";
-//         res.style.top = "50vh";
+//         res.style.top = "33vh";
 //         res.style.width = "33vw";
-//         res.style.height = "50vh";
+//         res.style.height = "33vh";
 //         return res;
 //     })();
 //     const reload = (()=>{
@@ -43,15 +43,39 @@ import { PartySkill } from "./partyskill.js";
 //             runBtnVisible = !runBtnVisible;
 //         };
 //         reload.innerText = "再読み込み";
-//         reload.style.position = "absolute";
+//         reload.style.position = "fixed";
 //         reload.style.top = "0px";
 //         reload.style.left = "0px";
-//         reload.style.width = "10vw";
-//         reload.style.height = "3vh";
+//         reload.style.width = "3vh";
+//         reload.style.height = "10vw";
+//         reload.style.transformOrigin = "top left";
+//         reload.style.translate = "translateX(100vw) rotate(90deg)";
 //         return reload;
 //     })();
 //     document.body.appendChild(reload);
+    
+//     // position:fixed;
+//     // width:100vh;
+//     // height:100vw;
+//     // image-rendering: pixelated;
+//     // transform-origin: top left;
+//     // transform: translateX(100vw) rotate(90deg);
 // }
+
+{
+    const run = document.getElementById("runreload") as HTMLButtonElement;
+    run.onclick = ()=>{
+        window.location.href = window.location.href;
+    };
+    const reload = document.getElementById("reloadbutton") as HTMLButtonElement;
+    reload.onclick = ()=>{
+        if(run.style.visibility === "visible"){
+            run.style.visibility = "hidden";
+        }else{
+            run.style.visibility = "visible";
+        }
+    };
+}
 
 
 window.onload = ()=>{
