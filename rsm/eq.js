@@ -1,9 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { Dmg } from "./force.js";
 import { Unit, Prm } from "./unit.js";
 import { Num } from "./mix.js";
 import { ActiveTec, TecType } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { choice } from "./undym/random.js";
+import { wait } from "./undym/scene.js";
 export class EqPos {
     constructor(name) {
         this.toString = () => name;
@@ -345,6 +355,21 @@ EqEar._valueOf = new Map();
         }
         equip(unit) { unit.prm(Prm.GUN).eq += 70; unit.prm(Prm.ARR).eq += 70; }
     };
+    Eq.マーザン砲 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "マーザン砲", info: "銃術攻撃時稀に追加攻撃",
+                pos: EqPos.武, lv: 65 });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃術) && dmg.result.isHit && Math.random() < 0.5) {
+                    Util.msg.set("＞マーザン砲");
+                    target.doDmg(new Dmg({ absPow: dmg.result.value / 2 }));
+                    yield wait();
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //盾
@@ -482,7 +507,7 @@ EqEar._valueOf = new Map();
     Eq.ゲルマンベルト = new class extends Eq {
         constructor() {
             super({ uniqueName: "ゲルマンベルト", info: "攻撃+10%",
-                pos: EqPos.腰, lv: 10 });
+                pos: EqPos.腰, lv: 15 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             dmg.pow.mul *= 1.1;
@@ -491,10 +516,19 @@ EqEar._valueOf = new Map();
     Eq.オホーツクのひも = new class extends Eq {
         constructor() {
             super({ uniqueName: "オホーツクのひも", info: "被攻撃-10%",
-                pos: EqPos.腰, lv: 10 });
+                pos: EqPos.腰, lv: 15 });
         }
         beforeBeAtk(action, attacker, target, dmg) {
             dmg.pow.mul *= 0.9;
+        }
+    };
+    Eq.魔ト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "魔ト", info: "最大MP+30",
+                pos: EqPos.腰, lv: 10 });
+        }
+        equip(unit) {
+            unit.prm(Prm.MAX_MP).eq += 30;
         }
     };
     //--------------------------------------------------------------------------
@@ -606,6 +640,21 @@ EqEar._valueOf = new Map();
         }
         battleStart(unit) {
             Unit.healTP(unit, unit.prm(Prm.MAX_TP).total * 0.1 + 1);
+        }
+    };
+    Eq.キャットネイル = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "キャットネイル", info: "攻撃時追加攻撃",
+                pos: EqPos.指, lv: 50 });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && dmg.result.isHit) {
+                    Util.msg.set("＞キャットネイル");
+                    target.doDmg(new Dmg({ absPow: dmg.result.value / 2, }));
+                    yield wait();
+                }
+            });
         }
     };
     //--------------------------------------------------------------------------

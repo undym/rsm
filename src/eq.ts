@@ -7,6 +7,7 @@ import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { Battle } from "./battle.js";
 import { choice } from "./undym/random.js";
+import { wait } from "./undym/scene.js";
 
 
 export class EqPos{
@@ -250,7 +251,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"メガネ", info:"", 
                                 pos:EqPos.頭, lv:Eq.NO_APPEAR_LV});}
     }
-    export const                         マーザンの角:Eq = new class extends Eq{
+    export const                         マーザンの角:Eq = new class extends Eq{//合成
         constructor(){super({uniqueName:"マーザンの角", info:"防御値+200", 
                                 pos:EqPos.頭, lv:30});}
         beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
@@ -343,6 +344,16 @@ export namespace Eq{
         constructor(){super({uniqueName:"投石器", info:"銃+70弓+70",
                                 pos:EqPos.武, lv:65});}
         equip(unit:Unit){ unit.prm(Prm.GUN).eq += 70; unit.prm(Prm.ARR).eq += 70; }
+    }
+    export const                         マーザン砲:Eq = new class extends Eq{//mix
+        constructor(){super({uniqueName:"マーザン砲", info:"銃術攻撃時稀に追加攻撃",
+                                pos:EqPos.武, lv:65});}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any( TecType.銃術 ) && dmg.result.isHit && Math.random() < 0.5){
+                Util.msg.set("＞マーザン砲");
+                target.doDmg( new Dmg({absPow:dmg.result.value / 2}) ); await wait();
+            }
+        }
     }
     //--------------------------------------------------------------------------
     //
@@ -456,16 +467,23 @@ export namespace Eq{
     }
     export const                         ゲルマンベルト:Eq = new class extends Eq{//黒平原財宝
         constructor(){super({uniqueName:"ゲルマンベルト", info:"攻撃+10%",
-                                pos:EqPos.腰, lv:10});}
+                                pos:EqPos.腰, lv:15});}
         beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             dmg.pow.mul *= 1.1;
         }
     }
     export const                         オホーツクのひも:Eq = new class extends Eq{//黒平原EX
         constructor(){super({uniqueName:"オホーツクのひも", info:"被攻撃-10%",
-                                pos:EqPos.腰, lv:10});}
+                                pos:EqPos.腰, lv:15});}
         beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             dmg.pow.mul *= 0.9;
+        }
+    }
+    export const                         魔ト:Eq = new class extends Eq{//古マーザン森財宝
+        constructor(){super({uniqueName:"魔ト", info:"最大MP+30",
+                                pos:EqPos.腰, lv:10});}
+        equip(unit:Unit){
+            unit.prm(Prm.MAX_MP).eq += 30;   
         }
     }
     //--------------------------------------------------------------------------
@@ -557,6 +575,16 @@ export namespace Eq{
                                 pos:EqPos.指, lv:50});}
         battleStart(unit:Unit){
             Unit.healTP(unit, unit.prm(Prm.MAX_TP).total * 0.1 + 1);
+        }
+    }
+    export const                         キャットネイル:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"キャットネイル", info:"攻撃時追加攻撃",
+                                pos:EqPos.指, lv:50});}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && dmg.result.isHit){
+                Util.msg.set("＞キャットネイル");
+                target.doDmg( new Dmg({absPow:dmg.result.value / 2,}) ); await wait();
+            }
         }
     }
     //--------------------------------------------------------------------------

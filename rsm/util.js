@@ -16,19 +16,19 @@ export class Util {
 }
 export class Place {
     constructor() { }
-    static get MAIN() { return new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2); }
+    static get MAIN() { return new Rect(Place.ST_W, 0, 0.55, 1); }
     // static readonly MAIN = new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2);
     static get MSG() { return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.w * 0.8); }
     static get DUNGEON_DATA() { return new Rect(Place.MSG.x, Place.MSG.yh, Place.MSG.w, Place.MAIN.h - Place.MSG.h); }
-    static get E_BOX() { return new Rect(0, 0, Place.MAIN.w, Place.ST_H); }
-    static get P_BOX() { return new Rect(0, Place.MAIN.yh, Place.MAIN.w, Place.ST_H); }
-    static get YEN() { return new Rect(Place.MAIN.xw + Graphics.dotW * 2, 0, 1 - Place.MAIN.xw - Graphics.dotW * 3, 0.03); }
+    static get E_BOX() { return new Rect(0, 0, Place.ST_W, 1); }
+    static get P_BOX() { return new Rect(Place.MAIN.xw + Graphics.dotW, 0, Place.ST_W, 1); }
+    static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
     static get BTN() { return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH); }
-    static get LIST_MAIN() { return new Rect(0, 0, Place.MAIN.w, 1 - Place.ST_H - Graphics.dotH); }
-    static get LIST_TYPE() { return new Rect(Place.BTN.x, Place.BTN.y, Place.BTN.w, 1 - Place.BTN.y - Place.ST_H); }
+    static get LIST_MAIN() { return new Rect(0, 0, Place.MAIN.xw, 1); }
+    static get LIST_TYPE() { return new Rect(Place.BTN.x, Place.BTN.y, Place.BTN.w, 1 - Place.BTN.y - 0.15); }
     static get LIST_BTN() { return new Rect(Place.LIST_TYPE.x, Place.LIST_TYPE.yh, Place.LIST_TYPE.w, 1 - Place.LIST_TYPE.yh); }
 }
-Place.ST_H = 0.15;
+Place.ST_W = 0.15;
 // export class Place{
 //     private constructor(){}
 //     static readonly ST_H = 0.125;

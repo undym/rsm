@@ -24,7 +24,7 @@ export class List extends ILayout{
     private radioBtnModeOffGroundColor:()=>Color = ()=>Color.BLACK;
     private radioBtnModeOnGroundColor:()=>Color = ()=>Color.D_CYAN;
 
-    constructor(aPageElmNum:number = 10){
+    constructor(aPageElmNum:number = 12){
         super();
 
         this.aPageElmNum = aPageElmNum|0;

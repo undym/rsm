@@ -159,17 +159,17 @@ export class DrawSTBoxes extends InnerLayout{
 
         super.add(new Layout()
             .add((()=>{
-                let x = new XLayout()
+                let l = new YLayout()
                                 .setPixelMargin(2);
                 for(let i = 0; i < len; i++){
-                    x.add(new Layout()
+                    l.add(new Layout()
                         .add(new DrawSTBox(()=> getUnit(i)))
                         .add(ILayout.create({draw:(bounds)=>{
                             getUnit(i).bounds = bounds;
                         }}))
                     );
                 }
-                return x;
+                return l;
             })())
             .add(ILayout.create({ctrl:(bounds)=>{
                 if(Input.holding < 4){return;}

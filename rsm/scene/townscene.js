@@ -38,11 +38,11 @@ export class TownScene extends Scene {
     }
     init() {
         super.clear();
-        super.add(Place.MAIN, Util.msg);
+        super.add(Place.MSG, Util.msg);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, new VariableLayout(() => TownBtn.ins));
         super.add(Place.P_BOX, DrawSTBoxes.players);
-        super.add(Place.MSG, DrawUnitDetail.ins);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
         SceneType.TOWN.set();
         TownBtn.reset();
@@ -182,7 +182,8 @@ class TownBtn {
                 item.remainingUseNum = item.num;
             }
             Util.msg.set(`${choosedDungeon}に侵入しました`);
-            FX_DungeonName(choosedDungeon.toString(), Place.E_BOX);
+            const h = 0.15;
+            FX_DungeonName(choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
             Scene.load(DungeonScene.ins);
         }))
             .add(new Btn("<<", () => {
@@ -225,6 +226,7 @@ const FX_DungeonName = (name, bounds) => {
                 return false;
             }
         }
+        Graphics.fillRect(bounds, Color.BLACK);
         Graphics.setAlpha(alpha, () => {
             for (let i = 0; i < w; i += 2) {
                 tex.draw({

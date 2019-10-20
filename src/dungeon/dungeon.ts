@@ -15,72 +15,6 @@ import { choice } from "../undym/random.js";
 
 
 
-// class Event{
-//     static createDef(rank:number){
-//         const events:[()=>DungeonEvent,()=>number,()=>boolean][] = [];
-        
-//         events.push([()=>DungeonEvent.GET_TREASURE_KEY, ()=>0.0015, ()=>true]);
-//         events.push([()=>DungeonEvent.TREASURE,         ()=>0.001 , ()=>true]);
-
-//         events.push([()=>DungeonEvent.EX_BATTLE,        ()=>0.001 , ()=>Dungeon.now.dungeonClearCount > 0]);
-
-//         events.push([()=>DungeonEvent.BOX,              ()=>0.15  , ()=>true]);
-//         events.push([()=>DungeonEvent.BATTLE,           ()=>0.15  , ()=>true]);
-//         events.push([()=>DungeonEvent.TRAP,             ()=>0.04  , ()=>true]);
-
-//         if(rank >= 1){
-//             events.push([()=>DungeonEvent.TREE,         ()=>0.03  , ()=>true]);
-//         }
-
-//         events.push([()=>DungeonEvent.REST,             ()=>0.03  , ()=>true]);
-
-//         return new Event(events);
-//     }
-
-
-//     private events:{ev:()=>DungeonEvent, prob:()=>number, isHappen:()=>boolean}[] = [];
-    
-
-//     constructor(events:[()=>DungeonEvent,()=>number,()=>boolean][]){
-//         for(const set of events){
-//             this.events.push( {ev:set[0], prob:set[1], isHappen:set[2]} );
-//         }
-//     }
-
-
-//     // remove(ev:DungeonEvent):this{
-//     //     this.events = this.events.filter(set=> set.ev !== ev);
-//     //     return this;
-//     // }
-
-//     add(ev:()=>DungeonEvent, prob:()=>number, isHappen:()=>boolean):this{
-//         this.events.push( {ev:ev, prob:prob, isHappen:isHappen} );
-//         return this;
-//     }
-
-//     addFirst(ev:()=>DungeonEvent, prob:()=>number, isHappen:()=>boolean):this{
-//         this.events.unshift( {ev:ev, prob:prob, isHappen:isHappen} );
-//         return this;
-//     }
-
-//     rnd():DungeonEvent{
-//         for(const set of this.events){
-//             if(set.isHappen() && Math.random() < set.prob()){
-//                 return set.ev();
-//             }
-//         }
-//         return DungeonEvent.empty;
-//     }
-
-//     // has(ev:DungeonEvent):boolean{
-//     //     for(const set of this.events){
-//     //         if(set.ev === ev){return true;}
-//     //     }
-//     //     return false;
-//     // }
-// }
-
-
 export abstract class Dungeon{
     private static _values:Dungeon[] = [];
     static get values():ReadonlyArray<Dungeon>{return this._values;}
@@ -135,8 +69,6 @@ export abstract class Dungeon{
     
     get exItem():Num{return this.args.exItem();}
     get trendItems():Item[]{return this.args.trendItems();}
-
-    private event:Event;
     //-----------------------------------------------------------------
     //
     //
@@ -435,7 +367,7 @@ export namespace Dungeon{
     };
     export const                         マーザン森:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"マーザン森",
-                                rank:1, enemyLv:24, au:100,
+                                rank:2, enemyLv:24, au:100,
                                 treasures:  ()=>[Eq.ニケ],
                                 exItem:     ()=>Eq.鉄下駄,
                                 trendItems: ()=>[],
@@ -459,37 +391,38 @@ export namespace Dungeon{
             Item.マーザンの鱗.add(1); await cwait();
         }
     };
-    // export const                         古マーザン森:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"古マーザン森",
-    //                             rank:3, enemyLv:24, au:100,
-    //                             treasures:  ()=>[Eq.ニケ],
-    //                             exItem:     ()=>Eq.鉄下駄,
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.マーザン森.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         for(const e of Unit.enemies){
-    //             Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //             e.prm(Prm.MAX_HP).base *= 3;
-    //             e.ep = Unit.DEF_MAX_EP;
-    //         }
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "超マーザン";
-    //         e.prm(Prm.MAX_HP).base = 300;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Ex超マーザン";
-    //         e.prm(Prm.MAX_HP).base = 500;
-    //     };
-        // async dungeonClearEvent(){
-        //     await super.dungeonClearEvent();
+    export const                         古マーザン森:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"古マーザン森",
+                                rank:3, enemyLv:24, au:101,
+                                treasures:  ()=>[Eq.魔ト],
+                                exItem:     ()=>Eq.マーザン砲,
+                                trendItems: ()=>[],
+        });}
+        isVisible = ()=>Dungeon.マーザン森.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            for(const e of Unit.enemies){
+                Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
+                e.prm(Prm.MAX_HP).base *= 3;
+                e.ep = Unit.DEF_MAX_EP;
+            }
+            let e = Unit.enemies[0];
+            Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "超マーザン";
+            e.prm(Prm.MAX_HP).base = 300;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "Ex超マーザン";
+            e.prm(Prm.MAX_HP).base = 500;
+            e.setEq(Eq.マーザン砲.pos, Eq.マーザン砲);
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
 
-        //     Item.マーザンの鱗.add(1); await cwait();
-        // }
-    // };
+            Item.マーザンの鱗.add(1); await cwait();
+        }
+    };
 
 
     // export const                         PAIN:Dungeon = new class extends Dungeon{

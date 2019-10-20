@@ -41,13 +41,13 @@ export class TownScene extends Scene{
         super.clear();
 
         
-        super.add(Place.MAIN, Util.msg);
+        super.add(Place.MSG, Util.msg);
 
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN,new VariableLayout(()=>TownBtn.ins));
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
-        super.add(Place.MSG, DrawUnitDetail.ins);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
 
         SceneType.TOWN.set();
@@ -205,7 +205,8 @@ class TownBtn{
                                     }
                         
                                     Util.msg.set(`${choosedDungeon}に侵入しました`);
-                                    FX_DungeonName( choosedDungeon.toString(), Place.E_BOX );
+                                    const h = 0.15;
+                                    FX_DungeonName( choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
                         
                                     Scene.load( DungeonScene.ins );
                                 }))
@@ -220,7 +221,7 @@ class TownBtn{
 }
 
 
-const FX_DungeonName = (name:string, bounds:{x:number, y:number, w:number, h:number})=>{
+const FX_DungeonName = (name:string, bounds:Rect)=>{
     const fontSize = 60;
     const font = new Font(fontSize, Font.ITALIC);
 
@@ -263,6 +264,8 @@ const FX_DungeonName = (name:string, bounds:{x:number, y:number, w:number, h:num
             alpha -= 0.04;
             if(alpha <= 0){return false;}
         }
+
+        Graphics.fillRect(bounds, Color.BLACK);
         Graphics.setAlpha(alpha, ()=>{
             for(let i = 0; i < w; i+=2){
                 tex.draw({

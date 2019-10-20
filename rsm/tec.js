@@ -441,6 +441,20 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    Tec.格闘カウンター = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "格闘カウンター", info: "！カウンター技用",
+                type: TecType.格闘, targetings: Targeting.SELECT,
+                learning: () => undefined,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.counter = true;
+            return dmg;
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //格闘Passive
@@ -470,12 +484,12 @@ ActiveTec._valueOf = new Map();
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof Tec && action.type === TecType.格闘 && !dmg.counter) {
-                    Util.msg.set(">カウンター");
+                    Util.msg.set("＞カウンター");
                     yield wait();
-                    let cdmg = TecType.格闘.createDmg(target, attacker);
-                    cdmg.counter = true;
-                    attacker.doDmg(cdmg);
-                    yield wait();
+                    yield Tec.格闘カウンター.run(target, attacker);
+                    // let cdmg = TecType.格闘.createDmg(target, attacker);
+                    // cdmg.counter = true;
+                    // attacker.doDmg(cdmg); await wait();
                 }
             });
         }
@@ -489,7 +503,7 @@ ActiveTec._valueOf = new Map();
         }
         beforeDoAtk(action, attacker, target, dmg) {
             if (action instanceof ActiveTec && action.type === TecType.格闘 && Math.random() < 0.3) {
-                Util.msg.set(">急所");
+                Util.msg.set("＞急所");
                 dmg.pow.mul *= 1.5;
             }
         }
@@ -721,7 +735,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.run.call(this, attacker, target);
-                Util.msg.set(">反動");
+                Util.msg.set("＞反動");
                 const cdmg = new Dmg({
                     absPow: target.prm(Prm.LIG).total + 1,
                     counter: true,
@@ -1086,7 +1100,7 @@ ActiveTec._valueOf = new Map();
     //--------------------------------------------------------------------------
     Tec.練気 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "練気", info: "自分を<練>化",
+            super({ uniqueName: "練気", info: "自分を＜練＞（格闘・神格・練術・銃術攻撃UP）化",
                 type: TecType.状態, targetings: Targeting.SELF,
                 learning: () => new Learning(50, [Tec.HP自動回復], [[Prm.MAX_HP, 3]]),
                 mul: 1, num: 1, hit: 1,
@@ -1104,7 +1118,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.グレートウォール = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "グレートウォール", info: "味方全体を<盾>化",
+            super({ uniqueName: "グレートウォール", info: "味方全体を＜盾＞（格闘・神格・練術・銃術攻撃軽減）化",
                 type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 learning: () => new Learning(100, [Tec.ひんやりゼリー], [[Prm.MAX_HP, 1]]),
                 mul: 1, num: 1, hit: 1,
@@ -1122,7 +1136,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.ポイズンバタフライ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ポイズンバタフライ", info: "一体を<毒>化",
+            super({ uniqueName: "ポイズンバタフライ", info: "一体を＜毒＞化",
                 type: TecType.状態, targetings: Targeting.SELECT,
                 learning: () => new Learning(100, [Tec.暗黒剣], [[Prm.DRK, 1]]),
                 mul: 1, num: 1, hit: 1,
@@ -1166,7 +1180,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.いやらしの風 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "いやらしの風", info: "味方全体を<癒5>状態にする",
+            super({ uniqueName: "いやらしの風", info: "味方全体を＜癒5＞状態にする",
                 type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 learning: () => new Learning(200, [Tec.癒しの風], [[Prm.MAX_HP, 1]]),
                 mul: 1, num: 1, hit: 10, mp: 6,
@@ -1180,7 +1194,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.風 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "風", info: "自分を<風3>(回避UP)状態にする",
+            super({ uniqueName: "風", info: "自分を＜風3＞（回避UP）状態にする",
                 type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 learning: () => new Learning(100, [Tec.癒しの風], [[Prm.MAX_HP, 1]]),
                 mul: 1, num: 1, hit: 10, mp: 1, tp: 1,
@@ -1194,7 +1208,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.やる気0 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "やる気0", info: "一体を<攻↓3>状態にする",
+            super({ uniqueName: "やる気0", info: "一体を＜攻↓3＞状態にする",
                 type: TecType.状態, targetings: Targeting.SELECT,
                 learning: () => new Learning(60, [Tec.念], [[Prm.PST, 1]]),
                 mul: 1, num: 1, hit: 10, mp: 2,
@@ -1208,7 +1222,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.弱体液 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "弱体液", info: "一体を<防↓3>状態にする",
+            super({ uniqueName: "弱体液", info: "一体を＜防↓3＞状態にする",
                 type: TecType.状態, targetings: Targeting.SELECT,
                 learning: () => new Learning(60, [Tec.ポイズンバタフライ], [[Prm.DRK, 1]]),
                 mul: 1, num: 1, hit: 10, mp: 2,
@@ -1222,7 +1236,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.スコープ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "スコープ", info: "自分を<狙4>（命中上昇）状態にする",
+            super({ uniqueName: "スコープ", info: "自分を＜狙4＞（命中上昇）状態にする",
                 type: TecType.状態, targetings: Targeting.SELF,
                 learning: () => new Learning(100, [Tec.カイゼルの目], [[Prm.GUN, 1], [Prm.ARR, 1]]),
                 mul: 1, num: 1, hit: 10, mp: 1, tp: 1,
