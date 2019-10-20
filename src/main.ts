@@ -17,51 +17,6 @@ import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
 
 
-// {
-//     let runBtnVisible = false;
-//     const run = (()=>{
-//         const res = document.createElement("button");
-//         res.onclick = ()=>{
-//             window.location.href = window.location.href;
-//         };
-//         res.innerText = "再読み込み実行";
-//         res.style.position = "absolute";
-//         res.style.left = "33vw";
-//         res.style.top = "33vh";
-//         res.style.width = "33vw";
-//         res.style.height = "33vh";
-//         return res;
-//     })();
-//     const reload = (()=>{
-//         const reload = document.createElement("button");
-//         reload.onclick = ()=>{
-//             if(runBtnVisible){
-//                 document.body.removeChild(run);
-//             }else{
-//                 document.body.appendChild(run);
-//             }
-//             runBtnVisible = !runBtnVisible;
-//         };
-//         reload.innerText = "再読み込み";
-//         reload.style.position = "fixed";
-//         reload.style.top = "0px";
-//         reload.style.left = "0px";
-//         reload.style.width = "3vh";
-//         reload.style.height = "10vw";
-//         reload.style.transformOrigin = "top left";
-//         reload.style.translate = "translateX(100vw) rotate(90deg)";
-//         return reload;
-//     })();
-//     document.body.appendChild(reload);
-    
-//     // position:fixed;
-//     // width:100vh;
-//     // height:100vw;
-//     // image-rendering: pixelated;
-//     // transform-origin: top left;
-//     // transform: translateX(100vw) rotate(90deg);
-// }
-
 {
     const run = document.getElementById("runreload") as HTMLButtonElement;
     run.onclick = ()=>{
