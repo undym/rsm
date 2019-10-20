@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, RatioLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Color } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
@@ -74,7 +74,8 @@ export class MixScene extends Scene {
         super.clear();
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)
-            .add(new Layout()
+            .add(new RatioLayout()
+            .add(Place.LIST_INFO, new Layout()
             .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
             } }))
@@ -123,11 +124,8 @@ export class MixScene extends Scene {
             return new VariableLayout(() => {
                 return this.choosed ? info : ILayout.empty;
             });
-        })())));
-        super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.LIST_TYPE, typeList);
-        super.add(Place.LIST_BTN, new XLayout()
-            .add((() => {
+        })()))
+            .add(Place.LIST_USE_BTN, (() => {
             const canMix = () => {
                 if (!this.choosedMix) {
                     return false;
@@ -145,13 +143,15 @@ export class MixScene extends Scene {
             return new VariableLayout(() => {
                 return canMix() ? run : noRun;
             });
-        })())
-            .add(new Btn("<<", () => {
+        })())));
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_TYPE, typeList);
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
             if (this.doneAnyMix) {
                 SaveData.save();
             }
             Scene.load(TownScene.ins);
-        })));
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
     }

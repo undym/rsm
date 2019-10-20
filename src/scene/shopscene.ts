@@ -45,6 +45,29 @@ export class ShopScene extends Scene{
     }
 
     init(){
+        const infoLayout =  ILayout.create({draw:(bounds)=>{
+                                Graphics.fillRect(bounds, Color.D_GRAY);
+
+                                const goods = this.choosedGoods;
+                                if(!goods){return;}
+                                
+                                let font = Font.def;
+                                let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
+                                const moveP = ()=> p = p.move(0, font.ratioH);
+                                
+                                font.draw(`[${goods}]`, moveP(), Color.WHITE);
+                                font.draw(`${goods.type}`, moveP(), Color.WHITE);
+                                font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
+                                if(goods.num()){
+                                    font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
+                                }else{
+                                    moveP();
+                                }
+
+                                moveP();
+
+                                font.draw(goods.info, moveP(), Color.WHITE);
+                            }});
         super.clear();
 
 
@@ -52,60 +75,41 @@ export class ShopScene extends Scene{
             new XLayout()
                 .add(this.list)
                 .add(
-                    ILayout.create({draw:(bounds)=>{
-                        Graphics.fillRect(bounds, Color.D_GRAY);
-
-                        const goods = this.choosedGoods;
-                        if(!goods){return;}
-                        
-                        let font = Font.def;
-                        let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
-                        const moveP = ()=> p = p.move(0, font.ratioH);
-                        
-                        font.draw(`[${goods}]`, moveP(), Color.WHITE);
-                        font.draw(`${goods.type}`, moveP(), Color.WHITE);
-                        font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
-                        if(goods.num()){
-                            font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
-                        }else{
-                            moveP();
-                        }
-
-                        moveP();
+                    new RatioLayout()
+                        .add(Place.LIST_INFO, infoLayout)
+                        .add(Place.LIST_USE_BTN, 
+                            (()=>{
+                                const buy = new Btn("買う",async()=>{
+                                    if(!this.choosedGoods){return;}
+                                    
+                                    const goods = this.choosedGoods;
+                                    
+                                    if(!goods.isVisible()){return;}
+                                    if(PlayData.yen >= goods.price()){
+                                        PlayData.yen -= goods.price();
             
-                        font.draw(goods.info, moveP(), Color.WHITE);
-                    }})
+                                        goods.buy();
+                                    }
+                                });
+                                const no = new Btn("-",async()=>{});
+                                return new VariableLayout(()=>{
+                                    if(this.choosedGoods && this.choosedGoods.isVisible()){
+                                        return buy;
+                                    }
+                                    return no;
+                                });
+                            })()
+                        )
+                    
                 )
         );
         
         super.add(Place.YEN, DrawYen.ins);
 
         super.add(Place.LIST_BTN,
-            new XLayout()
-                .add((()=>{
-                    const buy = new Btn("買う",async()=>{
-                        if(!this.choosedGoods){return;}
-                        
-                        const goods = this.choosedGoods;
-                        
-                        if(!goods.isVisible()){return;}
-                        if(PlayData.yen >= goods.price()){
-                            PlayData.yen -= goods.price();
-
-                            goods.buy();
-                        }
-                    });
-                    const no = new Btn("-",async()=>{});
-                    return new VariableLayout(()=>{
-                        if(this.choosedGoods && this.choosedGoods.isVisible()){
-                            return buy;
-                        }
-                        return no;
-                    });
-                })())
-                .add(new Btn("<<", ()=>{
-                    Scene.load( TownScene.ins );
-                }))
+            new Btn("<<", ()=>{
+                Scene.load( TownScene.ins );
+            })
         );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);

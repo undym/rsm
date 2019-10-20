@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Scene } from "../undym/scene.js";
 import { Place } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
-import { ILayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
+import { ILayout, RatioLayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Unit } from "../unit.js";
 import { List } from "../widget/list.js";
@@ -37,7 +37,8 @@ export class ItemScene extends Scene {
         super.clear();
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)
-            .add(new Layout()
+            .add(new RatioLayout()
+            .add(Place.LIST_INFO, new Layout()
             .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
             } }))
@@ -55,6 +56,18 @@ export class ItemScene extends Scene {
                 .add(() => `Rank:${this.selectedItem.rank}`, () => Color.WHITE)
                 .addln(() => this.selectedItem.info, () => Color.WHITE);
             return new VariableLayout(() => this.selected ? info : ILayout.empty);
+        })()))
+            .add(Place.LIST_USE_BTN, (() => {
+            const canUse = new Btn(() => "使用", () => __awaiter(this, void 0, void 0, function* () {
+                yield this.use(this.selectedItem, this.user);
+            }));
+            const cantUse = new Btn(() => "-", () => { });
+            return new VariableLayout(() => {
+                if (!this.selected || !this.selectedItem.canUse(this.user, [this.user])) {
+                    return cantUse;
+                }
+                return canUse;
+            });
         })())));
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, new List()
@@ -71,22 +84,9 @@ export class ItemScene extends Scene {
             .fit()
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
-        super.add(Place.LIST_BTN, new XLayout()
-            .add((() => {
-            const canUse = new Btn(() => "使用", () => __awaiter(this, void 0, void 0, function* () {
-                yield this.use(this.selectedItem, this.user);
-            }));
-            const cantUse = new Btn(() => "-", () => { });
-            return new VariableLayout(() => {
-                if (!this.selected || !this.selectedItem.canUse(this.user, [this.user])) {
-                    return cantUse;
-                }
-                return canUse;
-            });
-        })())
-            .add(new Btn("<<", () => {
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
             this.returnScene();
-        })));
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {

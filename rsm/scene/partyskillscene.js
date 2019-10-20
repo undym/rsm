@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, RatioLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Color } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
@@ -33,7 +33,8 @@ export class PartySkillScene extends Scene {
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.settingSkillList)
             .add(this.list)
-            .add(new Layout()
+            .add(new RatioLayout()
+            .add(Place.LIST_INFO, new Layout()
             .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
             } }))
@@ -42,71 +43,7 @@ export class PartySkillScene extends Scene {
                 .add(() => `[${this.choosedSkill}]`);
             return new VariableLayout(() => this.choosedSkill !== PartySkill.empty ? info : ILayout.empty);
         })()))
-        // .add((()=>{
-        //     const infoBounds = new Rect(0, 0, 1, 0.75);
-        //     const btnBounds = new Rect(0, infoBounds.yh, 1, 1 - infoBounds.yh);
-        //     return new RatioLayout()
-        //         .add(infoBounds, ILayout.create({draw:(bounds)=>{
-        //             Graphics.fillRect(bounds, Color.D_GRAY);
-        //         }}))
-        //         .add(infoBounds, (()=>{
-        //             return new VariableLayout(()=>{
-        //                 const info = new Labels(Font.def)
-        //                                 .add(()=>`[${this.choosedSkill}]`)
-        //                                 ;
-        //                 return this.choosedSkill !== PartySkill.empty ? info : ILayout.empty;
-        //             })
-        //         })())
-        //         .add(btnBounds, (()=>{
-        //             const btns:ILayout[] = [
-        //                 new Btn("<<", ()=>{
-        //                     Scene.load( TownScene.ins );
-        //                 }),
-        //                 (()=>{
-        //                     const set = new Btn("セット",async()=>{
-        //                         for(let i = 0; i < PartySkill.skills.length; i++){
-        //                             if(PartySkill.skills[i] === PartySkill.empty){
-        //                                 PartySkill.skills[i] = this.choosedSkill;
-        //                                 FX_Str(Font.def, `${this.choosedSkill}をセットしました`, {x:0.5, y:0.5}, Color.WHITE);
-        //                                 SettingSkillMap.reset();
-        //                                 this.setSettingSkillList();
-        //                                 return;
-        //                             }
-        //                         }
-        //                         FX_Str(Font.def, `セット枠に空きがありません`, {x:0.5, y:0.5}, Color.WHITE);
-        //                     });
-        //                     const unset = new Btn("外す",async()=>{
-        //                         for(let i = 0; i < PartySkill.skills.length; i++){
-        //                             if(PartySkill.skills[i] === this.choosedSkill){
-        //                                 PartySkill.skills[i] = PartySkill.empty;
-        //                                 FX_Str(Font.def, `${this.choosedSkill}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
-        //                                 SettingSkillMap.reset();
-        //                                 this.setSettingSkillList();
-        //                                 return;
-        //                             }
-        //                         }
-        //                     });
-        //                     const noset = new Btn("-",()=>{});
-        //                     return new VariableLayout(()=>{
-        //                         if(this.choosedSkill === PartySkill.empty){return noset;}
-        //                         if(SettingSkillMap.has( this.choosedSkill )){return unset;}
-        //                         return set;
-        //                     });
-        //                 })(),
-        //             ];
-        //             const w = 2;
-        //             const h = ((btns.length + 1) / w)|0;
-        //             const l = new FlowLayout(w,h);
-        //             for(const o of btns){
-        //                 l.addFromLast(o);
-        //             }
-        //             return l;
-        //         })());
-        // })())
-        );
-        super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.LIST_BTN, new XLayout()
-            .add((() => {
+            .add(Place.LIST_USE_BTN, (() => {
             const set = new Btn("セット", () => __awaiter(this, void 0, void 0, function* () {
                 for (let i = 0; i < PartySkill.skills.length; i++) {
                     if (PartySkill.skills[i] === PartySkill.empty) {
@@ -140,10 +77,11 @@ export class PartySkillScene extends Scene {
                 }
                 return set;
             });
-        })())
-            .add(new Btn("<<", () => {
+        })())));
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
             Scene.load(TownScene.ins);
-        })));
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
     }

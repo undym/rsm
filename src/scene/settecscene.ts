@@ -31,11 +31,6 @@ export class SetTecScene extends Scene{
         super();
         
         this.setSettingTecList(this.target, true);
-        // (this.resetList = keepScroll=>{
-        //     const type = TecType.格闘;
-        //     this.list.clear(keepScroll);
-        //     this.setList( this.target, `${type}`, type.tecs );
-        // })(false);
     }
 
     init(){
@@ -90,20 +85,21 @@ export class SetTecScene extends Scene{
             new XLayout()
                 .add(this.settingTecList)
                 .add(this.list)
-                .add(infoLayout)
+                .add(
+                    new RatioLayout()
+                        .add(Place.LIST_INFO, infoLayout)
+                        .add(Place.LIST_USE_BTN, new VariableLayout(()=> this.useBtn))
+                )
         );
         
         super.add(Place.LIST_TYPE, typeList);
         
-        // super.add(Place.YEN, DrawYen.ins);
         super.add(Place.YEN, new Label(Font.def, ()=>`BP:${this.target.bp}`, ()=>Color.ORANGE).setBase(Font.RIGHT))
 
         super.add(Place.LIST_BTN, 
-            new XLayout()
-                .add(new VariableLayout(()=> this.useBtn))
-                .add(new Btn("<<", ()=>{
-                    Scene.load( TownScene.ins );
-                }))
+            new Btn("<<", ()=>{
+                Scene.load( TownScene.ins );
+            })
         );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
@@ -222,34 +218,35 @@ export class SetTecScene extends Scene{
     }
 
     private createSetBtn(tec:Tec, unit:PUnit){
-        if(unit.tecs.some(t=> t === tec)){
-            return new Btn("外す",async()=>{
-                for(let i = 0; i < unit.tecs.length; i++){
-                    if(unit.tecs[i] === tec){
-                        unit.tecs[i] = Tec.empty;
-                        FX_Str(Font.def, `${tec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
-        
+        const 外す = new Btn("外す",async()=>{
+            for(let i = 0; i < unit.tecs.length; i++){
+                if(unit.tecs[i] === tec){
+                    unit.tecs[i] = Tec.empty;
+                    FX_Str(Font.def, `${tec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
+    
+                    this.setSettingTecList(unit, true);
+                    this.resetList(true);
+                    return;
+                }
+            }
+        });
+        const セット = new Btn("セット",async()=>{
+            for(let i = 0; i < unit.tecs.length; i++){
+                if(unit.tecs[i] === Tec.empty){
+                        unit.tecs[i] = tec;
+                        FX_Str(Font.def, `${tec}をセットしました`, Point.CENTER, Color.WHITE);
+    
                         this.setSettingTecList(unit, true);
-                        this.resetList(true);
                         return;
-                    }
                 }
-            });
-        }else{
-            return new Btn("セット",async()=>{
-                for(let i = 0; i < unit.tecs.length; i++){
-                    if(unit.tecs[i] === Tec.empty){
-                            unit.tecs[i] = tec;
-                            FX_Str(Font.def, `${tec}をセットしました`, Point.CENTER, Color.WHITE);
-        
-                            this.setSettingTecList(unit, true);
-                            return;
-                    }
-                }
-                
-                FX_Str(Font.def, `技欄に空きがありません`, Point.CENTER, Color.WHITE);
-            });
-        }
+            }
+            
+            FX_Str(Font.def, `技欄に空きがありません`, Point.CENTER, Color.WHITE);
+        });
+        return new VariableLayout(()=>{
+            if(tec === Tec.empty){return ILayout.empty;}
+            return unit.tecs.some(t=> t === tec) ? 外す : セット;
+        });
     }
 
     private createLearnBtn(tec:Tec, unit:PUnit){
@@ -306,41 +303,3 @@ const createTecInfo = (tec:Tec, unit:PUnit)=>{
     }
     return l;
 }
-
-// const createSetBtn = (tec:Tec, unit:PUnit)=>{
-//     const choosedTecIsSetting = ()=> unit.tecs.some(t=> t === this.choosedTec)
-//     const set = new Btn("セット",async()=>{
-//         for(let i = 0; i < unit.tecs.length; i++){
-//             if(unit.tecs[i] === Tec.empty){
-//                     unit.tecs[i] = tec;
-//                     FX_Str(Font.def, `${tec}をセットしました`, {x:0.5, y:0.5}, Color.WHITE);
-
-//                     this.setSettingTecList(this.target, true);
-//                     return;
-//             }
-//         }
-        
-//         FX_Str(Font.def, `技欄に空きがありません`, {x:0.5, y:0.5}, Color.WHITE);
-//     });
-//     const unset = new Btn("外す",async()=>{
-//         if(!this.choosedTec){return;}
-
-//         for(let i = 0; i < this.target.tecs.length; i++){
-//             if(this.target.tecs[i] === this.choosedTec){
-//                 this.target.tecs[i] = Tec.empty;
-//                 FX_Str(Font.def, `${this.choosedTec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
-
-//                 this.setSettingTecList(this.target, true);
-//                 this.resetList(true);
-//                 return;
-//             }
-//         }
-//     });
-
-//     return new VariableLayout(()=>{
-//         if(choosedTecIsSetting()){
-//             return unset;
-//         }
-//         return set;
-//     });
-// }

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout, Labels, Layout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, RatioLayout, Labels, Layout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Unit } from "../unit.js";
 import { Input } from "../undym/input.js";
@@ -39,7 +39,8 @@ export class EqScene extends Scene {
         super.clear();
         super.add(Place.LIST_MAIN, new XLayout()
             .add(this.list)
-            .add(new Layout()
+            .add(new RatioLayout()
+            .add(Place.LIST_INFO, new Layout()
             .add(ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
             } }))
@@ -63,48 +64,8 @@ export class EqScene extends Scene {
                 }
                 return ILayout.empty;
             });
-        })())));
-        super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.LIST_TYPE, new List()
-            .init(typeList => {
-            typeList.add({
-                center: () => "全て",
-                push: elm => {
-                    (this.resetList = () => {
-                        this.list.clear();
-                        this.setEarList();
-                        for (const pos of EqPos.values()) {
-                            this.setList(pos);
-                        }
-                    })();
-                },
-            });
-            typeList.add({
-                center: () => "耳",
-                push: elm => {
-                    (this.resetList = () => {
-                        this.list.clear();
-                        this.setEarList();
-                    })();
-                }
-            });
-            for (let pos of EqPos.values()) {
-                typeList.add({
-                    center: () => `${pos}`,
-                    push: elm => {
-                        (this.resetList = () => {
-                            this.list.clear();
-                            this.setList(pos);
-                        })();
-                    },
-                });
-            }
-        })
-            .fit()
-            .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
-            .push(0));
-        super.add(Place.LIST_BTN, new XLayout()
-            .add((() => {
+        })()))
+            .add(Place.LIST_USE_BTN, (() => {
             const set = new Btn("装備", () => __awaiter(this, void 0, void 0, function* () {
                 if (!this.choosedEq) {
                     return;
@@ -162,10 +123,49 @@ export class EqScene extends Scene {
                 }
                 return ILayout.empty;
             });
-        })())
-            .add(new Btn("<<", () => {
+        })())));
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_TYPE, new List()
+            .init(typeList => {
+            typeList.add({
+                center: () => "全て",
+                push: elm => {
+                    (this.resetList = () => {
+                        this.list.clear();
+                        this.setEarList();
+                        for (const pos of EqPos.values()) {
+                            this.setList(pos);
+                        }
+                    })();
+                },
+            });
+            typeList.add({
+                center: () => "耳",
+                push: elm => {
+                    (this.resetList = () => {
+                        this.list.clear();
+                        this.setEarList();
+                    })();
+                }
+            });
+            for (let pos of EqPos.values()) {
+                typeList.add({
+                    center: () => `${pos}`,
+                    push: elm => {
+                        (this.resetList = () => {
+                            this.list.clear();
+                            this.setList(pos);
+                        })();
+                    },
+                });
+            }
+        })
+            .fit()
+            .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
+            .push(0));
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
             Scene.load(TownScene.ins);
-        })));
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {

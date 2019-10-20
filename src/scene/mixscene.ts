@@ -78,53 +78,76 @@ export class MixScene extends Scene{
             new XLayout()
                 .add(this.list)
                 .add(
-                    new Layout()
-                        .add(ILayout.create({draw:(bounds)=>{
-                            Graphics.fillRect(bounds, Color.D_GRAY);
-                        }}))
-                        .add((()=>{
-                            const info = new Labels(Font.def)
-                                                .add(()=>{
-                                                    if(this.choosedMix.countLimit === Mix.LIMIT_INF){
-                                                        return `合成回数(${this.choosedMix.count}/-)`;
-                                                    }else{
-                                                        return `合成回数(${this.choosedMix.count}/${this.choosedMix.countLimit})`;
-                                                    }
-                                                })
-                                                .addArray(()=>{
-                                                    let res:[string,Color?][] = [];
-
-                                                    for(let m of this.choosedMix.materials){
-                                                        const color = m.num <= m.object.num ? Color.WHITE : Color.GRAY;
-                                                        res.push([`[${m.object}] ${m.object.num}/${m.num}`, color]);
-                                                    }
-
-                                                    const result = this.choosedMix.result;
-                                                    if(result){
-                                                        res.push([""]);
-                                                        if(result.object instanceof Eq)    {res.push([`<${result.object.pos}>`]);}
-                                                        if(result.object instanceof EqEar) {res.push([`<耳>`]);}
-                                                        if(result.object instanceof Item)  {res.push([`<${result.object.itemType}>`]);}
-                                                    }
-
-                                                    return res;
-                                                })
-                                                .br()
-                                                .addln(()=>{
-                                                    if(this.choosedMix.info){
-                                                        return this.choosedMix.info;
-                                                    }
-                                                    
-                                                    const result = this.choosedMix.result;
-                                                    if(!result){return "";}
-                                                    return result.object.info;
-                                                })
-                                                ;
-                            return new VariableLayout(()=>{
-                                
-                                return this.choosed ? info : ILayout.empty;
-                            });
-                        })())
+                    new RatioLayout()
+                        .add(Place.LIST_INFO,
+                            new Layout()
+                                .add(ILayout.create({draw:(bounds)=>{
+                                    Graphics.fillRect(bounds, Color.D_GRAY);
+                                }}))
+                                .add((()=>{
+                                    const info = new Labels(Font.def)
+                                                        .add(()=>{
+                                                            if(this.choosedMix.countLimit === Mix.LIMIT_INF){
+                                                                return `合成回数(${this.choosedMix.count}/-)`;
+                                                            }else{
+                                                                return `合成回数(${this.choosedMix.count}/${this.choosedMix.countLimit})`;
+                                                            }
+                                                        })
+                                                        .addArray(()=>{
+                                                            let res:[string,Color?][] = [];
+        
+                                                            for(let m of this.choosedMix.materials){
+                                                                const color = m.num <= m.object.num ? Color.WHITE : Color.GRAY;
+                                                                res.push([`[${m.object}] ${m.object.num}/${m.num}`, color]);
+                                                            }
+        
+                                                            const result = this.choosedMix.result;
+                                                            if(result){
+                                                                res.push([""]);
+                                                                if(result.object instanceof Eq)    {res.push([`<${result.object.pos}>`]);}
+                                                                if(result.object instanceof EqEar) {res.push([`<耳>`]);}
+                                                                if(result.object instanceof Item)  {res.push([`<${result.object.itemType}>`]);}
+                                                            }
+        
+                                                            return res;
+                                                        })
+                                                        .br()
+                                                        .addln(()=>{
+                                                            if(this.choosedMix.info){
+                                                                return this.choosedMix.info;
+                                                            }
+                                                            
+                                                            const result = this.choosedMix.result;
+                                                            if(!result){return "";}
+                                                            return result.object.info;
+                                                        })
+                                                        ;
+                                    return new VariableLayout(()=>{
+                                        
+                                        return this.choosed ? info : ILayout.empty;
+                                    });
+                                })())
+                        )
+                        .add(Place.LIST_USE_BTN,
+                            (()=>{
+                                const canMix = ()=>{
+                                    if(!this.choosedMix){return false;}
+            
+                                    return this.choosedMix.canRun();
+                                };
+                                const run = new Btn("合成",async()=>{
+                                    if(!this.choosedMix){return;}
+            
+                                    this.choosedMix.run();
+            
+                                    this.doneAnyMix = true;
+                                });
+                                const noRun = new Btn("-",async()=>{});
+                                return new VariableLayout(()=>{
+                                    return canMix() ? run : noRun;
+                                });
+                            })()
+                        )
                 )
         );
         
@@ -132,31 +155,12 @@ export class MixScene extends Scene{
 
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN,
-            new XLayout()
-                .add((()=>{
-                    const canMix = ()=>{
-                        if(!this.choosedMix){return false;}
-
-                        return this.choosedMix.canRun();
-                    };
-                    const run = new Btn("合成",async()=>{
-                        if(!this.choosedMix){return;}
-
-                        this.choosedMix.run();
-
-                        this.doneAnyMix = true;
-                    });
-                    const noRun = new Btn("-",async()=>{});
-                    return new VariableLayout(()=>{
-                        return canMix() ? run : noRun;
-                    });
-                })())
-                .add(new Btn("<<", ()=>{
-                    if(this.doneAnyMix){
-                        SaveData.save();
-                    }
-                    Scene.load( TownScene.ins );
-                }))
+            new Btn("<<", ()=>{
+                if(this.doneAnyMix){
+                    SaveData.save();
+                }
+                Scene.load( TownScene.ins );
+            })
         );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);

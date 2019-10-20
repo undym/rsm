@@ -59,27 +59,44 @@ export class ItemScene extends Scene{
             new XLayout()
                 .add(this.list)
                 .add(
-                    new Layout()
-                        .add(ILayout.create({draw:(bounds)=>{
-                            Graphics.fillRect(bounds, Color.D_GRAY);
-                        }}))
-                        .add((()=>{
-                            const info = new Labels(Font.def)
-                                                .add(()=>`[${this.selectedItem}]`, ()=>Color.WHITE)
-                                                .add(()=>{
-                                                    const num = this.selectedItem.consumable 
-                                                                ? `${this.selectedItem.remainingUseNum}/${this.selectedItem.num}`
-                                                                : `${this.selectedItem.num}`
-                                                                ;
-                                                    const limit = this.selectedItem.num >= this.selectedItem.numLimit ? "（所持上限）" : "";
-                                                    return `${num}個${limit}`;
-                                                }, ()=>Color.WHITE)
-                                                .add(()=>`<${this.selectedItem.itemType}>`, ()=>Color.WHITE)
-                                                .add(()=>`Rank:${this.selectedItem.rank}`, ()=>Color.WHITE)
-                                                .addln(()=>this.selectedItem.info, ()=>Color.WHITE)
-                                                ;
-                            return new VariableLayout(()=> this.selected ? info : ILayout.empty);
-                        })())
+                    new RatioLayout()
+                        .add(Place.LIST_INFO,
+                            new Layout()
+                                .add(ILayout.create({draw:(bounds)=>{
+                                    Graphics.fillRect(bounds, Color.D_GRAY);
+                                }}))
+                                .add((()=>{
+                                    const info = new Labels(Font.def)
+                                                        .add(()=>`[${this.selectedItem}]`, ()=>Color.WHITE)
+                                                        .add(()=>{
+                                                            const num = this.selectedItem.consumable 
+                                                                        ? `${this.selectedItem.remainingUseNum}/${this.selectedItem.num}`
+                                                                        : `${this.selectedItem.num}`
+                                                                        ;
+                                                            const limit = this.selectedItem.num >= this.selectedItem.numLimit ? "（所持上限）" : "";
+                                                            return `${num}個${limit}`;
+                                                        }, ()=>Color.WHITE)
+                                                        .add(()=>`<${this.selectedItem.itemType}>`, ()=>Color.WHITE)
+                                                        .add(()=>`Rank:${this.selectedItem.rank}`, ()=>Color.WHITE)
+                                                        .addln(()=>this.selectedItem.info, ()=>Color.WHITE)
+                                                        ;
+                                    return new VariableLayout(()=> this.selected ? info : ILayout.empty);
+                                })())
+                        )
+                        .add(Place.LIST_USE_BTN,(()=>{
+                            const canUse = new Btn(()=>"使用",async()=>{
+                                await this.use( this.selectedItem, this.user );
+                            });
+                            const cantUse = new Btn(()=>"-",()=>{});
+        
+                            return new VariableLayout(()=>{
+                                if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
+                                    return cantUse;
+                                }
+                                return canUse;
+                            });
+                        })()
+                        )
                 )
         );
         
@@ -103,23 +120,9 @@ export class ItemScene extends Scene{
         );
 
         super.add(Place.LIST_BTN,
-            new XLayout()
-                .add((()=>{
-                    const canUse = new Btn(()=>"使用",async()=>{
-                        await this.use( this.selectedItem, this.user );
-                    });
-                    const cantUse = new Btn(()=>"-",()=>{});
-
-                    return new VariableLayout(()=>{
-                        if(!this.selected || !this.selectedItem.canUse(this.user, [this.user])){
-                            return cantUse;
-                        }
-                        return canUse;
-                    });
-                })())
-                .add(new Btn("<<", ()=>{
-                    this.returnScene();
-                }))
+            new Btn("<<", ()=>{
+                this.returnScene();
+            })
         );
 
         super.add(Place.P_BOX, DrawSTBoxes.players);

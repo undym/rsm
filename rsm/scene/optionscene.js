@@ -28,7 +28,7 @@ export const createOptionBtn = () => {
     // const h = 3;
     // const l = new FlowLayout(w,h);
     setOptionBtn();
-    const listH = 1 - Place.P_BOX.h;
+    const listH = 1 - Place.LIST_BTN_H;
     return new RatioLayout()
         .add(new Rect(0, 0, 1, listH), list)
         .add(new Rect(0, listH, 1, 1 - listH), new Btn("<<", () => {

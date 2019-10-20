@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, XLayout } from "../undym/layout.js";
+import { ILayout, VariableLayout, XLayout, RatioLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
 import { Color } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
@@ -36,10 +36,7 @@ export class ShopScene extends Scene {
         this.setList();
     }
     init() {
-        super.clear();
-        super.add(Place.LIST_MAIN, new XLayout()
-            .add(this.list)
-            .add(ILayout.create({ draw: (bounds) => {
+        const infoLayout = ILayout.create({ draw: (bounds) => {
                 Graphics.fillRect(bounds, Color.D_GRAY);
                 const goods = this.choosedGoods;
                 if (!goods) {
@@ -59,10 +56,13 @@ export class ShopScene extends Scene {
                 }
                 moveP();
                 font.draw(goods.info, moveP(), Color.WHITE);
-            } })));
-        super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.LIST_BTN, new XLayout()
-            .add((() => {
+            } });
+        super.clear();
+        super.add(Place.LIST_MAIN, new XLayout()
+            .add(this.list)
+            .add(new RatioLayout()
+            .add(Place.LIST_INFO, infoLayout)
+            .add(Place.LIST_USE_BTN, (() => {
             const buy = new Btn("買う", () => __awaiter(this, void 0, void 0, function* () {
                 if (!this.choosedGoods) {
                     return;
@@ -83,10 +83,11 @@ export class ShopScene extends Scene {
                 }
                 return no;
             });
-        })())
-            .add(new Btn("<<", () => {
+        })())));
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
             Scene.load(TownScene.ins);
-        })));
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
     }

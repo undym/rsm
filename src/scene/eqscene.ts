@@ -50,29 +50,90 @@ export class EqScene extends Scene{
             new XLayout()
                 .add(this.list)
                 .add(
-                    new Layout()
-                        .add(ILayout.create({draw:(bounds)=>{
-                            Graphics.fillRect(bounds, Color.D_GRAY);
-                        }}))
-                        .add((()=>{
-                            const eqInfo = new Labels(Font.def)
-                                                .add(()=>`[${this.choosedEq}]`, ()=>Color.WHITE)
-                                                .add(()=>`<${this.choosedEq.pos}>`, ()=>Color.WHITE)
-                                                .add(()=>`${this.choosedEq.num}個`, ()=>Color.WHITE)
-                                                .addln(()=>this.choosedEq.info, ()=>Color.WHITE)
-                                                ;
-                            const earInfo = new Labels(Font.def)
-                                                .add(()=>`[${this.choosedEar}]`, ()=>Color.WHITE)
-                                                .add(()=>`<耳>`, ()=>Color.WHITE)
-                                                .add(()=>`${this.choosedEar.num}個`, ()=>Color.WHITE)
-                                                .addln(()=>this.choosedEar.info, ()=>Color.WHITE)
-                                                ;
-                            return new VariableLayout(()=>{
-                                if(this.choosedType === ChoosedType.EQ){return eqInfo;}
-                                if(this.choosedType === ChoosedType.EAR){return earInfo;}
-                                return ILayout.empty
-                            });
-                        })())
+                    new RatioLayout()
+                        .add(Place.LIST_INFO,
+                            new Layout()
+                                .add(ILayout.create({draw:(bounds)=>{
+                                    Graphics.fillRect(bounds, Color.D_GRAY);
+                                }}))
+                                .add((()=>{
+                                    const eqInfo = new Labels(Font.def)
+                                                        .add(()=>`[${this.choosedEq}]`, ()=>Color.WHITE)
+                                                        .add(()=>`<${this.choosedEq.pos}>`, ()=>Color.WHITE)
+                                                        .add(()=>`${this.choosedEq.num}個`, ()=>Color.WHITE)
+                                                        .addln(()=>this.choosedEq.info, ()=>Color.WHITE)
+                                                        ;
+                                    const earInfo = new Labels(Font.def)
+                                                        .add(()=>`[${this.choosedEar}]`, ()=>Color.WHITE)
+                                                        .add(()=>`<耳>`, ()=>Color.WHITE)
+                                                        .add(()=>`${this.choosedEar.num}個`, ()=>Color.WHITE)
+                                                        .addln(()=>this.choosedEar.info, ()=>Color.WHITE)
+                                                        ;
+                                    return new VariableLayout(()=>{
+                                        if(this.choosedType === ChoosedType.EQ){return eqInfo;}
+                                        if(this.choosedType === ChoosedType.EAR){return earInfo;}
+                                        return ILayout.empty
+                                    });
+                                })())
+                        )
+                        .add(Place.LIST_USE_BTN,
+                            (()=>{
+                                const set = new Btn("装備",async()=>{
+                                    if(!this.choosedEq){return;}
+                                    
+                                    equip( this.target, this.choosedEq );
+                                    
+                                    FX_Str(Font.def, `${this.choosedEq}をセットしました`, Point.CENTER, Color.WHITE);
+                                });
+                                const unset = new Btn("外す",async()=>{
+                                    if(!this.choosedEq){return;}
+            
+                                    equip( this.target, Eq.getDef(this.pos));
+            
+                                    FX_Str(Font.def, `${this.choosedEq}を外しました`, Point.CENTER, Color.WHITE);
+                                });
+                                const setEar = new Btn("装備",async()=>{
+                                    if(!this.choosedEq){return;}
+                                    
+                                    let index = 0;
+                                    for(let i = 0; i < Unit.EAR_NUM; i++){
+                                        if(this.target.getEqEar(i) === EqEar.getDef()){
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+                                    equipEar( this.target, index, this.choosedEar );
+                                    FX_Str(Font.def, `耳${index+1}に${this.choosedEar}をセットしました`, Point.CENTER, Color.WHITE);
+                                });
+                                const unsetEar = new Btn("外す",async()=>{
+                                    for(let i = 0; i < Unit.EAR_NUM; i++){
+                                        if(this.target.getEqEar(i) === this.choosedEar){
+                                            equipEar( this.target, i, EqEar.getDef() );
+                                            FX_Str(Font.def, `耳${i+1}の${this.choosedEar}を外しました`, Point.CENTER, Color.WHITE);
+                                            break;
+                                        }
+                                    }
+                                });
+                                return new VariableLayout(()=>{
+                                    if(!this.choosedEq){return ILayout.empty;}
+            
+                                    if(this.choosedType === ChoosedType.EQ){
+                                        if(this.target.getEq(this.pos) === this.choosedEq){
+                                            return unset;
+                                        }
+                                        return set;
+                                    }
+            
+                                    if(this.choosedType === ChoosedType.EAR){
+                                        for(let i = 0; i < Unit.EAR_NUM; i++){
+                                            if(this.target.getEqEar(i) === this.choosedEar){return unsetEar;}
+                                        }
+                                        return setEar;
+                                    }
+            
+                                    return ILayout.empty;
+                                });
+                            })())
                 )
         );
         
@@ -121,67 +182,9 @@ export class EqScene extends Scene{
         );
 
         super.add(Place.LIST_BTN,
-            new XLayout()
-                .add((()=>{
-                    const set = new Btn("装備",async()=>{
-                        if(!this.choosedEq){return;}
-                        
-                        equip( this.target, this.choosedEq );
-                        
-                        FX_Str(Font.def, `${this.choosedEq}をセットしました`, Point.CENTER, Color.WHITE);
-                    });
-                    const unset = new Btn("外す",async()=>{
-                        if(!this.choosedEq){return;}
-
-                        equip( this.target, Eq.getDef(this.pos));
-
-                        FX_Str(Font.def, `${this.choosedEq}を外しました`, Point.CENTER, Color.WHITE);
-                    });
-                    const setEar = new Btn("装備",async()=>{
-                        if(!this.choosedEq){return;}
-                        
-                        let index = 0;
-                        for(let i = 0; i < Unit.EAR_NUM; i++){
-                            if(this.target.getEqEar(i) === EqEar.getDef()){
-                                index = i;
-                                break;
-                            }
-                        }
-                        equipEar( this.target, index, this.choosedEar );
-                        FX_Str(Font.def, `耳${index+1}に${this.choosedEar}をセットしました`, Point.CENTER, Color.WHITE);
-                    });
-                    const unsetEar = new Btn("外す",async()=>{
-                        for(let i = 0; i < Unit.EAR_NUM; i++){
-                            if(this.target.getEqEar(i) === this.choosedEar){
-                                equipEar( this.target, i, EqEar.getDef() );
-                                FX_Str(Font.def, `耳${i+1}の${this.choosedEar}を外しました`, Point.CENTER, Color.WHITE);
-                                break;
-                            }
-                        }
-                    });
-                    return new VariableLayout(()=>{
-                        if(!this.choosedEq){return ILayout.empty;}
-
-                        if(this.choosedType === ChoosedType.EQ){
-                            if(this.target.getEq(this.pos) === this.choosedEq){
-                                return unset;
-                            }
-                            return set;
-                        }
-
-                        if(this.choosedType === ChoosedType.EAR){
-                            for(let i = 0; i < Unit.EAR_NUM; i++){
-                                if(this.target.getEqEar(i) === this.choosedEar){return unsetEar;}
-                            }
-                            return setEar;
-                        }
-
-                        return ILayout.empty;
-                    });
-                })())
-                .add(new Btn("<<", ()=>{
-                    Scene.load(TownScene.ins);
-                }))
+            new Btn("<<", ()=>{
+                Scene.load(TownScene.ins);
+            })
         );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
