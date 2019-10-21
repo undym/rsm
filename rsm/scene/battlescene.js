@@ -199,12 +199,14 @@ export class BattleScene extends Scene {
     }
     setPlayerPhase(attacker) {
         return __awaiter(this, void 0, void 0, function* () {
-            const list = new List(8);
+            const list = new List(6);
+            let choosedTec;
             attacker.tecs.forEach((tec, index) => {
                 if (tec instanceof ActiveTec) {
                     list.add({
                         center: () => tec.toString(),
                         push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                            choosedTec = tec;
                             attacker.tecListScroll = index;
                             this.tecInfo.tec = Tec.empty;
                             if (tec.targetings & Targeting.SELECT) {
@@ -231,7 +233,7 @@ export class BattleScene extends Scene {
                             this.tecInfo.tec = tec;
                             this.tecInfo.user = attacker;
                         },
-                        groundColor: () => tec.checkCost(attacker) ? Color.BLACK : Color.GRAY,
+                        groundColor: () => choosedTec ? Color.D_CYAN : Color.BLACK,
                         stringColor: () => tec.checkCost(attacker) ? Color.WHITE : Color.D_GRAY,
                     });
                 }
@@ -242,7 +244,7 @@ export class BattleScene extends Scene {
                             this.tecInfo.tec = tec;
                             this.tecInfo.user = attacker;
                         },
-                        groundColor: () => Color.D_GRAY,
+                        groundColor: () => choosedTec ? Color.D_ORANGE : Color.D_GRAY,
                         stringColor: () => Color.L_GRAY,
                     });
                 }

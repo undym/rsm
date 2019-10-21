@@ -420,7 +420,7 @@ const createDefLayout = () => {
         .set(AdvanceBtn.index, AdvanceBtn.ins);
 };
 class AdvanceBtn {
-    static get index() { return 2; }
+    static get index() { return 0; }
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "進む", () => __awaiter(this, void 0, void 0, function* () {
@@ -456,7 +456,7 @@ class ReturnBtn {
     }
 }
 class ItemBtn {
-    static get index() { return 0; }
+    static get index() { return 2; }
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "アイテム", () => __awaiter(this, void 0, void 0, function* () {

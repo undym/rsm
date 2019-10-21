@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { RatioLayout, XLayout, VariableLayout } from "../undym/layout.js";
+import { RatioLayout, ILayout, VariableLayout } from "../undym/layout.js";
 import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -29,8 +29,7 @@ import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
 import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
-// let choosedDungeon:Dungeon;
-// let visibleDungeonEnterBtn = false;
+let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
     constructor() {
@@ -41,6 +40,25 @@ export class TownScene extends Scene {
         super.add(Place.MSG, Util.msg);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, new VariableLayout(() => TownBtn.ins));
+        super.add(Place.DUNGEON_DATA, (() => {
+            const btn = new Btn("侵入", () => {
+                if (!choosedDungeon) {
+                    return;
+                }
+                Dungeon.now = choosedDungeon;
+                Dungeon.auNow = 0;
+                DungeonEvent.now = DungeonEvent.empty;
+                for (let item of Item.consumableValues()) {
+                    item.remainingUseNum = item.num;
+                }
+                Util.msg.set(`${choosedDungeon}に侵入しました`);
+                const h = 0.15;
+                FX_DungeonName(choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
+                choosedDungeon = undefined;
+                Scene.load(DungeonScene.ins);
+            });
+            return new VariableLayout(() => choosedDungeon ? btn : ILayout.empty);
+        })());
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
@@ -64,9 +82,8 @@ const fullCare = () => {
 };
 class TownBtn {
     static get ins() { return this._ins; }
-    // private static dungeonPage = 0;
     static reset() {
-        const l = new List(8);
+        const l = new List(7);
         l.add({
             center: () => "ダンジョン",
             push: elm => {
@@ -124,14 +141,6 @@ class TownBtn {
                 },
             });
         }
-        // if(PlayData.masteredAnyJob || Debug.debugMode){
-        //     l.add({
-        //         center:()=>"職業",
-        //         push:elm=>{
-        //             Scene.load(new JobChangeScene());
-        //         },
-        //     });
-        // }
         if (Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode) {
             l.add({
                 center: () => "パーティースキル",
@@ -149,7 +158,6 @@ class TownBtn {
         this._ins = l;
     }
     static setDungeonList() {
-        let choosedDungeon;
         const list = new List(8);
         const visibleDungeons = Dungeon.values.filter(d => d.isVisible() || Debug.debugMode);
         for (const d of visibleDungeons) {
@@ -170,25 +178,10 @@ class TownBtn {
         const listH = 0.85;
         this._ins = new RatioLayout()
             .add(new Rect(0, 0, 1, listH), list)
-            .add(new Rect(0, listH, 1, 1 - listH), new XLayout()
-            .add(new Btn("侵入", () => {
-            if (!choosedDungeon) {
-                return;
-            }
-            Dungeon.now = choosedDungeon;
-            Dungeon.auNow = 0;
-            DungeonEvent.now = DungeonEvent.empty;
-            for (let item of Item.consumableValues()) {
-                item.remainingUseNum = item.num;
-            }
-            Util.msg.set(`${choosedDungeon}に侵入しました`);
-            const h = 0.15;
-            FX_DungeonName(choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
-            Scene.load(DungeonScene.ins);
-        }))
-            .add(new Btn("<<", () => {
+            .add(new Rect(0, listH, 1, 1 - listH), new Btn("<<", () => {
+            choosedDungeon = undefined;
             this.reset();
-        })));
+        }));
         ;
     }
 }

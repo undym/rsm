@@ -192,9 +192,9 @@ export class List extends ILayout {
                 }
                 if (this.vec !== 0) {
                     this.scroll += this.vec;
-                    this.vec *= 0.75;
+                    this.vec *= 0.8;
                     this.update = true;
-                    if (this.vec < 0.01) {
+                    if (Math.abs(this.vec) < 0.02) {
                         this.vec = 0;
                     }
                 }

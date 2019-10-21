@@ -40,7 +40,7 @@ export class SetTecScene extends Scene {
                 return this.info;
             });
         })());
-        const typeList = new List()
+        const typeList = new List(7)
             .init(typeList => {
             typeList.add({
                 center: () => "全て",
@@ -66,7 +66,6 @@ export class SetTecScene extends Scene {
                 });
             }
         })
-            .fit()
             .setRadioBtnMode(true)
             .push(0);
         super.clear();

@@ -406,7 +406,7 @@ const createDefLayout = ()=>{
 };
 
 class AdvanceBtn{
-    static get index(){return 2;}
+    static get index(){return 0;}
 
     private static _ins:Btn;
     static get ins():Btn{
@@ -454,7 +454,7 @@ class ReturnBtn{
 
 
 class ItemBtn{
-    static get index(){return 0;}
+    static get index(){return 2;}
 
     private static _ins:Btn;
     static get ins():Btn{

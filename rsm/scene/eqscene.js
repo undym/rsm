@@ -125,7 +125,7 @@ export class EqScene extends Scene {
             });
         })())));
         super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.LIST_TYPE, new List()
+        super.add(Place.LIST_TYPE, new List(7)
             .init(typeList => {
             typeList.add({
                 center: () => "全て",
@@ -160,7 +160,6 @@ export class EqScene extends Scene {
                 });
             }
         })
-            .fit()
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
         super.add(Place.LIST_BTN, new Btn("<<", () => {

@@ -87,6 +87,7 @@ Color.YELLOW = new Color(1, 1, 0, 1);
 Color.CYAN = new Color(0, 1, 1, 1);
 Color.D_CYAN = new Color(0, 0.7, 0.7, 1);
 Color.ORANGE = new Color(1, 0.6, 0, 1);
+Color.D_ORANGE = new Color(0.7, 0.4, 0, 1);
 Color.PINK = new Color(1, 0.75, 0.8, 1);
 /** 肌色*/
 Color.WHEAT = new Color(0.95, 0.85, 0.6, 1);

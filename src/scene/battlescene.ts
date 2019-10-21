@@ -218,13 +218,17 @@ export class BattleScene extends Scene{
     
 
     private async setPlayerPhase(attacker:Unit){
-        const list = new List(8);
+        const list = new List(6);
+
+        let choosedTec:Tec|undefined;
 
         attacker.tecs.forEach((tec,index)=>{
             if(tec instanceof ActiveTec){
                 list.add({
                     center:()=>tec.toString(),
                     push:async elm=>{
+                        choosedTec = tec;
+
                         attacker.tecListScroll = index;
 
                         this.tecInfo.tec = Tec.empty;
@@ -259,7 +263,7 @@ export class BattleScene extends Scene{
                         this.tecInfo.tec = tec;
                         this.tecInfo.user = attacker;
                     },
-                    groundColor:()=>tec.checkCost(attacker) ? Color.BLACK : Color.GRAY,
+                    groundColor:()=>choosedTec ? Color.D_CYAN : Color.BLACK,
                     stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_GRAY,
                 });
             }else if(tec instanceof PassiveTec){
@@ -269,7 +273,7 @@ export class BattleScene extends Scene{
                         this.tecInfo.tec = tec;
                         this.tecInfo.user = attacker;
                     },
-                    groundColor:()=>Color.D_GRAY,
+                    groundColor:()=>choosedTec ? Color.D_ORANGE : Color.D_GRAY,
                     stringColor:()=>Color.L_GRAY,
                 });
             }
