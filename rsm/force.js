@@ -18,6 +18,8 @@ export class Dmg {
         this.result = { value: 0, isHit: false };
         /** */
         this.counter = false;
+        /**追加ダメージ値を返す。 */
+        this.additinalAttacks = [];
         this.clear();
         if (args) {
             if (args.pow) {
@@ -80,6 +82,7 @@ export class Dmg {
         this.result.value = 0;
         this.result.isHit = false;
         this.counter = false;
+        this.additinalAttacks = [];
     }
     calc() {
         const _pow = Dmg.calcDmgElm(this.pow);

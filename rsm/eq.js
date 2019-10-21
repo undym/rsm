@@ -6,14 +6,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Dmg } from "./force.js";
 import { Unit, Prm } from "./unit.js";
 import { Num } from "./mix.js";
 import { ActiveTec, TecType } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { choice } from "./undym/random.js";
-import { wait } from "./undym/scene.js";
 export class EqPos {
     constructor(name) {
         this.toString = () => name;
@@ -363,9 +361,9 @@ EqEar._valueOf = new Map();
         afterDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.銃術) && dmg.result.isHit && Math.random() < 0.5) {
-                    Util.msg.set("＞マーザン砲");
-                    target.doDmg(new Dmg({ absPow: dmg.result.value / 2 }));
-                    yield wait();
+                    dmg.additinalAttacks.push((dmg, index) => {
+                        return dmg.result.value / (index + 2);
+                    });
                 }
             });
         }
@@ -650,9 +648,9 @@ EqEar._valueOf = new Map();
         afterDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && dmg.result.isHit) {
-                    Util.msg.set("＞キャットネイル");
-                    target.doDmg(new Dmg({ absPow: dmg.result.value / 2, }));
-                    yield wait();
+                    dmg.additinalAttacks.push((dmg, index) => {
+                        return dmg.result.value / (index + 2);
+                    });
                 }
             });
         }

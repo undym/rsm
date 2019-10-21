@@ -43,6 +43,8 @@ export class Dmg{
     result = {value:0, isHit:false};
     /** */
     counter = false;
+    /**追加ダメージ値を返す。 */
+    additinalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
 
     constructor(args?:{
         pow?:number,
@@ -92,6 +94,8 @@ export class Dmg{
         this.result.isHit = false;
 
         this.counter = false;
+
+        this.additinalAttacks = [];
     }
 
     calc():{value:number, isHit:boolean}{

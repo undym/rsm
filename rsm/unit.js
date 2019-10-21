@@ -210,6 +210,11 @@ export class Unit {
                 });
                 FX_RotateStr(font, `${result.value}`, p, Color.RED);
                 Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
+                dmg.additinalAttacks.forEach((aa, index) => {
+                    const value = aa(dmg, index) | 0;
+                    this.hp -= value;
+                    Util.msg.set(`+${value}`, Color.RED.bright);
+                });
             }
             else {
                 FX_RotateStr(font, `MISS`, p, Color.RED);

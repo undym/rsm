@@ -350,8 +350,9 @@ export namespace Eq{
                                 pos:EqPos.武, lv:65});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any( TecType.銃術 ) && dmg.result.isHit && Math.random() < 0.5){
-                Util.msg.set("＞マーザン砲");
-                target.doDmg( new Dmg({absPow:dmg.result.value / 2}) ); await wait();
+                dmg.additinalAttacks.push((dmg,index)=>{
+                    return dmg.result.value / (index + 2);
+                });
             }
         }
     }
@@ -582,8 +583,9 @@ export namespace Eq{
                                 pos:EqPos.指, lv:50});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && dmg.result.isHit){
-                Util.msg.set("＞キャットネイル");
-                target.doDmg( new Dmg({absPow:dmg.result.value / 2,}) ); await wait();
+                dmg.additinalAttacks.push((dmg,index)=>{
+                    return dmg.result.value / (index + 2);
+                });
             }
         }
     }
