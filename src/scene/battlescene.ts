@@ -263,8 +263,8 @@ export class BattleScene extends Scene{
                         this.tecInfo.tec = tec;
                         this.tecInfo.user = attacker;
                     },
-                    groundColor:()=>choosedTec ? Color.D_CYAN : Color.BLACK,
-                    stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_GRAY,
+                    groundColor:()=>choosedTec === tec ? Color.D_CYAN : Color.BLACK,
+                    stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
                 });
             }else if(tec instanceof PassiveTec){
                 list.add({
@@ -379,7 +379,7 @@ const win = async()=>{
     for(let p of Unit.players.filter(p=> p.exists)){
         p.bp += bp;
     }
-    Util.msg.set(`BP${bp}入手`, Color.YELLOW.bright);
+    Util.msg.set(`BP+${bp}`, Color.YELLOW.bright);
 
     const yen = (partySkill.yen.base * partySkill.yen.mul)|0;
     PlayData.yen += yen;
