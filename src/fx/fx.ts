@@ -205,36 +205,6 @@ export const FX_RotateStr = (font:Font, str:string, center:{x:number,y:number}, 
 FXTest.add(FX_RotateStr.name,()=> FX_RotateStr(new Font(30, Font.BOLD), "12345", FXTest.target, Color.GREEN));
 
 
-// export const FX_Shake = (dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:-1, y:0, w:0, h:0})=>{
-//     if(srcRatio.x === -1){
-//         srcRatio = dstRatio;
-//     }
-//     const over = 15;
-//     const shakeRange = 0.015;
-//     let tex:Texture;
-//     FX.add((count)=>{
-//         if(count === 0){
-//             tex = Graphics.createTexture(srcRatio);
-//         }
-
-//         const shake = ()=>{
-//             let v = shakeRange * (over - count) / over;
-//             if(Math.random() < 0.5) {return v;}
-//             else                    {return -v;}
-//         };
-//         let r = {
-//             x:dstRatio.x,
-//             y:dstRatio.y,
-//             w:dstRatio.w,
-//             h:dstRatio.h,
-//         };
-//         r.x += shake();
-//         r.y += shake();
-//         tex.draw(r);
-
-//         return count < over;
-//     });
-// };
 export const FX_Shake = (dstRatio:Rect, draw:(bounds:Rect)=>void)=>{
     FX.add(count=>{
         const over = 15;
@@ -266,7 +236,7 @@ FXTest.add(FX_Shake.name, ()=>{
 export const FX_格闘 = (center:{x:number, y:number})=>{
     let particles:{x:number, y:number, vx:number, vy:number, lifeTime:number}[] = [];
     for(let i = 0; i < 40; i++){
-        const pow = 1 + Math.random() * 15;
+        const pow = 1 + Math.random() * 20;
         const rad = Math.PI * 2 * Math.random();
         particles.push({
             x:center.x,
@@ -308,7 +278,7 @@ export const FX_魔法 = (center:{x:number, y:number}) => {
         const b = Math.random();
         for(let i2 = 0; i2 < i2Loop; i2++){
             particles.push({
-                r: 4 + i2 * 8,
+                r: 4 + i2 * 10,
                 rad: Math.PI * 2 * i / iLoop,
                 ordinal:i2,
                 color:new Color(r,g,b, 0.7 + 0.3 * i2 / i2Loop),
@@ -342,13 +312,14 @@ export const FX_神格 = (center:Point)=>{
         const over = 20;
 
         for(let i = 0; i < 3; i++){    
-            Graphics.setLineWidth(6, ()=>{
+            Graphics.setLineWidth(12, ()=>{
                 Graphics.rotate(Math.PI * 2 * 8 / 360, center, ()=>{    
                     const x = center.x + Math.random() * Graphics.dotW * 6;
                     const y = center.y + Math.random() * Graphics.dotH * 6;
                     const color = new Color(0.5 + Math.random(), 0.5 + Math.random(), 0.5 + Math.random());
-                    const w = Graphics.dotW * 30;
-                    const h = Graphics.dotH * 50;
+                    const size = 70;
+                    const w = Graphics.dotW * size;
+                    const h = Graphics.dotH * size * 1.5;
                     //x
                     {
                         const p1 = new Point(x - w / 2, y);
@@ -452,7 +423,7 @@ export const FX_練術 = (attacker:{x:number, y:number}, target:{x:number, y:num
         const points:{x:number,y:number}[] = [];
         for(let i = 0; i < loop; i++){
             const rad = Math.PI * 2 * i / loop * 2.5 + count * 0.6;
-            const r = 25 * i / loop + 25 * Math.random();
+            const r = 40 * i / loop + 40 * Math.random();
             let x = target.x + Math.cos(rad) * r * Graphics.dotW;
             let y = target.y + Math.sin(rad) * r * Graphics.dotH;
             points.push({x:x, y:y});
@@ -481,11 +452,11 @@ export const FX_過去 = (target:{x:number, y:number})=>{
         };
 
         //line: target
-        const loop = 40;
+        const loop = 60;
         const points:{x:number,y:number}[] = [];
         for(let i = 0; i < loop; i++){
             const rad = Math.PI * 2 * i / loop * 2.5;
-            const r = 25 * i / loop + 25 * Math.random();
+            const r = 25 * i / loop + 40 * Math.random();
             let x = target.x + Math.cos(rad) * r * Graphics.dotW;
             let y = target.y + Math.sin(rad) * r * Graphics.dotH;
             points.push({x:x, y:y});
@@ -580,8 +551,8 @@ FXTest.add(FX_銃術.name, () => FX_銃術(FXTest.attacker, FXTest.target));
 
 export const FX_回復 = (target:Point)=>{
     const addStar = (x:number, y:number)=>{
-        let w = Graphics.dotW * 10;
-        let h = Graphics.dotH * 10;
+        let w = Graphics.dotW * 12;
+        let h = Graphics.dotH * 12;
         FX.add(count=>{
             if(count % 2){return true;}
             let _w = w;
@@ -606,7 +577,7 @@ export const FX_回復 = (target:Point)=>{
         const over = 20;
 
         const rad = count * 0.6;
-        const r = 50;
+        const r = 70;
         const x = target.x + Math.cos(rad) * (1 - count / over) * Graphics.dotW * r;
         const y = target.y + Math.sin(rad) * (1 - count / over) * Graphics.dotH * r;
         addStar(x, y);
