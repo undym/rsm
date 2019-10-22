@@ -233,7 +233,14 @@ export class BattleScene extends Scene {
                             this.tecInfo.tec = tec;
                             this.tecInfo.user = attacker;
                         },
-                        groundColor: () => choosedTec === tec ? Color.D_CYAN : Color.BLACK,
+                        groundColor: () => {
+                            if (tec.checkCost(attacker)) {
+                                return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
+                            }
+                            else {
+                                return choosedTec === tec ? Color.RED : Color.D_RED;
+                            }
+                        },
                         stringColor: () => tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
                     });
                 }

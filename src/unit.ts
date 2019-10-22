@@ -244,8 +244,8 @@ export abstract class Unit{
         const result = dmg.calc();
         const font = new Font(80, Font.BOLD);
         const p =   {
-                        x:this.bounds.cx + (1 / Graphics.pixelW) * font.size * (Math.random() * 2 - 1),
-                        y:this.bounds.cy + (1 / Graphics.pixelH) * font.size * (Math.random() * 2 - 1),
+                        x:this.bounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
+                        y:this.bounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
                     };
 
         if(result.isHit){

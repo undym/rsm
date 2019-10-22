@@ -180,6 +180,17 @@ const setDebugBtn = ()=>{
         },
     });
     list.add({
+        center:()=>"BP",
+        push:elm=>{
+            const value = 9999;
+            for(const p of Player.values){
+                p.ins.bp += value;
+            }
+    
+            Util.msg.set(`bp+${value}`);
+        },
+    });
+    list.add({
         center:()=>"EffectTest",
         push:elm=>{
             Scene.load(new EffectTest());

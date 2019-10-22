@@ -16,7 +16,7 @@ export class ILayout {
         this.ilayout_boundsBak = Rect.FULL;
     }
     static get empty() {
-        if (this._empty === undefined) {
+        if (!this._empty) {
             this._empty = new class extends ILayout {
                 ctrlInner(bounds) { }
                 ;

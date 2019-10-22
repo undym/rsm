@@ -91,12 +91,6 @@ class TownBtn {
             },
         });
         l.add({
-            center: () => "技のセット",
-            push: elm => {
-                Scene.load(new SetTecScene());
-            },
-        });
-        l.add({
             center: () => "アイテム",
             push: elm => {
                 Scene.load(ItemScene.ins({
@@ -130,6 +124,14 @@ class TownBtn {
                 center: () => "合成",
                 push: elm => {
                     Scene.load(new MixScene());
+                },
+            });
+        }
+        if (Dungeon.再構成トンネル.dungeonClearCount > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "技のセット",
+                push: elm => {
+                    Scene.load(new SetTecScene());
                 },
             });
         }

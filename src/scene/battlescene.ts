@@ -263,7 +263,13 @@ export class BattleScene extends Scene{
                         this.tecInfo.tec = tec;
                         this.tecInfo.user = attacker;
                     },
-                    groundColor:()=>choosedTec === tec ? Color.D_CYAN : Color.BLACK,
+                    groundColor:()=>{
+                        if(tec.checkCost(attacker)){
+                            return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
+                        }else{
+                            return choosedTec === tec ? Color.RED : Color.D_RED;
+                        }
+                    },
                     stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
                 });
             }else if(tec instanceof PassiveTec){
@@ -507,7 +513,7 @@ const createExBG:()=>(bounds:Rect)=>void = ()=>{
     }
     return bounds=>{
         const xNum = 8;
-        const yNum = 4;
+        const yNum = 6;
         const w = bounds.w / xNum;
         const h = bounds.h / yNum;
         const wHalf = w / 2;
@@ -515,23 +521,24 @@ const createExBG:()=>(bounds:Rect)=>void = ()=>{
         const color = new Color(0,0.25,0.25);
         const lineWidth = 4;
         count++;
-            for(let y = 0; y < yNum; y++){
-                for(let x = 0; x < xNum; x++){
-                    let points:{x:number, y:number}[] = [];
-                    const _x = bounds.x + wHalf + w * x;
-                    const _y = bounds.y + hHalf + h * y;
-                    for(let i = 0; i < vertex; i++){
-                        points.push({
-                            x:_x + rads[i].x * w / 2,
-                            y:_y + rads[i].y * h / 2,
-                        });
-                    }
-                    // Graphics.setLineWidth(lineWidth + Math.sin( x * 0.1 + y * 0.1 + count * 0.1 ) * lineWidth, ()=>{    
-                    Graphics.setLineWidth(Math.abs(Math.sin( x * 0.1 + y * 0.1 + count * 0.05 )) * lineWidth, ()=>{    
-                        Graphics.lines(points, color);
+        
+        for(let y = 0; y < yNum; y++){
+            for(let x = 0; x < xNum; x++){
+                let points:{x:number, y:number}[] = [];
+                const _x = bounds.x + wHalf + w * x;
+                const _y = bounds.y + hHalf + h * y;
+                for(let i = 0; i < vertex; i++){
+                    points.push({
+                        x:_x + rads[i].x * w / 2,
+                        y:_y + rads[i].y * h / 2,
                     });
                 }
+                // Graphics.setLineWidth(lineWidth + Math.sin( x * 0.1 + y * 0.1 + count * 0.1 ) * lineWidth, ()=>{    
+                Graphics.setLineWidth(Math.abs(Math.sin( x * 0.1 + y * 0.1 + count * 0.05 )) * lineWidth, ()=>{    
+                    Graphics.lines(points, color);
+                });
             }
+        }
 
     };
 };

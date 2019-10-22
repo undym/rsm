@@ -236,7 +236,7 @@ export class SetTecScene extends Scene {
                 unit.prm(gp.prm).base += gp.value;
             }
             this.useBtn = this.createSetBtn(tec, unit);
-            // this.resetList(true);
+            this.resetList(true);
         }));
     }
 }

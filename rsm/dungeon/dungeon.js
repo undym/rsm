@@ -451,46 +451,4 @@ Dungeon.auNow = 0;
             });
         }
     };
-    // export const                         PAIN:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"PAIN",
-    //                             rank:1, enemyLv:24, au:100,
-    //                             treasures:  ()=>[Eq.ニケ],
-    //                             exItem:     ()=>Eq.鉄下駄,
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "にこ";
-    //         e.prm(Prm.MAX_HP).base = 200;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Exにこ";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    // };
-    // export const                         CSTEF:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"C･STEF",
-    //                             rank:3, enemyLv:24, au:200,
-    //                             treasures:  ()=>[],
-    //                             exItem:     ()=>Eq.鉄下駄,
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.PAIN.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.天使.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "エンジェル";
-    //         e.prm(Prm.MAX_HP).base = 200;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.天使.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Exエンジェル";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    // };
 })(Dungeon || (Dungeon = {}));

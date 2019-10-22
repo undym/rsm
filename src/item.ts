@@ -527,6 +527,10 @@ export namespace Item{
         constructor(){super({uniqueName:"ジスカルドのメモ", info:"じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん", 
                                 type:ItemType.メモ, rank:9, drop:ItemDrop.BOX, numLimit:1})}
     };
+    export const                         技習得許可証:Item = new class extends Item{
+        constructor(){super({uniqueName:"技習得許可証", info:"技のセットが解放される", 
+                                type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
+    };
     export const                         合成許可証:Item = new class extends Item{
         constructor(){super({uniqueName:"合成許可証", info:"合成が解放される", 
                                 type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}

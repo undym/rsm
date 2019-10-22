@@ -60,7 +60,7 @@ export class TownScene extends Scene{
                     FX_DungeonName( choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
         
                     choosedDungeon = undefined;
-                    
+
                     Scene.load( DungeonScene.ins );
                 });
                 return new VariableLayout(()=>choosedDungeon ? btn : ILayout.empty);
@@ -110,12 +110,6 @@ class TownBtn{
                 },
             });
             l.add({
-                center:()=>"技のセット",
-                push:elm=>{
-                    Scene.load(new SetTecScene());
-                },
-            });
-            l.add({
                 center:()=>"アイテム",
                 push:elm=>{
                     Scene.load( ItemScene.ins({
@@ -149,6 +143,14 @@ class TownBtn{
                     center:()=>"合成",
                     push:elm=>{
                         Scene.load(new MixScene());
+                    },
+                });
+            }
+            if(Item.技習得許可証.num > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"技のセット",
+                    push:elm=>{
+                        Scene.load(new SetTecScene());
                     },
                 });
             }

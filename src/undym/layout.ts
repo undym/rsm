@@ -5,7 +5,7 @@ import { Graphics, Font } from "../graphics/graphics.js";
 export abstract class ILayout{
     private static _empty:ILayout;
     static get empty(){
-        if(this._empty === undefined){
+        if(!this._empty){
             this._empty = new class extends ILayout{
                 ctrlInner(bounds:Rect){};
                 drawInner(bounds:Rect){};

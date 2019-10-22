@@ -106,6 +106,7 @@ export class DrawSTBox extends InnerLayout{
                     ,()=> `${ getUnit().hp|0 }`
                     ,()=> Color.D_GREEN.bright()
                     ,font
+                    ,2
                 ))
                 .add(new XLayout()
                     .setPixelMargin(4)
@@ -116,6 +117,7 @@ export class DrawSTBox extends InnerLayout{
                        ,()=> `${ getUnit().prm(Prm.MP).base|0 }`
                        ,()=> Color.D_RED.bright()
                        ,font
+                       ,2
                     ))
                     .add(new Gage(
                         ()=> getUnit().prm(Prm.TP).base
@@ -124,6 +126,7 @@ export class DrawSTBox extends InnerLayout{
                        ,()=> `${ getUnit().prm(Prm.TP).base|0 }`
                        ,()=> Color.D_CYAN.bright()
                        ,font
+                       ,2
                     ))
                 )
                 .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
@@ -221,31 +224,34 @@ export class DrawUnitDetail extends InnerLayout{
                                 ,()=> `${ getUnit().hp|0 }`
                                 ,()=> Color.D_GREEN.bright()
                                 ,font
+                                ,2
                             ))
-                            .add(new XLayout()
-                                .setPixelMargin(4)
-                                .add(new Gage(
-                                    ()=> getUnit().prm(Prm.MP).base
-                                ,()=> getUnit().prm(Prm.MAX_MP).total
-                                ,()=> "MP"
-                                ,()=> `${ getUnit().prm(Prm.MP).base|0 }`
-                                ,()=> Color.D_RED.bright()
-                                ,font
-                                ))
-                                .add(new Gage(
-                                    ()=> getUnit().prm(Prm.TP).base
-                                ,()=> getUnit().prm(Prm.MAX_TP).total
-                                ,()=> "TP"
-                                ,()=> `${ getUnit().prm(Prm.TP).base|0 }`
-                                ,()=> Color.D_CYAN.bright()
-                                ,font
-                                ))
+                            .add(
+                                new XLayout()
+                                    .setPixelMargin(4)
+                                    .add(new Gage(
+                                        ()=> getUnit().prm(Prm.MP).base
+                                        ,()=> getUnit().prm(Prm.MAX_MP).total
+                                        ,()=> "MP"
+                                        ,()=> `${ getUnit().prm(Prm.MP).base|0 }`
+                                        ,()=> Color.D_RED.bright()
+                                        ,font
+                                        ,2
+                                    ))
+                                    .add(new Gage(
+                                        ()=> getUnit().prm(Prm.TP).base
+                                        ,()=> getUnit().prm(Prm.MAX_TP).total
+                                        ,()=> "TP"
+                                        ,()=> `${ getUnit().prm(Prm.TP).base|0 }`
+                                        ,()=> Color.D_CYAN.bright()
+                                        ,font
+                                        ,2
+                                    ))
                             )
                             .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
                             .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
                             .add(ILayout.empty)
                             .add(ILayout.empty)
-                            
                         )
                         .add(new YLayout()
                             .add(new Label(font, ()=>{
