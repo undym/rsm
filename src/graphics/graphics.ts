@@ -1,4 +1,4 @@
-import { Point } from "../undym/type";
+import { Point, Rect } from "../undym/type.js";
 
 
 
@@ -79,9 +79,13 @@ export class Texture{
 
 
 export class Img{
+    private static LOADING_YET  = 0;
+    private static LOADING_NOW  = 1;
+    private static LOADING_DONE = 2;
+
     private static _empty:Img;
     static get empty():Img{
-        if(this._empty === undefined){
+        if(!this._empty){
             this._empty = new class extends Img{
                 constructor(){super("");}
                 draw(dst:{x:number, y:number, w:number, h:number}, src = {x:0, y:0, w:1, h:1}){}
@@ -89,38 +93,74 @@ export class Img{
         }
         return this._empty;
     }
+    
     private image:HTMLImageElement;
-    private loadComplete = false;
+    private loading:number;
 
-    constructor(src:string){
+    constructor(private src:string, private lazyLoad = false){
         this.image = new Image();
         this.image.crossOrigin = 'anonymous';
-        if(src === ""){return;}
+        if(!src){return;}
 
-        this.image.onload = ()=>{
-            this.loadComplete = true;
-        };
-        this.image.src = src;
+
+        if(lazyLoad){
+            this.loading = Img.LOADING_YET;
+        }else{
+            this.load();
+        }
     }
 
-    draw(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
-        if(!this.loadComplete){return;}
+
+    draw(dstRatio:Rect, srcRatio = Rect.FULL){
+        if(this.loading !== Img.LOADING_DONE){
+            if(this.loading === Img.LOADING_YET){
+                this.load();
+            }
+            return;
+        }
 
         const ctx = Graphics.getRenderTarget().ctx;
-        const w = Graphics.getRenderTarget().canvas.width;
-        const h = Graphics.getRenderTarget().canvas.height;
+        const cw = Graphics.getRenderTarget().canvas.width;
+        const ch = Graphics.getRenderTarget().canvas.height;
         ctx.drawImage(
              this.image
             ,/*sx*/srcRatio.x * this.image.width
             ,/*sy*/srcRatio.y * this.image.height
             ,/*sw*/srcRatio.w * this.image.width
             ,/*sh*/srcRatio.h * this.image.height
-            ,/*dx*/dstRatio.x * w
-            ,/*dy*/dstRatio.y * h
-            ,/*dw*/dstRatio.w * w
-            ,/*dh*/dstRatio.h * h
+            ,/*dx*/dstRatio.x * cw
+            ,/*dy*/dstRatio.y * ch
+            ,/*dw*/dstRatio.w * cw
+            ,/*dh*/dstRatio.h * ch
         );
     }
+
+    // drawCenter(center:Point, zoomMul = 1, srcRatio = Rect.FULL){
+    //     if(this.loading !== Img.LOADING_DONE){
+    //         if(this.loading === Img.LOADING_YET){
+    //             this.load();
+    //         }
+    //         return;
+    //     }
+
+    //     const ctx = Graphics.getRenderTarget().ctx;
+    //     const cw = Graphics.getRenderTarget().canvas.width;
+    //     const ch = Graphics.getRenderTarget().canvas.height;
+    //     const wRatio_2 = this.image.width  / cw * zoomMul / 2;
+    //     const hRatio_2 = this.image.height / ch * zoomMul / 2;
+        
+    //     ctx.drawImage(
+    //          this.image
+    //         ,/*sx*/srcRatio.x * this.image.width
+    //         ,/*sy*/srcRatio.y * this.image.height
+    //         ,/*sw*/srcRatio.w * this.image.width
+    //         ,/*sh*/srcRatio.h * this.image.height
+    //         ,/*dx*/center.x * cw - wRatio_2
+    //         ,/*dy*/center.y * ch - hRatio_2
+    //         ,/*dw*/center.x * cw + wRatio_2
+    //         ,/*dh*/center.y * ch + hRatio_2
+    //     );
+    // }
     
     // drawKeepRatio(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
     //     if(!this.loadComplete){return;}
@@ -141,7 +181,7 @@ export class Img{
     //     );
     // }
 
-    loaded(){return this.loadComplete;}
+    get isLoadComplete():boolean{return this.loading === Img.LOADING_DONE;}
 
     /**読み込みが完了するまでは0を返す。 */
     get pixelW(){return this.image.width;}
@@ -151,6 +191,15 @@ export class Img{
     get ratioW(){return this.image.width / Graphics.getRenderTarget().pixelW;}
     /**現在のRenderTargetを基準としたサイズ比を返す。 */
     get ratioH(){return this.image.height / Graphics.getRenderTarget().pixelH;}
+
+    private load(){
+        this.loading = Img.LOADING_NOW;
+
+        this.image.onload = ()=>{
+            this.loading = Img.LOADING_DONE;
+        };
+        this.image.src = this.src;
+    }
 }
 
 

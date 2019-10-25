@@ -9,7 +9,7 @@ import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str } from "./fx/fx.js";
 import { ConditionType, Condition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
-import { Graphics, Font } from "./graphics/graphics.js";
+import { Graphics, Font, Img } from "./graphics/graphics.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
 
 
@@ -139,8 +139,12 @@ export abstract class Unit{
     exists:boolean = false;
     dead:boolean = false;
 
-    bounds:Rect;
-    get center(){return this.bounds.center;}
+    boxBounds:Rect;
+    get boxCenter(){return this.boxBounds.center;}
+    imgBounds:Rect;
+    get imgCenter(){return this.imgBounds.center;}
+
+    img:Img;
 
     tecs:Tec[] = [];
     /**戦闘時の。 */
@@ -159,7 +163,10 @@ export abstract class Unit{
     //
     //---------------------------------------------------------
     constructor(){
-        this.bounds = Rect.ZERO;
+        this.boxBounds = Rect.ZERO;
+        this.imgBounds = Rect.ZERO;
+
+        this.img = Img.empty;
 
         for(const prm of Prm.values()){
             this.prmSets.push(new PrmSet());
@@ -167,7 +174,7 @@ export abstract class Unit{
 
         this.prm(Prm.MAX_EP).base = Unit.DEF_MAX_EP;
 
-        this.job = Job.しんまい;
+        this.job = Job.訓練生;
         
         for(let type of ConditionType.values){
             this.conditions.push( {condition:Condition.empty, value:0} );
@@ -244,8 +251,8 @@ export abstract class Unit{
         const result = dmg.calc();
         const font = new Font(80, Font.BOLD);
         const p =   {
-                        x:this.bounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
-                        y:this.bounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
+                        x:this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
+                        y:this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
                     };
 
         if(result.isHit){
@@ -253,7 +260,7 @@ export abstract class Unit{
             
             // FX_Shake(this.bounds);
             const stbox = new DrawSTBox(()=>this);
-            FX_Shake(this.bounds, bounds=>{
+            FX_Shake(this.imgBounds, bounds=>{
                 Graphics.fillRect(bounds, Color.BLACK);
                 stbox.draw(bounds)
             });
@@ -442,7 +449,7 @@ export abstract class Unit{
 export class PUnit extends Unit{
     private jobLvs = new Map<Job,{lv:number, exp:number}>();
     private masteredTecs = new Map<Tec,boolean>();
-    // private jobExps = new Map<Job,number>();
+    private jobExps = new Map<Job,number>();
 
     constructor(readonly player:Player){
         super();
@@ -474,14 +481,14 @@ export class PUnit extends Unit{
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
             const growHP = this.prm(Prm.LV).base / 100 + 1;
-            this.growPrm( Prm.MAX_HP, growHP|0 );
+            this.growPrm( Prm.MAX_HP, growHP );
 
-            if(this.prm(Prm.LV).base % 10 === 0){
-                this.growPrm( Prm.MAX_MP, 1 );
-                this.growPrm( Prm.MAX_TP, 1 );
-            }
+            // if(this.prm(Prm.LV).base % 10 === 0){
+            //     this.growPrm( Prm.MAX_MP, 1 );
+            //     this.growPrm( Prm.MAX_TP, 1 );
+            // }
 
-            const addBP = (1 + this.prm(Prm.LV).base / 2)|0;
+            const addBP = (1 + this.prm(Prm.LV).base / 100)|0;
             this.bp += addBP;
             Util.msg.set(`BP+${addBP}`, Color.GREEN.bright);
         }
@@ -497,55 +504,55 @@ export class PUnit extends Unit{
     //
     //
     //---------------------------------------------------------
-    // private getJobLvSet(job:Job):{lv:number, exp:number}{return this.jobLvs.get(job) as {lv:number, exp:number};}
-    // setJobExp(job:Job, exp:number){this.getJobLvSet(job).exp = exp;}
-    // getJobExp(job:Job):number     {return this.getJobLvSet(job).exp;}
-    // async addJobExp(value:number){
-    //     if(this.isMasteredJob(this.job)){return;}
+    private getJobLvSet(job:Job):{lv:number, exp:number}{return this.jobLvs.get(job) as {lv:number, exp:number};}
+    setJobExp(job:Job, exp:number){this.getJobLvSet(job).exp = exp;}
+    getJobExp(job:Job):number     {return this.getJobLvSet(job).exp;}
+    async addJobExp(value:number){
+        if(this.isMasteredJob(this.job)){return;}
 
-    //     const set = this.getJobLvSet(this.job);
+        const set = this.getJobLvSet(this.job);
 
-    //     set.exp += value;
-    //     if(set.exp >= this.job.lvupExp){
-    //         set.lv += 1;
-    //         set.exp = 0;
+        set.exp += value;
+        if(set.exp >= this.job.lvupExp){
+            set.lv += 1;
+            set.exp = 0;
 
-    //         Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
+            Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
             
-    //         for(let grow of this.job.growthPrms){
-    //             this.growPrm( grow.prm, grow.value );
-    //         }
+            for(let grow of this.job.growthPrms){
+                this.growPrm( grow.prm, grow.value );
+            }
 
-    //         const learnings:Tec[] = this.job.learningTecs;
-    //         const ratio = set.lv / this.job.maxLv;
-    //         for(let i = 0; i < learnings.length; i++){
-    //             if(i+1 > ((learnings.length * ratio)|0)){break;}
-    //             if(learnings[i] === Tec.empty){continue;}
-    //             if(this.isMasteredTec(learnings[i])){continue;}
+            const learnings = this.job.learningTecs;
+            const ratio = set.lv / this.job.maxLv;
+            for(let i = 0; i < learnings.length; i++){
+                if(i+1 > ((learnings.length * ratio)|0)){break;}
+                if(learnings[i] === Tec.empty){continue;}
+                if(this.isMasteredTec(learnings[i])){continue;}
 
-    //             this.setMasteredTec(learnings[i], true);
-    //             Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright); await wait();
+                this.setMasteredTec(learnings[i], true);
+                Util.msg.set(`[${learnings[i]}]を習得した！`, Color.GREEN.bright); await wait();
 
-    //             //技スロットに空きがあれば覚えた技をセット
-    //             for(let ei = 0; ei < this.tecs.length; ei++){
-    //                 if(this.tecs[ei] === Tec.empty){
-    //                     this.tecs[ei] = learnings[i];
-    //                     break;
-    //                 }
-    //             }
-    //         }
+                //技スロットに空きがあれば覚えた技をセット
+                for(let ei = 0; ei < this.tecs.length; ei++){
+                    if(this.tecs[ei] === Tec.empty){
+                        this.tecs[ei] = learnings[i];
+                        break;
+                    }
+                }
+            }
 
-    //         if(set.lv >= this.job.maxLv){
-    //             Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
-    //             PlayData.masteredAnyJob = true;
-    //         }
-    //     }
-    // }
+            if(set.lv >= this.job.maxLv){
+                Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
+                PlayData.masteredAnyJob = true;
+            }
+        }
+    }
 
-    // setJobLv(job:Job, lv:number){this.getJobLvSet(job).lv = lv;}
-    // getJobLv(job:Job):number    {return this.getJobLvSet(job).lv;}
+    setJobLv(job:Job, lv:number){this.getJobLvSet(job).lv = lv;}
+    getJobLv(job:Job):number    {return this.getJobLvSet(job).lv;}
 
-    // isMasteredJob(job:Job):boolean{return this.getJobLvSet(job).lv >= job.maxLv;}
+    isMasteredJob(job:Job):boolean{return this.getJobLvSet(job).lv >= job.maxLv;}
     //---------------------------------------------------------
     //
     //
@@ -631,7 +638,7 @@ export namespace Unit{
         if(condition === Condition.empty){return;}
 
         target.setCondition(condition, value);
-        FX_Str(FXFont.def, `<${condition}>`, target.bounds.center, Color.WHITE);
+        FX_Str(FXFont.def, `<${condition}>`, target.imgBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
 
@@ -640,7 +647,7 @@ export namespace Unit{
 
         value = value|0;
         
-        const p = new Point(target.bounds.cx, (target.bounds.y + target.bounds.cy) / 2);
+        const p = new Point(target.imgBounds.cx, (target.imgBounds.y + target.imgBounds.cy) / 2);
         FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
         target.hp += value;
     };
@@ -651,7 +658,7 @@ export namespace Unit{
         value = value|0;
         target.mp += value;
     
-        FX_RotateStr(FXFont.def, `${value}`, target.bounds.center, Color.PINK);
+        FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
     };
     
     export const healTP = (target:Unit, value:number)=>{
@@ -660,7 +667,7 @@ export namespace Unit{
         value = value|0;
         target.tp += value;
     
-        const p = new Point(target.bounds.cx, (target.bounds.cy + target.bounds.yh) / 2);
+        const p = new Point(target.imgBounds.cx, (target.imgBounds.cy + target.imgBounds.yh) / 2);
         FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
     };
 }

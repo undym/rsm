@@ -15,7 +15,7 @@ import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
 
-const list = new List();
+const list = new List(6);
 let returnAction:()=>void = ()=>{};
 
 export const createOptionBtn = ()=>{

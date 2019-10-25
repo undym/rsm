@@ -260,8 +260,7 @@ export namespace Item{
     //-----------------------------------------------------------------
     export const                         サンタクララ薬:Item = new class extends Item{
         constructor(){super({uniqueName:"サンタクララ薬", info:"一体をHP1で蘇生",
-                                type:ItemType.蘇生, rank:0,
-                                consumable:true, drop:ItemDrop.NO,
+                                type:ItemType.蘇生, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     if(target.dead){
                                         target.dead = false;
@@ -280,27 +279,25 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         スティックパン:Item = new class extends Item{
-        constructor(){super({uniqueName:"スティックパン", info:"HP+5%+20",
-                                type:ItemType.HP回復, rank:0,
-                                consumable:true, drop:ItemDrop.NO,
+        constructor(){super({uniqueName:"スティックパン", info:"HP+20",
+                                type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    const value = target.prm(Prm.MAX_HP).total * 0.05 + 20;
+                                    const value = 20;
                                     Unit.healHP(target, value);
                                     if(SceneType.now === SceneType.BATTLE){
-                                        Util.msg.set(`${target.name}のHPが${value|0}回復した`, Color.GREEN.bright); await wait();
+                                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
                                     }
                                 },
         })}
     };
     export const                         硬化スティックパン:Item = new class extends Item{
-        constructor(){super({uniqueName:"硬化スティックパン", info:"HP+5%+50",
-                                type:ItemType.HP回復, rank:0,
-                                consumable:true, drop:ItemDrop.NO,
+        constructor(){super({uniqueName:"硬化スティックパン", info:"HP+50",
+                                type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     const value = target.prm(Prm.MAX_HP).total * 0.05 + 50;
                                     Unit.healHP(target, value);
                                     if(SceneType.now === SceneType.BATTLE){
-                                        Util.msg.set(`${target.name}のHPが${value|0}回復した`, Color.GREEN.bright); await wait();
+                                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
                                     }
                                 },
         })}
@@ -311,14 +308,13 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         赤い水:Item = new class extends Item{
-        constructor(){super({uniqueName:"赤い水", info:"MP+10%+5",
-                                type:ItemType.MP回復, rank:0,
-                                consumable:true, drop:ItemDrop.NO,
+        constructor(){super({uniqueName:"赤い水", info:"MP+5",
+                                type:ItemType.MP回復, rank:0, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    const value = target.prm(Prm.MAX_MP).total * 0.05 + 5;
+                                    const value = 5;
                                     Unit.healMP(target, value)
                                     if(SceneType.now === SceneType.BATTLE){
-                                        Util.msg.set(`${target.name}のMPが${value|0}回復した`, Color.GREEN.bright); await wait();
+                                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright); await wait();
                                     }
                                 },
         })}
@@ -361,11 +357,11 @@ export namespace Item{
     //-----------------------------------------------------------------
     export const                         散弾:Item = new class extends Item{
         constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
-                                type:ItemType.弾, rank:10, consumable:true, drop:ItemDrop.NO,})}
+                                type:ItemType.弾, rank:10, drop:ItemDrop.NO,})}
     };
     export const                         夜叉の矢:Item = new class extends Item{
         constructor(){super({uniqueName:"夜叉の矢", info:"ヤクシャに使用",
-                                type:ItemType.弾, rank:10, consumable:true, drop:ItemDrop.NO,})}
+                                type:ItemType.弾, rank:10, drop:ItemDrop.NO,})}
     };
     //-----------------------------------------------------------------
     //
@@ -482,6 +478,16 @@ export namespace Item{
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
     };
+    export const                         ささやかな贈り物:Item = new class extends Item{
+        constructor(){super({uniqueName:"ささやかな贈り物", info:"BP+1",
+                                type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    target.bp += 1;
+                                    FX_Str(Font.def, `${target.name}のBP+1`, Point.CENTER, Color.WHITE);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
     //-----------------------------------------------------------------
     //
     //書
@@ -515,10 +521,10 @@ export namespace Item{
     //メモ
     //
     //-----------------------------------------------------------------
-    export const                         消耗品のメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"消耗品のメモ", info:"スティックパンなどの一部消耗品はダンジョンに入る度に補充される", 
-                                type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
-    };
+    // export const                         消耗品のメモ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"消耗品のメモ", info:"スティックパンなどの一部消耗品はダンジョンに入る度に補充される", 
+    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    // };
     export const                         夏のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"夏のメモ", info:"夏はいつ終わるの？", 
                                 type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}

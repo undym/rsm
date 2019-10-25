@@ -5,7 +5,7 @@ import Gage from "../widget/gage.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Color, Rect } from "../undym/type.js";
 import { Scene } from "../undym/scene.js";
-import { PlayData, Util, Debug } from "../util.js";
+import { PlayData, Util, Debug, Place } from "../util.js";
 import { Unit, Prm, PUnit, EUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { ConditionType } from "../condition.js";
@@ -168,7 +168,13 @@ export class DrawSTBoxes extends InnerLayout{
                     l.add(new Layout()
                         .add(new DrawSTBox(()=> getUnit(i)))
                         .add(ILayout.create({draw:(bounds)=>{
-                            getUnit(i).bounds = bounds;
+                            const u = getUnit(i);
+                            u.boxBounds = bounds;
+                            if(u instanceof PUnit){
+                                u.imgBounds = Place.P_UNIT(i);
+                            }else{
+                                u.imgBounds = Place.E_UNIT(i);
+                            }
                         }}))
                     );
                 }
@@ -180,7 +186,7 @@ export class DrawSTBoxes extends InnerLayout{
                 for(let i = 0; i < len; i++){
                     const u = getUnit(i);
                     if(!u.exists){continue;}
-                    if(!u.bounds.contains( Input.point )){continue;}
+                    if(!u.boxBounds.contains( Input.point )){continue;}
     
                     DrawUnitDetail.target = u;
                     break;
@@ -366,3 +372,27 @@ const createConditionLabel = (font:Font, unit:()=>Unit, types:ReadonlyArray<Cond
         ,()=>color
     );
 };
+
+
+export class DrawUnits extends InnerLayout{
+    private static _ins:DrawUnits;
+    static get ins(){return this._ins ? this._ins : (this._ins = new DrawUnits());}
+    constructor(){
+        super();
+
+        super.add(ILayout.create({draw:bounds=>{
+            Unit.all
+                .filter(u=> u.exists)
+                .forEach(u=>{
+                    if(u instanceof PUnit){
+                        const ctx = Graphics.context;
+                        ctx.scale(-1,1);
+                        u.img.draw( new Rect(-u.imgBounds.x - u.imgBounds.w, u.imgBounds.y, u.imgBounds.w, u.imgBounds.h) );
+                        ctx.scale(-1,1);
+                    }else{
+                        u.img.draw( u.imgBounds );   
+                    }
+                });
+        }}));
+    }
+}

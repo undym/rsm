@@ -90,7 +90,7 @@ export class ItemScene extends Scene {
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
-                Graphics.fillRect(this.user.bounds, new Color(0, 1, 1, 0.2));
+                Graphics.fillRect(this.user.boxBounds, new Color(0, 1, 1, 0.2));
             } }));
         super.add(Rect.FULL, ILayout.create({ ctrl: (bounds) => {
                 if (!this.selectUser) {
@@ -100,7 +100,7 @@ export class ItemScene extends Scene {
                     return;
                 }
                 for (let p of Unit.players.filter(p => p.exists)) {
-                    if (p.bounds.contains(Input.point)) {
+                    if (p.boxBounds.contains(Input.point)) {
                         this.user = p;
                         break;
                     }

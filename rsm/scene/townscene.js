@@ -83,7 +83,7 @@ const fullCare = () => {
 class TownBtn {
     static get ins() { return this._ins; }
     static reset() {
-        const l = new List(7);
+        const l = new List(6);
         l.add({
             center: () => "ダンジョン",
             push: elm => {
@@ -113,12 +113,14 @@ class TownBtn {
                 }));
             },
         });
-        l.add({
-            center: () => "お店",
-            push: elm => {
-                Scene.load(new ShopScene());
-            },
-        });
+        if (Dungeon.再構成トンネル.dungeonClearCount > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "お店",
+                push: elm => {
+                    Scene.load(new ShopScene());
+                },
+            });
+        }
         if (Item.合成許可証.num > 0 || Debug.debugMode) {
             l.add({
                 center: () => "合成",
@@ -127,7 +129,7 @@ class TownBtn {
                 },
             });
         }
-        if (Dungeon.再構成トンネル.dungeonClearCount > 0 || Debug.debugMode) {
+        if (Item.技習得許可証.num > 0 || Debug.debugMode) {
             l.add({
                 center: () => "技のセット",
                 push: elm => {
@@ -221,7 +223,7 @@ const FX_DungeonName = (name, bounds) => {
                 return false;
             }
         }
-        Graphics.fillRect(bounds, Color.BLACK);
+        Graphics.fillRect(bounds, Color.D_GRAY);
         Graphics.setAlpha(alpha, () => {
             for (let i = 0; i < w; i += 2) {
                 tex.draw({

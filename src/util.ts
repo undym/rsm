@@ -2,7 +2,7 @@ import { Rect, Color } from "./undym/type.js";
 import Msg from "./widget/msg.js";
 import { XLayout } from "./undym/layout.js";
 import { Unit } from "./unit.js";
-import { Graphics } from "./graphics/graphics.js";
+import { Graphics, Img } from "./graphics/graphics.js";
 import { Scene } from "./undym/scene.js";
 import { TownScene } from "./scene/townscene.js";
 import DungeonScene from "./scene/dungeonscene.js";
@@ -36,11 +36,46 @@ export class Place{
     static get MAIN(){return new Rect(Place.ST_W, 0, 0.55, 1);}
     // static readonly MAIN = new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2);
     static get MSG(){return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.h * 0.8);}
-    static get DUNGEON_DATA(){return new Rect(Place.MSG.x, Place.MSG.yh, Place.MSG.w, Place.MAIN.h - Place.MSG.h);}
+    static get DUNGEON_DATA(){
+        const w = Place.MSG.w * 0.8;
+        return new Rect(Place.MSG.xw - w / 2, Place.MSG.yh, w, Place.MAIN.h - Place.MSG.h);
+}
     
+    private static readonly BOX_H = 1;
 
-    static get E_BOX(){return new Rect(0, 0, Place.ST_W, 1);}
-    static get P_BOX(){return new Rect(Place.MAIN.xw + Graphics.dotW, 0, Place.ST_W, 1);}
+    static get E_BOX(){return new Rect(0, 0, Place.ST_W, Place.BOX_H);}
+    static get P_BOX(){return new Rect(Place.MAIN.xw + Graphics.dotW, 0, Place.ST_W, Place.BOX_H);}
+
+    static E_UNIT(i:number){
+        const u = Unit.enemies[i];
+        if(!u.img.isLoadComplete){return Rect.ZERO;}
+
+        const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.enemies.length / 2;
+        const zoomMul = imgScreenPixelH / u.img.pixelH;
+        const imgScreenRatioW = u.img.ratioW * zoomMul;
+        const imgScreenRatioH = u.img.ratioH * zoomMul;
+        return  new Rect(
+                    Place.E_BOX.x + imgScreenRatioW,
+                    Place.E_BOX.y + Place.BOX_H / Unit.enemies.length * (i + 0.5) - imgScreenRatioH / 2,
+                    imgScreenRatioW,
+                    imgScreenRatioH,
+                );
+    }
+    static P_UNIT(i:number){
+        const u = Unit.players[i];
+        if(!u.img.isLoadComplete){return Rect.ZERO;}
+
+        const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.players.length / 2;
+        const zoomMul = imgScreenPixelH / u.img.pixelH;
+        const imgScreenRatioW = u.img.ratioW * zoomMul;
+        const imgScreenRatioH = u.img.ratioH * zoomMul;
+        return  new Rect(
+                    Place.P_BOX.x - imgScreenRatioW,
+                    Place.P_BOX.y + Place.BOX_H / Unit.players.length * (i + 0.5) - imgScreenRatioH / 2,
+                    imgScreenRatioW,
+                    imgScreenRatioH,
+                );
+    }
     
     static get YEN(){return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1-Place.P_BOX.xw - Graphics.dotW * 3, 0.03);}
     static get BTN(){return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH);}

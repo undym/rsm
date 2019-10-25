@@ -1,6 +1,6 @@
 import { Scene, wait, cwait } from "../undym/scene.js";
 import { Place, Util, PlayData, SceneType } from "../util.js";
-import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
+import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
 import { VariableLayout, ILayout, Layout, YLayout, RatioLayout, FlowLayout, Labels, XLayout, Label } from "../undym/layout.js";
 import { Rect, Color, Point } from "../undym/type.js";
 import { Unit, PUnit, Prm, EUnit } from "../unit.js";
@@ -122,6 +122,7 @@ export class BattleScene extends Scene{
         })());
 
         super.add(Place.MSG, Util.msg);
+        super.add(Rect.FULL, DrawUnits.ins);
 
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, btnSpace);
@@ -133,7 +134,7 @@ export class BattleScene extends Scene{
         super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
             if(!Battle.getPhaseUnit().exists){return;}
 
-            Graphics.fillRect(Battle.getPhaseUnit().bounds, new Color(0,1,1,0.2));
+            Graphics.fillRect(Battle.getPhaseUnit().boxBounds, new Color(0,1,1,0.2));
         }}));
 
         super.add(Rect.FULL, new VariableLayout(()=> chooseTargetLayout));
@@ -329,7 +330,7 @@ export class BattleScene extends Scene{
                 if(Input.click){
                     for(const u of Unit.all){
                         if(!u.exists){continue;}
-                        if(!u.bounds.contains( Input.point )){continue;}
+                        if(!u.boxBounds.contains( Input.point )){continue;}
 
                         chooseTargetLayout = ILayout.empty;
                         await chooseAction([u]);
@@ -348,7 +349,7 @@ export class BattleScene extends Scene{
                     for(const u of Unit.all){
                         if(!u.exists){continue;}
 
-                        Graphics.drawRect( u.bounds, Color.RED );
+                        Graphics.drawRect( u.boxBounds, Color.RED );
                     }
                 });
             },

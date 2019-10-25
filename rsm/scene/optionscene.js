@@ -21,7 +21,7 @@ import { Player } from "../player.js";
 import { SaveData } from "../savedata.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
-const list = new List();
+const list = new List(6);
 let returnAction = () => { };
 export const createOptionBtn = () => {
     // const w = 4;
@@ -166,7 +166,6 @@ const setDebugBtn = () => {
         center: () => "BP",
         push: elm => {
             const value = 9999;
-            PlayData.yen += value;
             for (const p of Player.values) {
                 p.ins.bp += value;
             }

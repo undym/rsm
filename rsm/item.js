@@ -222,8 +222,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.サンタクララ薬 = new class extends Item {
         constructor() {
             super({ uniqueName: "サンタクララ薬", info: "一体をHP1で蘇生",
-                type: ItemType.蘇生, rank: 0,
-                consumable: true, drop: ItemDrop.NO,
+                type: ItemType.蘇生, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     if (target.dead) {
                         target.dead = false;
@@ -245,14 +244,13 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.スティックパン = new class extends Item {
         constructor() {
-            super({ uniqueName: "スティックパン", info: "HP+5%+20",
-                type: ItemType.HP回復, rank: 0,
-                consumable: true, drop: ItemDrop.NO,
+            super({ uniqueName: "スティックパン", info: "HP+20",
+                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = target.prm(Prm.MAX_HP).total * 0.05 + 20;
+                    const value = 20;
                     Unit.healHP(target, value);
                     if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のHPが${value | 0}回復した`, Color.GREEN.bright);
+                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
                         yield wait();
                     }
                 }),
@@ -261,14 +259,13 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.硬化スティックパン = new class extends Item {
         constructor() {
-            super({ uniqueName: "硬化スティックパン", info: "HP+5%+50",
-                type: ItemType.HP回復, rank: 0,
-                consumable: true, drop: ItemDrop.NO,
+            super({ uniqueName: "硬化スティックパン", info: "HP+50",
+                type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     const value = target.prm(Prm.MAX_HP).total * 0.05 + 50;
                     Unit.healHP(target, value);
                     if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のHPが${value | 0}回復した`, Color.GREEN.bright);
+                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
                         yield wait();
                     }
                 }),
@@ -282,14 +279,13 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.赤い水 = new class extends Item {
         constructor() {
-            super({ uniqueName: "赤い水", info: "MP+10%+5",
-                type: ItemType.MP回復, rank: 0,
-                consumable: true, drop: ItemDrop.NO,
+            super({ uniqueName: "赤い水", info: "MP+5",
+                type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = target.prm(Prm.MAX_MP).total * 0.05 + 5;
+                    const value = 5;
                     Unit.healMP(target, value);
                     if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のMPが${value | 0}回復した`, Color.GREEN.bright);
+                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright);
                         yield wait();
                     }
                 }),
@@ -341,13 +337,13 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.散弾 = new class extends Item {
         constructor() {
             super({ uniqueName: "散弾", info: "ショットガンに使用",
-                type: ItemType.弾, rank: 10, consumable: true, drop: ItemDrop.NO, });
+                type: ItemType.弾, rank: 10, drop: ItemDrop.NO, });
         }
     };
     Item.夜叉の矢 = new class extends Item {
         constructor() {
             super({ uniqueName: "夜叉の矢", info: "ヤクシャに使用",
-                type: ItemType.弾, rank: 10, consumable: true, drop: ItemDrop.NO, });
+                type: ItemType.弾, rank: 10, drop: ItemDrop.NO, });
         }
     };
     //-----------------------------------------------------------------
@@ -487,6 +483,18 @@ Item.DEF_NUM_LIMIT = 9999;
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
     };
+    Item.ささやかな贈り物 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ささやかな贈り物", info: "BP+1",
+                type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    target.bp += 1;
+                    FX_Str(Font.def, `${target.name}のBP+1`, Point.CENTER, Color.WHITE);
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
+    };
     //-----------------------------------------------------------------
     //
     //書
@@ -521,12 +529,10 @@ Item.DEF_NUM_LIMIT = 9999;
     //メモ
     //
     //-----------------------------------------------------------------
-    Item.消耗品のメモ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "消耗品のメモ", info: "スティックパンなどの一部消耗品はダンジョンに入る度に補充される",
-                type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
-        }
-    };
+    // export const                         消耗品のメモ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"消耗品のメモ", info:"スティックパンなどの一部消耗品はダンジョンに入る度に補充される", 
+    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    // };
     Item.夏のメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "夏のメモ", info: "夏はいつ終わるの？",
@@ -537,6 +543,12 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん",
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.技習得許可証 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "技習得許可証", info: "技のセットが解放される",
+                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
     Item.合成許可証 = new class extends Item {

@@ -83,14 +83,14 @@ export class SetTecScene extends Scene {
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
-                Graphics.fillRect(this.target.bounds, new Color(0, 1, 1, 0.2));
+                Graphics.fillRect(this.target.boxBounds, new Color(0, 1, 1, 0.2));
             } }));
         super.add(Rect.FULL, ILayout.create({ ctrl: (bounds) => {
                 if (!Input.click) {
                     return;
                 }
                 for (let p of Unit.players.filter(p => p.exists)) {
-                    if (p.bounds.contains(Input.point)) {
+                    if (p.boxBounds.contains(Input.point)) {
                         this.target = p;
                         this.setSettingTecList(p, false);
                         this.resetList(false);
@@ -164,30 +164,26 @@ export class SetTecScene extends Scene {
                 });
             }
         });
-        tecs
-            .filter(tec => {
-            if (unit.isMasteredTec(tec)) {
-                return false;
-            }
-            const learning = tec.learning;
-            return (learning && learning.origins.every(t => unit.isMasteredTec(t)));
-        })
-            .forEach(tec => {
-            const learning = tec.learning;
-            if (!learning) {
-                return;
-            }
-            this.list.add({
-                left: () => `${learning.bp}`,
-                right: () => `${tec}`,
-                groundColor: () => tec === this.choosedTec ? Color.ORANGE.darker() : Color.BLACK,
-                push: (elm) => {
-                    this.choosedTec = tec;
-                    this.info = createTecInfo(tec, unit);
-                    this.useBtn = this.createLearnBtn(tec, unit);
-                },
-            });
-        });
+        // tecs
+        //     .filter(tec=>{
+        //         if(unit.isMasteredTec(tec)){return false;}
+        //         const learning = tec.learning;
+        //         return (learning && learning.origins.every(t=> unit.isMasteredTec(t)));
+        //     })
+        //     .forEach(tec=>{
+        //         const learning = tec.learning;
+        //         if(!learning){return;}
+        //         this.list.add({
+        //             left:()=>`${learning.bp}`,
+        //             right:()=>`${tec}`,
+        //             groundColor:()=>tec === this.choosedTec ? Color.ORANGE.darker() : Color.BLACK,
+        //             push:(elm)=>{
+        //                 this.choosedTec = tec;
+        //                 this.info = createTecInfo(tec, unit);
+        //                 this.useBtn = this.createLearnBtn(tec, unit);
+        //             },
+        //         });
+        //     });
     }
     createSetBtn(tec, unit) {
         const 外す = new Btn("外す", () => __awaiter(this, void 0, void 0, function* () {
@@ -219,26 +215,6 @@ export class SetTecScene extends Scene {
             return unit.tecs.some(t => t === tec) ? 外す : セット;
         });
     }
-    createLearnBtn(tec, unit) {
-        return new Btn("覚える", () => __awaiter(this, void 0, void 0, function* () {
-            const learning = tec.learning;
-            if (!learning) {
-                return;
-            }
-            if (unit.bp < learning.bp) {
-                FX_Str(Font.def, `BPが足りない`, Point.CENTER, Color.WHITE);
-                return;
-            }
-            unit.bp -= learning.bp;
-            unit.setMasteredTec(tec, true);
-            FX_Str(Font.def, `${unit.name}は[${tec}]を習得した`, Point.CENTER, Color.WHITE);
-            for (const gp of learning.growthPrms) {
-                unit.prm(gp.prm).base += gp.value;
-            }
-            this.useBtn = this.createSetBtn(tec, unit);
-            this.resetList(true);
-        }));
-    }
 }
 const createTecInfo = (tec, unit) => {
     const l = new Labels(Font.def)
@@ -263,15 +239,15 @@ const createTecInfo = (tec, unit) => {
         return res;
     })
         .addln(() => tec.info);
-    if (!unit.isMasteredTec(tec)) {
-        l.br();
-        l.add(() => "習得ボーナス", () => Color.ORANGE);
-        const learning = tec.learning;
-        if (learning) {
-            for (const gp of learning.growthPrms) {
-                l.add(() => ` ${gp.prm}+${gp.value}`, () => Color.ORANGE);
-            }
-        }
-    }
+    // if(!unit.isMasteredTec(tec)){
+    //     l.br();
+    //     l.add(()=>"習得ボーナス", ()=>Color.ORANGE);
+    //     const learning = tec.learning;
+    //     if(learning){
+    //         for(const gp of learning.growthPrms){
+    //             l.add(()=>` ${gp.prm}+${gp.value}` ,()=>Color.ORANGE);
+    //         }
+    //     }
+    // }
     return l;
 };

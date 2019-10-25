@@ -2,8 +2,8 @@ import { ILayout, Label, XLayout, Layout, VariableLayout, InnerLayout } from "..
 import { YLayout } from "../undym/layout.js";
 import Gage from "../widget/gage.js";
 import { Dungeon } from "../dungeon/dungeon.js";
-import { Color } from "../undym/type.js";
-import { PlayData, Debug } from "../util.js";
+import { Color, Rect } from "../undym/type.js";
+import { PlayData, Debug, Place } from "../util.js";
 import { Unit, Prm, PUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { ConditionType } from "../condition.js";
@@ -66,11 +66,11 @@ export class DrawSTBox extends InnerLayout {
             .add(new XLayout()
             .add(new Label(font, () => getUnit().name))
             .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`).setBase(Font.RIGHT)))
-            .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font))
+            .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font, 2))
             .add(new XLayout()
             .setPixelMargin(4)
-            .add(new Gage(() => getUnit().prm(Prm.MP).base, () => getUnit().prm(Prm.MAX_MP).total, () => "MP", () => `${getUnit().prm(Prm.MP).base | 0}`, () => Color.D_RED.bright(), font))
-            .add(new Gage(() => getUnit().prm(Prm.TP).base, () => getUnit().prm(Prm.MAX_TP).total, () => "TP", () => `${getUnit().prm(Prm.TP).base | 0}`, () => Color.D_CYAN.bright(), font)))
+            .add(new Gage(() => getUnit().prm(Prm.MP).base, () => getUnit().prm(Prm.MAX_MP).total, () => "MP", () => `${getUnit().prm(Prm.MP).base | 0}`, () => Color.D_RED.bright(), font, 2))
+            .add(new Gage(() => getUnit().prm(Prm.TP).base, () => getUnit().prm(Prm.MAX_TP).total, () => "TP", () => `${getUnit().prm(Prm.TP).base | 0}`, () => Color.D_CYAN.bright(), font, 2)))
             .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
             .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
             .add(ILayout.empty))
@@ -106,7 +106,14 @@ export class DrawSTBoxes extends InnerLayout {
                 l.add(new Layout()
                     .add(new DrawSTBox(() => getUnit(i)))
                     .add(ILayout.create({ draw: (bounds) => {
-                        getUnit(i).bounds = bounds;
+                        const u = getUnit(i);
+                        u.boxBounds = bounds;
+                        if (u instanceof PUnit) {
+                            u.imgBounds = Place.P_UNIT(i);
+                        }
+                        else {
+                            u.imgBounds = Place.E_UNIT(i);
+                        }
                     } })));
             }
             return l;
@@ -120,7 +127,7 @@ export class DrawSTBoxes extends InnerLayout {
                     if (!u.exists) {
                         continue;
                     }
-                    if (!u.bounds.contains(Input.point)) {
+                    if (!u.boxBounds.contains(Input.point)) {
                         continue;
                     }
                     DrawUnitDetail.target = u;
@@ -147,11 +154,11 @@ export class DrawUnitDetail extends InnerLayout {
             .add(new XLayout()
             .add(new Label(font, () => getUnit().name))
             .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`).setBase(Font.RIGHT)))
-            .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font))
+            .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font, 2))
             .add(new XLayout()
             .setPixelMargin(4)
-            .add(new Gage(() => getUnit().prm(Prm.MP).base, () => getUnit().prm(Prm.MAX_MP).total, () => "MP", () => `${getUnit().prm(Prm.MP).base | 0}`, () => Color.D_RED.bright(), font))
-            .add(new Gage(() => getUnit().prm(Prm.TP).base, () => getUnit().prm(Prm.MAX_TP).total, () => "TP", () => `${getUnit().prm(Prm.TP).base | 0}`, () => Color.D_CYAN.bright(), font)))
+            .add(new Gage(() => getUnit().prm(Prm.MP).base, () => getUnit().prm(Prm.MAX_MP).total, () => "MP", () => `${getUnit().prm(Prm.MP).base | 0}`, () => Color.D_RED.bright(), font, 2))
+            .add(new Gage(() => getUnit().prm(Prm.TP).base, () => getUnit().prm(Prm.MAX_TP).total, () => "TP", () => `${getUnit().prm(Prm.TP).base | 0}`, () => Color.D_CYAN.bright(), font, 2)))
             .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
             .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
             .add(ILayout.empty)
@@ -253,3 +260,24 @@ const createConditionLabel = (font, unit, types, color) => {
         .map(set => `<${set.condition}${set.value | 0}>`)
         .join(""), () => color);
 };
+export class DrawUnits extends InnerLayout {
+    static get ins() { return this._ins ? this._ins : (this._ins = new DrawUnits()); }
+    constructor() {
+        super();
+        super.add(ILayout.create({ draw: bounds => {
+                Unit.all
+                    .filter(u => u.exists)
+                    .forEach(u => {
+                    if (u instanceof PUnit) {
+                        const ctx = Graphics.context;
+                        ctx.scale(-1, 1);
+                        u.img.draw(new Rect(-u.imgBounds.x - u.imgBounds.w, u.imgBounds.y, u.imgBounds.w, u.imgBounds.h));
+                        ctx.scale(-1, 1);
+                    }
+                    else {
+                        u.img.draw(u.imgBounds);
+                    }
+                });
+            } }));
+    }
+}

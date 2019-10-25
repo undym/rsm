@@ -16,6 +16,7 @@ import { Dungeon } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color } from "./undym/type.js";
 import { Graphics, Texture } from "./graphics/graphics.js";
+import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
@@ -84,7 +85,7 @@ const init = () => {
     Util.init();
     Unit.init();
     SceneType.TOWN.set();
-    Dungeon.now = Dungeon.はじまりの丘;
+    Dungeon.now = Dungeon.再構成トンネル;
     //画像読み込み
     for (const ev of DungeonEvent.values) {
         ev.getImg();
@@ -94,7 +95,15 @@ const init = () => {
 };
 const newGame = () => {
     Util.msg.set("NEW GAME");
-    Player.スメラギ.join();
+    Player.ルイン.join();
+    Player.ピアー.join();
+    const setItem = (item, num) => {
+        item.num = num;
+        item.totalGetCount = num;
+    };
+    setItem(Item.スティックパン, 10);
+    setItem(Item.赤い水, 10);
+    setItem(Item.サンタクララ薬, 10);
 };
 const continueGame = () => {
     Util.msg.set("CONTINUE");

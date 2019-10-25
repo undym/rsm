@@ -31,7 +31,8 @@ export class PartySkill {
         return this._valueOf.get(uniqueName);
     }
     get uniqueName() { return this.args.uniqueName; }
-    toString() { return this.args.toString; }
+    get info() { return this.args.info; }
+    toString() { return this.args.uniqueName; }
     win(arg) { }
     openBox(arg, dropType) { }
 }
@@ -41,47 +42,48 @@ PartySkill.DEF_PARTY_SKILL_NUM = 3;
 PartySkill.skills = [];
 (function (PartySkill) {
     PartySkill.empty = new class extends PartySkill {
-        constructor() { super({ uniqueName: "empty", toString: "-" }); }
+        constructor() { super({ uniqueName: "empty", info: "" }); }
+        toString() { return ""; }
         win(arg) {
             arg.exp.mul += 1;
         }
     };
-    PartySkill.入手経験値増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "入手経験値増加", toString: "入手経験値x2" }); }
+    PartySkill.センス = new class extends PartySkill {
+        constructor() { super({ uniqueName: "センス", info: "入手経験値x2" }); }
         win(arg) {
             arg.exp.mul += 1;
         }
     };
-    PartySkill.入手BP増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "入手BP増加", toString: "入手BP+1" }); }
-        win(arg) {
-            arg.bp.base += 1;
-        }
-    };
-    PartySkill.入手金増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "入手金増加", toString: "入手金x2" }); }
+    // export const                         入手BP増加:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"入手BP増加", info:"入手BP+1"});}
+    //     win(arg:PartySkillWin){
+    //         arg.bp.base += 1;
+    //     }
+    // }
+    PartySkill.金玉 = new class extends PartySkill {
+        constructor() { super({ uniqueName: "金玉", info: "入手金x2" }); }
         win(arg) {
             arg.yen.mul += 1;
         }
     };
-    PartySkill.宝箱チェーン増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "宝箱チェーン増加", toString: "宝箱アイテムチェーン+0.3" }); }
+    PartySkill.マトリョーシカ = new class extends PartySkill {
+        constructor() { super({ uniqueName: "マトリョーシカ", info: "宝箱アイテムチェーン+0.3" }); }
         openBox(arg, dropType) {
             if (dropType & ItemDrop.BOX) {
                 arg.chain += 0.3;
             }
         }
     };
-    PartySkill.宝箱ランク増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "宝箱ランク増加", toString: "宝箱アイテムランク+0.5" }); }
+    PartySkill.メモラック = new class extends PartySkill {
+        constructor() { super({ uniqueName: "メモラック", info: "宝箱アイテムランク+0.5" }); }
         openBox(arg, dropType) {
             if (dropType & ItemDrop.BOX) {
                 arg.addRank += 0.5;
             }
         }
     };
-    PartySkill.伐採チェーン増加 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "伐採チェーン増加", toString: "伐採チェーン+0.6" }); }
+    PartySkill.かぐや姫 = new class extends PartySkill {
+        constructor() { super({ uniqueName: "かぐや姫", info: "伐採チェーン+0.6" }); }
         openBox(arg, dropType) {
             if (dropType & ItemDrop.TREE) {
                 arg.chain += 0.6;

@@ -3,7 +3,7 @@ import { ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType } from "../util.js";
-import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen } from "./sceneutil.js";
+import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Img } from "../graphics/graphics.js";
 export default class DungeonScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new DungeonScene()); }
@@ -16,6 +16,7 @@ export default class DungeonScene extends Scene {
         super.add(Place.MAIN, DrawEvent.ins);
         super.add(Place.MSG, Util.msg);
         super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
+        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, (() => {
             let dungeonEventBak;
@@ -49,7 +50,7 @@ class DrawEvent extends InnerLayout {
                     }
                 }
                 zoomCount++;
-                if (!img.loaded) {
+                if (!img.isLoadComplete) {
                     return;
                 }
                 let zoom = 0;

@@ -2,6 +2,7 @@ import { PUnit, Prm, Unit } from "./unit.js";
 import { Tec, PassiveTec } from "./tec.js";
 import { Job } from "./job.js";
 import { Eq } from "./eq.js";
+import { Img } from "./graphics/graphics.js";
 
 
 
@@ -69,16 +70,15 @@ export namespace Player{
             p.exists = false;
         }
     };
-    export const             スメラギ = new class extends Player{
-        constructor(){super("スメラギ");}
+    export const             ルイン = new class extends Player{
+        constructor(){super("ルイン");}
         createInner(p:PUnit){
-            p.job = Job.スメラギ;
+            p.job = Job.訓練生;
+            p.img = new Img("img/ルイン.png");
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 3;
             p.prm(Prm.MAX_TP).base = 5;
             p.prm(Prm.STR).base = 2;
-
-            p.setEq(Eq.勾玉.pos, Eq.勾玉);
 
             p.tecs = [
                 Tec.殴る,
@@ -89,17 +89,16 @@ export namespace Player{
             ];
         }
     };
-    export const             よしこ = new class extends Player{
-        constructor(){super("よしこ");}
+    export const             ピアー = new class extends Player{
+        constructor(){super("ピアー");}
         createInner(p:PUnit){
-            p.job = Job.よしこ;
+            p.job = Job.魔法使い;
+            p.img = new Img("img/ピアー.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 10;
             p.prm(Prm.MAX_TP).base = 2;
             p.prm(Prm.STR).base = 2;
             p.prm(Prm.MAG).base = 4;
-            
-            p.setEq(Eq.メガネ.pos, Eq.メガネ);
             
             p.tecs = [
                 Tec.殴る,

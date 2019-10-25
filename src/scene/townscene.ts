@@ -7,7 +7,7 @@ import { Dungeon } from "../dungeon/dungeon.js";
 import { Rect, Color, Point } from "../undym/type.js";
 import DungeonScene from "./dungeonscene.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo, DrawYen } from "./sceneutil.js";
+import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
 import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
@@ -102,7 +102,7 @@ class TownBtn{
 
 
     static reset(){
-        const l = new List(7);
+        const l = new List(6);
             l.add({
                 center:()=>"ダンジョン",
                 push:elm=>{
@@ -132,12 +132,14 @@ class TownBtn{
                     }) );
                 },
             });
-            l.add({
-                center:()=>"お店",
-                push:elm=>{
-                    Scene.load(new ShopScene());
-                },
-            });
+            if(Dungeon.再構成トンネル.dungeonClearCount > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"お店",
+                    push:elm=>{
+                        Scene.load(new ShopScene());
+                    },
+                });
+            }
             if(Item.合成許可証.num > 0 || Debug.debugMode){
                 l.add({
                     center:()=>"合成",
@@ -262,7 +264,7 @@ const FX_DungeonName = (name:string, bounds:Rect)=>{
             if(alpha <= 0){return false;}
         }
 
-        Graphics.fillRect(bounds, Color.BLACK);
+        Graphics.fillRect(bounds, Color.D_GRAY);
         Graphics.setAlpha(alpha, ()=>{
             for(let i = 0; i < w; i+=2){
                 tex.draw({

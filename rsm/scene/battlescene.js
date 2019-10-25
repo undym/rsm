@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Scene, wait } from "../undym/scene.js";
 import { Place, Util, PlayData, SceneType } from "../util.js";
-import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawYen } from "./sceneutil.js";
+import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawYen, DrawUnits } from "./sceneutil.js";
 import { VariableLayout, ILayout, Layout, Labels, XLayout, Label } from "../undym/layout.js";
 import { Rect, Color } from "../undym/type.js";
 import { Unit, PUnit, Prm } from "../unit.js";
@@ -118,6 +118,7 @@ export class BattleScene extends Scene {
             });
         })());
         super.add(Place.MSG, Util.msg);
+        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, btnSpace);
         super.add(Place.E_BOX, DrawSTBoxes.enemies);
@@ -127,7 +128,7 @@ export class BattleScene extends Scene {
                 if (!Battle.getPhaseUnit().exists) {
                     return;
                 }
-                Graphics.fillRect(Battle.getPhaseUnit().bounds, new Color(0, 1, 1, 0.2));
+                Graphics.fillRect(Battle.getPhaseUnit().boxBounds, new Color(0, 1, 1, 0.2));
             } }));
         super.add(Rect.FULL, new VariableLayout(() => chooseTargetLayout));
         super.add(Rect.FULL, ILayout.create({ ctrl: (bounds) => __awaiter(this, void 0, void 0, function* () {
@@ -297,7 +298,7 @@ export class BattleScene extends Scene {
                             if (!u.exists) {
                                 continue;
                             }
-                            if (!u.bounds.contains(Input.point)) {
+                            if (!u.boxBounds.contains(Input.point)) {
                                 continue;
                             }
                             chooseTargetLayout = ILayout.empty;
@@ -316,7 +317,7 @@ export class BattleScene extends Scene {
                             if (!u.exists) {
                                 continue;
                             }
-                            Graphics.drawRect(u.bounds, Color.RED);
+                            Graphics.drawRect(u.boxBounds, Color.RED);
                         }
                     });
                 },
@@ -462,7 +463,7 @@ const createExBG = () => {
     }
     return bounds => {
         const xNum = 8;
-        const yNum = 4;
+        const yNum = 6;
         const w = bounds.w / xNum;
         const h = bounds.h / yNum;
         const wHalf = w / 2;
