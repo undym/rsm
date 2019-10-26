@@ -12,6 +12,7 @@ import { Util } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
+import { Img } from "../graphics/graphics.js";
 
 
 
@@ -67,7 +68,7 @@ export abstract class Dungeon{
         return choice( this.treasures );
     }
     /**Exエネミーを倒した時に入手。 */
-    get exItem():Num{return this.args.exItem();}
+    get exItems():Num[]{return this.args.exItems();}
     get trendItems():Item[]{return this.args.trendItems();}
     //-----------------------------------------------------------------
     //
@@ -82,7 +83,7 @@ export abstract class Dungeon{
             enemyLv:number,
             au:number,
             treasures:()=>Num[],
-            exItem:()=>Num,
+            exItems:()=>Num[],
             trendItems:()=>Item[],
             event?:()=>Event,
         }
@@ -194,12 +195,8 @@ export abstract class Dungeon{
     async dungeonClearEvent(){
         if(this.dungeonClearCount <= 100 && this.dungeonClearCount % 10 === 0){
             Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`); await cwait();
-            Item.いざなみの命.add(1);       await wait();
-            Item.おおげつ姫.add(1);         await wait(); Item.アラハバキ神.add(1);    await wait();
-            Item.この花咲くや姫.add(1);     await wait(); Item.つくよみの命.add(1);    await wait();
-            Item.よもつおお神.add(1);       await wait(); Item.わたつみの神.add(1);     await wait();
-            Item.へつなぎさびこの神.add(1);  await wait(); Item.ほのかぐつちの神.add(1); await wait();
-            Item.たけみかづちの命.add(1);   await wait();  Item.すさのおの命.add(1);    await wait();
+            const value = (1 + this.dungeonClearCount / 10)|0;
+            Item.ささやかな贈り物.add(value);       await wait();
         }
     }
     
@@ -211,6 +208,7 @@ export abstract class Dungeon{
     //-----------------------------------------------------------------
 }
 
+
 export namespace Dungeon{
     //-----------------------------------------------------------------
     //
@@ -221,8 +219,8 @@ export namespace Dungeon{
         constructor(){super({uniqueName:"再構成トンネル",
                                 rank:0, enemyLv:1, au:50,
                                 treasures:  ()=>[Eq.安全靴],
-                                exItem:     ()=>Eq.アカデミーバッヂ,
-                                trendItems: ()=>[Item.石, Item.枝,],
+                                exItems:     ()=>[Eq.アカデミーバッヂ],
+                                trendItems: ()=>[],
         });}
         isVisible = ()=>true;
         setBossInner = ()=>{
@@ -234,11 +232,38 @@ export namespace Dungeon{
         };
         setExInner = ()=>{
             let e = Unit.enemies[0];
-            Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+            Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "チョコチョコ";
+            e.img = BossImg.choco;
             e.prm(Prm.MAX_HP).base = 30;
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
+        };
+    };
+    export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"見知らぬ海岸",
+                                rank:0, enemyLv:1, au:60,
+                                treasures:  ()=>[],
+                                exItems:    ()=>[],
+                                trendItems: ()=>[],
+        });}
+        isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "危険な光線";
+            e.prm(Prm.MAX_HP).base = 40;
+            e.prm(Prm.STR).base = 5;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.鎖使い.setEnemy(e, 5);
+            e.name = "アイアンチョコチョコ";
+            e.img = BossImg.choco;
+            e.prm(Prm.MAX_HP).base = 50;
+            e.prm(Prm.STR).base = 5;
+            e.prm(Prm.MAG).base = 5;
+            e.prm(Prm.CHN).base = 5;
         };
     };
     // export const                         再構成トンネル:Dungeon = new class extends Dungeon{
@@ -417,4 +442,10 @@ export namespace Dungeon{
     //     }
     // };
 
+}
+
+
+
+namespace BossImg{
+    export const choco = new Img("img/choco.png");
 }

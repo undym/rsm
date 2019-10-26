@@ -170,11 +170,21 @@ class TownBtn {
                 groundColor: () => d === choosedDungeon ? Color.D_CYAN : Color.BLACK,
                 push: elm => {
                     Util.msg.set("");
+                    Util.msg.set("");
                     Util.msg.set(`[${d}]`);
                     Util.msg.set(`Rank:${d.rank}`);
                     Util.msg.set(`Lv:${d.enemyLv}`);
                     Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
                     Util.msg.set(`鍵:${d.treasureKey}`);
+                    Util.msg.set(`財宝:`);
+                    for (const t of d.treasures) {
+                        if (t.totalGetCount > 0) {
+                            Util.msg.add(`${t}/`);
+                        }
+                        else {
+                            Util.msg.add(`${"？".repeat(t.toString().length)}`, Color.GRAY);
+                        }
+                    }
                     choosedDungeon = d;
                 },
             });

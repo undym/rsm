@@ -1,7 +1,7 @@
 export const randomInt = (min, max) => {
     min = Math.round(min);
     max = Math.round(max - min);
-    return Math.floor(min + Math.random() * max);
+    return (min + Math.random() * max) | 0;
 };
 export const randomFloat = (min, max) => {
     return min + Math.random() * (max - min);

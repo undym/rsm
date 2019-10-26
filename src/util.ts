@@ -38,8 +38,8 @@ export class Place{
     static get MSG(){return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.h * 0.8);}
     static get DUNGEON_DATA(){
         const w = Place.MSG.w * 0.8;
-        return new Rect(Place.MSG.xw - w / 2, Place.MSG.yh, w, Place.MAIN.h - Place.MSG.h);
-}
+        return new Rect(Place.MSG.cx - w / 2, Place.MSG.yh, w, Place.MAIN.h - Place.MSG.h);
+    }
     
     private static readonly BOX_H = 1;
 

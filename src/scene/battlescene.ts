@@ -14,7 +14,6 @@ import { FX } from "../fx/fx.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { TownScene } from "./townscene.js";
 import { List } from "../widget/list.js";
-import { randomInt } from "../undym/random.js";
 import { Item } from "../item.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -192,7 +191,6 @@ export class BattleScene extends Scene{
 
         Util.msg.set(`${attacker.name}の行動`, Color.ORANGE);
 
-        attacker.tp += 1;
         attacker.phaseStart();
 
         for(const u of Unit.all){

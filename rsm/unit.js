@@ -199,7 +199,7 @@ export class Unit {
             }
             const result = dmg.calc();
             const font = new Font(80, Font.BOLD);
-            const p = {
+            const point = {
                 x: this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
                 y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
             };
@@ -207,11 +207,11 @@ export class Unit {
                 this.hp -= result.value;
                 // FX_Shake(this.bounds);
                 const stbox = new DrawSTBox(() => this);
-                FX_Shake(this.imgBounds, bounds => {
+                FX_Shake(this.boxBounds, bounds => {
                     Graphics.fillRect(bounds, Color.BLACK);
                     stbox.draw(bounds);
                 });
-                FX_RotateStr(font, `${result.value}`, p, Color.RED);
+                FX_RotateStr(font, `${result.value}`, point, Color.RED);
                 Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
                 dmg.additinalAttacks.forEach((aa, index) => {
                     const value = aa(dmg, index) | 0;
@@ -220,9 +220,10 @@ export class Unit {
                 });
             }
             else {
-                FX_RotateStr(font, `MISS`, p, Color.RED);
+                FX_RotateStr(font, `MISS`, point, Color.RED);
                 Util.msg.set("MISS");
             }
+            this.tp += 1;
         });
     }
     judgeDead() {

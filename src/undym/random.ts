@@ -3,7 +3,7 @@
 export const randomInt = (min:number, max:number):number=>{
     min = Math.round(min);
     max = Math.round(max - min);
-    return Math.floor(min + Math.random() * max);
+    return (min + Math.random() * max)|0;
 };
 
 export const randomFloat = (min:number, max:number):number=>{

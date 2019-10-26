@@ -348,7 +348,9 @@ export namespace DungeonEvent{
                 switch(result){
                     case BattleResult.WIN:
                         Dungeon.now.exKillCount++;
-                        Dungeon.now.exItem.add(1);
+                        for(const item of Dungeon.now.exItems){
+                            item.add(1); await wait();
+                        }
                         SaveData.save();
                         Scene.load( DungeonScene.ins );
                         break;

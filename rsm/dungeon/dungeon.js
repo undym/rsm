@@ -14,6 +14,7 @@ import { Eq } from "../eq.js";
 import { Util } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
 import { choice } from "../undym/random.js";
+import { Img } from "../graphics/graphics.js";
 export class Dungeon {
     //-----------------------------------------------------------------
     //
@@ -67,7 +68,7 @@ export class Dungeon {
         return choice(this.treasures);
     }
     /**Exエネミーを倒した時に入手。 */
-    get exItem() { return this.args.exItem(); }
+    get exItems() { return this.args.exItems(); }
     get trendItems() { return this.args.trendItems(); }
     toString() { return this.args.uniqueName; }
     //-----------------------------------------------------------------
@@ -175,27 +176,8 @@ export class Dungeon {
             if (this.dungeonClearCount <= 100 && this.dungeonClearCount % 10 === 0) {
                 Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`);
                 yield cwait();
-                Item.いざなみの命.add(1);
-                yield wait();
-                Item.おおげつ姫.add(1);
-                yield wait();
-                Item.アラハバキ神.add(1);
-                yield wait();
-                Item.この花咲くや姫.add(1);
-                yield wait();
-                Item.つくよみの命.add(1);
-                yield wait();
-                Item.よもつおお神.add(1);
-                yield wait();
-                Item.わたつみの神.add(1);
-                yield wait();
-                Item.へつなぎさびこの神.add(1);
-                yield wait();
-                Item.ほのかぐつちの神.add(1);
-                yield wait();
-                Item.たけみかづちの命.add(1);
-                yield wait();
-                Item.すさのおの命.add(1);
+                const value = (1 + this.dungeonClearCount / 10) | 0;
+                Item.ささやかな贈り物.add(value);
                 yield wait();
             }
         });
@@ -214,8 +196,8 @@ Dungeon.auNow = 0;
             super({ uniqueName: "再構成トンネル",
                 rank: 0, enemyLv: 1, au: 50,
                 treasures: () => [Eq.安全靴],
-                exItem: () => Eq.アカデミーバッヂ,
-                trendItems: () => [Item.石, Item.枝,],
+                exItems: () => [Eq.アカデミーバッヂ],
+                trendItems: () => [],
             });
             this.isVisible = () => true;
             this.setBossInner = () => {
@@ -227,11 +209,40 @@ Dungeon.auNow = 0;
             };
             this.setExInner = () => {
                 let e = Unit.enemies[0];
-                Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+                Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "チョコチョコ";
+                e.img = BossImg.choco;
                 e.prm(Prm.MAX_HP).base = 30;
                 e.prm(Prm.STR).base = 5;
                 e.prm(Prm.MAG).base = 5;
+            };
+        }
+    };
+    Dungeon.見知らぬ海岸 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "見知らぬ海岸",
+                rank: 0, enemyLv: 1, au: 60,
+                treasures: () => [],
+                exItems: () => [],
+                trendItems: () => [],
+            });
+            this.isVisible = () => Dungeon.再構成トンネル.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "危険な光線";
+                e.prm(Prm.MAX_HP).base = 40;
+                e.prm(Prm.STR).base = 5;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.鎖使い.setEnemy(e, 5);
+                e.name = "アイアンチョコチョコ";
+                e.img = BossImg.choco;
+                e.prm(Prm.MAX_HP).base = 50;
+                e.prm(Prm.STR).base = 5;
+                e.prm(Prm.MAG).base = 5;
+                e.prm(Prm.CHN).base = 5;
             };
         }
     };
@@ -407,3 +418,7 @@ Dungeon.auNow = 0;
     //     }
     // };
 })(Dungeon || (Dungeon = {}));
+var BossImg;
+(function (BossImg) {
+    BossImg.choco = new Img("img/choco.png");
+})(BossImg || (BossImg = {}));
