@@ -352,6 +352,7 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    /**訓練生. */
     Tec.タックル = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "タックル", info: "一体に格闘攻撃x1.5",
@@ -360,6 +361,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**剣士. */
     Tec.斬る = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "斬る", info: "一体に格闘攻撃x2　反撃有",
@@ -373,10 +375,11 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.run.call(this, attacker, target);
-                Tec.格闘カウンター.run(target, attacker);
+                yield Tec.格闘カウンター.run(target, attacker);
             });
         }
     };
+    /**剣士. */
     Tec.大いなる動き = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "大いなる動き", info: "敵全体に格闘攻撃",
@@ -426,6 +429,7 @@ ActiveTec._valueOf = new Map();
     //         Unit.healHP(attacker, value);
     //     }
     // }
+    /**無習得技. */
     Tec.格闘カウンター = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "格闘カウンター", info: "！カウンター技用",
@@ -455,6 +459,7 @@ ActiveTec._valueOf = new Map();
     //         }
     //     }
     // };
+    /**未設定. */
     Tec.カウンター = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "カウンター", info: "被格闘攻撃時反撃",
@@ -467,9 +472,6 @@ ActiveTec._valueOf = new Map();
                     Util.msg.set("＞カウンター");
                     yield wait();
                     yield Tec.格闘カウンター.run(target, attacker);
-                    // let cdmg = TecType.格闘.createDmg(target, attacker);
-                    // cdmg.counter = true;
-                    // attacker.doDmg(cdmg); await wait();
                 }
             });
         }
@@ -500,6 +502,7 @@ ActiveTec._valueOf = new Map();
     //魔法Active
     //
     //--------------------------------------------------------------------------
+    /**魔法使い. */
     Tec.ヴァハ = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ヴァハ", info: "一体に魔法攻撃",
@@ -508,14 +511,12 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    Tec.エヴィン = new class extends ActiveTec {
-        constructor() {
-            super({ uniqueName: "エヴィン", info: "一体に魔法攻撃x2",
-                type: TecType.魔法, targetings: Targeting.SELECT,
-                mul: 2, num: 1, hit: 1.2, mp: 2,
-            });
-        }
-    };
+    // export const                          エヴィン:ActiveTec = new class extends ActiveTec{
+    //     constructor(){super({ uniqueName:"エヴィン", info:"一体に魔法攻撃x2",
+    //                           type:TecType.魔法, targetings:Targeting.SELECT,
+    //                           mul:2, num:1, hit:1.2, mp:2,
+    //     });}
+    // }
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
     //                           type:TecType.魔法, targetings:Targeting.SELECT,
@@ -562,6 +563,7 @@ ActiveTec._valueOf = new Map();
     //神格Active
     //
     //--------------------------------------------------------------------------
+    /**天使. */
     Tec.天籟 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "天籟", info: "一体に神格攻撃　自分を＜雲＞（魔法・暗黒・過去・弓術軽減）化",
@@ -739,6 +741,7 @@ ActiveTec._valueOf = new Map();
     //練術Active
     //
     //--------------------------------------------------------------------------
+    /**鎖使い. */
     Tec.スネイク = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "スネイク", info: "全体に練術攻撃",
@@ -771,6 +774,7 @@ ActiveTec._valueOf = new Map();
     //過去Active
     //
     //--------------------------------------------------------------------------
+    /**ダウザー. */
     Tec.念力 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "念力", info: "全体に過去攻撃",
@@ -779,6 +783,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ダウザー. */
     Tec.念 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "念", info: "ランダムな一体に過去攻撃",
@@ -818,6 +823,7 @@ ActiveTec._valueOf = new Map();
     //銃術Active
     //
     //--------------------------------------------------------------------------
+    /**ガンマン. */
     Tec.撃つ = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "撃つ", info: "ランダムに銃術攻撃1～2回",
@@ -833,6 +839,7 @@ ActiveTec._valueOf = new Map();
     //                           mul:1, num:2, hit:0.8, tp:1,
     //     });}
     // }
+    /**ガンマン. */
     Tec.乱射 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "乱射", info: "ランダムに3～6回銃攻撃",
@@ -897,6 +904,7 @@ ActiveTec._valueOf = new Map();
     //弓術Active
     //
     //--------------------------------------------------------------------------
+    /**アーチャー. */
     Tec.射る = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "射る", info: "一体に弓術攻撃",
@@ -917,6 +925,7 @@ ActiveTec._valueOf = new Map();
     //                           mul:4, num:1, hit:0.9, ep:1,
     //     });}
     // }
+    /**アーチャー. */
     Tec.アスラの矢 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "アスラの矢", info: "全体に弓攻撃",
@@ -979,6 +988,7 @@ ActiveTec._valueOf = new Map();
     //         Unit.setCondition( target, Condition.盾, value );
     //     }
     // }
+    /**毒使い. */
     Tec.ポイズンバタフライ = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ポイズンバタフライ", info: "一体を＜毒＞化",
@@ -993,6 +1003,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**毒使い. */
     Tec.恵まれし者 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "恵まれし者", info: "味方全体を＜癒＞化、敵全体を＜毒＞化",
@@ -1012,6 +1023,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**鎖使い. */
     Tec.凍てつく波動 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "凍てつく波動", info: "敵味方全体の状態を解除",
@@ -1081,6 +1093,7 @@ ActiveTec._valueOf = new Map();
     //         Unit.setCondition( target, Condition.狙, 4 );
     //     }
     // }
+    /**ダウザー. */
     Tec.光の護封剣 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "光の護封剣", info: "敵全体を＜攻↓3＞状態にする",
@@ -1137,6 +1150,7 @@ ActiveTec._valueOf = new Map();
     //回復Active
     //
     //--------------------------------------------------------------------------
+    /**天使. */
     Tec.数珠 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "数珠", info: "一体を光依存で回復",
@@ -1163,6 +1177,7 @@ ActiveTec._valueOf = new Map();
     //         Tec.ばんそうこう.run( attacker, target );
     //     }
     // }
+    /**魔法使い. */
     Tec.ジョンD = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ジョンD", info: "自分の最大MPを倍加　MP回復",
@@ -1179,6 +1194,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**天使. */
     Tec.ユグドラシル = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ユグドラシル", info: "味方全員を蘇生・全回復",
@@ -1213,6 +1229,7 @@ ActiveTec._valueOf = new Map();
     //回復Passive
     //
     //--------------------------------------------------------------------------
+    /**訓練生. */
     Tec.HP自動回復 = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "HP自動回復", info: "行動開始時HP+1%",

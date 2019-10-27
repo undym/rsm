@@ -11,7 +11,7 @@ import { Btn } from "../widget/btn.js";
 import { Dungeon } from "./dungeon.js";
 import { Scene, cwait, wait } from "../undym/scene.js";
 import { TownScene } from "../scene/townscene.js";
-import { Item, ItemDrop, ItemType } from "../item.js";
+import { Item, ItemDrop } from "../item.js";
 import { ILayout, VariableLayout, FlowLayout } from "../undym/layout.js";
 import { Color } from "../undym/type.js";
 import { Unit, Prm } from "../unit.js";
@@ -248,9 +248,9 @@ DungeonEvent._values = [];
             this.happenInner = () => {
                 Util.msg.set("湖だ");
                 this.汲む = true;
-                if (ItemType.竿.values.some(item => item.num > 0)) {
-                    this.釣る = true;
-                }
+                // if(ItemType.竿.values.some(item=> item.num > 0)){
+                //     this.釣る = true;
+                // }
             };
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, (() => {
@@ -258,35 +258,33 @@ DungeonEvent._values = [];
                     yield openBox(ItemDrop.LAKE, Dungeon.now.rank / 2);
                 });
                 const fishingBtn = new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
-                    this.釣る = false;
-                    this.汲む = false;
-                    let doneAnyFishing = false;
-                    const fishing = (baseRank) => __awaiter(this, void 0, void 0, function* () {
-                        const itemRank = Item.fluctuateRank(baseRank);
-                        let item = Item.rndItem(ItemDrop.FISHING, itemRank);
-                        item.add(1);
-                        yield wait();
-                        doneAnyFishing = true;
-                    });
-                    const checkAndBreakRod = (prob, rod) => __awaiter(this, void 0, void 0, function* () {
-                        if (Math.random() < prob) {
-                            rod.add(-1);
-                            Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright);
-                            yield wait();
-                        }
-                    });
-                    if (Item.ボロい釣竿.num > 0) {
-                        fishing(Dungeon.now.rank / 2);
-                        checkAndBreakRod(0.05, Item.ボロい釣竿);
-                    }
-                    if (Item.マーザン竿.num > 0) {
-                        fishing(Dungeon.now.rank / 2 + 0.5);
-                        checkAndBreakRod(0.05, Item.マーザン竿);
-                    }
-                    if (!doneAnyFishing) {
-                        Util.msg.set("釣り竿をもっていなかった...");
-                    }
-                    yield drink();
+                    // this.釣る = false;
+                    // this.汲む = false;
+                    // let doneAnyFishing = false;
+                    // const fishing = async(baseRank:number)=>{
+                    //     const itemRank = Item.fluctuateRank( baseRank );
+                    //     let item = Item.rndItem( ItemDrop.FISHING, itemRank );
+                    //     item.add(1); await wait();
+                    //     doneAnyFishing = true;
+                    // };
+                    // const checkAndBreakRod = async(prob:number, rod:Item)=>{
+                    //     if(Math.random() < prob){
+                    //         rod.add(-1);
+                    //         Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright); await wait();
+                    //     }
+                    // };
+                    // if(Item.ボロい釣竿.num > 0){
+                    //     fishing( Dungeon.now.rank / 2 );
+                    //     checkAndBreakRod(0.05, Item.ボロい釣竿);
+                    // }
+                    // if(Item.マーザン竿.num > 0){
+                    //     fishing( Dungeon.now.rank / 2 + 0.5 );
+                    //     checkAndBreakRod(0.05, Item.マーザン竿);
+                    // }
+                    // if(!doneAnyFishing){
+                    //     Util.msg.set("釣り竿をもっていなかった...");
+                    // }
+                    // await drink();
                 }));
                 const drinkBtn = new Btn("汲む", () => __awaiter(this, void 0, void 0, function* () {
                     this.汲む = false;

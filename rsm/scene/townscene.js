@@ -29,6 +29,7 @@ import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
 import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
+import { MeisouScene } from "./meisouscene.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -150,6 +151,14 @@ class TownBtn {
                 center: () => "パーティースキル",
                 push: elm => {
                     Scene.load(new PartySkillScene());
+                },
+            });
+        }
+        if (Debug.debugMode) {
+            l.add({
+                center: () => "瞑想",
+                push: elm => {
+                    Scene.load(new MeisouScene());
                 },
             });
         }

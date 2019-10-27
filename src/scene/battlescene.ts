@@ -40,7 +40,6 @@ export class BattleScene extends Scene{
     init(){
 
         super.clear();
-        // super.add(Place.TOP, DrawPlayInfo.ins);
 
         const drawBG:(bounds:Rect)=>void = (()=>{
             if(Battle.type === BattleType.BOSS){
@@ -57,12 +56,6 @@ export class BattleScene extends Scene{
             });
         }}));
 
-        // super.add(Place.DUNGEON_DATA, new VariableLayout(()=>{
-        //     if(this.tecInfo.tec === Tec.empty){return DrawDungeonData.ins;}
-        //     return ILayout.empty;
-        // }));
-
-        
         super.add(Place.DUNGEON_DATA,(()=>{
             const info = new Labels(Font.def)
                             .add(()=>`[${this.tecInfo.tec}]`)
@@ -226,6 +219,7 @@ export class BattleScene extends Scene{
                 list.add({
                     center:()=>tec.toString(),
                     push:async elm=>{
+                        chooseTargetLayout = ILayout.empty;
                         choosedTec = tec;
 
                         attacker.tecListScroll = index;
@@ -287,6 +281,8 @@ export class BattleScene extends Scene{
         list.add({
             center:()=>"アイテム",
             push:async elm=>{
+                chooseTargetLayout = ILayout.empty;
+                
                 Scene.load( ItemScene.ins({
                     user:attacker,
                     selectUser:false,

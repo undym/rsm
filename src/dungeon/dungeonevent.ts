@@ -234,9 +234,9 @@ export namespace DungeonEvent{
             Util.msg.set("湖だ");
             this.汲む = true;
 
-            if(ItemType.竿.values.some(item=> item.num > 0)){
-                this.釣る = true;
-            }
+            // if(ItemType.竿.values.some(item=> item.num > 0)){
+            //     this.釣る = true;
+            // }
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, (()=>{
@@ -244,38 +244,38 @@ export namespace DungeonEvent{
                                         await openBox( ItemDrop.LAKE, Dungeon.now.rank / 2 );
                                     };
                                     const fishingBtn = new Btn("釣る", async()=>{
-                                        this.釣る = false;
-                                        this.汲む = false;
-                                        let doneAnyFishing = false;
+                                        // this.釣る = false;
+                                        // this.汲む = false;
+                                        // let doneAnyFishing = false;
                                         
-                                        const fishing = async(baseRank:number)=>{
-                                            const itemRank = Item.fluctuateRank( baseRank );
-                                            let item = Item.rndItem( ItemDrop.FISHING, itemRank );
-                                            item.add(1); await wait();
+                                        // const fishing = async(baseRank:number)=>{
+                                        //     const itemRank = Item.fluctuateRank( baseRank );
+                                        //     let item = Item.rndItem( ItemDrop.FISHING, itemRank );
+                                        //     item.add(1); await wait();
 
-                                            doneAnyFishing = true;
-                                        };
-                                        const checkAndBreakRod = async(prob:number, rod:Item)=>{
-                                            if(Math.random() < prob){
-                                                rod.add(-1);
-                                                Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright); await wait();
-                                            }
-                                        };
+                                        //     doneAnyFishing = true;
+                                        // };
+                                        // const checkAndBreakRod = async(prob:number, rod:Item)=>{
+                                        //     if(Math.random() < prob){
+                                        //         rod.add(-1);
+                                        //         Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright); await wait();
+                                        //     }
+                                        // };
                                         
-                                        if(Item.ボロい釣竿.num > 0){
-                                            fishing( Dungeon.now.rank / 2 );
-                                            checkAndBreakRod(0.05, Item.ボロい釣竿);
-                                        }
-                                        if(Item.マーザン竿.num > 0){
-                                            fishing( Dungeon.now.rank / 2 + 0.5 );
-                                            checkAndBreakRod(0.05, Item.マーザン竿);
-                                        }
+                                        // if(Item.ボロい釣竿.num > 0){
+                                        //     fishing( Dungeon.now.rank / 2 );
+                                        //     checkAndBreakRod(0.05, Item.ボロい釣竿);
+                                        // }
+                                        // if(Item.マーザン竿.num > 0){
+                                        //     fishing( Dungeon.now.rank / 2 + 0.5 );
+                                        //     checkAndBreakRod(0.05, Item.マーザン竿);
+                                        // }
 
-                                        if(!doneAnyFishing){
-                                            Util.msg.set("釣り竿をもっていなかった...");
-                                        }
+                                        // if(!doneAnyFishing){
+                                        //     Util.msg.set("釣り竿をもっていなかった...");
+                                        // }
                                         
-                                        await drink();
+                                        // await drink();
                                     });
                                     const drinkBtn = new Btn("汲む", async()=>{
                                         this.汲む = false;

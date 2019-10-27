@@ -123,6 +123,7 @@ export abstract class Job{
 
         e.name = this.toString();
         e.job = this;
+        e.img = this.img;
         e.exists = true;
         e.dead = false;
         e.ai = EUnit.DEF_AI;

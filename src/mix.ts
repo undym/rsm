@@ -143,20 +143,24 @@ export namespace Mix{
     //建築
     //
     //--------------------------------------------------------
-    // const           しいたけのサラダ:Mix = new Mix({
-    //     uniqueName:"しいたけのサラダ", limit:10, info:"スメラギの力+1",
-    //     materials:()=>[[Item.しいたけ, 5], [Item.葉っぱ, 5], [Item.枝, 5]],
-    //     action:()=>{
-    //         Player.スメラギ.ins.prm(Prm.STR).base += 1;
-    //     },
-    // });
-    // const           赤い水:Mix = new Mix({
-    //     uniqueName:"赤い水", limit:10, info:"よしこの魔+1",
-    //     materials:()=>[[Item.血, 5], [Item.水, 5], [Item.ほぐし水, 1]],
-    //     action:()=>{
-    //         Player.よしこ.ins.prm(Prm.MAG).base += 1;
-    //     },
-    // });
+    const           肉のスープ:Mix = new Mix({
+        uniqueName:"肉のスープ", limit:10, info:"ルインとピアーの最大HP+1",
+        materials:()=>[[Item.石, 5], [Item.肉, 5], [Item.水, 5]],
+        action:()=>{
+            Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
+            Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const           杉林:Mix = new Mix({
+        uniqueName:"杉林", limit:1, info:"杉の加工が可能になる",
+        materials:()=>[[Item.原木, 10], [Item.砂, 10]],
+        action:()=>{},
+    });
+    const           ヒノキ林:Mix = new Mix({
+        uniqueName:"ヒノキ林", limit:1, info:"ヒノキの加工が可能になる",
+        materials:()=>[[Item.原木, 10], [Item.砂, 10]],
+        action:()=>{},
+    });
     //--------------------------------------------------------
     //
     //装備
@@ -344,4 +348,16 @@ export namespace Mix{
     //     result:()=>[Item.天地創造の書, 1],
     //     materials:()=>[[Item.血粉末, 1], [Item.サファイア, 3], [Item.紙, 10]],
     // });
+    const           杉:Mix = new Mix({
+        uniqueName:"杉", limit:Mix.LIMIT_INF,
+        result:()=>[Item.杉, 1],
+        materials:()=>[[Item.原木, 3]],
+        isVisible:()=>杉林.count > 0,
+    });
+    const           ヒノキ:Mix = new Mix({
+        uniqueName:"ヒノキ", limit:Mix.LIMIT_INF,
+        result:()=>[Item.ヒノキ, 1],
+        materials:()=>[[Item.原木, 3]],
+        isVisible:()=>ヒノキ林.count > 0,
+    });
 }

@@ -1,6 +1,6 @@
 
 import { DungeonEvent } from "./dungeonevent.js";
-import { Rect } from "../undym/type.js";
+import { Rect, Color } from "../undym/type.js";
 import { Job } from "../job.js";
 import { Unit, EUnit, Prm } from "../unit.js";
 import { Btn } from "../widget/btn.js";
@@ -239,6 +239,13 @@ export namespace Dungeon{
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
         };
+        async dungeonClearEvent(){
+            super.dungeonClearEvent();
+            if(Item.脱出ポッド.totalGetCount === 0){
+                Item.脱出ポッド.add(1); await wait();
+                Util.msg.set("[お店]が出現した", Color.PINK.bright); await wait();
+            }
+        }
     };
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"見知らぬ海岸",

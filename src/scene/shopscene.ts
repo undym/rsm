@@ -19,8 +19,8 @@ import { Job } from "../job.js";
 import { PartySkill } from "../partyskill.js";
 
 
-let ショットガンmaster = false;
-let ヤクシャmaster = false;
+// let ショットガンmaster = false;
+// let ヤクシャmaster = false;
 
 
 export class ShopScene extends Scene{

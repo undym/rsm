@@ -217,6 +217,18 @@ Dungeon.auNow = 0;
                 e.prm(Prm.MAG).base = 5;
             };
         }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                _super.dungeonClearEvent.call(this);
+                if (Item.脱出ポッド.totalGetCount === 0) {
+                    Item.脱出ポッド.add(1);
+                    yield wait();
+                }
+            });
+        }
     };
     Dungeon.見知らぬ海岸 = new class extends Dungeon {
         constructor() {

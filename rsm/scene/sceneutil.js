@@ -1,4 +1,4 @@
-import { ILayout, Label, XLayout, Layout, VariableLayout, InnerLayout } from "../undym/layout.js";
+import { ILayout, Label, XLayout, Layout, VariableLayout, InnerLayout, Labels } from "../undym/layout.js";
 import { YLayout } from "../undym/layout.js";
 import Gage from "../widget/gage.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -65,7 +65,10 @@ export class DrawSTBox extends InnerLayout {
             .setOutsidePixelMargin(1, 1, 1, 1)
             .add(new XLayout()
             .add(new Label(font, () => getUnit().name))
-            .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`).setBase(Font.RIGHT)))
+            .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`, () => {
+            const u = getUnit();
+            return (u instanceof PUnit && u.isMasteredJob(u.job)) ? Color.YELLOW : Color.WHITE;
+        }).setBase(Font.RIGHT)))
             .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font, 2))
             .add(new XLayout()
             .setPixelMargin(4)
@@ -177,27 +180,25 @@ export class DrawUnitDetail extends InnerLayout {
         }))
             .add(new Label(font, () => {
             let u = getUnit();
-            // if(u instanceof PUnit){
-            //     return u.isMasteredJob( u.job )
-            //         ? `${getUnit().job}:★`
-            //         : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
-            //         ;
-            // }
+            if (u instanceof PUnit) {
+                return u.isMasteredJob(u.job)
+                    ? `${getUnit().job}:★`
+                    : `${getUnit().job}:Lv${u.getJobLv(u.job)}`;
+            }
             return `${getUnit().job}`;
         }))
             .add(new XLayout()
-            .add(new Label(font, () => `力:${getUnit().prm(Prm.STR).total}`))
-            .add(new Label(font, () => `魔:${getUnit().prm(Prm.MAG).total}`)))
-            .add(new XLayout()
-            .add(new Label(font, () => `光:${getUnit().prm(Prm.LIG).total}`))
-            .add(new Label(font, () => `闇:${getUnit().prm(Prm.DRK).total}`)))
-            .add(new XLayout()
-            .add(new Label(font, () => `鎖:${getUnit().prm(Prm.CHN).total}`))
-            .add(new Label(font, () => `過:${getUnit().prm(Prm.PST).total}`)))
-            .add(new XLayout()
-            .add(new Label(font, () => `銃:${getUnit().prm(Prm.GUN).total}`))
-            .add(new Label(font, () => `弓:${getUnit().prm(Prm.ARR).total}`)))
-            .add(new Label(font, () => `EP:${getUnit().ep}`))
+            .add(new Labels(font)
+            .add(() => `力:${getUnit().prm(Prm.STR).total}`)
+            .add(() => `光:${getUnit().prm(Prm.LIG).total}`)
+            .add(() => `鎖:${getUnit().prm(Prm.CHN).total}`)
+            .add(() => `銃:${getUnit().prm(Prm.GUN).total}`)
+            .add(() => `EP:${getUnit().ep}`))
+            .add(new Labels(font)
+            .add(() => `魔:${getUnit().prm(Prm.MAG).total}`)
+            .add(() => `闇:${getUnit().prm(Prm.DRK).total}`)
+            .add(() => `過:${getUnit().prm(Prm.PST).total}`)
+            .add(() => `弓:${getUnit().prm(Prm.ARR).total}`)))
             .add(ILayout.empty))
             .add((() => {
             let infoIsEar = true;

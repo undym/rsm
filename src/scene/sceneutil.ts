@@ -1,10 +1,9 @@
 
-import {ILayout,Label, XLayout, Layout, RatioLayout, VariableLayout, InnerLayout} from "../undym/layout.js";
+import {ILayout,Label, XLayout, Layout, RatioLayout, VariableLayout, InnerLayout, Labels} from "../undym/layout.js";
 import { YLayout } from "../undym/layout.js";
 import Gage from "../widget/gage.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Color, Rect } from "../undym/type.js";
-import { Scene } from "../undym/scene.js";
 import { PlayData, Util, Debug, Place } from "../util.js";
 import { Unit, Prm, PUnit, EUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
@@ -92,10 +91,10 @@ export class DrawSTBox extends InnerLayout{
                         new Label(
                             font,
                             ()=>`Lv${ getUnit().prm(Prm.LV).total|0 }`,
-                            // ()=>{
-                            //     const u = getUnit();
-                            //     return (u instanceof PUnit && u.isMasteredJob( u.job )) ? Color.YELLOW : Color.WHITE;
-                            // }
+                            ()=>{
+                                const u = getUnit();
+                                return (u instanceof PUnit && u.isMasteredJob( u.job )) ? Color.YELLOW : Color.WHITE;
+                            }
                         ).setBase(Font.RIGHT)
                     )
                 )
@@ -274,31 +273,30 @@ export class DrawUnitDetail extends InnerLayout{
                             }))
                             .add(new Label(font, ()=>{
                                 let u = getUnit();
-                                // if(u instanceof PUnit){
-                                //     return u.isMasteredJob( u.job )
-                                //         ? `${getUnit().job}:★`
-                                //         : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
-                                //         ;
-                                // }
+                                if(u instanceof PUnit){
+                                    return u.isMasteredJob( u.job )
+                                        ? `${getUnit().job}:★`
+                                        : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
+                                        ;
+                                }
                                 return `${getUnit().job}`;
                             }))
-                            .add(new XLayout()
-                                .add(new Label(font, ()=>`力:${getUnit().prm(Prm.STR).total}`))
-                                .add(new Label(font, ()=>`魔:${getUnit().prm(Prm.MAG).total}`))
+                            .add(
+                                new XLayout()
+                                    .add(new Labels(font)
+                                        .add(()=>`力:${getUnit().prm(Prm.STR).total}`)
+                                        .add(()=>`光:${getUnit().prm(Prm.LIG).total}`)
+                                        .add(()=>`鎖:${getUnit().prm(Prm.CHN).total}`)
+                                        .add(()=>`銃:${getUnit().prm(Prm.GUN).total}`)
+                                        .add(()=>`EP:${getUnit().ep}`)
+                                    )
+                                    .add(new Labels(font)
+                                        .add(()=>`魔:${getUnit().prm(Prm.MAG).total}`)
+                                        .add(()=>`闇:${getUnit().prm(Prm.DRK).total}`)
+                                        .add(()=>`過:${getUnit().prm(Prm.PST).total}`)
+                                        .add(()=>`弓:${getUnit().prm(Prm.ARR).total}`)
+                                    )
                             )
-                            .add(new XLayout()
-                                .add(new Label(font, ()=>`光:${getUnit().prm(Prm.LIG).total}`))
-                                .add(new Label(font, ()=>`闇:${getUnit().prm(Prm.DRK).total}`))
-                            )
-                            .add(new XLayout()
-                                .add(new Label(font, ()=>`鎖:${getUnit().prm(Prm.CHN).total}`))
-                                .add(new Label(font, ()=>`過:${getUnit().prm(Prm.PST).total}`))
-                            )
-                            .add(new XLayout()
-                                .add(new Label(font, ()=>`銃:${getUnit().prm(Prm.GUN).total}`))
-                                .add(new Label(font, ()=>`弓:${getUnit().prm(Prm.ARR).total}`))
-                            )
-                            .add(new Label(font, ()=>`EP:${getUnit().ep}`))
                             .add(ILayout.empty)
                         )
                         .add((()=>{

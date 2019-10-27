@@ -409,23 +409,26 @@ export namespace Tec{
             return dmg;
         }
     }
-    export const                          タックル:ActiveTec = new class extends ActiveTec{//訓練生
+    /**訓練生. */
+    export const                          タックル:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"タックル", info:"一体に格闘攻撃x1.5",
                               type:TecType.格闘, targetings:Targeting.SELECT,
                               mul:1.5, num:1, hit:1, tp:1,
         });}
     }
-    export const                          斬る:ActiveTec = new class extends ActiveTec{//剣士
+    /**剣士. */
+    export const                          斬る:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"斬る", info:"一体に格闘攻撃x2　反撃有",
                               type:TecType.格闘, targetings:Targeting.SELECT,
                               mul:2, num:1, hit:1, tp:1,
         });}
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
-            Tec.格闘カウンター.run( target, attacker );
+            await Tec.格闘カウンター.run( target, attacker );
         }
     }
-    export const                          大いなる動き:ActiveTec = new class extends ActiveTec{//剣士}
+    /**剣士. */
+    export const                          大いなる動き:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"大いなる動き", info:"敵全体に格闘攻撃",
                               type:TecType.格闘, targetings:Targeting.ALL,
                               mul:1, num:1, hit:1, ep:1,
@@ -473,6 +476,7 @@ export namespace Tec{
     //         Unit.healHP(attacker, value);
     //     }
     // }
+    /**無習得技. */
     export const                          格闘カウンター:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"格闘カウンター", info:"！カウンター技用",
                               type:TecType.格闘, targetings:Targeting.SELECT,
@@ -500,6 +504,7 @@ export namespace Tec{
     //         }
     //     }
     // };
+    /**未設定. */
     export const                         カウンター:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"カウンター", info:"被格闘攻撃時反撃",
                                 type:TecType.格闘,
@@ -508,9 +513,6 @@ export namespace Tec{
             if(action instanceof Tec && action.type === TecType.格闘 && !dmg.counter){
                 Util.msg.set("＞カウンター"); await wait();
                 await Tec.格闘カウンター.run( target, attacker );
-                // let cdmg = TecType.格闘.createDmg(target, attacker);
-                // cdmg.counter = true;
-                // attacker.doDmg(cdmg); await wait();
             }
         }
     };
@@ -540,18 +542,19 @@ export namespace Tec{
     //魔法Active
     //
     //--------------------------------------------------------------------------
+    /**魔法使い. */
     export const                          ヴァハ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ヴァハ", info:"一体に魔法攻撃",
                               type:TecType.魔法, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1.2, mp:1,
         });}
     }
-    export const                          エヴィン:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"エヴィン", info:"一体に魔法攻撃x2",
-                              type:TecType.魔法, targetings:Targeting.SELECT,
-                              mul:2, num:1, hit:1.2, mp:2,
-        });}
-    }
+    // export const                          エヴィン:ActiveTec = new class extends ActiveTec{
+    //     constructor(){super({ uniqueName:"エヴィン", info:"一体に魔法攻撃x2",
+    //                           type:TecType.魔法, targetings:Targeting.SELECT,
+    //                           mul:2, num:1, hit:1.2, mp:2,
+    //     });}
+    // }
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
     //                           type:TecType.魔法, targetings:Targeting.SELECT,
@@ -599,6 +602,7 @@ export namespace Tec{
     //神格Active
     //
     //--------------------------------------------------------------------------
+    /**天使. */
     export const                          天籟:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"天籟", info:"一体に神格攻撃　自分を＜雲＞（魔法・暗黒・過去・弓術軽減）化",
                               type:TecType.神格, targetings:Targeting.SELECT,
@@ -765,6 +769,7 @@ export namespace Tec{
     //練術Active
     //
     //--------------------------------------------------------------------------
+    /**鎖使い. */
     export const                          スネイク:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"スネイク", info:"全体に練術攻撃",
                               type:TecType.練術, targetings:Targeting.ALL,
@@ -795,12 +800,14 @@ export namespace Tec{
     //過去Active
     //
     //--------------------------------------------------------------------------
+    /**ダウザー. */
     export const                          念力:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"念力", info:"全体に過去攻撃",
                               type:TecType.過去, targetings:Targeting.ALL,
                               mul:1, num:1, hit:1.2, mp:6,
         });}
     }
+    /**ダウザー. */
     export const                          念:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"念", info:"ランダムな一体に過去攻撃",
                               type:TecType.過去, targetings:Targeting.RANDOM,
@@ -838,6 +845,7 @@ export namespace Tec{
     //銃術Active
     //
     //--------------------------------------------------------------------------
+    /**ガンマン. */
     export const                          撃つ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"撃つ", info:"ランダムに銃術攻撃1～2回",
                               type:TecType.銃術, targetings:Targeting.RANDOM,
@@ -851,6 +859,7 @@ export namespace Tec{
     //                           mul:1, num:2, hit:0.8, tp:1,
     //     });}
     // }
+    /**ガンマン. */
     export const                          乱射:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"乱射", info:"ランダムに3～6回銃攻撃",
                               type:TecType.銃術, targetings:Targeting.RANDOM,
@@ -913,6 +922,7 @@ export namespace Tec{
     //弓術Active
     //
     //--------------------------------------------------------------------------
+    /**アーチャー. */
     export const                          射る:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"射る", info:"一体に弓術攻撃",
                               type:TecType.弓術, targetings:Targeting.SELECT,
@@ -931,6 +941,7 @@ export namespace Tec{
     //                           mul:4, num:1, hit:0.9, ep:1,
     //     });}
     // }
+    /**アーチャー. */
     export const                          アスラの矢:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"アスラの矢", info:"全体に弓攻撃",
                               type:TecType.弓術, targetings:Targeting.ALL,
@@ -988,6 +999,7 @@ export namespace Tec{
     //         Unit.setCondition( target, Condition.盾, value );
     //     }
     // }
+    /**毒使い. */
     export const                          ポイズンバタフライ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ポイズンバタフライ", info:"一体を＜毒＞化",
                               type:TecType.状態, targetings:Targeting.SELECT,
@@ -998,6 +1010,7 @@ export namespace Tec{
             Unit.setCondition(target, Condition.毒, value);
         }
     }
+    /**毒使い. */
     export const                          恵まれし者:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"恵まれし者", info:"味方全体を＜癒＞化、敵全体を＜毒＞化",
                               type:TecType.状態, targetings:Targeting.ALL | Targeting.WITH_FRIEND,
@@ -1012,6 +1025,7 @@ export namespace Tec{
             }
         }
     }
+    /**鎖使い. */
     export const                          凍てつく波動:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"凍てつく波動", info:"敵味方全体の状態を解除",
                               type:TecType.状態, targetings:Targeting.ALL | Targeting.WITH_FRIEND,
@@ -1076,6 +1090,7 @@ export namespace Tec{
     //         Unit.setCondition( target, Condition.狙, 4 );
     //     }
     // }
+    /**ダウザー. */
     export const                          光の護封剣:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"光の護封剣", info:"敵全体を＜攻↓3＞状態にする",
                               type:TecType.状態, targetings:Targeting.ALL,
@@ -1126,6 +1141,7 @@ export namespace Tec{
     //回復Active
     //
     //--------------------------------------------------------------------------
+    /**天使. */
     export const                          数珠:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"数珠", info:"一体を光依存で回復",
                               type:TecType.回復, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
@@ -1149,6 +1165,7 @@ export namespace Tec{
     //         Tec.ばんそうこう.run( attacker, target );
     //     }
     // }
+    /**魔法使い. */
     export const                          ジョンD:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ジョンD", info:"自分の最大MPを倍加　MP回復",
                               type:TecType.回復, targetings:Targeting.SELF,
@@ -1161,6 +1178,7 @@ export namespace Tec{
             Util.msg.set(`${target.name}に魔力が満ちた！`); await wait();
         }
     }
+    /**天使. */
     export const                          ユグドラシル:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ユグドラシル", info:"味方全員を蘇生・全回復",
                               type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY | Targeting.WITH_DEAD,
@@ -1192,6 +1210,7 @@ export namespace Tec{
     //回復Passive
     //
     //--------------------------------------------------------------------------
+    /**訓練生. */
     export const                         HP自動回復:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"HP自動回復", info:"行動開始時HP+1%",
                                 type:TecType.回復,

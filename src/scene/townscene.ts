@@ -22,6 +22,7 @@ import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
 import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
+import { MeisouScene } from "./meisouscene.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -140,22 +141,22 @@ class TownBtn{
                     },
                 });
             }
-            if(Item.合成許可証.num > 0 || Debug.debugMode){
-                l.add({
-                    center:()=>"合成",
-                    push:elm=>{
-                        Scene.load(new MixScene());
-                    },
-                });
-            }
-            if(Item.技習得許可証.num > 0 || Debug.debugMode){
-                l.add({
-                    center:()=>"技のセット",
-                    push:elm=>{
-                        Scene.load(new SetTecScene());
-                    },
-                });
-            }
+            // if(Item.合成許可証.num > 0 || Debug.debugMode){
+            //     l.add({
+            //         center:()=>"合成",
+            //         push:elm=>{
+            //             Scene.load(new MixScene());
+            //         },
+            //     });
+            // }
+            // if(Item.技習得許可証.num > 0 || Debug.debugMode){
+            //     l.add({
+            //         center:()=>"技のセット",
+            //         push:elm=>{
+            //             Scene.load(new SetTecScene());
+            //         },
+            //     });
+            // }
             if(PlayData.gotAnyEq || Debug.debugMode){
                 l.add({
                     center:()=>"装備",
@@ -164,11 +165,19 @@ class TownBtn{
                     },
                 });
             }
-            if(Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode){
+            // if(Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode){
+            //     l.add({
+            //         center:()=>"パーティースキル",
+            //         push:elm=>{
+            //             Scene.load(new PartySkillScene());
+            //         },
+            //     });
+            // }
+            if(Debug.debugMode){
                 l.add({
-                    center:()=>"パーティースキル",
+                    center:()=>"瞑想",
                     push:elm=>{
-                        Scene.load(new PartySkillScene());
+                        Scene.load(new MeisouScene());
                     },
                 });
             }
@@ -198,7 +207,7 @@ class TownBtn{
                     Util.msg.set(`Lv:${d.enemyLv}`);
                     Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
                     Util.msg.set(`鍵:${d.treasureKey}`);
-                    
+
                     Util.msg.set(`財宝:`);
                     for(const t of d.treasures){
                         if(t.totalGetCount > 0){
