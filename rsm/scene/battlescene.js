@@ -330,7 +330,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
         .filter(e => e.exists)
         .forEach(e => {
         partySkill.exp.base += e.prm(Prm.EXP).base;
-        partySkill.bp.base += 1;
+        partySkill.jobExp.base += 1;
         partySkill.yen.base += e.yen;
     });
     for (const skill of PartySkill.skills) {
@@ -338,15 +338,15 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     }
     const exp = (partySkill.exp.base * partySkill.exp.mul) | 0;
     Util.msg.set(`${exp}の経験値を入手`, Color.CYAN.bright);
+    const jobExp = (partySkill.jobExp.base * partySkill.jobExp.mul) | 0;
+    Util.msg.set(`ジョブ経験+${jobExp}`, Color.YELLOW.bright);
     yield wait();
     for (let p of Unit.players.filter(p => p.exists)) {
         yield p.addExp(exp);
     }
-    const bp = (partySkill.bp.base * partySkill.bp.mul) | 0;
     for (let p of Unit.players.filter(p => p.exists)) {
-        p.bp += bp;
+        yield p.addJobExp(jobExp);
     }
-    Util.msg.set(`BP+${bp}`, Color.YELLOW.bright);
     const yen = (partySkill.yen.base * partySkill.yen.mul) | 0;
     PlayData.yen += yen;
     Util.msg.set(`${yen}円入手`, Color.YELLOW.bright);

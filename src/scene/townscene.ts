@@ -70,6 +70,7 @@ export class TownScene extends Scene{
         );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
 

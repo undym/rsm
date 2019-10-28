@@ -9,7 +9,7 @@ import { Unit, Prm, PUnit, EUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { ConditionType } from "../condition.js";
 import { EqPos, Eq } from "../eq.js";
-import { Font, Graphics } from "../graphics/graphics.js";
+import { Font, Graphics, Img } from "../graphics/graphics.js";
 import { Version } from "../savedata.js";
 
 
@@ -217,70 +217,84 @@ export class DrawUnitDetail extends InnerLayout{
                     .add(new XLayout()
                         .setOutsidePixelMargin(1,1,1,1)
                         .setPixelMargin(2)
-                        .add(new YLayout()
-                            .add(new XLayout()
-                                .add(new Label(font, ()=>getUnit().name))
-                                .add(new Label(font, ()=>`Lv${ getUnit().prm(Prm.LV).total|0 }`).setBase(Font.RIGHT))
-                            )
-                            .add(new Gage(
-                                ()=> getUnit().hp
-                                ,()=> getUnit().prm(Prm.MAX_HP).total
-                                ,()=> "HP"
-                                ,()=> `${ getUnit().hp|0 }`
-                                ,()=> Color.D_GREEN.bright()
-                                ,font
-                                ,2
-                            ))
-                            .add(
-                                new XLayout()
-                                    .setPixelMargin(4)
-                                    .add(new Gage(
-                                        ()=> getUnit().prm(Prm.MP).base
-                                        ,()=> getUnit().prm(Prm.MAX_MP).total
-                                        ,()=> "MP"
-                                        ,()=> `${ getUnit().prm(Prm.MP).base|0 }`
-                                        ,()=> Color.D_RED.bright()
-                                        ,font
-                                        ,2
-                                    ))
-                                    .add(new Gage(
-                                        ()=> getUnit().prm(Prm.TP).base
-                                        ,()=> getUnit().prm(Prm.MAX_TP).total
-                                        ,()=> "TP"
-                                        ,()=> `${ getUnit().prm(Prm.TP).base|0 }`
-                                        ,()=> Color.D_CYAN.bright()
-                                        ,font
-                                        ,2
-                                    ))
-                            )
-                            .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
-                            .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
-                            .add(ILayout.empty)
-                            .add(ILayout.empty)
+                        .add(
+                            new Labels(font)
+                                .add(()=>getUnit().name)
+                                .add(()=>`Lv${ getUnit().prm(Prm.LV).total|0 }`)
+                                .add(()=>{
+                                    const unit = getUnit();
+                                    if(unit instanceof PUnit){
+                                        const nextLvExp = unit.getNextLvExp();
+                                        let percent = nextLvExp === 0 
+                                                    ? 0
+                                                    : Math.floor( 100 * getUnit().prm(Prm.EXP).base / unit.getNextLvExp())
+                                                    ;
+                                        return `EXP:${percent}%`;
+                                    }
+                                    return "EXP:-";
+                                })
+                                .add(()=>{
+                                    let unit = getUnit();
+                                    if(unit instanceof PUnit){
+                                        return unit.isMasteredJob( unit.job )
+                                            ? `${getUnit().job}:★`
+                                            : `${getUnit().job}:Lv${unit.getJobLv(unit.job)}`
+                                            ;
+                                    }
+                                    return `${getUnit().job}`;
+                                })
+                                .add(()=>`HP:${getUnit().hp}/${getUnit().prm(Prm.MAX_HP).total}`)
+                                .add(()=>`MP:${getUnit().mp}/${getUnit().prm(Prm.MAX_MP).total}`)
+                                .add(()=>`TP:${getUnit().tp}/${getUnit().prm(Prm.MAX_TP).total}`)
+                                .add(()=>createConditionStr(getUnit(), ConditionType.goodConditions()), ()=>Color.CYAN)
+                                .add(()=>createConditionStr(getUnit(), ConditionType.badConditions()), ()=>Color.RED)
+                                // .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
+                                // .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
                         )
+                        // .add(new YLayout()
+                        //     .add(new XLayout()
+                        //         .add(new Label(font, ()=>getUnit().name))
+                        //         .add(new Label(font, ()=>`Lv${ getUnit().prm(Prm.LV).total|0 }`).setBase(Font.RIGHT))
+                        //     )
+                        //     .add(new Gage(
+                        //         ()=> getUnit().hp
+                        //         ,()=> getUnit().prm(Prm.MAX_HP).total
+                        //         ,()=> "HP"
+                        //         ,()=> `${ getUnit().hp|0 }`
+                        //         ,()=> Color.D_GREEN.bright()
+                        //         ,font
+                        //         ,2
+                        //     ))
+                        //     .add(
+                        //         new XLayout()
+                        //             .setPixelMargin(4)
+                        //             .add(new Gage(
+                        //                 ()=> getUnit().prm(Prm.MP).base
+                        //                 ,()=> getUnit().prm(Prm.MAX_MP).total
+                        //                 ,()=> "MP"
+                        //                 ,()=> `${ getUnit().prm(Prm.MP).base|0 }`
+                        //                 ,()=> Color.D_RED.bright()
+                        //                 ,font
+                        //                 ,2
+                        //             ))
+                        //             .add(new Gage(
+                        //                 ()=> getUnit().prm(Prm.TP).base
+                        //                 ,()=> getUnit().prm(Prm.MAX_TP).total
+                        //                 ,()=> "TP"
+                        //                 ,()=> `${ getUnit().prm(Prm.TP).base|0 }`
+                        //                 ,()=> Color.D_CYAN.bright()
+                        //                 ,font
+                        //                 ,2
+                        //             ))
+                        //     )
+                        //     .add(new Label(font, ()=>createConditionStr(getUnit(), ConditionType.goodConditions()), ()=>Color.CYAN))
+                        //     .add(new Label(font, ()=>createConditionStr(getUnit(), ConditionType.badConditions()), ()=>Color.RED))
+                        //     // .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
+                        //     // .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
+                        //     .add(ILayout.empty)
+                        //     .add(ILayout.empty)
+                        // )
                         .add(new YLayout()
-                            .add(new Label(font, ()=>{
-                                const unit = getUnit();
-                                if(unit instanceof PUnit){
-                                    const nextLvExp = unit.getNextLvExp();
-                                    let percent = nextLvExp === 0 
-                                                ? 0
-                                                : Math.floor( 100 * getUnit().prm(Prm.EXP).base / unit.getNextLvExp())
-                                                ;
-                                    return `EXP:${percent}%`;
-                                }
-                                return "EXP:-";
-                            }))
-                            .add(new Label(font, ()=>{
-                                let u = getUnit();
-                                if(u instanceof PUnit){
-                                    return u.isMasteredJob( u.job )
-                                        ? `${getUnit().job}:★`
-                                        : `${getUnit().job}:Lv${u.getJobLv(u.job)}`
-                                        ;
-                                }
-                                return `${getUnit().job}`;
-                            }))
                             .add(
                                 new XLayout()
                                     .add(new Labels(font)
@@ -359,6 +373,14 @@ export class DrawUnitDetail extends InnerLayout{
     }
 }
 
+const createConditionStr = (unit:Unit, types:ReadonlyArray<ConditionType>)=>{
+    return types
+            .filter(type=> unit.existsCondition(type))
+            .map(type=> unit.getConditionSet(type))
+            .map(set=> `<${set.condition}${set.value|0}>`)
+            .join("")
+            ;
+}
 const createConditionLabel = (font:Font, unit:()=>Unit, types:ReadonlyArray<ConditionType>, color:Color)=>{
     return new Label(
          font
@@ -381,14 +403,16 @@ export class DrawUnits extends InnerLayout{
         super.add(ILayout.create({draw:bounds=>{
             Unit.all
                 .filter(u=> u.exists)
-                .forEach(u=>{
+                .forEach((u,index)=>{
+                    const shake = Math.sin( Date.now() * 0.01 + index * 0.4 ) * Graphics.dotH * 5;
+                    const imgBounds = new Rect(u.imgBounds.x, u.imgBounds.y + shake, u.imgBounds.w, u.imgBounds.h);
                     if(u instanceof PUnit){
-                        const ctx = Graphics.context;
-                        ctx.scale(-1,1);
-                        u.img.draw( new Rect(-u.imgBounds.x - u.imgBounds.w, u.imgBounds.y, u.imgBounds.w, u.imgBounds.h) );
-                        ctx.scale(-1,1);
+                        u.img.drawEx({
+                            dstRatio:imgBounds,
+                            reverseHorizontal:true,
+                        });
                     }else{
-                        u.img.draw( u.imgBounds );   
+                        u.img.draw(imgBounds);
                     }
 
                     const str = `${u.hp}`;

@@ -14,7 +14,7 @@ import { Dungeon } from "../dungeon/dungeon.js";
 import { Rect, Color, Point } from "../undym/type.js";
 import DungeonScene from "./dungeonscene.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { DrawUnitDetail, DrawSTBoxes, DrawYen } from "./sceneutil.js";
+import { DrawUnitDetail, DrawSTBoxes, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
 import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
@@ -59,6 +59,7 @@ export class TownScene extends Scene {
             return new VariableLayout(() => choosedDungeon ? btn : ILayout.empty);
         })());
         super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
         SceneType.TOWN.set();

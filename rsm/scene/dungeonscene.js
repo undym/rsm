@@ -16,7 +16,6 @@ export default class DungeonScene extends Scene {
         super.add(Place.MAIN, DrawEvent.ins);
         super.add(Place.MSG, Util.msg);
         super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
-        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, (() => {
             let dungeonEventBak;
@@ -30,6 +29,7 @@ export default class DungeonScene extends Scene {
             });
         })());
         super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         SceneType.DUNGEON.set();
     }

@@ -1,8 +1,7 @@
-import { ItemDrop } from "./item.js";
 export class PartySkillWin {
     constructor() {
         this.exp = { base: 0, mul: 1 };
-        this.bp = { base: 0, mul: 1 };
+        this.jobExp = { base: 0, mul: 1 };
         this.yen = { base: 0, mul: 1 };
     }
 }
@@ -66,28 +65,22 @@ PartySkill.skills = [];
             arg.yen.mul += 1;
         }
     };
-    PartySkill.マトリョーシカ = new class extends PartySkill {
-        constructor() { super({ uniqueName: "マトリョーシカ", info: "宝箱アイテムチェーン+0.3" }); }
-        openBox(arg, dropType) {
-            if (dropType & ItemDrop.BOX) {
-                arg.chain += 0.3;
-            }
-        }
-    };
-    PartySkill.メモラック = new class extends PartySkill {
-        constructor() { super({ uniqueName: "メモラック", info: "宝箱アイテムランク+0.5" }); }
-        openBox(arg, dropType) {
-            if (dropType & ItemDrop.BOX) {
-                arg.addRank += 0.5;
-            }
-        }
-    };
-    PartySkill.かぐや姫 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "かぐや姫", info: "伐採チェーン+0.6" }); }
-        openBox(arg, dropType) {
-            if (dropType & ItemDrop.TREE) {
-                arg.chain += 0.6;
-            }
-        }
-    };
+    // export const                         マトリョーシカ:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"マトリョーシカ", info:"宝箱アイテムチェーン+0.3"});}
+    //     openBox(arg:PartySkillOpenBox, dropType:ItemDrop){
+    //         if(dropType & ItemDrop.BOX){arg.chain += 0.3;}
+    //     }
+    // }
+    // export const                         メモラック:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"メモラック", info:"宝箱アイテムランク+0.5"});}
+    //     openBox(arg:PartySkillOpenBox, dropType:ItemDrop){
+    //         if(dropType & ItemDrop.BOX){arg.addRank += 0.5;}
+    //     }
+    // }
+    // export const                         かぐや姫:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"かぐや姫", info:"伐採チェーン+0.6"});}
+    //     openBox(arg:PartySkillOpenBox, dropType:ItemDrop){
+    //         if(dropType & ItemDrop.TREE){arg.chain += 0.6;}
+    //     }
+    // }
 })(PartySkill || (PartySkill = {}));

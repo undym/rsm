@@ -87,7 +87,53 @@ export class Img {
         const ctx = Graphics.getRenderTarget().ctx;
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
-        ctx.drawImage(this.image, /*sx*/ srcRatio.x * this.image.width, /*sy*/ srcRatio.y * this.image.height, /*sw*/ srcRatio.w * this.image.width, /*sh*/ srcRatio.h * this.image.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        ctx.scale(-1, 1);
+        ctx.drawImage(this.image, /*sx*/ srcRatio.x * this.image.width, /*sy*/ srcRatio.y * this.image.height, /*sw*/ srcRatio.w * this.image.width, /*sh*/ srcRatio.h * this.image.height, /*dx*/ (-dstRatio.x - dstRatio.w) * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        ctx.scale(-1, 1);
+    }
+    drawEx(args) {
+        if (this.loading !== Img.LOADING_DONE) {
+            if (this.loading === Img.LOADING_YET) {
+                this.load();
+            }
+            return;
+        }
+        const ctx = Graphics.context;
+        const cw = Graphics.getRenderTarget().canvas.width;
+        const ch = Graphics.getRenderTarget().canvas.height;
+        let srcX, srcY, srcW, srcH;
+        let dstX = args.dstRatio.x;
+        let dstY = args.dstRatio.y;
+        let dstW = args.dstRatio.w;
+        let dstH = args.dstRatio.h;
+        if (args.srcRatio) {
+            srcX = args.srcRatio.x;
+            srcY = args.srcRatio.y;
+            srcW = args.srcRatio.w;
+            srcH = args.srcRatio.h;
+        }
+        else {
+            srcX = 0;
+            srcY = 0;
+            srcW = 1;
+            srcH = 1;
+        }
+        if (args.reverseHorizontal) {
+            ctx.scale(-1, 1);
+            dstX = -dstX - dstW;
+        }
+        if (args.reverseVertical) {
+            ctx.scale(1, -1);
+            dstY = -dstY - dstH;
+        }
+        ctx.drawImage(this.image, /*sx*/ srcX * this.image.width, /*sy*/ srcY * this.image.height, /*sw*/ srcW * this.image.width, /*sh*/ srcH * this.image.height, /*dx*/ dstX * cw, /*dy*/ dstY * ch, /*dw*/ dstW * cw, /*dh*/ dstH * ch);
+        if (args.reverseHorizontal) {
+            ctx.scale(-1, 1);
+            dstX = -dstX - dstW;
+        }
+        if (args.reverseVertical) {
+            ctx.scale(1, -1);
+        }
     }
     // drawCenter(center:Point, zoomMul = 1, srcRatio = Rect.FULL){
     //     if(this.loading !== Img.LOADING_DONE){

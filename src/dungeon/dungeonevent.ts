@@ -299,7 +299,7 @@ export namespace DungeonEvent{
         happenInner = async()=>{
             Util.msg.set("敵が現れた！");
             Dungeon.now.setEnemy();
-            Battle.setup( BattleType.NORMAL, (result)=>{
+            Battle.setup( BattleType.NORMAL, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
                         SaveData.save();

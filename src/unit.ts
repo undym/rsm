@@ -482,13 +482,8 @@ export class PUnit extends Unit{
 
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
-            const growHP = this.prm(Prm.LV).base / 100 + 1;
+            const growHP = this.prm(Prm.LV).base / 50 + 1;
             this.growPrm( Prm.MAX_HP, growHP );
-
-            // if(this.prm(Prm.LV).base % 10 === 0){
-            //     this.growPrm( Prm.MAX_MP, 1 );
-            //     this.growPrm( Prm.MAX_TP, 1 );
-            // }
 
             const addBP = (1 + this.prm(Prm.LV).base / 100)|0;
             this.bp += addBP;
@@ -498,8 +493,7 @@ export class PUnit extends Unit{
 
     getNextLvExp():number{
         const lv = this.prm(Prm.LV).base;
-        const res = lv * (lv/20+1) * 5;
-        return res|0;
+        return (lv * (lv/30+1) * 10)|0;
     }
     //---------------------------------------------------------
     //

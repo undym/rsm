@@ -309,7 +309,7 @@ DungeonEvent._values = [];
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 Util.msg.set("敵が現れた！");
                 Dungeon.now.setEnemy();
-                Battle.setup(BattleType.NORMAL, (result) => {
+                Battle.setup(BattleType.NORMAL, (result) => __awaiter(this, void 0, void 0, function* () {
                     switch (result) {
                         case BattleResult.WIN:
                             SaveData.save();
@@ -322,7 +322,7 @@ DungeonEvent._values = [];
                             Scene.load(DungeonScene.ins);
                             break;
                     }
-                });
+                }));
                 Scene.load(BattleScene.ins);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;

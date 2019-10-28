@@ -56,7 +56,7 @@ Player._valueOf = new Map();
             p.img = new Img("img/ルイン.png");
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
-            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.MAX_TP).base = 2;
             p.prm(Prm.STR).base = 2;
             p.tecs = [
                 Tec.殴る,
@@ -74,8 +74,8 @@ Player._valueOf = new Map();
             p.setJobLv(Job.魔法使い, 1);
             p.img = new Img("img/ピアー.png");
             p.prm(Prm.MAX_HP).base = 16;
-            p.prm(Prm.MAX_MP).base = 5;
-            p.prm(Prm.MAX_TP).base = 0;
+            p.prm(Prm.MAX_MP).base = 4;
+            p.prm(Prm.MAX_TP).base = 1;
             p.prm(Prm.STR).base = 1;
             p.prm(Prm.MAG).base = 4;
             p.tecs = [
