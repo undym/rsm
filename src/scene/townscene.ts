@@ -23,6 +23,7 @@ import { FX } from "../fx/fx.js";
 import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
 import { MeisouScene } from "./meisouscene.js";
+import { Mix } from "../mix.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -58,7 +59,7 @@ export class TownScene extends Scene{
         
                     Util.msg.set(`${choosedDungeon}に侵入しました`);
                     const h = 0.15;
-                    FX_DungeonName( choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
+                    FX_DungeonName( choosedDungeon.toString(), Place.DUNGEON_DATA );
         
                     choosedDungeon = undefined;
 
@@ -173,7 +174,7 @@ class TownBtn{
             //         },
             //     });
             // }
-            if(Debug.debugMode){
+            if(Mix.瞑想所.count > 0 || Debug.debugMode){
                 l.add({
                     center:()=>"瞑想",
                     push:elm=>{
@@ -268,9 +269,9 @@ const FX_DungeonName = (name:string, bounds:Rect)=>{
     }
 
     let alpha = 1.0;
-
+    
     FX.add((count)=>{
-        const countLim = 35;
+        const countLim = 45;
         let w = count / countLim * tex.pixelW;
         if(w > tex.pixelW){
             w = tex.pixelW;
@@ -279,11 +280,18 @@ const FX_DungeonName = (name:string, bounds:Rect)=>{
                 flash();
             }
 
-            alpha -= 0.04;
-            if(alpha <= 0){return false;}
+            alpha -= 0.03;
+            if(alpha <= 0){
+                FX.add(count=>{
+                    const over = 30;
+                    Graphics.fillRect(bounds, new Color(0,0,0,1 - count / over));
+                    return count < over;
+                });
+                return false;
+            }
         }
 
-        Graphics.fillRect(bounds, Color.D_GRAY);
+        Graphics.fillRect(bounds, Color.BLACK);
         Graphics.setAlpha(alpha, ()=>{
             for(let i = 0; i < w; i+=2){
                 tex.draw({

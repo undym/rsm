@@ -264,7 +264,7 @@ export abstract class Unit{
                 Graphics.fillRect(bounds, Color.BLACK);
                 stbox.draw(bounds)
             });
-            FX_RotateStr(font, `${result.value}`, point, Color.RED);
+            FX_RotateStr(font, `${result.value}`, point, Color.WHITE);
             Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
 
 
@@ -577,8 +577,6 @@ export class PUnit extends Unit{
         Util.msg.set(`[${prm}]+${value}`, Color.GREEN.bright); await wait();
     }
 }
-
-
 
 
 

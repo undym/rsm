@@ -390,6 +390,11 @@ export class DrawUnits extends InnerLayout{
                     }else{
                         u.img.draw( u.imgBounds );   
                     }
+
+                    const str = `${u.hp}`;
+                    const point = u.imgBounds.top;
+                    Font.def.draw( str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM );
+                    Font.def.draw( str, point, Color.WHITE, Font.BOTTOM );
                 });
         }}));
     }

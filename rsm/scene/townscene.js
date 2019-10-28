@@ -21,15 +21,13 @@ import { ItemScene } from "./itemscene.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics, Texture } from "../graphics/graphics.js";
 import { Item } from "../item.js";
-import { SetTecScene } from "./settecscene.js";
-import { MixScene } from "./mixscene.js";
 import { EqScene } from "./eqscene.js";
 import { ConditionType } from "../condition.js";
 import { ShopScene } from "./shopscene.js";
 import { FX } from "../fx/fx.js";
-import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
 import { MeisouScene } from "./meisouscene.js";
+import { Mix } from "../mix.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -54,7 +52,7 @@ export class TownScene extends Scene {
                 }
                 Util.msg.set(`${choosedDungeon}に侵入しました`);
                 const h = 0.15;
-                FX_DungeonName(choosedDungeon.toString(), new Rect(Place.MAIN.x, Place.MAIN.cy - h / 2, Place.MAIN.w, h));
+                FX_DungeonName(choosedDungeon.toString(), Place.DUNGEON_DATA);
                 choosedDungeon = undefined;
                 Scene.load(DungeonScene.ins);
             });
@@ -122,22 +120,22 @@ class TownBtn {
                 },
             });
         }
-        if (Item.合成許可証.num > 0 || Debug.debugMode) {
-            l.add({
-                center: () => "合成",
-                push: elm => {
-                    Scene.load(new MixScene());
-                },
-            });
-        }
-        if (Item.技習得許可証.num > 0 || Debug.debugMode) {
-            l.add({
-                center: () => "技のセット",
-                push: elm => {
-                    Scene.load(new SetTecScene());
-                },
-            });
-        }
+        // if(Item.合成許可証.num > 0 || Debug.debugMode){
+        //     l.add({
+        //         center:()=>"合成",
+        //         push:elm=>{
+        //             Scene.load(new MixScene());
+        //         },
+        //     });
+        // }
+        // if(Item.技習得許可証.num > 0 || Debug.debugMode){
+        //     l.add({
+        //         center:()=>"技のセット",
+        //         push:elm=>{
+        //             Scene.load(new SetTecScene());
+        //         },
+        //     });
+        // }
         if (PlayData.gotAnyEq || Debug.debugMode) {
             l.add({
                 center: () => "装備",
@@ -146,15 +144,15 @@ class TownBtn {
                 },
             });
         }
-        if (Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode) {
-            l.add({
-                center: () => "パーティースキル",
-                push: elm => {
-                    Scene.load(new PartySkillScene());
-                },
-            });
-        }
-        if (Debug.debugMode) {
+        // if(Item.パーティースキル取り扱い許可証.num > 0 || Debug.debugMode){
+        //     l.add({
+        //         center:()=>"パーティースキル",
+        //         push:elm=>{
+        //             Scene.load(new PartySkillScene());
+        //         },
+        //     });
+        // }
+        if (Mix.瞑想所.count > 0 || Debug.debugMode) {
             l.add({
                 center: () => "瞑想",
                 push: elm => {
@@ -230,19 +228,24 @@ const FX_DungeonName = (name, bounds) => {
     };
     let alpha = 1.0;
     FX.add((count) => {
-        const countLim = 35;
+        const countLim = 45;
         let w = count / countLim * tex.pixelW;
         if (w > tex.pixelW) {
             w = tex.pixelW;
             if (alpha === 1.0) {
                 flash();
             }
-            alpha -= 0.04;
+            alpha -= 0.03;
             if (alpha <= 0) {
+                FX.add(count => {
+                    const over = 30;
+                    Graphics.fillRect(bounds, new Color(0, 0, 0, 1 - count / over));
+                    return count < over;
+                });
                 return false;
             }
         }
-        Graphics.fillRect(bounds, Color.D_GRAY);
+        Graphics.fillRect(bounds, Color.BLACK);
         Graphics.setAlpha(alpha, () => {
             for (let i = 0; i < w; i += 2) {
                 tex.draw({

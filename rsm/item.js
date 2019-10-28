@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
-import { Unit, Prm, PUnit } from "./unit.js";
+import { Unit, Prm } from "./unit.js";
 import { FX_Str } from "./fx/fx.js";
 import { Targeting } from "./force.js";
 import { choice } from "./undym/random.js";
@@ -17,7 +17,6 @@ import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import DungeonScene from "./scene/dungeonscene.js";
-import { Tec } from "./tec.js";
 export class ItemType {
     constructor(name) {
         this.toString = () => name;
@@ -495,30 +494,29 @@ Item.DEF_NUM_LIMIT = 9999;
     //書
     //
     //-----------------------------------------------------------------
-    const createAddTecNumBook = (uniqueName, tecNum) => {
-        return new class extends Item {
-            constructor() {
-                super({ uniqueName: uniqueName, info: `技のセット可能数を${tecNum}に増やす`,
-                    type: ItemType.書, rank: 10, drop: ItemDrop.NO,
-                    use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                        target.tecs.push(Tec.empty);
-                        FX_Str(Font.def, `${target.name}の技セット可能数が${tecNum}になった`, Point.CENTER, Color.WHITE);
-                    }),
-                });
-            }
-            canUse(user, targets) {
-                for (const u of targets) {
-                    if (!(u instanceof PUnit && u.tecs.length === tecNum - 1)) {
-                        return false;
-                    }
-                }
-                return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
-            }
-        };
-    };
-    Item.兵法指南の書 = createAddTecNumBook("兵法指南の書", 6);
-    Item.五輪の書 = createAddTecNumBook("五輪の書", 7);
-    Item.天地創造の書 = createAddTecNumBook("天地創造の書", 8);
+    // const createAddTecNumBook = (uniqueName:string, tecNum:number)=>{
+    //     return new class extends Item{
+    //         constructor(){super({uniqueName:uniqueName, info:`技のセット可能数を${tecNum}に増やす`,
+    //                                 type:ItemType.書, rank:10, drop:ItemDrop.NO,
+    //                                 use:async(user,target)=>{
+    //                                     target.tecs.push( Tec.empty );
+    //                                     FX_Str(Font.def, `${target.name}の技セット可能数が${tecNum}になった`, Point.CENTER, Color.WHITE);
+    //                                 },
+    //         })}
+    //         canUse(user:Unit, targets:Unit[]){
+    //             for(const u of targets){
+    //                 if(!(u instanceof PUnit && u.tecs.length === tecNum-1) ){return false;}
+    //             }
+    //             return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
+    //         }
+    //     };
+    // };
+    // export const                         兵法指南の書:Item = 
+    //                 createAddTecNumBook("兵法指南の書", 6);
+    // export const                         五輪の書:Item = 
+    //                 createAddTecNumBook("五輪の書", 7);
+    // export const                         天地創造の書:Item = 
+    //                 createAddTecNumBook("天地創造の書", 8);
     //-----------------------------------------------------------------
     //
     //メモ
@@ -540,24 +538,18 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
-    Item.技習得許可証 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "技習得許可証", info: "技のセットが解放される",
-                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
-        }
-    };
-    Item.合成許可証 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "合成許可証", info: "合成が解放される",
-                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
-        }
-    };
-    Item.パーティースキル取り扱い許可証 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "パーティースキル取り扱い許可証", info: "パーティースキルが解放される",
-                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
-        }
-    };
+    // export const                         技習得許可証:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"技習得許可証", info:"技のセットが解放される", 
+    //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
+    // };
+    // export const                         合成許可証:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"合成許可証", info:"合成が解放される", 
+    //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
+    // };
+    // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
+    //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
+    // };
     //-----------------------------------------------------------------
     //
     //素材BoxRank0
@@ -575,27 +567,15 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
         }
     };
-    Item.紙 = new class extends Item {
+    Item.砂 = new class extends Item {
         constructor() {
-            super({ uniqueName: "紙", info: "",
+            super({ uniqueName: "砂", info: "",
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
         }
     };
-    Item.しいたけ = new class extends Item {
+    Item.原木 = new class extends Item {
         constructor() {
-            super({ uniqueName: "しいたけ", info: "",
-                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
-        }
-    };
-    Item.葛 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "葛", info: "",
-                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
-        }
-    };
-    Item.短針 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "短針", info: "",
+            super({ uniqueName: "原木", info: "",
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
         }
     };
@@ -605,410 +585,340 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
         }
     };
+    Item.水 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "水", info: "",
+                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
+        }
+    };
+    Item.肉 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "肉", info: "",
+                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //素材BoxRank1
     //
     //-----------------------------------------------------------------
-    Item.朽ち果てた鍵 = new class extends Item {
+    Item.銅 = new class extends Item {
         constructor() {
-            super({ uniqueName: "朽ち果てた鍵", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
-        }
-    };
-    Item.エネルギー = new class extends Item {
-        constructor() {
-            super({ uniqueName: "エネルギー", info: "触るとビリビリする",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
-        }
-    };
-    Item.ひも = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ひも", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
-        }
-    };
-    Item.消えない炎 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "消えない炎", info: "たまに消える",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //素材BoxRank2
-    //
-    //-----------------------------------------------------------------
-    Item.He = new class extends Item {
-        constructor() {
-            super({ uniqueName: "He", info: "",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    Item.Li = new class extends Item {
-        constructor() {
-            super({ uniqueName: "Li", info: "",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    Item.黒い枝 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "黒い枝", info: "とても黒い！！！！！",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    Item.黒い青空 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "黒い青空", info: "",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //素材BoxRank3
-    //
-    //-----------------------------------------------------------------
-    Item.鋼鉄 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "鋼鉄", info: "とてもかたい",
-                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
-        }
-    };
-    Item.おにく = new class extends Item {
-        constructor() {
-            super({ uniqueName: "おにく", info: "",
-                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //素材BoxRank4
-    //
-    //-----------------------------------------------------------------
-    Item.チタン = new class extends Item {
-        constructor() {
-            super({ uniqueName: "チタン", info: "",
-                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //固有素材
-    //
-    //-----------------------------------------------------------------
-    Item.はじまりの丘チール = new class extends Item {
-        constructor() {
-            super({ uniqueName: "はじまりの丘チール", info: "はじまりの丘をクリアするともらえる記念チール",
-                type: ItemType.固有素材, rank: 10, drop: ItemDrop.NO, });
-        }
-    };
-    Item.リテの門チール = new class extends Item {
-        constructor() {
-            super({ uniqueName: "リ・テの門チール", info: "リテの門をクリアするともらえる記念チール",
-                type: ItemType.固有素材, rank: 10, drop: ItemDrop.NO, });
-        }
-    };
-    Item.マーザンの鱗 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "マーザンの鱗", info: "なんやーーーーー！！！",
-                type: ItemType.固有素材, rank: 10, drop: ItemDrop.NO, });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //合成素材
-    //
-    //-----------------------------------------------------------------
-    Item.布 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "布", info: "",
-                type: ItemType.合成素材, rank: 4, drop: ItemDrop.NO });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //木
-    //
-    //-----------------------------------------------------------------
-    Item.枝 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "枝", info: "",
-                type: ItemType.植物, rank: 0, drop: ItemDrop.BOX | ItemDrop.TREE });
-        }
-    };
-    Item.葉っぱ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "葉っぱ", info: "",
-                type: ItemType.植物, rank: 0, drop: ItemDrop.BOX | ItemDrop.TREE });
-        }
-    };
-    Item.竹 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "竹", info: "",
-                type: ItemType.植物, rank: 0, drop: ItemDrop.TREE });
-        }
-    };
-    Item.松 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "松", info: "",
-                type: ItemType.植物, rank: 0, drop: ItemDrop.TREE });
-        }
-    };
-    Item.スギ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "スギ", info: "",
-                type: ItemType.植物, rank: 1, drop: ItemDrop.TREE });
-        }
-    };
-    Item.赤松 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "赤松", info: "",
-                type: ItemType.植物, rank: 1, drop: ItemDrop.TREE });
-        }
-    };
-    Item.ヒノキ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ヒノキ", info: "",
-                type: ItemType.植物, rank: 2, drop: ItemDrop.TREE });
-        }
-    };
-    Item.無法松 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "無法松", info: "通りすがりのたい焼き屋サン",
-                type: ItemType.植物, rank: 8, drop: ItemDrop.TREE });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //土
-    //
-    //-----------------------------------------------------------------
-    Item.イズミミズ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "イズミミズ", info: "",
-                type: ItemType.土, rank: 0, drop: ItemDrop.STRATUM });
+            super({ uniqueName: "銅", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
     Item.土 = new class extends Item {
         constructor() {
             super({ uniqueName: "土", info: "",
-                type: ItemType.土, rank: 0, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
-    Item.銅 = new class extends Item {
+    Item.杉 = new class extends Item {
         constructor() {
-            super({ uniqueName: "銅", info: "",
-                type: ItemType.土, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+            super({ uniqueName: "杉", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
-    Item.黒い石 = new class extends Item {
+    Item.ヒノキ = new class extends Item {
         constructor() {
-            super({ uniqueName: "黒い石", info: "",
-                type: ItemType.土, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+            super({ uniqueName: "ヒノキ", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
-    Item.黒い砂 = new class extends Item {
+    Item.バッタ = new class extends Item {
         constructor() {
-            super({ uniqueName: "黒い砂", info: "",
-                type: ItemType.土, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+            super({ uniqueName: "バッタ", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
         }
     };
-    Item.鉄 = new class extends Item {
+    Item.たんぽぽ = new class extends Item {
         constructor() {
-            super({ uniqueName: "鉄", info: "かたい",
-                type: ItemType.土, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+            super({ uniqueName: "たんぽぽ", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
         }
     };
-    Item.オニキス = new class extends Item {
+    Item.つる = new class extends Item {
         constructor() {
-            super({ uniqueName: "オニキス", info: "",
-                type: ItemType.土, rank: 2, drop: ItemDrop.STRATUM });
+            super({ uniqueName: "つる", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
         }
     };
-    Item.岩 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "岩", info: "",
-                type: ItemType.土, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
-        }
-    };
-    Item.イズミジュエリー = new class extends Item {
-        constructor() {
-            super({ uniqueName: "イズミジュエリー", info: "",
-                type: ItemType.土, rank: 3, drop: ItemDrop.STRATUM });
-        }
-    };
-    Item.クリスタル = new class extends Item {
-        constructor() {
-            super({ uniqueName: "クリスタル", info: "",
-                type: ItemType.土, rank: 4, drop: ItemDrop.STRATUM });
-        }
-    };
-    Item.サファイア = new class extends Item {
-        constructor() {
-            super({ uniqueName: "サファイア", info: "",
-                type: ItemType.土, rank: 4, drop: ItemDrop.STRATUM });
-        }
-    };
-    Item.血粉末 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "血粉末", info: "",
-                type: ItemType.土, rank: 5, drop: ItemDrop.STRATUM });
-        }
-    };
+    // export const                         消えない炎:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"消えない炎", info:"たまに消える",
+    //                             type:ItemType.素材, rank:1, drop:ItemDrop.BOX})}
+    // };
     //-----------------------------------------------------------------
     //
-    //水
+    //素材BoxRank2
     //
     //-----------------------------------------------------------------
-    Item.水 = new class extends Item {
+    Item.粘土 = new class extends Item {
         constructor() {
-            super({ uniqueName: "水", info: "",
-                type: ItemType.水, rank: 0, drop: ItemDrop.BOX | ItemDrop.LAKE });
+            super({ uniqueName: "粘土", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
-    Item.血 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "血", info: "",
-                type: ItemType.水, rank: 0, drop: ItemDrop.BOX | ItemDrop.LAKE });
-        }
-    };
-    Item.ほぐし水 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ほぐし水", info: "",
-                type: ItemType.水, rank: 1, drop: ItemDrop.BOX | ItemDrop.LAKE });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
-    //魚
-    //
-    //-----------------------------------------------------------------
-    Item.コイキング = new class extends Item {
-        constructor() {
-            super({ uniqueName: "コイキング", info: "",
-                type: ItemType.魚, rank: 0, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.かに = new class extends Item {
-        constructor() {
-            super({ uniqueName: "かに", info: "",
-                type: ItemType.魚, rank: 0, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ルアー = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ルアー", info: "",
-                type: ItemType.魚, rank: 0, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.あむ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "あむ", info: "",
-                type: ItemType.魚, rank: 0, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.はねこ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "はねこ", info: "",
-                type: ItemType.魚, rank: 0, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.おじさん = new class extends Item {
-        constructor() {
-            super({ uniqueName: "おじさん", info: "",
-                type: ItemType.魚, rank: 1, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.緑亀 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "緑亀", info: "",
-                type: ItemType.魚, rank: 1, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.タイヤクラゲ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "タイヤクラゲ", info: "タイヤみたいなクラゲ。けっこう丈夫、食べるとお腹+4",
-                type: ItemType.魚, rank: 1, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.RANK2 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "RANK2", info: "",
-                type: ItemType.魚, rank: 2, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ミソヅケ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ミソヅケ", info: "",
-                type: ItemType.魚, rank: 2, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ブレインうさぎ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ブレインうさぎ", info: "",
-                type: ItemType.魚, rank: 2, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.魂のない子 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "魂のない子", info: "魂が宿っていない人造人間の子....食べるとお腹+28",
-                type: ItemType.魚, rank: 3, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ウェーブコイラバタフラ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ウェーブコイラバタフラ", info: "宇宙がビックバンとビッククランチを繰り返す史中を超",
-                type: ItemType.魚, rank: 3, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ウェーブコイラバタフライ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ウェーブコイラバタフライ", info: "宇宙がビックバンとビッククランチを繰り返す史中を超えて生き続ける超生物....食べるとお腹+26",
-                type: ItemType.魚, rank: 4, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.メモ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "メモ", info: "かつてアールエスというゲームで最強と言われたキャラクター",
-                type: ItemType.魚, rank: 4, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.MMMMM = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ＭＭＭＭＭ", info: "ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
-                type: ItemType.魚, rank: 5, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ペガサス = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ペガサス", info: "奇妙な踊りを踊る馬",
-                type: ItemType.魚, rank: 5, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ドラゴン = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ドラゴン", info: "VEGA",
-                type: ItemType.魚, rank: 5, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.ウェポン = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ウェポン", info: "",
-                type: ItemType.魚, rank: 6, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.一号 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "一号", info: "",
-                type: ItemType.魚, rank: 6, drop: ItemDrop.FISHING });
-        }
-    };
-    Item.零号 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "零号", info: "",
-                type: ItemType.魚, rank: 6, drop: ItemDrop.FISHING });
-        }
-    };
+    // export const                         He:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"He", info:"",
+    //                             type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+    // };
+    // export const                         Li:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"Li", info:"",
+    //                             type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+    // };
+    // export const                         黒い枝:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"黒い枝", info:"とても黒い！！！！！",
+    //                             type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+    // };
+    // export const                         黒い青空:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"黒い青空", info:"",
+    //                             type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //素材BoxRank3
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         鋼鉄:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"鋼鉄", info:"とてもかたい",
+    //                             type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
+    // };
+    // export const                         おにく:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"おにく", info:"",
+    //                             type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //素材BoxRank4
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         チタン:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"チタン", info:"",
+    //                             type:ItemType.素材, rank:4, drop:ItemDrop.BOX})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //固有素材
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         はじまりの丘チール:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"はじまりの丘チール", info:"はじまりの丘をクリアするともらえる記念チール", 
+    //                             type:ItemType.固有素材, rank:10, drop:ItemDrop.NO,})}
+    // };
+    // export const                         リテの門チール:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"リ・テの門チール", info:"リテの門をクリアするともらえる記念チール", 
+    //                             type:ItemType.固有素材, rank:10, drop:ItemDrop.NO,})}
+    // };
+    // export const                         マーザンの鱗:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"マーザンの鱗", info:"なんやーーーーー！！！", 
+    //                             type:ItemType.固有素材, rank:10, drop:ItemDrop.NO,})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //合成素材
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         布:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"布", info:"",
+    //                             type:ItemType.合成素材, rank:4, drop:ItemDrop.NO})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //木
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         枝:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"枝", info:"",
+    //                             type:ItemType.植物, rank:0, drop:ItemDrop.BOX | ItemDrop.TREE})}
+    // };
+    // export const                         葉っぱ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"葉っぱ", info:"",
+    //                             type:ItemType.植物, rank:0, drop:ItemDrop.BOX | ItemDrop.TREE})}
+    // };
+    // export const                         竹:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"竹", info:"",
+    //                             type:ItemType.植物, rank:0, drop:ItemDrop.TREE})}
+    // };
+    // export const                         松:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"松", info:"",
+    //                             type:ItemType.植物, rank:0, drop:ItemDrop.TREE})}
+    // };
+    // export const                         スギ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"スギ", info:"",
+    //                             type:ItemType.植物, rank:1, drop:ItemDrop.TREE})}
+    // };
+    // export const                         赤松:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"赤松", info:"",
+    //                             type:ItemType.植物, rank:1, drop:ItemDrop.TREE})}
+    // };
+    // export const                         ヒノキ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ヒノキ", info:"",
+    //                             type:ItemType.植物, rank:2, drop:ItemDrop.TREE})}
+    // };
+    // export const                         無法松:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"無法松", info:"通りすがりのたい焼き屋サン",
+    //                             type:ItemType.植物, rank:8, drop:ItemDrop.TREE})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //土
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         イズミミズ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"イズミミズ", info:"",
+    //                             type:ItemType.土, rank:0, drop:ItemDrop.STRATUM})}
+    // };
+    // export const                         土:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"土", info:"",
+    //                             type:ItemType.土, rank:0, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         銅:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"銅", info:"",
+    //                             type:ItemType.土, rank:1, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         黒い石:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"黒い石", info:"",
+    //                             type:ItemType.土, rank:2, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         黒い砂:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"黒い砂", info:"",
+    //                             type:ItemType.土, rank:2, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         鉄:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"鉄", info:"かたい",
+    //                             type:ItemType.土, rank:2, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         オニキス:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"オニキス", info:"",
+    //                             type:ItemType.土, rank:2, drop:ItemDrop.STRATUM})}
+    // };
+    // export const                         岩:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"岩", info:"",
+    //                             type:ItemType.土, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    // };
+    // export const                         イズミジュエリー:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"イズミジュエリー", info:"",
+    //                             type:ItemType.土, rank:3, drop:ItemDrop.STRATUM})}
+    // };
+    // export const                         クリスタル:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"クリスタル", info:"",
+    //                             type:ItemType.土, rank:4, drop:ItemDrop.STRATUM})}
+    // };
+    // export const                         サファイア:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"サファイア", info:"",
+    //                             type:ItemType.土, rank:4, drop:ItemDrop.STRATUM})}
+    // };
+    // export const                         血粉末:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"血粉末", info:"",
+    //                             type:ItemType.土, rank:5, drop:ItemDrop.STRATUM})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //水
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         水:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"水", info:"",
+    //                             type:ItemType.水, rank:0, drop:ItemDrop.BOX | ItemDrop.LAKE})}
+    // };
+    // export const                         血:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"血", info:"",
+    //                             type:ItemType.水, rank:0, drop:ItemDrop.BOX | ItemDrop.LAKE})}
+    // };
+    // export const                         ほぐし水:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ほぐし水", info:"",
+    //                             type:ItemType.水, rank:1, drop:ItemDrop.BOX | ItemDrop.LAKE})}
+    // };
+    // //-----------------------------------------------------------------
+    // //
+    // //魚
+    // //
+    // //-----------------------------------------------------------------
+    // export const                         コイキング:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"コイキング", info:"",
+    //                             type:ItemType.魚, rank:0, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         かに:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"かに", info:"",
+    //                             type:ItemType.魚, rank:0, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ルアー:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ルアー", info:"",
+    //                             type:ItemType.魚, rank:0, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         あむ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"あむ", info:"",
+    //                             type:ItemType.魚, rank:0, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         はねこ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"はねこ", info:"",
+    //                             type:ItemType.魚, rank:0, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         おじさん:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"おじさん", info:"",
+    //                             type:ItemType.魚, rank:1, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         緑亀:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"緑亀", info:"",
+    //                             type:ItemType.魚, rank:1, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         タイヤクラゲ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"タイヤクラゲ", info:"タイヤみたいなクラゲ。けっこう丈夫、食べるとお腹+4",
+    //                             type:ItemType.魚, rank:1, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         RANK2:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"RANK2", info:"",
+    //                             type:ItemType.魚, rank:2, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ミソヅケ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ミソヅケ", info:"",
+    //                             type:ItemType.魚, rank:2, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ブレインうさぎ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ブレインうさぎ", info:"",
+    //                             type:ItemType.魚, rank:2, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         魂のない子:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"魂のない子", info:"魂が宿っていない人造人間の子....食べるとお腹+28",
+    //                             type:ItemType.魚, rank:3, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ウェーブコイラバタフラ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ウェーブコイラバタフラ", info:"宇宙がビックバンとビッククランチを繰り返す史中を超",
+    //                             type:ItemType.魚, rank:3, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ウェーブコイラバタフライ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ウェーブコイラバタフライ", info:"宇宙がビックバンとビッククランチを繰り返す史中を超えて生き続ける超生物....食べるとお腹+26",
+    //                             type:ItemType.魚, rank:4, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         メモ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"メモ", info:"かつてアールエスというゲームで最強と言われたキャラクター",
+    //                             type:ItemType.魚, rank:4, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         MMMMM:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ＭＭＭＭＭ", info:"ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
+    //                             type:ItemType.魚, rank:5, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ペガサス:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ペガサス", info:"奇妙な踊りを踊る馬",
+    //                             type:ItemType.魚, rank:5, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ドラゴン:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ドラゴン", info:"VEGA",
+    //                             type:ItemType.魚, rank:5, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         ウェポン:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"ウェポン", info:"",
+    //                             type:ItemType.魚, rank:6, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         一号:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"一号", info:"",
+    //                             type:ItemType.魚, rank:6, drop:ItemDrop.FISHING})}
+    // };
+    // export const                         零号:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"零号", info:"",
+    //                             type:ItemType.魚, rank:6, drop:ItemDrop.FISHING})}
+    // };
     //-----------------------------------------------------------------
     //
     //

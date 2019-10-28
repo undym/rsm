@@ -16,8 +16,8 @@ import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { Item } from "../item.js";
-let ショットガンmaster = false;
-let ヤクシャmaster = false;
+// let ショットガンmaster = false;
+// let ヤクシャmaster = false;
 export class ShopScene extends Scene {
     constructor() {
         super();

@@ -32,7 +32,6 @@ export class BattleScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new BattleScene()); }
     init() {
         super.clear();
-        // super.add(Place.TOP, DrawPlayInfo.ins);
         const drawBG = (() => {
             if (Battle.type === BattleType.BOSS) {
                 return createBossBG();
@@ -47,10 +46,6 @@ export class BattleScene extends Scene {
                     drawBG(bounds);
                 });
             } }));
-        // super.add(Place.DUNGEON_DATA, new VariableLayout(()=>{
-        //     if(this.tecInfo.tec === Tec.empty){return DrawDungeonData.ins;}
-        //     return ILayout.empty;
-        // }));
         super.add(Place.DUNGEON_DATA, (() => {
             const info = new Labels(Font.def)
                 .add(() => `[${this.tecInfo.tec}]`)
@@ -206,6 +201,7 @@ export class BattleScene extends Scene {
                     list.add({
                         center: () => tec.toString(),
                         push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                            chooseTargetLayout = ILayout.empty;
                             choosedTec = tec;
                             attacker.tecListScroll = index;
                             this.tecInfo.tec = Tec.empty;
@@ -259,6 +255,7 @@ export class BattleScene extends Scene {
             list.add({
                 center: () => "アイテム",
                 push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                    chooseTargetLayout = ILayout.empty;
                     Scene.load(ItemScene.ins({
                         user: attacker,
                         selectUser: false,

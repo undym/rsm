@@ -55,7 +55,7 @@ export class Place{
         const imgScreenRatioW = u.img.ratioW * zoomMul;
         const imgScreenRatioH = u.img.ratioH * zoomMul;
         return  new Rect(
-                    Place.E_BOX.x + imgScreenRatioW,
+                    Place.E_BOX.xw,
                     Place.E_BOX.y + Place.BOX_H / Unit.enemies.length * (i + 0.5) - imgScreenRatioH / 2,
                     imgScreenRatioW,
                     imgScreenRatioH,

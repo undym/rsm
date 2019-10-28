@@ -143,6 +143,11 @@ export namespace Mix{
     //建築
     //
     //--------------------------------------------------------
+    export const    瞑想所:Mix = new Mix({
+        uniqueName:"瞑想所", limit:1, info:"瞑想が可能になる",
+        materials:()=>[[Item.草, 5]],
+        action:()=>{},
+    });
     const           肉のスープ:Mix = new Mix({
         uniqueName:"肉のスープ", limit:10, info:"ルインとピアーの最大HP+1",
         materials:()=>[[Item.石, 5], [Item.肉, 5], [Item.水, 5]],

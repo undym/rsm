@@ -211,7 +211,7 @@ export class Unit {
                     Graphics.fillRect(bounds, Color.BLACK);
                     stbox.draw(bounds);
                 });
-                FX_RotateStr(font, `${result.value}`, point, Color.RED);
+                FX_RotateStr(font, `${result.value}`, point, Color.WHITE);
                 Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
                 dmg.additinalAttacks.forEach((aa, index) => {
                     const value = aa(dmg, index) | 0;

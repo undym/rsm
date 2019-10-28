@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { DungeonEvent } from "./dungeonevent.js";
+import { Color } from "../undym/type.js";
 import { Job } from "../job.js";
 import { Unit, Prm } from "../unit.js";
 import { Item } from "../item.js";
@@ -225,6 +226,8 @@ Dungeon.auNow = 0;
                 _super.dungeonClearEvent.call(this);
                 if (Item.脱出ポッド.totalGetCount === 0) {
                     Item.脱出ポッド.add(1);
+                    yield wait();
+                    Util.msg.set("[お店]が出現した", Color.PINK.bright);
                     yield wait();
                 }
             });
