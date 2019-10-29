@@ -485,6 +485,10 @@ export class PUnit extends Unit{
             const growHP = this.prm(Prm.LV).base / 50 + 1;
             this.growPrm( Prm.MAX_HP, growHP );
 
+            for(const gp of this.job.growthPrms){
+                this.growPrm( gp.prm, gp.value );
+            }
+
             const addBP = (1 + this.prm(Prm.LV).base / 100)|0;
             this.bp += addBP;
             Util.msg.set(`BP+${addBP}`, Color.GREEN.bright);
@@ -514,10 +518,6 @@ export class PUnit extends Unit{
             set.exp = 0;
 
             Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright); await wait();
-            
-            for(let grow of this.job.growthPrms){
-                this.growPrm( grow.prm, grow.value );
-            }
 
             const learnings = this.job.learningTecs;
             const ratio = set.lv / this.job.maxLv;
