@@ -70,7 +70,7 @@ export class Place{
         const imgScreenRatioW = u.img.ratioW * zoomMul;
         const imgScreenRatioH = u.img.ratioH * zoomMul;
         return  new Rect(
-                    Place.P_BOX.x - imgScreenRatioW,
+                    Place.P_BOX.x - imgScreenRatioW - Graphics.dotH,
                     Place.P_BOX.y + Place.BOX_H / Unit.players.length * (i + 0.5) - imgScreenRatioH / 2,
                     imgScreenRatioW,
                     imgScreenRatioH,

@@ -2,7 +2,7 @@ import { EUnit, Prm, PUnit, Unit } from "./unit.js";
 import { Tec } from "./tec.js";
 import { Player } from "./player.js";
 import { EqPos, Eq } from "./eq.js";
-import { choice } from "./undym/random.js";
+import { choice, randomInt } from "./undym/random.js";
 import { Img } from "./graphics/graphics.js";
 
 /*
@@ -132,7 +132,7 @@ export abstract class Job{
         e.prm(Prm.EXP).base = lv + 1;
         e.yen = lv + 1;
 
-        e.prm(Prm.MAX_HP).base = 3 + (lv * lv * 0.35);
+        e.prm(Prm.MAX_HP).base = randomInt(3, 8) + (lv * lv * 0.35);
         e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
 

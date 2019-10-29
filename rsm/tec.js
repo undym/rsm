@@ -45,7 +45,7 @@ TecType._values = [];
         constructor() { super("格闘"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.MAG).total,
             });
         }
@@ -57,7 +57,7 @@ TecType._values = [];
         constructor() { super("魔法"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.STR).total,
             });
         }
@@ -69,7 +69,7 @@ TecType._values = [];
         constructor() { super("神格"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.DRK).total,
             });
         }
@@ -81,7 +81,7 @@ TecType._values = [];
         constructor() { super("暗黒"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.DRK).total + attacker.prm(Prm.LV).total * 0.75,
+                pow: attacker.prm(Prm.DRK).total + attacker.prm(Prm.LV).total * 0.5,
                 def: target.prm(Prm.LIG).total,
             });
         }
@@ -93,7 +93,7 @@ TecType._values = [];
         constructor() { super("練術"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.CHN).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.CHN).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.PST).total,
             });
         }
@@ -105,7 +105,7 @@ TecType._values = [];
         constructor() { super("過去"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.PST).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.PST).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.CHN).total,
             });
         }
@@ -117,7 +117,7 @@ TecType._values = [];
         constructor() { super("銃術"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.GUN).total + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.GUN).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.ARR).total,
             });
         }
@@ -129,7 +129,7 @@ TecType._values = [];
         constructor() { super("弓術"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total / 2,
+                pow: attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
                 def: target.prm(Prm.GUN).total,
             });
         }
@@ -148,7 +148,7 @@ TecType._values = [];
         constructor() { super("回復"); }
         createDmg(attacker, target) {
             return new Dmg({
-                absPow: attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total / 2,
+                absPow: attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total,
             });
         }
         effect(attacker, target, dmg) {

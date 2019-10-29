@@ -46,7 +46,7 @@ export class Place {
         const zoomMul = imgScreenPixelH / u.img.pixelH;
         const imgScreenRatioW = u.img.ratioW * zoomMul;
         const imgScreenRatioH = u.img.ratioH * zoomMul;
-        return new Rect(Place.P_BOX.x - imgScreenRatioW, Place.P_BOX.y + Place.BOX_H / Unit.players.length * (i + 0.5) - imgScreenRatioH / 2, imgScreenRatioW, imgScreenRatioH);
+        return new Rect(Place.P_BOX.x - imgScreenRatioW - Graphics.dotH, Place.P_BOX.y + Place.BOX_H / Unit.players.length * (i + 0.5) - imgScreenRatioH / 2, imgScreenRatioW, imgScreenRatioH);
     }
     static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
     static get BTN() { return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH); }

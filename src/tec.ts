@@ -53,7 +53,7 @@ export namespace TecType{
         constructor(){super("格闘");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.MAG).total,
             });
         }
@@ -65,7 +65,7 @@ export namespace TecType{
         constructor(){super("魔法");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.STR).total,
             });
         }
@@ -77,7 +77,7 @@ export namespace TecType{
         constructor(){super("神格");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.DRK).total,
             });
         }
@@ -89,7 +89,7 @@ export namespace TecType{
         constructor(){super("暗黒");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.DRK).total + attacker.prm(Prm.LV).total * 0.75,
+                pow:attacker.prm(Prm.DRK).total + attacker.prm(Prm.LV).total * 0.5,
                 def:target.prm(Prm.LIG).total,
             });
         }
@@ -101,7 +101,7 @@ export namespace TecType{
         constructor(){super("練術");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.CHN).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.CHN).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.PST).total,
             });
         }
@@ -113,7 +113,7 @@ export namespace TecType{
         constructor(){super("過去");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.PST).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.PST).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.CHN).total,
             });
         }
@@ -125,7 +125,7 @@ export namespace TecType{
         constructor(){super("銃術");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.GUN).total + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.GUN).total + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.ARR).total,
             });
         }
@@ -137,7 +137,7 @@ export namespace TecType{
         constructor(){super("弓術");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total / 2,
+                pow:attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
                 def:target.prm(Prm.GUN).total,
             });
         }
@@ -156,7 +156,7 @@ export namespace TecType{
         constructor(){super("回復");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                absPow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total / 2,
+                absPow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total,
             });
         }
         effect(attacker:Unit, target:Unit, dmg:Dmg){

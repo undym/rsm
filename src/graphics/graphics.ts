@@ -121,7 +121,6 @@ export class Img{
         const ctx = Graphics.getRenderTarget().ctx;
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
-        ctx.scale(-1,1);
         ctx.drawImage(
              this.image
             ,/*sx*/srcRatio.x * this.image.width
@@ -133,7 +132,6 @@ export class Img{
             ,/*dw*/dstRatio.w * cw
             ,/*dh*/dstRatio.h * ch
         );
-        ctx.scale(-1,1);
     }
 
     drawEx(args:{
