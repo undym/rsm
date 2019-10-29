@@ -400,25 +400,26 @@ export class DrawUnits extends InnerLayout{
     constructor(){
         super();
 
+        const haka = new Img("img/墓.png");
         super.add(ILayout.create({draw:bounds=>{
             Unit.all
                 .filter(u=> u.exists)
                 .forEach((u,index)=>{
-                    const shake = Math.sin( Date.now() * 0.01 + index * 0.4 ) * Graphics.dotH * 5;
-                    const imgBounds = new Rect(u.imgBounds.x, u.imgBounds.y + shake, u.imgBounds.w, u.imgBounds.h);
-                    if(u instanceof PUnit){
+                    if(u.dead){
+                        haka.draw( u.imgBounds );
+                    }else{    
+                        const shake = Math.sin( Date.now() * 0.01 + index * 0.4 ) * Graphics.dotH * 5;
+                        const imgBounds = new Rect(u.imgBounds.x, u.imgBounds.y + shake, u.imgBounds.w, u.imgBounds.h);
                         u.img.drawEx({
                             dstRatio:imgBounds,
-                            reverseHorizontal:true,
+                            reverseHorizontal:(u instanceof PUnit),
                         });
-                    }else{
-                        u.img.draw(imgBounds);
-                    }
 
-                    const str = `${u.hp}`;
-                    const point = u.imgBounds.top;
-                    Font.def.draw( str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM );
-                    Font.def.draw( str, point, Color.WHITE, Font.BOTTOM );
+                        const str = `${u.hp}`;
+                        const point = u.imgBounds.top;
+                        Font.def.draw( str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM );
+                        Font.def.draw( str, point, Color.WHITE, Font.BOTTOM );
+                    }
                 });
         }}));
     }

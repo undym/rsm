@@ -8,7 +8,7 @@ import { Unit, Prm, PUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { ConditionType } from "../condition.js";
 import { EqPos } from "../eq.js";
-import { Font, Graphics } from "../graphics/graphics.js";
+import { Font, Graphics, Img } from "../graphics/graphics.js";
 import { Version } from "../savedata.js";
 export class DrawPlayInfo extends InnerLayout {
     static get ins() {
@@ -313,25 +313,26 @@ export class DrawUnits extends InnerLayout {
     static get ins() { return this._ins ? this._ins : (this._ins = new DrawUnits()); }
     constructor() {
         super();
+        const haka = new Img("img/墓.png");
         super.add(ILayout.create({ draw: bounds => {
                 Unit.all
                     .filter(u => u.exists)
                     .forEach((u, index) => {
-                    const shake = Math.sin(Date.now() * 0.01 + index * 0.4) * Graphics.dotH * 5;
-                    const imgBounds = new Rect(u.imgBounds.x, u.imgBounds.y + shake, u.imgBounds.w, u.imgBounds.h);
-                    if (u instanceof PUnit) {
-                        u.img.drawEx({
-                            dstRatio: imgBounds,
-                            reverseHorizontal: true,
-                        });
+                    if (u.dead) {
+                        haka.draw(u.imgBounds);
                     }
                     else {
-                        u.img.draw(imgBounds);
+                        const shake = Math.sin(Date.now() * 0.01 + index * 0.4) * Graphics.dotH * 5;
+                        const imgBounds = new Rect(u.imgBounds.x, u.imgBounds.y + shake, u.imgBounds.w, u.imgBounds.h);
+                        u.img.drawEx({
+                            dstRatio: imgBounds,
+                            reverseHorizontal: (u instanceof PUnit),
+                        });
+                        const str = `${u.hp}`;
+                        const point = u.imgBounds.top;
+                        Font.def.draw(str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM);
+                        Font.def.draw(str, point, Color.WHITE, Font.BOTTOM);
                     }
-                    const str = `${u.hp}`;
-                    const point = u.imgBounds.top;
-                    Font.def.draw(str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM);
-                    Font.def.draw(str, point, Color.WHITE, Font.BOTTOM);
                 });
             } }));
     }
