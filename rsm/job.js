@@ -100,7 +100,7 @@ export class Job {
         e.prm(Prm.LV).base = lv;
         e.prm(Prm.EXP).base = lv + 1;
         e.yen = lv + 1;
-        e.prm(Prm.MAX_HP).base = randomInt(3, 8) + (lv * lv * 0.35);
+        e.prm(Prm.MAX_HP).base = randomInt(2, 7) + (lv * lv * 0.35);
         e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.tp = 0;

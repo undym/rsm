@@ -365,13 +365,13 @@ export namespace Eq{
         constructor(){super({uniqueName:"板", info:"",
                                 pos:EqPos.盾, lv:0});}
     }
-    // export const                         銅板:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"銅板", info:"防御値+50",
-    //                             pos:EqPos.盾, lv:12});}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.def.add += 50;
-    //     }
-    // }
+    export const                         銅板:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"銅板", info:"防御値+100",
+                                pos:EqPos.盾, lv:12});}
+        beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            dmg.def.add += 100;
+        }
+    }
     // export const                         鉄板:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"鉄板", info:"防御値+100",
     //                             pos:EqPos.盾, lv:22});}
@@ -402,11 +402,11 @@ export namespace Eq{
         constructor(){super({uniqueName:"襤褸切れ", info:"",
                                 pos:EqPos.体, lv:0});}
     }
-    // export const                         草の服:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"草の服", info:"最大HP+20",
-    //                             pos:EqPos.体, lv:15});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
-    // }
+    export const                         草の服:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"草の服", info:"最大HP+20",
+                                pos:EqPos.体, lv:15});}
+        equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
+    }
     // export const                         布の服:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"布の服", info:"最大HP+40",
     //                             pos:EqPos.体, lv:35});}

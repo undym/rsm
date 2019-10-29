@@ -139,6 +139,12 @@ export class BattleScene extends Scene{
                 for(const u of Unit.all){
                     u.tp = 0;
                 }
+                
+                for(const p of Unit.players){
+                    for(const prm of Prm.values()){
+                        p.prm(prm).battle = 0;
+                    }
+                }
 
                 for(const u of Unit.all){
                     u.battleStart();

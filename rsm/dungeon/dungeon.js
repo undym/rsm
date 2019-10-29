@@ -198,7 +198,7 @@ Dungeon.auNow = 0;
                 rank: 0, enemyLv: 1, au: 50,
                 treasures: () => [Eq.安全靴],
                 exItems: () => [Eq.アカデミーバッヂ],
-                trendItems: () => [],
+                trendItems: () => [Item.石, Item.砂],
             });
             this.isVisible = () => true;
             this.setBossInner = () => {
@@ -237,9 +237,9 @@ Dungeon.auNow = 0;
         constructor() {
             super({ uniqueName: "見知らぬ海岸",
                 rank: 0, enemyLv: 1, au: 60,
-                treasures: () => [],
-                exItems: () => [],
-                trendItems: () => [],
+                treasures: () => [Eq.銅板],
+                exItems: () => [Eq.草の服],
+                trendItems: () => [Item.草, Item.水],
             });
             this.isVisible = () => Dungeon.再構成トンネル.dungeonClearCount > 0;
             this.setBossInner = () => {

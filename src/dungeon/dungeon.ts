@@ -219,8 +219,8 @@ export namespace Dungeon{
         constructor(){super({uniqueName:"再構成トンネル",
                                 rank:0, enemyLv:1, au:50,
                                 treasures:  ()=>[Eq.安全靴],
-                                exItems:     ()=>[Eq.アカデミーバッヂ],
-                                trendItems: ()=>[],
+                                exItems:    ()=>[Eq.アカデミーバッヂ],
+                                trendItems: ()=>[Item.石, Item.砂],
         });}
         isVisible = ()=>true;
         setBossInner = ()=>{
@@ -250,9 +250,9 @@ export namespace Dungeon{
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"見知らぬ海岸",
                                 rank:0, enemyLv:1, au:60,
-                                treasures:  ()=>[],
-                                exItems:    ()=>[],
-                                trendItems: ()=>[],
+                                treasures:  ()=>[Eq.銅板],
+                                exItems:    ()=>[Eq.草の服],
+                                trendItems: ()=>[Item.草, Item.水],
         });}
         isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
         setBossInner = ()=>{
