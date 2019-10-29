@@ -170,13 +170,16 @@ class TownBtn {
         this._ins = l;
     }
     static setDungeonList() {
-        const list = new List(8);
-        const visibleDungeons = Dungeon.values.filter(d => d.isVisible() || Debug.debugMode);
-        for (const d of visibleDungeons) {
+        const list = new List(6);
+        // const visibleDungeons = Dungeon.values.filter(d=> d.isVisible() || Debug.debugMode);
+        Dungeon.values
+            .filter(d => d.isVisible() || Debug.debugMode)
+            .forEach((d, index) => {
             list.add({
                 center: () => d.toString(),
                 groundColor: () => d === choosedDungeon ? Color.D_CYAN : Color.BLACK,
                 push: elm => {
+                    this.dungeonListScroll = index;
                     Util.msg.set("");
                     Util.msg.set("");
                     Util.msg.set(`[${d}]`);
@@ -196,7 +199,8 @@ class TownBtn {
                     choosedDungeon = d;
                 },
             });
-        }
+        });
+        list.setScroll(this.dungeonListScroll, "center");
         const listH = 0.85;
         this._ins = new RatioLayout()
             .add(new Rect(0, 0, 1, listH), list)
@@ -207,6 +211,7 @@ class TownBtn {
         ;
     }
 }
+TownBtn.dungeonListScroll = 0;
 const FX_DungeonName = (name, bounds) => {
     const fontSize = 60;
     const font = new Font(fontSize, Font.ITALIC);

@@ -127,7 +127,7 @@ export class Img{
             ,/*sy*/srcRatio.y * this.image.height
             ,/*sw*/srcRatio.w * this.image.width
             ,/*sh*/srcRatio.h * this.image.height
-            ,/*dx*/(-dstRatio.x - dstRatio.w) * cw
+            ,/*dx*/dstRatio.x * cw
             ,/*dy*/dstRatio.y * ch
             ,/*dw*/dstRatio.w * cw
             ,/*dh*/dstRatio.h * ch

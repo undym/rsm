@@ -15,6 +15,7 @@ import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { XLayout, ILayout, Label } from "./undym/layout.js";
 import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
+import { randomInt } from "./undym/random.js";
 
 
 {
@@ -31,7 +32,6 @@ import { PartySkill } from "./partyskill.js";
         }
     };
 }
-
 
 window.onload = ()=>{
     {

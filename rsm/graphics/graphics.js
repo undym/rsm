@@ -87,7 +87,7 @@ export class Img {
         const ctx = Graphics.getRenderTarget().ctx;
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
-        ctx.drawImage(this.image, /*sx*/ srcRatio.x * this.image.width, /*sy*/ srcRatio.y * this.image.height, /*sw*/ srcRatio.w * this.image.width, /*sh*/ srcRatio.h * this.image.height, /*dx*/ (-dstRatio.x - dstRatio.w) * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        ctx.drawImage(this.image, /*sx*/ srcRatio.x * this.image.width, /*sy*/ srcRatio.y * this.image.height, /*sw*/ srcRatio.w * this.image.width, /*sh*/ srcRatio.h * this.image.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
     }
     drawEx(args) {
         if (this.loading !== Img.LOADING_DONE) {
