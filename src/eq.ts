@@ -2,7 +2,7 @@ import { Force, Dmg, Action } from "./force.js";
 import { Unit, Prm } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
-import { ActiveTec, TecType } from "./tec.js";
+import { ActiveTec, TecType, Tec } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { Battle } from "./battle.js";
@@ -267,6 +267,15 @@ export namespace Eq{
         constructor(){super({uniqueName:"恋人", info:"",
                                 pos:EqPos.武, lv:0});}
     }
+    export const                         ミルテの棍:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ミルテの棍", info:"攻撃時、確率でHP+5%",
+                                pos:EqPos.武, lv:5});}
+        beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(Math.random() < 0.9){
+                Unit.healHP( attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05 );
+            }
+        }
+    }
     // export const                         棒:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"棒", info:"格闘攻撃x1.5",
     //                             pos:EqPos.武, lv:20});}
@@ -407,6 +416,22 @@ export namespace Eq{
                                 pos:EqPos.体, lv:15});}
         equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
     }
+    export const                         オールマント:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"オールマント", info:"全ステータス+10",
+                                pos:EqPos.体, lv:25});}
+        equip(unit:Unit){
+            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).eq += 10);
+        }
+    }
+    export const                         いばらの鎧:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"いばらの鎧", info:"被格闘攻撃時、稀に反撃",
+                                pos:EqPos.体, lv:55});}
+        async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && Math.random() < 0.4){
+                await Tec.格闘カウンター.run(target, attacker);
+            }
+        }
+    }
     // export const                         布の服:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"布の服", info:"最大HP+40",
     //                             pos:EqPos.体, lv:35});}
@@ -466,13 +491,13 @@ export namespace Eq{
         constructor(){super({uniqueName:"ひも", info:"",
                                 pos:EqPos.腰, lv:0});}
     }
-    // export const                         ゲルマンベルト:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"ゲルマンベルト", info:"攻撃+10%",
-    //                             pos:EqPos.腰, lv:15});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.pow.mul *= 1.1;
-    //     }
-    // }
+    export const                         ライダーベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ライダーベルト", info:"攻撃+10",
+                                pos:EqPos.腰, lv:35});}
+        beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            dmg.pow.add += 10;
+        }
+    }
     // export const                         オホーツクのひも:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"オホーツクのひも", info:"被攻撃-10%",
     //                             pos:EqPos.腰, lv:15});}

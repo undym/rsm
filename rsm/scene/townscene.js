@@ -21,6 +21,8 @@ import { ItemScene } from "./itemscene.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics, Texture } from "../graphics/graphics.js";
 import { Item } from "../item.js";
+import { SetTecScene } from "./settecscene.js";
+import { MixScene } from "./mixscene.js";
 import { EqScene } from "./eqscene.js";
 import { ConditionType } from "../condition.js";
 import { ShopScene } from "./shopscene.js";
@@ -28,6 +30,7 @@ import { FX } from "../fx/fx.js";
 import { List } from "../widget/list.js";
 import { MeisouScene } from "./meisouscene.js";
 import { Mix } from "../mix.js";
+import { JobChangeScene } from "./jobchangescene.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -121,22 +124,30 @@ class TownBtn {
                 },
             });
         }
-        // if(Item.合成許可証.num > 0 || Debug.debugMode){
-        //     l.add({
-        //         center:()=>"合成",
-        //         push:elm=>{
-        //             Scene.load(new MixScene());
-        //         },
-        //     });
-        // }
-        // if(Item.技習得許可証.num > 0 || Debug.debugMode){
-        //     l.add({
-        //         center:()=>"技のセット",
-        //         push:elm=>{
-        //             Scene.load(new SetTecScene());
-        //         },
-        //     });
-        // }
+        if (Item.合成許可証.num > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "合成",
+                push: elm => {
+                    Scene.load(new MixScene());
+                },
+            });
+        }
+        if (Mix.転職所.count > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "技のセット",
+                push: elm => {
+                    Scene.load(new SetTecScene());
+                },
+            });
+        }
+        if (Mix.転職所.count > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "ジョブ",
+                push: elm => {
+                    Scene.load(new JobChangeScene());
+                },
+            });
+        }
         if (PlayData.gotAnyEq || Debug.debugMode) {
             l.add({
                 center: () => "装備",

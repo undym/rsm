@@ -183,7 +183,7 @@ Condition._valueOf = new Map();
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 let value = (unit.prm(Prm.LIG).total + unit.prm(Prm.LV).total);
-                const lim = unit.prm(Prm.MAX_HP).total * 0.2;
+                const lim = unit.prm(Prm.MAX_HP).total * 0.1;
                 if (value > lim) {
                     value = lim;
                 }

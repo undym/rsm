@@ -55,7 +55,7 @@ export abstract class Job{
     private static _valueOf = new Map<string,Job>();
     static valueOf(uniqueName:string):Job|undefined{return this._valueOf.get(uniqueName);}
 
-    static readonly DEF_LVUP_EXP = 5;
+    static readonly DEF_LVUP_EXP = 10;
 
     static rndJob(lv:number):Job{
         for(let i = 0; i < 7; i++){
@@ -175,6 +175,18 @@ export namespace Job{
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.練気];
         }
     };
+    export const                         訓練生二年生:Job = new class extends Job{
+        constructor(){super({uniqueName:"訓練生二年生", info:"",
+                                appearLv:30, img:new Img("img/訓練生二年生.png"),
+                                lvupExp:Job.DEF_LVUP_EXP,
+                                canJobChange:p=> p.isMasteredJob(訓練生),
+                                growthPrms:()=>[[Prm.MAX_HP, 1]],
+                                learningTecs:()=>[Tec.癒しの風, Tec.我慢, Tec.何もしない],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風];
+        }
+    };
     export const                         剣士:Job = new class extends Job{
         constructor(){super({uniqueName:"剣士", info:"",
                                 appearLv:7, img:new Img("img/剣士.png"),
@@ -184,7 +196,19 @@ export namespace Job{
                                 learningTecs:()=>[Tec.斬る, Tec.大いなる動き],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.大いなる動き];
+        }
+    };
+    export const                         格闘家:Job = new class extends Job{
+        constructor(){super({uniqueName:"格闘家", info:"",
+                                appearLv:20, img:new Img("img/格闘家.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> p.isMasteredJob( Job.訓練生二年生 ),
+                                growthPrms:()=>[[Prm.STR, 1]],
+                                learningTecs:()=>[Tec.格闘攻撃UP, Tec.格闘防御UP],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP];
         }
     };
     export const                         魔法使い:Job = new class extends Job{

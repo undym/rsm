@@ -102,8 +102,8 @@ const newGame = () => {
         item.totalGetCount = num;
     };
     setItem(Item.スティックパン, 10);
-    setItem(Item.赤い水, 10);
-    setItem(Item.サンタクララ薬, 10);
+    setItem(Item.赤い水, 5);
+    setItem(Item.サンタクララ薬, 5);
 };
 const continueGame = () => {
     Util.msg.set("CONTINUE");

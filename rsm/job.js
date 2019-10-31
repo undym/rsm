@@ -118,7 +118,7 @@ export class Job {
 }
 Job._values = [];
 Job._valueOf = new Map();
-Job.DEF_LVUP_EXP = 5;
+Job.DEF_LVUP_EXP = 10;
 (function (Job) {
     Job.訓練生 = new class extends Job {
         constructor() {
@@ -134,6 +134,20 @@ Job.DEF_LVUP_EXP = 5;
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.練気];
         }
     };
+    Job.訓練生二年生 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "訓練生二年生", info: "",
+                appearLv: 30, img: new Img("img/訓練生二年生.png"),
+                lvupExp: Job.DEF_LVUP_EXP,
+                canJobChange: p => p.isMasteredJob(Job.訓練生),
+                growthPrms: () => [[Prm.MAX_HP, 1]],
+                learningTecs: () => [Tec.癒しの風, Tec.我慢, Tec.何もしない],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風];
+        }
+    };
     Job.剣士 = new class extends Job {
         constructor() {
             super({ uniqueName: "剣士", info: "",
@@ -145,7 +159,21 @@ Job.DEF_LVUP_EXP = 5;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.大いなる動き];
+        }
+    };
+    Job.格闘家 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "格闘家", info: "",
+                appearLv: 20, img: new Img("img/格闘家.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                canJobChange: p => p.isMasteredJob(Job.訓練生二年生),
+                growthPrms: () => [[Prm.STR, 1]],
+                learningTecs: () => [Tec.格闘攻撃UP, Tec.格闘防御UP],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP];
         }
     };
     Job.魔法使い = new class extends Job {

@@ -13,6 +13,7 @@ import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
 import { Img } from "../graphics/graphics.js";
+import { Story } from "../story.js";
 
 
 
@@ -241,15 +242,18 @@ export namespace Dungeon{
         };
         async dungeonClearEvent(){
             super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_1.run();
+            }
             if(Item.脱出ポッド.totalGetCount === 0){
                 Item.脱出ポッド.add(1); await wait();
-                Util.msg.set("[お店]が出現した", Color.PINK.bright); await wait();
+                Util.msg.set("[お店]が出現した", Color.PINK.bright); await cwait();
             }
         }
     };
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"見知らぬ海岸",
-                                rank:0, enemyLv:1, au:60,
+                                rank:0, enemyLv:3, au:60,
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
                                 trendItems: ()=>[Item.草, Item.水],
@@ -271,6 +275,49 @@ export namespace Dungeon{
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
             e.prm(Prm.CHN).base = 5;
+        };
+    };
+    export const                         はじまりの丘:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"はじまりの丘",
+                                rank:1, enemyLv:7, au:100,
+                                treasures:  ()=>[Eq.オールマント],
+                                exItems:    ()=>[Eq.ライダーベルト],
+                                trendItems: ()=>[Item.肉],
+        });}
+        isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "導びく者";
+            e.prm(Prm.MAX_HP).base = 80;
+            e.prm(Prm.STR).base = 10;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生.setEnemy(e, 5);
+            e.name = "亡霊ドロシー";
+            e.prm(Prm.MAX_HP).base = 120;
+        };
+    };
+    export const                         予感の街レ:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"予感の街・レ",
+                                rank:0, enemyLv:13, au:70,
+                                treasures:  ()=>[Eq.ミルテの棍],
+                                exItems:    ()=>[Eq.いばらの鎧],
+                                trendItems: ()=>[Item.肉],
+        });}
+        isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "レ町長";
+            e.prm(Prm.MAX_HP).base = 80;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生.setEnemy(e, 5);
+            e.name = "幻影リリア";
+            e.prm(Prm.MAX_HP).base = 120;
         };
     };
     // export const                         再構成トンネル:Dungeon = new class extends Dungeon{

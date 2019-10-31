@@ -121,6 +121,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.草, 5]],
         action: () => { },
     });
+    Mix.転職所 = new Mix({
+        uniqueName: "転職所", limit: 1, info: "職業選択の自由を得る",
+        materials: () => [[Item.杉, 10], [Item.ヒノキ, 10]],
+        action: () => { },
+    });
     const 肉のスープ = new Mix({
         uniqueName: "肉のスープ", limit: 10, info: "ルインとピアーの最大HP+1",
         materials: () => [[Item.石, 5], [Item.肉, 5], [Item.水, 5]],

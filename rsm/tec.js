@@ -448,17 +448,30 @@ ActiveTec._valueOf = new Map();
     //格闘Passive
     //
     //--------------------------------------------------------------------------
-    // export const                         格闘攻撃UP:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"格闘攻撃UP", info:"格闘攻撃x1.2",
-    //                             type:TecType.格闘,
-    //     });}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type === TecType.格闘){
-    //             dmg.pow.add += 1;
-    //             dmg.pow.mul *= 1.2;
-    //         }
-    //     }
-    // };
+    Tec.格闘攻撃UP = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "格闘攻撃UP", info: "格闘攻撃x1.2",
+                type: TecType.格闘,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    };
+    Tec.格闘防御UP = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "格闘防御UP", info: "被格闘攻撃-20%",
+                type: TecType.格闘,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                dmg.pow.mul *= 0.8;
+            }
+        }
+    };
     /**未設定. */
     Tec.カウンター = new class extends PassiveTec {
         constructor() {
@@ -468,7 +481,7 @@ ActiveTec._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof Tec && action.type === TecType.格闘 && !dmg.counter) {
+                if (action instanceof Tec && action.type.any(TecType.格闘) && !dmg.counter) {
                     Util.msg.set("＞カウンター");
                     yield wait();
                     yield Tec.格闘カウンター.run(target, attacker);
@@ -487,16 +500,18 @@ ActiveTec._valueOf = new Map();
     //         }
     //     }
     // };
-    // export const                         石肌:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"石肌", info:"被格闘・神格・練術・銃術攻撃-20%",
-    //                             type:TecType.格闘,
-    //     });}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)){
-    //             dmg.pow.mul *= 0.80;
-    //         }
-    //     }
-    // };
+    Tec.我慢 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "我慢", info: "被格闘・神格・練術・銃術攻撃-20%",
+                type: TecType.格闘,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)) {
+                dmg.pow.mul *= 0.80;
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //魔法Active
@@ -1039,15 +1054,19 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          癒しの風:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"癒しの風", info:"一体を<癒5>(毎ターン回復)状態にする",
-    //                           type:TecType.状態, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
-    //                           mul:1, num:1, hit:1, mp:2,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition(target, Condition.癒, 5);
-    //     }
-    // }
+    Tec.癒しの風 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "癒しの風", info: "一体を<癒10>(毎ターン回復)状態にする",
+                type: TecType.状態, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(target, Condition.癒, 10);
+            });
+        }
+    };
     // export const                          いやらしの風:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"いやらしの風", info:"味方全体を＜癒5＞状態にする",
     //                           type:TecType.状態, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,

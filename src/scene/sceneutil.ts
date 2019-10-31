@@ -128,8 +128,8 @@ export class DrawSTBox extends InnerLayout{
                        ,2
                     ))
                 )
-                .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
-                .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
+                .add(new Label(font, ()=> createConditionStr(getUnit(), ConditionType.goodConditions())).setColor(()=>Color.CYAN))
+                .add(new Label(font, ()=> createConditionStr(getUnit(), ConditionType.badConditions())).setColor(()=>Color.RED))
                 .add(ILayout.empty)
             )
             .add(ILayout.create({draw:(bounds)=>{
@@ -381,17 +381,17 @@ const createConditionStr = (unit:Unit, types:ReadonlyArray<ConditionType>)=>{
             .join("")
             ;
 }
-const createConditionLabel = (font:Font, unit:()=>Unit, types:ReadonlyArray<ConditionType>, color:Color)=>{
-    return new Label(
-         font
-        ,()=>types
-                .filter(type=> unit().existsCondition(type))
-                .map(type=> unit().getConditionSet(type))
-                .map(set=> `<${set.condition}${set.value|0}>`)
-                .join("")
-        ,()=>color
-    );
-};
+// const createConditionLabel = (font:Font, unit:()=>Unit, types:ReadonlyArray<ConditionType>, color:Color)=>{
+//     return new Label(
+//          font
+//         ,()=>types
+//                 .filter(type=> unit().existsCondition(type))
+//                 .map(type=> unit().getConditionSet(type))
+//                 .map(set=> `<${set.condition}${set.value|0}>`)
+//                 .join("")
+//         ,()=>color
+//     );
+// };
 
 
 export class DrawUnits extends InnerLayout{

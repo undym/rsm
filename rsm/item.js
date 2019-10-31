@@ -11,12 +11,13 @@ import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm } from "./unit.js";
 import { FX_Str } from "./fx/fx.js";
-import { Targeting } from "./force.js";
+import { Targeting, Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import DungeonScene from "./scene/dungeonscene.js";
+import { Condition } from "./condition.js";
 export class ItemType {
     constructor(name) {
         this.toString = () => name;
@@ -33,8 +34,10 @@ export class ItemType {
 ItemType.蘇生 = new ItemType("蘇生");
 ItemType.HP回復 = new ItemType("HP回復");
 ItemType.MP回復 = new ItemType("MP回復");
+ItemType.状態 = new ItemType("状態");
 ItemType.ダンジョン = new ItemType("ダンジョン");
 ItemType.弾 = new ItemType("弾");
+ItemType.ダメージ = new ItemType("ダメージ");
 ItemType.ドーピング = new ItemType("ドーピング");
 ItemType.書 = new ItemType("書");
 ItemType.メモ = new ItemType("メモ");
@@ -55,7 +58,9 @@ export class ItemParentType {
 }
 ItemParentType._values = [];
 ItemParentType.回復 = new ItemParentType("回復", [ItemType.蘇生, ItemType.HP回復, ItemType.MP回復]);
+ItemParentType.状態 = new ItemParentType("戦闘", [ItemType.状態]);
 ItemParentType.ダンジョン = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾]);
+ItemParentType.戦闘 = new ItemParentType("戦闘", [ItemType.ダメージ]);
 ItemParentType.強化 = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);
 ItemParentType.その他 = new ItemParentType("その他", [
     ItemType.メモ, ItemType.素材, ItemType.固有素材,
@@ -240,6 +245,21 @@ Item.DEF_NUM_LIMIT = 9999;
     //HP回復
     //
     //-----------------------------------------------------------------
+    Item.スティックパ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "スティックパ", info: "HP+10",
+                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    const value = 10;
+                    Unit.healHP(target, value);
+                    if (SceneType.now === SceneType.BATTLE) {
+                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                        yield wait();
+                    }
+                }),
+            });
+        }
+    };
     Item.スティックパン = new class extends Item {
         constructor() {
             super({ uniqueName: "スティックパン", info: "HP+20",
@@ -292,12 +312,98 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
+    //状態
+    //
+    //-----------------------------------------------------------------
+    Item.血清 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "血清", info: "＜毒＞状態を解除する",
+                type: ItemType.状態, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    target.clearCondition(Condition.毒);
+                }),
+            });
+        }
+    };
+    //-----------------------------------------------------------------
+    //
+    //ダメージ
+    //
+    //-----------------------------------------------------------------
+    Item.呪素 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "呪素", info: "戦闘時、1ダメージを与える",
+                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 1 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.呪 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "呪", info: "戦闘時、5ダメージを与える",
+                type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 5 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.呪詛 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "呪詛", info: "戦闘時、10ダメージを与える",
+                type: ItemType.ダメージ, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.鬼火 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "鬼火", info: "戦闘時、敵全体に1ダメージを与える",
+                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 1 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.ウィルスα = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ウィルスα", info: "戦闘時、敵全体に3ダメージを与える",
+                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 3 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.手榴弾 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に10ダメージを与える",
+                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    //-----------------------------------------------------------------
+    //
     //ダンジョン
     //
     //-----------------------------------------------------------------
     Item.脱出ポッド = new class extends Item {
         constructor() {
-            super({ uniqueName: "脱出ポッド", info: "ダンジョンから脱出する",
+            super({ uniqueName: "脱出ポッド", info: "ダンジョンから脱出する。なくならない。",
                 type: ItemType.ダンジョン, rank: 0,
                 consumable: true, drop: ItemDrop.NO,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
@@ -331,13 +437,13 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.散弾 = new class extends Item {
         constructor() {
             super({ uniqueName: "散弾", info: "ショットガンに使用",
-                type: ItemType.弾, rank: 10, drop: ItemDrop.NO, });
+                type: ItemType.弾, rank: 3, drop: ItemDrop.BOX });
         }
     };
     Item.夜叉の矢 = new class extends Item {
         constructor() {
             super({ uniqueName: "夜叉の矢", info: "ヤクシャに使用",
-                type: ItemType.弾, rank: 10, drop: ItemDrop.NO, });
+                type: ItemType.弾, rank: 3, drop: ItemDrop.BOX });
         }
     };
     //-----------------------------------------------------------------
@@ -542,10 +648,12 @@ Item.DEF_NUM_LIMIT = 9999;
     //     constructor(){super({uniqueName:"技習得許可証", info:"技のセットが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
     // };
-    // export const                         合成許可証:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"合成許可証", info:"合成が解放される", 
-    //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
-    // };
+    Item.合成許可証 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "合成許可証", info: "合成が解放される",
+                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
+        }
+    };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
     //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}

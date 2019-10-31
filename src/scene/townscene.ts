@@ -24,6 +24,7 @@ import { PartySkillScene } from "./partyskillscene.js";
 import { List } from "../widget/list.js";
 import { MeisouScene } from "./meisouscene.js";
 import { Mix } from "../mix.js";
+import { JobChangeScene } from "./jobchangescene.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -144,22 +145,30 @@ class TownBtn{
                     },
                 });
             }
-            // if(Item.合成許可証.num > 0 || Debug.debugMode){
-            //     l.add({
-            //         center:()=>"合成",
-            //         push:elm=>{
-            //             Scene.load(new MixScene());
-            //         },
-            //     });
-            // }
-            // if(Item.技習得許可証.num > 0 || Debug.debugMode){
-            //     l.add({
-            //         center:()=>"技のセット",
-            //         push:elm=>{
-            //             Scene.load(new SetTecScene());
-            //         },
-            //     });
-            // }
+            if(Item.合成許可証.num > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"合成",
+                    push:elm=>{
+                        Scene.load(new MixScene());
+                    },
+                });
+            }
+            if(Mix.転職所.count > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"技のセット",
+                    push:elm=>{
+                        Scene.load(new SetTecScene());
+                    },
+                });
+            }
+            if(Mix.転職所.count > 0 || Debug.debugMode){
+                l.add({
+                    center:()=>"ジョブ",
+                    push:elm=>{
+                        Scene.load(new JobChangeScene());
+                    },
+                });
+            }
             if(PlayData.gotAnyEq || Debug.debugMode){
                 l.add({
                     center:()=>"装備",

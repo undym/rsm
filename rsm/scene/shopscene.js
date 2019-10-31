@@ -16,6 +16,7 @@ import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { Item } from "../item.js";
+import { Dungeon } from "../dungeon/dungeon.js";
 // let ショットガンmaster = false;
 // let ヤクシャmaster = false;
 export class ShopScene extends Scene {
@@ -151,11 +152,10 @@ const initGoods = () => {
         new Goods(skill.toString(), "＜パーティースキル＞", "", price, () => isVisible() && !skill.has, () => skill.has = true);
     };
     // createItemGoods(Item.技習得許可証, ()=>50, ()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.技習得許可証.totalGetCount === 0);
-    // createItemGoods(Item.合成許可証, ()=>300, ()=>Dungeon.黒平原.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0);
+    createItemGoods(Item.合成許可証, () => 300, () => Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0);
     createItemGoods(Item.スティックパン, () => 30, () => true);
-    // createItemGoods(Item.脱出ポッド,    ()=>10,                               ()=>Item.脱出ポッド.totalGetCount < 1);
-    createItemGoods(Item.赤い水, () => 100, () => true);
-    createItemGoods(Item.サンタクララ薬, () => 200, () => true);
+    createItemGoods(Item.赤い水, () => 50, () => true);
+    createItemGoods(Item.サンタクララ薬, () => 100, () => true);
     // createItemGoods(Item.夜叉の矢,   ()=>(Item.夜叉の矢.num+1) * 500, ()=>ヤクシャmaster);
     // createItemGoods(Item.散弾,       ()=>(Item.散弾.num+1) * 500,    ()=>ショットガンmaster);
     // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);

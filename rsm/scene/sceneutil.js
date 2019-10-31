@@ -74,8 +74,8 @@ export class DrawSTBox extends InnerLayout {
             .setPixelMargin(4)
             .add(new Gage(() => getUnit().prm(Prm.MP).base, () => getUnit().prm(Prm.MAX_MP).total, () => "MP", () => `${getUnit().prm(Prm.MP).base | 0}`, () => Color.D_RED.bright(), font, 2))
             .add(new Gage(() => getUnit().prm(Prm.TP).base, () => getUnit().prm(Prm.MAX_TP).total, () => "TP", () => `${getUnit().prm(Prm.TP).base | 0}`, () => Color.D_CYAN.bright(), font, 2)))
-            .add(createConditionLabel(font, getUnit, ConditionType.goodConditions(), Color.CYAN))
-            .add(createConditionLabel(font, getUnit, ConditionType.badConditions(), Color.RED))
+            .add(new Label(font, () => createConditionStr(getUnit(), ConditionType.goodConditions())).setColor(() => Color.CYAN))
+            .add(new Label(font, () => createConditionStr(getUnit(), ConditionType.badConditions())).setColor(() => Color.RED))
             .add(ILayout.empty))
             .add(ILayout.create({ draw: (bounds) => {
                 if (getUnit().dead) {
@@ -302,13 +302,17 @@ const createConditionStr = (unit, types) => {
         .map(set => `<${set.condition}${set.value | 0}>`)
         .join("");
 };
-const createConditionLabel = (font, unit, types, color) => {
-    return new Label(font, () => types
-        .filter(type => unit().existsCondition(type))
-        .map(type => unit().getConditionSet(type))
-        .map(set => `<${set.condition}${set.value | 0}>`)
-        .join(""), () => color);
-};
+// const createConditionLabel = (font:Font, unit:()=>Unit, types:ReadonlyArray<ConditionType>, color:Color)=>{
+//     return new Label(
+//          font
+//         ,()=>types
+//                 .filter(type=> unit().existsCondition(type))
+//                 .map(type=> unit().getConditionSet(type))
+//                 .map(set=> `<${set.condition}${set.value|0}>`)
+//                 .join("")
+//         ,()=>color
+//     );
+// };
 export class DrawUnits extends InnerLayout {
     static get ins() { return this._ins ? this._ins : (this._ins = new DrawUnits()); }
     constructor() {
