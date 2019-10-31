@@ -37,7 +37,7 @@ export class Place{
     // static readonly MAIN = new Rect(0, Place.ST_H + Graphics.dotH, 0.8, 1 - Place.ST_H * 2 - Graphics.dotH * 2);
     static get MSG(){return new Rect(Place.MAIN.x, Place.MAIN.y, Place.MAIN.w, Place.MAIN.h * 0.8);}
     static get DUNGEON_DATA(){
-        const w = Place.MSG.w * 0.8;
+        const w = Place.MSG.w * 0.7;
         return new Rect(Place.MSG.cx - w / 2, Place.MSG.yh, w, Place.MAIN.h - Place.MSG.h);
     }
     

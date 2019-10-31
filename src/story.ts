@@ -1,5 +1,5 @@
-import { Util } from "./util";
-import { cwait } from "./undym/scene";
+import { Util } from "./util.js";
+import { cwait } from "./undym/scene.js";
 
 
 

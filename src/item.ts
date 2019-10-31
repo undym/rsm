@@ -325,9 +325,21 @@ export namespace Item{
     //MP回復
     //
     //-----------------------------------------------------------------
+    export const                         蛍草:Item = new class extends Item{
+        constructor(){super({uniqueName:"蛍草", info:"MP+1",
+                                type:ItemType.MP回復, rank:0, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    const value = 1;
+                                    Unit.healMP(target, value)
+                                    if(SceneType.now === SceneType.BATTLE){
+                                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright); await wait();
+                                    }
+                                },
+        })}
+    };
     export const                         赤い水:Item = new class extends Item{
         constructor(){super({uniqueName:"赤い水", info:"MP+5",
-                                type:ItemType.MP回復, rank:0, drop:ItemDrop.BOX,
+                                type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     const value = 5;
                                     Unit.healMP(target, value)

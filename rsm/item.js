@@ -295,10 +295,25 @@ Item.DEF_NUM_LIMIT = 9999;
     //MP回復
     //
     //-----------------------------------------------------------------
+    Item.蛍草 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "蛍草", info: "MP+1",
+                type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    const value = 1;
+                    Unit.healMP(target, value);
+                    if (SceneType.now === SceneType.BATTLE) {
+                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright);
+                        yield wait();
+                    }
+                }),
+            });
+        }
+    };
     Item.赤い水 = new class extends Item {
         constructor() {
             super({ uniqueName: "赤い水", info: "MP+5",
-                type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
+                type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     const value = 5;
                     Unit.healMP(target, value);

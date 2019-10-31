@@ -6,8 +6,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Util } from "./util";
-import { cwait } from "./undym/scene";
+import { Util } from "./util.js";
+import { cwait } from "./undym/scene.js";
 export class Story {
     defMsg(msgs) {
         return __awaiter(this, void 0, void 0, function* () {
