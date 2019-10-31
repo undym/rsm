@@ -224,7 +224,7 @@ Dungeon.auNow = 0;
                 dungeonClearEvent: { get: () => super.dungeonClearEvent }
             });
             return __awaiter(this, void 0, void 0, function* () {
-                _super.dungeonClearEvent.call(this);
+                yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
                     yield Story.MAIN_1.run();
                 }
@@ -263,6 +263,17 @@ Dungeon.auNow = 0;
                 e.prm(Prm.MAG).base = 5;
                 e.prm(Prm.CHN).base = 5;
             };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story.MAIN_2.run();
+                }
+            });
         }
     };
     Dungeon.はじまりの丘 = new class extends Dungeon {

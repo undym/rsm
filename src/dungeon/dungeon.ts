@@ -241,7 +241,7 @@ export namespace Dungeon{
             e.prm(Prm.MAG).base = 5;
         };
         async dungeonClearEvent(){
-            super.dungeonClearEvent();
+            await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story.MAIN_1.run();
             }
@@ -276,6 +276,12 @@ export namespace Dungeon{
             e.prm(Prm.MAG).base = 5;
             e.prm(Prm.CHN).base = 5;
         };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_2.run();
+            }
+        }
     };
     export const                         はじまりの丘:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"はじまりの丘",
