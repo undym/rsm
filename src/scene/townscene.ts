@@ -219,10 +219,11 @@ class TownBtn{
             .filter(d=> d.isVisible() || Debug.debugMode)
             .forEach((d,index)=>{
                 list.add({
-                    center:()=>d.toString(),
+                    center:()=> d.dungeonClearCount > 0 ? `★${d}` : `${d}`,
                     groundColor:()=> d === choosedDungeon ? Color.D_CYAN : Color.BLACK,
                     push:elm=>{
                         this.dungeonListScroll = index;
+                        choosedDungeon = d;
                         
                         Util.msg.set("");
                         Util.msg.set("");
@@ -240,8 +241,6 @@ class TownBtn{
                                 Util.msg.add(`${"？".repeat( t.toString().length )}`, Color.GRAY);
                             }
                         }
-    
-                        choosedDungeon = d;
                     },
                 });
             });

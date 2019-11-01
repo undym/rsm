@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
-import { Unit, Prm } from "./unit.js";
+import { Unit, Prm, PUnit } from "./unit.js";
 import { FX_Str } from "./fx/fx.js";
 import { Targeting, Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
@@ -44,7 +44,6 @@ ItemType.書 = new ItemType("書");
 ItemType.メモ = new ItemType("メモ");
 ItemType.素材 = new ItemType("素材");
 ItemType.固有素材 = new ItemType("固有素材");
-ItemType.合成素材 = new ItemType("合成素材");
 ItemType.植物 = new ItemType("植物");
 ItemType.土 = new ItemType("土");
 ItemType.水 = new ItemType("水");
@@ -65,7 +64,7 @@ ItemParentType.戦闘 = new ItemParentType("戦闘", [ItemType.ダメージ]);
 ItemParentType.強化 = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);
 ItemParentType.その他 = new ItemParentType("その他", [
     ItemType.メモ, ItemType.素材, ItemType.固有素材,
-    ItemType.合成素材, ItemType.植物, ItemType.土, ItemType.水,
+    ItemType.植物, ItemType.土, ItemType.水,
     ItemType.魚,
 ]);
 export var ItemDrop;
@@ -218,6 +217,22 @@ Item._consumableValues = [];
 Item._dropTypeValues = new Map();
 Item.DEF_NUM_LIMIT = 9999;
 (function (Item) {
+    const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
+        value = value | 0;
+        Unit.healHP(target, value);
+        if (SceneType.now === SceneType.BATTLE) {
+            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+            yield wait();
+        }
+    });
+    const itemHealMP = (target, value) => __awaiter(this, void 0, void 0, function* () {
+        value = value | 0;
+        Unit.healMP(target, value);
+        if (SceneType.now === SceneType.BATTLE) {
+            Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright);
+            yield wait();
+        }
+    });
     //-----------------------------------------------------------------
     //
     //蘇生
@@ -246,17 +261,62 @@ Item.DEF_NUM_LIMIT = 9999;
     //HP回復
     //
     //-----------------------------------------------------------------
+    Item.ドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ドラッグ", info: "HP+5%",
+                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 1);
+                }),
+            });
+        }
+    };
+    Item.LAドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "LAドラッグ", info: "HP+10%",
+                type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1);
+                }),
+            });
+        }
+    };
+    Item.ロシアドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ロシアドラッグ", info: "HP+15%",
+                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.15 + 1);
+                }),
+            });
+        }
+    };
+    Item.ビタミンドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ビタミンドラッグ", info: "HP+20%",
+                type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1);
+                }),
+            });
+        }
+    };
+    Item.スティック = new class extends Item {
+        constructor() {
+            super({ uniqueName: "スティック", info: "HP+5",
+                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 5);
+                }),
+            });
+        }
+    };
     Item.スティックパ = new class extends Item {
         constructor() {
             super({ uniqueName: "スティックパ", info: "HP+10",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = 10;
-                    Unit.healHP(target, value);
-                    if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
-                        yield wait();
-                    }
+                    yield itemHealHP(target, 10);
                 }),
             });
         }
@@ -266,12 +326,17 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "スティックパン", info: "HP+20",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = 20;
-                    Unit.healHP(target, value);
-                    if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
-                        yield wait();
-                    }
+                    yield itemHealHP(target, 20);
+                }),
+            });
+        }
+    };
+    Item.ダブルスティックパン = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ダブルスティックパン", info: "HP+30",
+                type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 30);
                 }),
             });
         }
@@ -281,12 +346,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "硬化スティックパン", info: "HP+50",
                 type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = target.prm(Prm.MAX_HP).total * 0.05 + 50;
-                    Unit.healHP(target, value);
-                    if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
-                        yield wait();
-                    }
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 50);
                 }),
             });
         }
@@ -301,12 +361,27 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "蛍草", info: "MP+1",
                 type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = 1;
-                    Unit.healMP(target, value);
-                    if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright);
-                        yield wait();
-                    }
+                    yield itemHealMP(target, 1);
+                }),
+            });
+        }
+    };
+    Item.赤葉草 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "赤葉草", info: "MP+2",
+                type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealMP(target, 2);
+                }),
+            });
+        }
+    };
+    Item.蛍草のエキス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "蛍草のエキス", info: "MP+3",
+                type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealMP(target, 3);
                 }),
             });
         }
@@ -314,14 +389,9 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.赤い水 = new class extends Item {
         constructor() {
             super({ uniqueName: "赤い水", info: "MP+5",
-                type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
+                type: ItemType.MP回復, rank: 3, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const value = 5;
-                    Unit.healMP(target, value);
-                    if (SceneType.now === SceneType.BATTLE) {
-                        Util.msg.set(`${target.name}のMPが${value}回復した`, Color.GREEN.bright);
-                        yield wait();
-                    }
+                    yield itemHealMP(target, 5);
                 }),
             });
         }
@@ -627,6 +697,49 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
+    };
+    Item.灰色のまぼろし = new class extends Item {
+        constructor() {
+            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+10。レベルアップはしない。",
+                type: ItemType.ドーピング, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    target.exp += 10;
+                }),
+            });
+        }
+        canUse(user, targets) {
+            for (const t of targets) {
+                if (t instanceof PUnit && t.exp >= t.getNextLvExp()) {
+                    return false;
+                }
+            }
+            return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+        }
+    };
+    Item.黒色のまぼろし = new class extends Item {
+        constructor() {
+            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+20。レベルアップはしない。",
+                type: ItemType.ドーピング, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    target.exp += 20;
+                }),
+            });
+        }
+        canUse(user, targets) {
+            for (const t of targets) {
+                if (t instanceof PUnit && t.exp >= t.getNextLvExp()) {
+                    return false;
+                }
+            }
+            return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+        }
+    };
+    Item.アーク素子 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "アーク素子", info: "",
+                type: ItemType.ドーピング, rank: 1, drop: ItemDrop.BOX,
+            });
+        }
     };
     //-----------------------------------------------------------------
     //
