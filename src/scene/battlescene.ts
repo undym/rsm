@@ -349,7 +349,9 @@ export class BattleScene extends Scene{
                     for(const u of Unit.all){
                         if(!u.exists){continue;}
 
-                        Graphics.drawRect( u.boxBounds, Color.RED );
+                        Graphics.setLineWidth(2, ()=>{     
+                            Graphics.drawRect( u.boxBounds, Color.RED );
+                        });
                     }
                 });
             },

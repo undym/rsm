@@ -56,7 +56,7 @@ export class Dungeon {
     /**クリア回数の補正をかけたもの。 */
     get enemyLv() {
         const _clearCount = this.dungeonClearCount < 20 ? this.dungeonClearCount : 20;
-        const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount;
+        const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount / 2;
         return res | 0;
     }
     get au() { return this.args.au; }
@@ -298,6 +298,17 @@ Dungeon.auNow = 0;
                 e.prm(Prm.MAX_HP).base = 120;
             };
         }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story.MAIN_3.run();
+                }
+            });
+        }
     };
     Dungeon.予感の街レ = new class extends Dungeon {
         constructor() {
@@ -307,7 +318,7 @@ Dungeon.auNow = 0;
                 exItems: () => [Eq.いばらの鎧],
                 trendItems: () => [Item.肉],
             });
-            this.isVisible = () => Dungeon.見知らぬ海岸.dungeonClearCount > 0;
+            this.isVisible = () => Dungeon.はじまりの丘.dungeonClearCount > 0;
             this.setBossInner = () => {
                 let e = Unit.enemies[0];
                 Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);

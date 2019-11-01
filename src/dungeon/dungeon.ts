@@ -49,7 +49,7 @@ export abstract class Dungeon{
     /**クリア回数の補正をかけたもの。 */
     get enemyLv():number{
         const _clearCount = this.dungeonClearCount < 20 ? this.dungeonClearCount : 20;
-        const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount;
+        const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount / 2;
         return res|0;
     }
     get au():number{return this.args.au;}
@@ -297,6 +297,12 @@ export namespace Dungeon{
             e.name = "亡霊ドロシー";
             e.prm(Prm.MAX_HP).base = 120;
         };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_3.run();
+            }
+        }
     };
     export const                         予感の街レ:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"予感の街・レ",
@@ -305,7 +311,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.いばらの鎧],
                                 trendItems: ()=>[Item.肉],
         });}
-        isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);

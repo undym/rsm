@@ -105,18 +105,22 @@ export default class Msg extends ILayout {
                 this.font.draw(e.test_name, { x: x, y: y }, beforeColor);
                 x += e.w;
             }
-            if (i === 0 && Scene.isWaiting()) {
-                let dot = "";
-                const dotNum = Date.now() / 80 % 5;
-                for (let i = 0; i < dotNum; i++) {
-                    dot += ".";
-                }
-                this.font.draw(dot, { x: x, y: y }, beforeColor);
-            }
+            // if(i === 0 && Scene.isWaiting()){
+            //     let dot = "";
+            //     const dotNum = Date.now() / 80 % 5;
+            //     for(let i = 0; i < dotNum; i++){
+            //         dot += ".";
+            //     }
+            //     this.font.draw( dot, {x:x, y:y}, beforeColor );
+            // }
             y -= fontRatioH;
             if (y < bounds.y) {
                 break;
             }
+        }
+        if (Scene.isWaiting()) {
+            const str = "▼";
+            this.font.draw(str, bounds.lowerRight, Color.GRAY, Font.LOWER_RIGHT);
         }
     }
 }
