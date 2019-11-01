@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ILayout, Label } from "../undym/layout.js";
 import { Color } from "../undym/type.js";
 import { Scene } from "../undym/scene.js";
-import { Font } from "../graphics/graphics.js";
+import { Font, Graphics } from "../graphics/graphics.js";
 const GET_WHITE = (cnt) => Color.WHITE;
 export default class Msg extends ILayout {
     constructor() {
@@ -119,8 +119,10 @@ export default class Msg extends ILayout {
             }
         }
         if (Scene.isWaiting()) {
-            const str = "▼";
-            this.font.draw(str, bounds.lowerRight, Color.GRAY, Font.LOWER_RIGHT);
+            let move = Date.now() / 80;
+            move = move % 5;
+            move = move * Graphics.dotH;
+            this.font.draw("▼", bounds.lowerRight.move(0, -move), Color.WHITE, Font.LOWER_RIGHT);
         }
     }
 }

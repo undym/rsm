@@ -123,12 +123,12 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     Mix.転職所 = new Mix({
         uniqueName: "転職所", limit: 1, info: "職業選択の自由を得る",
-        materials: () => [[Item.杉, 10], [Item.ヒノキ, 10]],
+        materials: () => [[Item.杉, 3], [Item.ヒノキ, 3]],
         action: () => { },
     });
     const 肉のスープ = new Mix({
         uniqueName: "肉のスープ", limit: 10, info: "ルインとピアーの最大HP+1",
-        materials: () => [[Item.石, 5], [Item.肉, 5], [Item.水, 5]],
+        materials: () => [[Item.石, 3], [Item.肉, 3], [Item.水, 3]],
         action: () => {
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
@@ -136,12 +136,12 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const 杉林 = new Mix({
         uniqueName: "杉林", limit: 1, info: "杉の加工が可能になる",
-        materials: () => [[Item.原木, 10], [Item.砂, 10]],
+        materials: () => [[Item.原木, 3], [Item.砂, 3]],
         action: () => { },
     });
     const ヒノキ林 = new Mix({
         uniqueName: "ヒノキ林", limit: 1, info: "ヒノキの加工が可能になる",
-        materials: () => [[Item.原木, 10], [Item.砂, 10]],
+        materials: () => [[Item.原木, 3], [Item.砂, 3]],
         action: () => { },
     });
     //--------------------------------------------------------

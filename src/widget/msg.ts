@@ -125,8 +125,10 @@ export default class Msg extends ILayout{
         }
 
         if(Scene.isWaiting()){
-            const str = "▼";
-            this.font.draw( str, bounds.lowerRight, Color.GRAY, Font.LOWER_RIGHT );
+            let move = Date.now() / 80;
+                move = move % 5;
+                move = move * Graphics.dotH;
+            this.font.draw( "▼", bounds.lowerRight.move(0,-move), Color.WHITE, Font.LOWER_RIGHT );
         }
 
     }

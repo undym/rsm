@@ -281,7 +281,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:7, au:100,
                                 treasures:  ()=>[Eq.オールマント],
                                 exItems:    ()=>[Eq.ライダーベルト],
-                                trendItems: ()=>[Item.肉],
+                                trendItems: ()=>[Item.肉, Item.原木],
         });}
         isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -306,10 +306,10 @@ export namespace Dungeon{
     };
     export const                         予感の街レ:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"予感の街・レ",
-                                rank:0, enemyLv:13, au:70,
+                                rank:0, enemyLv:11, au:70,
                                 treasures:  ()=>[Eq.ミルテの棍],
                                 exItems:    ()=>[Eq.いばらの鎧],
-                                trendItems: ()=>[Item.肉],
+                                trendItems: ()=>[Item.水],
         });}
         isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -324,183 +324,13 @@ export namespace Dungeon{
             e.name = "幻影リリア";
             e.prm(Prm.MAX_HP).base = 120;
         };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_4.run();
+            }
+        }
     };
-    // export const                         再構成トンネル:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"再構成トンネル",
-    //                             rank:1, enemyLv:3, au:70,
-    //                             treasures:  ()=>[Eq.安全靴],
-    //                             exItem:     ()=>Eq.手甲,
-    //                             trendItems: ()=>[Item.土, Item.水],
-    //     });}
-    //     isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.格闘家.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "幻影";
-    //         e.prm(Prm.MAX_HP).base = 23;
-    //         e.prm(Prm.STR).base = 10;
-    //         //ボス以外の雑魚は1体
-    //         for(let i = 2; i < Unit.enemies.length; i++){
-    //             Unit.enemies[i].exists = false;
-    //         }
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.格闘家.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Ex幻影";
-    //         e.prm(Prm.MAX_HP).base = 40;
-    //         e.prm(Prm.STR).base = 15;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-
-    //         // if(!Player.よしこ.member){
-    //         //     Player.よしこ.join();
-    //         //     Util.msg.set(`よしこが仲間になった`); await cwait();
-    //         // }
-    //     };
-    // };
-    // export const                         リテの門:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"リ・テの門",
-    //                             rank:1, enemyLv:7, au:70,
-    //                             treasures:  ()=>[Eq.魔法の杖],
-    //                             exItem:     ()=>Eq.魔女のとんがり帽,
-    //                             trendItems: ()=>[Item.朽ち果てた鍵],
-    //     });}
-    //     isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "門番";
-    //         e.prm(Prm.MAX_HP).base = 50;
-    //         e.prm(Prm.STR).base = 7;
-    //         e.prm(Prm.MAG).base = 10;
-    //         //ボス以外の雑魚は2体
-    //         for(let i = 3; i < Unit.enemies.length; i++){
-    //             Unit.enemies[i].exists = false;
-    //         }
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Ex門番";
-    //         e.prm(Prm.MAX_HP).base = 80;
-    //         e.prm(Prm.STR).base = 20;
-    //         e.prm(Prm.MAG).base = 12;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-
-    //         Item.リテの門チール.add(1); await cwait();
-    //     }
-    // };
-    // export const                         黒平原:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"黒平原",
-    //                             rank:2, enemyLv:14, au:100,
-    //                             treasures:  ()=>[Eq.ゲルマンベルト],
-    //                             exItem:     ()=>Eq.オホーツクのひも,
-    //                             trendItems: ()=>[Item.黒い石, Item.黒い砂, Item.黒い枝, Item.黒い青空],
-    //     });}
-    //     isVisible = ()=>Dungeon.リテの門.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "牛";
-    //         e.prm(Prm.MAX_HP).base = 120;
-    //         //ボス以外の雑魚は2体
-    //         for(let i = 3; i < Unit.enemies.length; i++){
-    //             Unit.enemies[i].exists = false;
-    //         }
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "ヤギ";
-    //         e.prm(Prm.MAX_HP).base = 140;
-    //         e.prm(Prm.CHN).base = 20;
-    //     };
-    // };
-    // export const                         黒遺跡:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"黒遺跡",
-    //                             rank:0, enemyLv:18, au:120,
-    //                             treasures:  ()=>[Eq.魔ヶ玉の指輪],
-    //                             exItem:     ()=>Eq.ゴーレムの腕,
-    //                             trendItems: ()=>[Item.黒い石, Item.黒い砂, Item.黒い枝, Item.黒い青空],
-    //     });}
-    //     isVisible = ()=>Dungeon.黒平原.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "古代兵器";
-    //         e.prm(Prm.MAX_HP).base = 130;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Ex古代兵器";
-    //         e.prm(Prm.MAX_HP).base = 130;
-    //         e.prm(Prm.PST).base = 30;
-    //     };
-    // };
-    // export const                         マーザン森:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"マーザン森",
-    //                             rank:2, enemyLv:24, au:100,
-    //                             treasures:  ()=>[Eq.ニケ],
-    //                             exItem:     ()=>Eq.鉄下駄,
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "マーザン";
-    //         e.prm(Prm.MAX_HP).base = 200;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Exマーザン";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-
-    //         Item.マーザンの鱗.add(1); await cwait();
-    //     }
-    // };
-    // export const                         古マーザン森:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"古マーザン森",
-    //                             rank:3, enemyLv:24, au:101,
-    //                             treasures:  ()=>[Eq.魔ト],
-    //                             exItem:     ()=>Eq.マーザン砲,
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.マーザン森.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         for(const e of Unit.enemies){
-    //             Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //             e.prm(Prm.MAX_HP).base *= 3;
-    //             e.ep = Unit.DEF_MAX_EP;
-    //         }
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "超マーザン";
-    //         e.prm(Prm.MAX_HP).base = 300;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "Ex超マーザン";
-    //         e.prm(Prm.MAX_HP).base = 500;
-    //         e.setEq(Eq.マーザン砲.pos, Eq.マーザン砲);
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-
-    //         Item.マーザンの鱗.add(1); await cwait();
-    //     }
-    // };
-
 }
 
 
