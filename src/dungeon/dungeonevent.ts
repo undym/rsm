@@ -302,7 +302,6 @@ export namespace DungeonEvent{
             Battle.setup( BattleType.NORMAL, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
-                        SaveData.save();
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:
@@ -351,7 +350,6 @@ export namespace DungeonEvent{
                         for(const item of Dungeon.now.exItems){
                             item.add(1); await wait();
                         }
-                        SaveData.save();
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:
@@ -373,8 +371,6 @@ export namespace DungeonEvent{
             Util.msg.set(`${Dungeon.now.toString()}を脱出します...`); await cwait(); await wait();
             
             Scene.load( TownScene.ins );
-            
-            SaveData.save();
         };
         createBtnLayout = ()=> ILayout.empty;
     };

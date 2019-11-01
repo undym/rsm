@@ -39,7 +39,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 19, 1);
+Version.NOW = new Version(0, 19, 3);
 let saveDataVersion;
 export class SaveData {
     static exists() {
@@ -65,9 +65,9 @@ export class SaveData {
         Item.values.forEach(item => strageItem(save, item));
         Eq.values.forEach(eq => strageEq(save, eq));
         EqEar.values.forEach(ear => strageEqEar(save, ear));
-        strageDungeon(save);
+        Dungeon.values.forEach(d => strageDungeon(save, d));
         Player.values.forEach(p => stragePlayer(save, p));
-        strageMix(save);
+        Mix.values.forEach(mix => strageMix(save, mix));
         stragePlayData(save);
         stragePartySkill(save);
     }
@@ -144,13 +144,11 @@ const strageEqEar = (save, ear) => {
     ioInt(save, `${name}_num`, ear.num, load => ear.num = load);
     ioInt(save, `${name}_totalGetCount`, ear.totalGetCount, load => ear.totalGetCount = load);
 };
-const strageDungeon = (save) => {
-    for (const d of Dungeon.values) {
-        const name = `${strageDungeon.name}_${d.uniqueName}`;
-        ioInt(save, `${name}_treasureKey`, d.treasureKey, load => d.treasureKey = load);
-        ioInt(save, `${name}_dungeonClearCount`, d.dungeonClearCount, load => d.dungeonClearCount = load);
-        ioInt(save, `${name}_exKillCount`, d.exKillCount, load => d.exKillCount = load);
-    }
+const strageDungeon = (save, d) => {
+    const name = `${strageDungeon.name}_${d.uniqueName}`;
+    ioInt(save, `${name}_treasureKey`, d.treasureKey, load => d.treasureKey = load);
+    ioInt(save, `${name}_dungeonClearCount`, d.dungeonClearCount, load => d.dungeonClearCount = load);
+    ioInt(save, `${name}_exKillCount`, d.exKillCount, load => d.exKillCount = load);
 };
 const stragePlayer = (save, p) => {
     const name = `${stragePlayer.name}_${p.uniqueName}`;
@@ -193,15 +191,15 @@ const stragePlayer = (save, p) => {
             u.setJobExp(job, load);
         });
     }
-    let tecLen = u.tecs.length;
-    ioInt(save, `${name}_tec_length`, u.tecs.length, load => tecLen = load);
-    u.tecs.length = tecLen;
+    let tecsLen = u.tecs.length;
+    ioInt(save, `${name}_tecs_length`, u.tecs.length, load => tecsLen = load);
+    u.tecs.length = tecsLen;
     for (let i = 0; i < u.tecs.length; i++) {
         if (!u.tecs[i]) {
             u.tecs[i] = Tec.empty;
         }
     }
-    for (let i = 0; i < tecLen; i++) {
+    for (let i = 0; i < tecsLen; i++) {
         const isPassiveKey = `${name}_tec_${i}_isPassive`;
         let isPassive = u.tecs[i] instanceof PassiveTec;
         ioBool(save, isPassiveKey, isPassive, load => isPassive = load);
@@ -253,16 +251,13 @@ const stragePlayer = (save, p) => {
         }
     }
 };
-const strageMix = (save) => {
-    for (const mix of Mix.values) {
-        const name = `${strageMix.name}_${mix.uniqueName}`;
-        ioInt(save, `${name}_count`, mix.count, load => mix.count = load);
-    }
+const strageMix = (save, mix) => {
+    const name = `${strageMix.name}_${mix.uniqueName}`;
+    ioInt(save, `${name}_count`, mix.count, load => mix.count = load);
 };
 const stragePlayData = (save) => {
     const name = `${stragePlayData.name}`;
     ioInt(save, `${name}_yen`, PlayData.yen, load => PlayData.yen = load);
-    ioBool(save, `${name}_masteredAnyJob`, PlayData.masteredAnyJob, load => PlayData.masteredAnyJob = load);
     ioBool(save, `${name}_gotAnyEq`, PlayData.gotAnyEq, load => PlayData.gotAnyEq = load);
     ioStr(save, `${name}_dungeonNow`, Dungeon.now.uniqueName, load => {
         const dungeon = Dungeon.valueOf(load);

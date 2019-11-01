@@ -2,8 +2,9 @@ import { Util } from "./util.js";
 import { Color } from "./undym/type.js";
 import { Item } from "./item.js";
 import { Player } from "./player.js";
-import { Eq } from "./eq.js";
+import { Eq, EqEar } from "./eq.js";
 import { Prm } from "./unit.js";
+import { SaveData } from "./savedata.js";
 
 
 export class Num{

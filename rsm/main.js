@@ -67,8 +67,6 @@ window.onload = () => {
         Scene.load(TownScene.ins);
         ctrl();
     }
-    // Scene.load(new TestScene());
-    // ctrl();
     setInterval(draw, 1000 / 30);
 };
 const ctrl = () => __awaiter(this, void 0, void 0, function* () {
@@ -104,6 +102,7 @@ const newGame = () => {
     setItem(Item.スティックパン, 10);
     setItem(Item.赤い水, 5);
     setItem(Item.サンタクララ薬, 5);
+    setItem(Item.動かない映写機, 1);
 };
 const continueGame = () => {
     Util.msg.set("CONTINUE");

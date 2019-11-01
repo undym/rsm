@@ -8,6 +8,7 @@ import { Util, PlayData } from "./util.js";
 import { Battle } from "./battle.js";
 import { choice } from "./undym/random.js";
 import { wait } from "./undym/scene.js";
+import { SaveData } from "./savedata.js";
 
 
 export class EqPos{

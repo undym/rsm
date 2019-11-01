@@ -12,6 +12,8 @@ import { TownScene } from "./townscene.js";
 import { TecType, Tec, ActiveTec } from "../tec.js";
 import { FX_Str } from "../fx/fx.js";
 import { Eq, EqPos, EqEar } from "../eq.js";
+import { SaveData } from "../savedata.js";
+import { Player } from "../player.js";
 
 
 enum ChoosedType{
@@ -293,7 +295,7 @@ export class EqScene extends Scene{
 }
 
 
-const equip = (unit:Unit, newEq:Eq)=>{
+const equip = (unit:PUnit, newEq:Eq)=>{
     const oldEq = unit.getEq(newEq.pos);
 
     oldEq.num++;
@@ -303,7 +305,7 @@ const equip = (unit:Unit, newEq:Eq)=>{
     unit.equip();
 };
 
-const equipEar = (unit:Unit, index:number, newEar:EqEar)=>{
+const equipEar = (unit:PUnit, index:number, newEar:EqEar)=>{
     const oldEar = unit.getEqEar(index);
 
     oldEar.num++;

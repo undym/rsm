@@ -22,8 +22,6 @@ export class MixScene extends Scene{
     private list:List = new List();
     private choosed:boolean = false;
     private choosedMix:Mix;
-    /**セーブフラグ. */
-    private doneAnyMix = false;
 
     constructor(){
         super();
@@ -139,8 +137,6 @@ export class MixScene extends Scene{
                                     if(!this.choosedMix){return;}
             
                                     this.choosedMix.run();
-            
-                                    this.doneAnyMix = true;
                                 });
                                 const noRun = new Btn("-",async()=>{});
                                 return new VariableLayout(()=>{
@@ -156,9 +152,6 @@ export class MixScene extends Scene{
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
-                if(this.doneAnyMix){
-                    SaveData.save();
-                }
                 Scene.load( TownScene.ins );
             })
         );

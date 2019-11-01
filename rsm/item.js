@@ -16,6 +16,7 @@ import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
+import { SaveData } from "./savedata.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Condition } from "./condition.js";
 export class ItemType {
@@ -416,10 +417,29 @@ Item.DEF_NUM_LIMIT = 9999;
     //ダンジョン
     //
     //-----------------------------------------------------------------
+    Item.動かない映写機 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "動かない映写機", info: "ダンジョン内で使用するとセーブできる",
+                type: ItemType.ダンジョン, rank: 10,
+                consumable: true, drop: ItemDrop.NO,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    //-------------------------
+                    //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
+                    //なのでremainingUseNumを--してセーブし、セーブ後に++する。
+                    this.remainingUseNum--;
+                    SaveData.save();
+                    this.remainingUseNum++;
+                    //-------------------------
+                    FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
+    };
     Item.脱出ポッド = new class extends Item {
         constructor() {
             super({ uniqueName: "脱出ポッド", info: "ダンジョンから脱出する。なくならない。",
-                type: ItemType.ダンジョン, rank: 0,
+                type: ItemType.ダンジョン, rank: 10,
                 consumable: true, drop: ItemDrop.NO,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Scene.load(DungeonScene.ins);
@@ -427,9 +447,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 }),
             });
         }
-        canUse(user, targets) {
-            return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON;
-        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
     };
     //-----------------------------------------------------------------
     //
@@ -643,10 +661,18 @@ Item.DEF_NUM_LIMIT = 9999;
     //メモ
     //
     //-----------------------------------------------------------------
-    // export const                         消耗品のメモ:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"消耗品のメモ", info:"スティックパンなどの一部消耗品はダンジョンに入る度に補充される", 
-    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
-    // };
+    Item.消耗品のメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "消耗品のメモ", info: "一部の消耗品はダンジョンに入る度に補充される",
+                type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.セーブのメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "セーブのメモ", info: "このゲームに自動セーブの機能はないらしい...",
+                type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
     Item.夏のメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "夏のメモ", info: "夏はいつ終わるの？",
@@ -655,7 +681,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ジスカルドのメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん",
+            super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん",
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
@@ -665,7 +691,7 @@ Item.DEF_NUM_LIMIT = 9999;
     // };
     Item.合成許可証 = new class extends Item {
         constructor() {
-            super({ uniqueName: "合成許可証", info: "合成が解放される",
+            super({ uniqueName: "合成許可証", info: "合成してもいいよ",
                 type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };

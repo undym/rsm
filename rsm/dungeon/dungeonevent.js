@@ -22,7 +22,6 @@ import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
 import { Targeting, Dmg } from "../force.js";
 import { Img } from "../graphics/graphics.js";
-import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 export class DungeonEvent {
     constructor() {
@@ -312,7 +311,6 @@ DungeonEvent._values = [];
                 Battle.setup(BattleType.NORMAL, (result) => __awaiter(this, void 0, void 0, function* () {
                     switch (result) {
                         case BattleResult.WIN:
-                            SaveData.save();
                             Scene.load(DungeonScene.ins);
                             break;
                         case BattleResult.LOSE:
@@ -366,7 +364,6 @@ DungeonEvent._values = [];
                                 item.add(1);
                                 yield wait();
                             }
-                            SaveData.save();
                             Scene.load(DungeonScene.ins);
                             break;
                         case BattleResult.LOSE:
@@ -390,7 +387,6 @@ DungeonEvent._values = [];
                 yield cwait();
                 yield wait();
                 Scene.load(TownScene.ins);
-                SaveData.save();
             });
             this.createBtnLayout = () => ILayout.empty;
         }

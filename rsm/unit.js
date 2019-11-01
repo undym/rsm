@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Player } from "./player.js";
-import { Util, PlayData } from "./util.js";
+import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
@@ -506,7 +506,6 @@ export class PUnit extends Unit {
                 if (set.lv >= this.job.maxLv) {
                     Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright);
                     yield wait();
-                    PlayData.masteredAnyJob = true;
                 }
             }
         });

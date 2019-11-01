@@ -129,15 +129,13 @@ export class PlayData{
     private constructor(){}
 
     static yen:number = 0;
-    /**職業変更ボタンの出現フラグ。 */
-    static masteredAnyJob = false;
     /**装備ボタンの出現フラグ. */
     static gotAnyEq = false;
 }
 
 
 export class SceneType{
-    private static _valueOf:Map<string,SceneType>;
+    private static _valueOf = new Map<string,SceneType>();
     static valueOf(uniqueName:string){
         return this._valueOf.get(uniqueName);
     }
@@ -152,10 +150,6 @@ export class SceneType{
         public readonly uniqueName:string,
         public readonly loadAction:()=>void,
     ){
-        if(!SceneType._valueOf){
-            SceneType._valueOf = new Map<string,SceneType>();
-        }
-
         SceneType._valueOf.set( uniqueName, this );
     }
 

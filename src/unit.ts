@@ -540,7 +540,6 @@ export class PUnit extends Unit{
 
             if(set.lv >= this.job.maxLv){
                 Util.msg.set(`${this.job}を極めた！`, Color.ORANGE.bright); await wait();
-                PlayData.masteredAnyJob = true;
             }
         }
     }

@@ -426,18 +426,33 @@ export namespace Item{
     //ダンジョン
     //
     //-----------------------------------------------------------------
+    export const                         動かない映写機:Item = new class extends Item{
+        constructor(){super({uniqueName:"動かない映写機", info:"ダンジョン内で使用するとセーブできる",
+                                type:ItemType.ダンジョン, rank:10,
+                                consumable:true, drop:ItemDrop.NO,
+                                use:async(user,target)=>{
+                                    //-------------------------
+                                    //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
+                                    //なのでremainingUseNumを--してセーブし、セーブ後に++する。
+                                    this.remainingUseNum--;
+                                    SaveData.save();
+                                    this.remainingUseNum++;
+                                    //-------------------------
+                                    FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+    };
     export const                         脱出ポッド:Item = new class extends Item{
         constructor(){super({uniqueName:"脱出ポッド", info:"ダンジョンから脱出する。なくならない。",
-                                type:ItemType.ダンジョン, rank:0,
+                                type:ItemType.ダンジョン, rank:10,
                                 consumable:true, drop:ItemDrop.NO,
                                 use:async(user,target)=>{
                                     Scene.load( DungeonScene.ins );
                                     await DungeonEvent.ESCAPE_DUNGEON.happen();
                                 },
         })}
-        canUse(user:Unit, targets:Unit[]){
-            return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;
-        }
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
     };
     //-----------------------------------------------------------------
     //
@@ -623,16 +638,20 @@ export namespace Item{
     //メモ
     //
     //-----------------------------------------------------------------
-    // export const                         消耗品のメモ:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"消耗品のメモ", info:"スティックパンなどの一部消耗品はダンジョンに入る度に補充される", 
-    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
-    // };
+    export const                         消耗品のメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"消耗品のメモ", info:"一部の消耗品はダンジョンに入る度に補充される", 
+                                type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    };
+    export const                         セーブのメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"セーブのメモ", info:"このゲームに自動セーブの機能はないらしい...", 
+                                type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    };
     export const                         夏のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"夏のメモ", info:"夏はいつ終わるの？", 
                                 type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         ジスカルドのメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ジスカルドのメモ", info:"じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん", 
+        constructor(){super({uniqueName:"ジスカルドのメモ", info:"じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん", 
                                 type:ItemType.メモ, rank:9, drop:ItemDrop.BOX, numLimit:1})}
     };
     // export const                         技習得許可証:Item = new class extends Item{
@@ -640,7 +659,7 @@ export namespace Item{
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
     // };
     export const                         合成許可証:Item = new class extends Item{
-        constructor(){super({uniqueName:"合成許可証", info:"合成が解放される", 
+        constructor(){super({uniqueName:"合成許可証", info:"合成してもいいよ", 
                                 type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
     };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{

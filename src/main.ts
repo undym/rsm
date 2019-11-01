@@ -56,8 +56,6 @@ window.onload = ()=>{
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
-
-
     const texture = new Texture({canvas:canvas});
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
@@ -65,7 +63,7 @@ window.onload = ()=>{
     setInput();
 
     init();
-
+    
     Util.msg.set( `Version{${Version.NOW}}` );
 
     if(SaveData.exists()){
@@ -76,9 +74,6 @@ window.onload = ()=>{
         Scene.load( TownScene.ins );
         ctrl();
     }
-
-    // Scene.load(new TestScene());
-    // ctrl();
 
     setInterval( draw, 1000 / 30 );
 
@@ -116,7 +111,7 @@ const init = ()=>{
 
 const newGame = ()=>{
     Util.msg.set("NEW GAME");
-
+    
     Player.ルイン.join();
     Player.ピアー.join();
 
@@ -128,6 +123,7 @@ const newGame = ()=>{
     setItem( Item.スティックパン, 10 );
     setItem( Item.赤い水, 5 );
     setItem( Item.サンタクララ薬, 5 );
+    setItem( Item.動かない映写機, 1 );
 };
 
 const continueGame = ()=>{

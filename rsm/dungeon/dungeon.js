@@ -35,17 +35,15 @@ export class Dungeon {
         this.dungeonClearCount = 0;
         this.exKillCount = 0;
         Dungeon._values.push(this);
+        if (Dungeon._valueOf.has(this.uniqueName)) {
+            console.log(`Dungeon already has uniqueName "${this.uniqueName}".`);
+        }
+        else {
+            Dungeon._valueOf.set(this.uniqueName, this);
+        }
     }
     static get values() { return this._values; }
-    static valueOf(uniqueName) {
-        if (!this._valueOf) {
-            this._valueOf = new Map();
-            for (const d of this.values) {
-                this._valueOf.set(d.uniqueName, d);
-            }
-        }
-        return this._valueOf.get(uniqueName);
-    }
+    static valueOf(uniqueName) { return this._valueOf.get(uniqueName); }
     //-----------------------------------------------------------------
     //
     //
@@ -186,6 +184,7 @@ export class Dungeon {
     }
 }
 Dungeon._values = [];
+Dungeon._valueOf = new Map();
 Dungeon.auNow = 0;
 (function (Dungeon) {
     //-----------------------------------------------------------------

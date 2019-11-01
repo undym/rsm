@@ -18,14 +18,11 @@ import { TownScene } from "./townscene.js";
 import { Item } from "../item.js";
 import { Mix } from "../mix.js";
 import { Eq, EqEar } from "../eq.js";
-import { SaveData } from "../savedata.js";
 export class MixScene extends Scene {
     constructor() {
         super();
         this.list = new List();
         this.choosed = false;
-        /**セーブフラグ. */
-        this.doneAnyMix = false;
         this.setList("建築", Mix.values.filter(m => !m.result && m.isVisible()));
     }
     init() {
@@ -137,7 +134,6 @@ export class MixScene extends Scene {
                     return;
                 }
                 this.choosedMix.run();
-                this.doneAnyMix = true;
             }));
             const noRun = new Btn("-", () => __awaiter(this, void 0, void 0, function* () { }));
             return new VariableLayout(() => {
@@ -147,9 +143,6 @@ export class MixScene extends Scene {
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            if (this.doneAnyMix) {
-                SaveData.save();
-            }
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

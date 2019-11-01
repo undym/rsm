@@ -90,8 +90,6 @@ export class PlayData {
     constructor() { }
 }
 PlayData.yen = 0;
-/**職業変更ボタンの出現フラグ。 */
-PlayData.masteredAnyJob = false;
 /**装備ボタンの出現フラグ. */
 PlayData.gotAnyEq = false;
 export class SceneType {
@@ -101,9 +99,6 @@ export class SceneType {
     constructor(uniqueName, loadAction) {
         this.uniqueName = uniqueName;
         this.loadAction = loadAction;
-        if (!SceneType._valueOf) {
-            SceneType._valueOf = new Map();
-        }
         SceneType._valueOf.set(uniqueName, this);
     }
     static valueOf(uniqueName) {
@@ -114,6 +109,7 @@ export class SceneType {
         SceneType._now = this;
     }
 }
+SceneType._valueOf = new Map();
 SceneType.TOWN = new SceneType("TOWN", () => Scene.load(TownScene.ins));
 SceneType.DUNGEON = new SceneType("DUNGEON", () => Scene.load(DungeonScene.ins));
 SceneType.BATTLE = new SceneType("BATTLE", () => Scene.load(DungeonScene.ins));

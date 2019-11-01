@@ -31,6 +31,7 @@ import { List } from "../widget/list.js";
 import { MeisouScene } from "./meisouscene.js";
 import { Mix } from "../mix.js";
 import { JobChangeScene } from "./jobchangescene.js";
+import { SaveData } from "../savedata.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -172,6 +173,12 @@ class TownBtn {
                 },
             });
         }
+        l.add({
+            center: () => "セーブ",
+            push: elm => {
+                SaveData.save();
+            },
+        });
         l.add({
             center: () => "OPTION",
             push: elm => {

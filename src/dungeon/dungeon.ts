@@ -21,17 +21,8 @@ export abstract class Dungeon{
     private static _values:Dungeon[] = [];
     static get values():ReadonlyArray<Dungeon>{return this._values;}
 
-    private static _valueOf:Map<string,Dungeon>;
-    static valueOf(uniqueName:string){
-        if(!this._valueOf){
-            this._valueOf = new Map<string,Dungeon>();
-
-            for(const d of this.values){
-                this._valueOf.set( d.uniqueName, d );
-            }
-        }
-        return this._valueOf.get(uniqueName);
-    }
+    private static _valueOf = new Map<string,Dungeon>();
+    static valueOf(uniqueName:string){return this._valueOf.get(uniqueName);}
 
 
     static now:Dungeon;
@@ -91,6 +82,8 @@ export abstract class Dungeon{
     ){
 
         Dungeon._values.push(this);
+        if(Dungeon._valueOf.has(this.uniqueName)){console.log(`Dungeon already has uniqueName "${this.uniqueName}".`);}
+        else                                     {Dungeon._valueOf.set( this.uniqueName, this );}
     }
 
     toString():string{return this.args.uniqueName;}
