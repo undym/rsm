@@ -39,6 +39,16 @@ export class DungeonEvent {
     isZoomImg() { return true; }
 }
 DungeonEvent._values = [];
+class EventImg {
+    constructor(src) {
+        this.src = src;
+    }
+    get img() { return this._img ? this._img : (this._img = new Img(this.src)); }
+}
+(function (EventImg) {
+    EventImg.BOX = new EventImg("img/box.png");
+    EventImg.OPEN_BOX = new EventImg("img/box_open.png");
+})(EventImg || (EventImg = {}));
 (function (DungeonEvent) {
     DungeonEvent.empty = new class extends DungeonEvent {
         constructor() {
@@ -50,7 +60,7 @@ DungeonEvent._values = [];
     DungeonEvent.BOX = new class extends DungeonEvent {
         constructor() {
             super();
-            this.createImg = () => new Img("img/box.png");
+            this.createImg = () => EventImg.BOX.img;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("宝箱だ"); });
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
@@ -61,7 +71,7 @@ DungeonEvent._values = [];
     DungeonEvent.OPEN_BOX = new class extends DungeonEvent {
         constructor() {
             super();
-            this.createImg = () => new Img("img/box_open.png");
+            this.createImg = () => EventImg.OPEN_BOX.img;
             this.isZoomImg = () => false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 yield openBox(ItemDrop.BOX, Dungeon.now.rank / 2);
@@ -72,6 +82,37 @@ DungeonEvent._values = [];
                         yield wait();
                         item.add(1);
                     }
+                }
+            });
+            this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
+        }
+    };
+    DungeonEvent.KEY_BOX_RANK2 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.BOX.img;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("丸い箱だ"); });
+            this.createBtnLayout = () => createDefLayout()
+                .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                if (Item.丸い鍵.num > 0) {
+                    Item.丸い鍵.num--;
+                    yield DungeonEvent.OPEN_KEY_BOX_RANK2.happen();
+                }
+                else {
+                    Util.msg.set("鍵を持っていない");
+                }
+            })));
+        }
+    };
+    DungeonEvent.OPEN_KEY_BOX_RANK2 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.OPEN_BOX.img;
+            this.isZoomImg = () => false;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < 5; i++) {
+                    openKeyBox(/*base*/ 2, /*fluctuateRange*/ 1);
+                    yield wait();
                 }
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
@@ -484,7 +525,7 @@ const openBox = (dropType, rank) => __awaiter(this, void 0, void 0, function* ()
     const partySkill = new PartySkillOpenBox();
     PartySkill.skills.forEach(skill => skill.openBox(partySkill, dropType));
     let openNum = 1;
-    let openBoost = 0.25 + partySkill.chain;
+    let openBoost = 0.2 + partySkill.chain;
     while (Math.random() < openBoost) {
         openNum++;
         openBoost /= 2;
@@ -500,3 +541,15 @@ const openBox = (dropType, rank) => __awaiter(this, void 0, void 0, function* ()
         }
     }
 });
+const openKeyBox = (baseRank, rankFluctuateRange) => {
+    let frank = Math.random() * (rankFluctuateRange + 1);
+    if (Math.random() < 0.5) {
+        frank *= -1;
+    }
+    let rank = baseRank + frank;
+    if (rank < 0) {
+        rank = 0;
+    }
+    const item = Item.rndItem(ItemDrop.BOX, rank);
+    item.add(1);
+};

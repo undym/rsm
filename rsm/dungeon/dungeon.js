@@ -99,7 +99,13 @@ export class Dungeon {
             return DungeonEvent.EX_BATTLE;
         }
         if (Math.random() < 0.15) {
-            return DungeonEvent.BOX;
+            if (Dungeon.now.rank >= 2 && Math.random() < 0.05) {
+                // if(Dungeon.now.rank >= 3 && Math.random() < 0.3){return DungeonEvent.KEY_BOX_RANK3;}
+                return DungeonEvent.KEY_BOX_RANK2;
+            }
+            else {
+                return DungeonEvent.BOX;
+            }
         }
         if (Math.random() < 0.15) {
             return DungeonEvent.BATTLE;

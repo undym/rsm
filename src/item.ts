@@ -41,6 +41,7 @@ export class ItemType{
 
     static readonly ダンジョン = new ItemType("ダンジョン");
     static readonly 弾 = new ItemType("弾");
+    static readonly 鍵 = new ItemType("鍵");
     
     static readonly ダメージ = new ItemType("ダメージ");
     
@@ -48,6 +49,7 @@ export class ItemType{
     static readonly 書 = new ItemType("書");
 
     static readonly メモ = new ItemType("メモ");
+
     static readonly 素材 = new ItemType("素材");
     static readonly 固有素材 = new ItemType("固有素材");
     static readonly 植物 = new ItemType("植物");
@@ -73,7 +75,7 @@ export class ItemParentType{
 
     static readonly 回復       = new ItemParentType("回復", [ItemType.蘇生, ItemType.HP回復, ItemType.MP回復]);
     static readonly 状態       = new ItemParentType("戦闘", [ItemType.状態]);
-    static readonly ダンジョン  = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾]);
+    static readonly ダンジョン  = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾, ItemType.鍵]);
     static readonly 戦闘       = new ItemParentType("戦闘", [ItemType.ダメージ]);
     static readonly 強化       = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);
     static readonly その他     = new ItemParentType("その他",    [
@@ -513,19 +515,6 @@ export namespace Item{
     };
     //-----------------------------------------------------------------
     //
-    //竿
-    //
-    //-----------------------------------------------------------------
-    // export const                         ボロい釣竿:Item = new class extends Item{//shop
-    //     constructor(){super({uniqueName:"ボロい釣竿", info:"釣りに使用　稀に壊れる",
-    //                             type:ItemType.竿, rank:10, drop:ItemDrop.NO,})}
-    // };
-    // export const                         マーザン竿:Item = new class extends Item{//shop
-    //     constructor(){super({uniqueName:"マーザン竿", info:"釣りに使用　稀に壊れる Rank+0.5",
-    //                             type:ItemType.竿, rank:10, drop:ItemDrop.NO,})}
-    // };
-    //-----------------------------------------------------------------
-    //
     //弾
     //
     //-----------------------------------------------------------------
@@ -536,6 +525,15 @@ export namespace Item{
     export const                         夜叉の矢:Item = new class extends Item{
         constructor(){super({uniqueName:"夜叉の矢", info:"ヤクシャに使用",
                                 type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
+    };
+    //-----------------------------------------------------------------
+    //
+    //鍵
+    //
+    //-----------------------------------------------------------------
+    export const                         丸い鍵:Item = new class extends Item{
+        constructor(){super({uniqueName:"丸い鍵", info:"丸い箱を開ける",
+                                type:ItemType.鍵, rank:2, drop:ItemDrop.BOX})}
     };
     //-----------------------------------------------------------------
     //

@@ -38,6 +38,7 @@ ItemType.MP回復 = new ItemType("MP回復");
 ItemType.状態 = new ItemType("状態");
 ItemType.ダンジョン = new ItemType("ダンジョン");
 ItemType.弾 = new ItemType("弾");
+ItemType.鍵 = new ItemType("鍵");
 ItemType.ダメージ = new ItemType("ダメージ");
 ItemType.ドーピング = new ItemType("ドーピング");
 ItemType.書 = new ItemType("書");
@@ -59,7 +60,7 @@ export class ItemParentType {
 ItemParentType._values = [];
 ItemParentType.回復 = new ItemParentType("回復", [ItemType.蘇生, ItemType.HP回復, ItemType.MP回復]);
 ItemParentType.状態 = new ItemParentType("戦闘", [ItemType.状態]);
-ItemParentType.ダンジョン = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾]);
+ItemParentType.ダンジョン = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾, ItemType.鍵]);
 ItemParentType.戦闘 = new ItemParentType("戦闘", [ItemType.ダメージ]);
 ItemParentType.強化 = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);
 ItemParentType.その他 = new ItemParentType("その他", [
@@ -521,19 +522,6 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
-    //竿
-    //
-    //-----------------------------------------------------------------
-    // export const                         ボロい釣竿:Item = new class extends Item{//shop
-    //     constructor(){super({uniqueName:"ボロい釣竿", info:"釣りに使用　稀に壊れる",
-    //                             type:ItemType.竿, rank:10, drop:ItemDrop.NO,})}
-    // };
-    // export const                         マーザン竿:Item = new class extends Item{//shop
-    //     constructor(){super({uniqueName:"マーザン竿", info:"釣りに使用　稀に壊れる Rank+0.5",
-    //                             type:ItemType.竿, rank:10, drop:ItemDrop.NO,})}
-    // };
-    //-----------------------------------------------------------------
-    //
     //弾
     //
     //-----------------------------------------------------------------
@@ -547,6 +535,17 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "夜叉の矢", info: "ヤクシャに使用",
                 type: ItemType.弾, rank: 3, drop: ItemDrop.BOX });
+        }
+    };
+    //-----------------------------------------------------------------
+    //
+    //鍵
+    //
+    //-----------------------------------------------------------------
+    Item.丸い鍵 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "丸い鍵", info: "丸い箱を開ける",
+                type: ItemType.鍵, rank: 2, drop: ItemDrop.BOX });
         }
     };
     //-----------------------------------------------------------------
