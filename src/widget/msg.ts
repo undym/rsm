@@ -36,6 +36,9 @@ export default class Msg extends ILayout{
 
         this.reserves.push(r);
     }
+    // private set(name:string, color?:any, index:number){
+    //     this.reserves.
+    // }
 
     add(name:string, color?:Color):void;
     add(name:string, createColor?:(cnt:number)=>Color):void;
@@ -76,7 +79,11 @@ export default class Msg extends ILayout{
                 this.lines[0].elms.push(e);
 
                 if(i !== 0){
-                    this.set( r.name.substring(r.name.length - i, r.name.length), r.createColor );
+                    const addr = new Reserve();
+                    addr.name = r.name.substring(r.name.length - i, r.name.length);
+                    addr.br = true;
+                    addr.createColor = r.createColor;
+                    this.setInner(addr);
                 }
                 break;
             }

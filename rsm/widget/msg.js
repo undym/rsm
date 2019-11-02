@@ -73,7 +73,11 @@ export default class Msg extends ILayout {
                 e.w = sw;
                 this.lines[0].elms.push(e);
                 if (i !== 0) {
-                    this.set(r.name.substring(r.name.length - i, r.name.length), r.createColor);
+                    const addr = new Reserve();
+                    addr.name = r.name.substring(r.name.length - i, r.name.length);
+                    addr.br = true;
+                    addr.createColor = r.createColor;
+                    this.setInner(addr);
                 }
                 break;
             }
