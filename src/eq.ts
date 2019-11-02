@@ -417,13 +417,15 @@ export namespace Eq{
                                 pos:EqPos.体, lv:15});}
         equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
     }
+    /**はじまりの丘財宝. */
     export const                         オールマント:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"オールマント", info:"全ステータス+10",
-                                pos:EqPos.体, lv:25});}
+        constructor(){super({uniqueName:"オールマント", info:"全ステータス+20",
+                                pos:EqPos.体, lv:55});}
         equip(unit:Unit){
-            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).eq += 10);
+            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).eq += 20);
         }
     }
+    /**予感の街レEX. */
     export const                         いばらの鎧:Eq = new class extends Eq{
         constructor(){super({uniqueName:"いばらの鎧", info:"被格闘攻撃時、稀に反撃",
                                 pos:EqPos.体, lv:55});}

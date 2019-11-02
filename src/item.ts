@@ -299,38 +299,6 @@ export namespace Item{
     //HP回復
     //
     //-----------------------------------------------------------------
-    export const                         ドラッグ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ドラッグ", info:"HP+5%",
-                                type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>{
-                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 1);
-                                },
-        })}
-    };
-    export const                         LAドラッグ:Item = new class extends Item{
-        constructor(){super({uniqueName:"LAドラッグ", info:"HP+10%",
-                                type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>{
-                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1);
-                                },
-        })}
-    };
-    export const                         ロシアドラッグ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ロシアドラッグ", info:"HP+15%",
-                                type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
-                                use:async(user,target)=>{
-                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.15 + 1);
-                                },
-        })}
-    };
-    export const                         ビタミンドラッグ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ビタミンドラッグ", info:"HP+20%",
-                                type:ItemType.HP回復, rank:3, drop:ItemDrop.BOX,
-                                use:async(user,target)=>{
-                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1);
-                                },
-        })}
-    };
     export const                         スティック:Item = new class extends Item{
         constructor(){super({uniqueName:"スティック", info:"HP+5",
                                 type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
@@ -368,6 +336,38 @@ export namespace Item{
                                 type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 50);
+                                },
+        })}
+    };
+    export const                         ドラッグ:Item = new class extends Item{
+        constructor(){super({uniqueName:"ドラッグ", info:"HP+5%",
+                                type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 1);
+                                },
+        })}
+    };
+    export const                         LAドラッグ:Item = new class extends Item{
+        constructor(){super({uniqueName:"LAドラッグ", info:"HP+10%",
+                                type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1);
+                                },
+        })}
+    };
+    export const                         ロシアドラッグ:Item = new class extends Item{
+        constructor(){super({uniqueName:"ロシアドラッグ", info:"HP+15%",
+                                type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.15 + 1);
+                                },
+        })}
+    };
+    export const                         ビタミンドラッグ:Item = new class extends Item{
+        constructor(){super({uniqueName:"ビタミンドラッグ", info:"HP+20%",
+                                type:ItemType.HP回復, rank:3, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1);
                                 },
         })}
     };

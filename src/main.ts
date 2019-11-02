@@ -64,7 +64,10 @@ window.onload = ()=>{
 
     init();
     
-    Util.msg.set( `Version{${Version.NOW}}` );
+    Util.msg.set( `Version(${Version.NOW})` );
+    for(const s of Version.updateInfo){
+        Util.msg.set(s);
+    }
 
     if(SaveData.exists()){
         continueGame();

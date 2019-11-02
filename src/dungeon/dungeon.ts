@@ -52,7 +52,9 @@ export abstract class Dungeon{
         const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount / 2;
         return res|0;
     }
-    get au():number{return this.args.au;}
+    get au():number         {return this.args.au;}
+    get area():DungeonArea  {return this.args.btn[0];}
+    get btnBounds():Rect    {return this.args.btn[1];}
 
     get treasures():Num[]{return this.args.treasures();}
     rndTreasure():Num|undefined{
@@ -74,6 +76,7 @@ export abstract class Dungeon{
             rank:number,
             enemyLv:number,
             au:number,
+            btn:[DungeonArea, Rect]
             treasures:()=>Num[],
             exItems:()=>Num[],
             trendItems:()=>Item[],
@@ -213,6 +216,27 @@ export abstract class Dungeon{
 }
 
 
+
+namespace BossImg{
+    export const choco = new Img("img/choco.png");
+}
+
+
+export class DungeonArea{
+    static now:DungeonArea;
+    // private static _values:DungeonArea[] = [];
+    // static get values():ReadonlyArray<DungeonArea>{return this._values;}
+    private _img:Img;
+    get img(){return this._img ? this._img : (this._img = new Img(this.imgSrc, false));}
+    constructor(private name:string, private imgSrc:string){}
+
+    toString(){return this.name;}
+}
+export namespace DungeonArea{
+    export const 中央島 = new DungeonArea("中央島", "img/area_中央島.jpg");
+    export const 黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg");
+}
+
 export namespace Dungeon{
     //-----------------------------------------------------------------
     //
@@ -221,7 +245,7 @@ export namespace Dungeon{
     //-----------------------------------------------------------------
     export const                         再構成トンネル:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"再構成トンネル",
-                                rank:0, enemyLv:1, au:50,
+                                rank:0, enemyLv:1, au:50, btn:[DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.安全靴],
                                 exItems:    ()=>[Eq.アカデミーバッヂ],
                                 trendItems: ()=>[Item.石, Item.砂],
@@ -256,7 +280,7 @@ export namespace Dungeon{
     };
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"見知らぬ海岸",
-                                rank:0, enemyLv:3, au:60,
+                                rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
                                 trendItems: ()=>[Item.草, Item.水],
@@ -288,7 +312,7 @@ export namespace Dungeon{
     };
     export const                         はじまりの丘:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"はじまりの丘",
-                                rank:1, enemyLv:7, au:100,
+                                rank:1, enemyLv:5, au:100, btn:[DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.オールマント],
                                 exItems:    ()=>[Eq.ライダーベルト],
                                 trendItems: ()=>[Item.肉, Item.原木],
@@ -316,7 +340,7 @@ export namespace Dungeon{
     };
     export const                         予感の街レ:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"予感の街・レ",
-                                rank:0, enemyLv:11, au:70,
+                                rank:0, enemyLv:9, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ミルテの棍],
                                 exItems:    ()=>[Eq.いばらの鎧],
                                 trendItems: ()=>[Item.水],
@@ -343,8 +367,3 @@ export namespace Dungeon{
     };
 }
 
-
-
-namespace BossImg{
-    export const choco = new Img("img/choco.png");
-}

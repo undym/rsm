@@ -155,10 +155,16 @@ export namespace Mix{
         action:()=>{},
     });
     const           肉のスープ:Mix = new Mix({
-        uniqueName:"肉のスープ", limit:10, info:"ルインとピアーの最大HP+1",
+        uniqueName:"肉のスープ", limit:10, info:"ルインの最大HP+1",
         materials:()=>[[Item.石, 3], [Item.肉, 3], [Item.水, 3]],
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const           バッタのスープ:Mix = new Mix({
+        uniqueName:"バッタのスープ", limit:10, info:"ピアーの最大HP+1",
+        materials:()=>[[Item.石, 2], [Item.バッタ, 2], [Item.水, 2]],
+        action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
         },
     });

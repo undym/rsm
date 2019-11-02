@@ -262,46 +262,6 @@ Item.DEF_NUM_LIMIT = 9999;
     //HP回復
     //
     //-----------------------------------------------------------------
-    Item.ドラッグ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ドラッグ", info: "HP+5%",
-                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 1);
-                }),
-            });
-        }
-    };
-    Item.LAドラッグ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "LAドラッグ", info: "HP+10%",
-                type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1);
-                }),
-            });
-        }
-    };
-    Item.ロシアドラッグ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ロシアドラッグ", info: "HP+15%",
-                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.15 + 1);
-                }),
-            });
-        }
-    };
-    Item.ビタミンドラッグ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ビタミンドラッグ", info: "HP+20%",
-                type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1);
-                }),
-            });
-        }
-    };
     Item.スティック = new class extends Item {
         constructor() {
             super({ uniqueName: "スティック", info: "HP+5",
@@ -348,6 +308,46 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 50);
+                }),
+            });
+        }
+    };
+    Item.ドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ドラッグ", info: "HP+5%",
+                type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.05 + 1);
+                }),
+            });
+        }
+    };
+    Item.LAドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "LAドラッグ", info: "HP+10%",
+                type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1);
+                }),
+            });
+        }
+    };
+    Item.ロシアドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ロシアドラッグ", info: "HP+15%",
+                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.15 + 1);
+                }),
+            });
+        }
+    };
+    Item.ビタミンドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ビタミンドラッグ", info: "HP+20%",
+                type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1);
                 }),
             });
         }

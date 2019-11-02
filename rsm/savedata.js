@@ -39,7 +39,10 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 20, 1);
+Version.NOW = new Version(0, 20, 2);
+Version.updateInfo = [
+    "(0.20.2)-ダンジョンボタンの仕様変更",
+];
 let saveDataVersion;
 export class SaveData {
     static exists() {

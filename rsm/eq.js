@@ -394,15 +394,17 @@ EqEar._valueOf = new Map();
         }
         equip(unit) { unit.prm(Prm.MAX_HP).eq += 20; }
     };
+    /**はじまりの丘財宝. */
     Eq.オールマント = new class extends Eq {
         constructor() {
-            super({ uniqueName: "オールマント", info: "全ステータス+10",
-                pos: EqPos.体, lv: 25 });
+            super({ uniqueName: "オールマント", info: "全ステータス+20",
+                pos: EqPos.体, lv: 55 });
         }
         equip(unit) {
-            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).eq += 10);
+            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).eq += 20);
         }
     };
+    /**予感の街レEX. */
     Eq.いばらの鎧 = new class extends Eq {
         constructor() {
             super({ uniqueName: "いばらの鎧", info: "被格闘攻撃時、稀に反撃",

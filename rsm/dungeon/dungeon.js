@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { DungeonEvent } from "./dungeonevent.js";
-import { Color } from "../undym/type.js";
+import { Rect, Color } from "../undym/type.js";
 import { Job } from "../job.js";
 import { Unit, Prm } from "../unit.js";
 import { Item } from "../item.js";
@@ -60,6 +60,8 @@ export class Dungeon {
         return res | 0;
     }
     get au() { return this.args.au; }
+    get area() { return this.args.btn[0]; }
+    get btnBounds() { return this.args.btn[1]; }
     get treasures() { return this.args.treasures(); }
     rndTreasure() {
         if (this.treasures.length === 0) {
@@ -203,6 +205,22 @@ export class Dungeon {
 Dungeon._values = [];
 Dungeon._valueOf = new Map();
 Dungeon.auNow = 0;
+var BossImg;
+(function (BossImg) {
+    BossImg.choco = new Img("img/choco.png");
+})(BossImg || (BossImg = {}));
+export class DungeonArea {
+    constructor(name, imgSrc) {
+        this.name = name;
+        this.imgSrc = imgSrc;
+    }
+    get img() { return this._img ? this._img : (this._img = new Img(this.imgSrc, false)); }
+    toString() { return this.name; }
+}
+(function (DungeonArea) {
+    DungeonArea.中央島 = new DungeonArea("中央島", "img/area_中央島.jpg");
+    DungeonArea.黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg");
+})(DungeonArea || (DungeonArea = {}));
 (function (Dungeon) {
     //-----------------------------------------------------------------
     //
@@ -212,7 +230,7 @@ Dungeon.auNow = 0;
     Dungeon.再構成トンネル = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "再構成トンネル",
-                rank: 0, enemyLv: 1, au: 50,
+                rank: 0, enemyLv: 1, au: 50, btn: [DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                 treasures: () => [Eq.安全靴],
                 exItems: () => [Eq.アカデミーバッヂ],
                 trendItems: () => [Item.石, Item.砂],
@@ -256,7 +274,7 @@ Dungeon.auNow = 0;
     Dungeon.見知らぬ海岸 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "見知らぬ海岸",
-                rank: 0, enemyLv: 3, au: 60,
+                rank: 0, enemyLv: 3, au: 60, btn: [DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
                 treasures: () => [Eq.銅板],
                 exItems: () => [Eq.草の服],
                 trendItems: () => [Item.草, Item.水],
@@ -295,7 +313,7 @@ Dungeon.auNow = 0;
     Dungeon.はじまりの丘 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "はじまりの丘",
-                rank: 1, enemyLv: 7, au: 100,
+                rank: 1, enemyLv: 5, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                 treasures: () => [Eq.オールマント],
                 exItems: () => [Eq.ライダーベルト],
                 trendItems: () => [Item.肉, Item.原木],
@@ -330,7 +348,7 @@ Dungeon.auNow = 0;
     Dungeon.予感の街レ = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "予感の街・レ",
-                rank: 0, enemyLv: 11, au: 70,
+                rank: 0, enemyLv: 9, au: 70, btn: [DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                 treasures: () => [Eq.ミルテの棍],
                 exItems: () => [Eq.いばらの鎧],
                 trendItems: () => [Item.水],
@@ -362,7 +380,3 @@ Dungeon.auNow = 0;
         }
     };
 })(Dungeon || (Dungeon = {}));
-var BossImg;
-(function (BossImg) {
-    BossImg.choco = new Img("img/choco.png");
-})(BossImg || (BossImg = {}));
