@@ -111,7 +111,131 @@ class EventImg {
             this.isZoomImg = () => false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 for (let i = 0; i < 5; i++) {
-                    openKeyBox(/*base*/ 2, /*fluctuateRange*/ 1);
+                    openKeyBox(/*base*/ 2, /*fluctuateRange*/ 2);
+                    yield wait();
+                }
+            });
+            this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
+        }
+    };
+    DungeonEvent.KEY_BOX_RANK3 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.BOX.img;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("三角型の箱だ"); });
+            this.createBtnLayout = () => createDefLayout()
+                .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                if (Item.三角鍵.num > 0) {
+                    Item.三角鍵.num--;
+                    yield DungeonEvent.OPEN_KEY_BOX_RANK3.happen();
+                }
+                else {
+                    Util.msg.set("鍵を持っていない");
+                }
+            })));
+        }
+    };
+    DungeonEvent.OPEN_KEY_BOX_RANK3 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.OPEN_BOX.img;
+            this.isZoomImg = () => false;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < 6; i++) {
+                    openKeyBox(/*base*/ 3, /*fluctuateRange*/ 2);
+                    yield wait();
+                }
+            });
+            this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
+        }
+    };
+    DungeonEvent.KEY_BOX_RANK4 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.BOX.img;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("トゲトゲの箱だ"); });
+            this.createBtnLayout = () => createDefLayout()
+                .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                if (Item.トゲトゲ鍵.num > 0) {
+                    Item.トゲトゲ鍵.num--;
+                    yield DungeonEvent.OPEN_KEY_BOX_RANK4.happen();
+                }
+                else {
+                    Util.msg.set("鍵を持っていない");
+                }
+            })));
+        }
+    };
+    DungeonEvent.OPEN_KEY_BOX_RANK4 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.OPEN_BOX.img;
+            this.isZoomImg = () => false;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < 7; i++) {
+                    openKeyBox(/*base*/ 4, /*fluctuateRange*/ 2);
+                    yield wait();
+                }
+            });
+            this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
+        }
+    };
+    DungeonEvent.KEY_BOX_RANK5 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.BOX.img;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("ツルツルの箱だ"); });
+            this.createBtnLayout = () => createDefLayout()
+                .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                if (Item.ツルツル鍵.num > 0) {
+                    Item.ツルツル鍵.num--;
+                    yield DungeonEvent.OPEN_KEY_BOX_RANK5.happen();
+                }
+                else {
+                    Util.msg.set("鍵を持っていない");
+                }
+            })));
+        }
+    };
+    DungeonEvent.OPEN_KEY_BOX_RANK5 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.OPEN_BOX.img;
+            this.isZoomImg = () => false;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < 8; i++) {
+                    openKeyBox(/*base*/ 5, /*fluctuateRange*/ 2);
+                    yield wait();
+                }
+            });
+            this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
+        }
+    };
+    DungeonEvent.KEY_BOX_RANK6 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.BOX.img;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("ヘンテコな箱だ"); });
+            this.createBtnLayout = () => createDefLayout()
+                .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                if (Item.ヘンテコ鍵.num > 0) {
+                    Item.ヘンテコ鍵.num--;
+                    yield DungeonEvent.OPEN_KEY_BOX_RANK6.happen();
+                }
+                else {
+                    Util.msg.set("鍵を持っていない");
+                }
+            })));
+        }
+    };
+    DungeonEvent.OPEN_KEY_BOX_RANK6 = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => EventImg.OPEN_BOX.img;
+            this.isZoomImg = () => false;
+            this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                for (let i = 0; i < 9; i++) {
+                    openKeyBox(/*base*/ 6, /*fluctuateRange*/ 2);
                     yield wait();
                 }
             });

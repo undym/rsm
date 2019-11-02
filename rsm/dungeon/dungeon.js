@@ -100,7 +100,18 @@ export class Dungeon {
         }
         if (Math.random() < 0.15) {
             if (Dungeon.now.rank >= 2 && Math.random() < 0.05) {
-                // if(Dungeon.now.rank >= 3 && Math.random() < 0.3){return DungeonEvent.KEY_BOX_RANK3;}
+                if (Dungeon.now.rank >= 6 && Math.random() < 0.3) {
+                    return DungeonEvent.KEY_BOX_RANK6;
+                }
+                if (Dungeon.now.rank >= 5 && Math.random() < 0.3) {
+                    return DungeonEvent.KEY_BOX_RANK5;
+                }
+                if (Dungeon.now.rank >= 4 && Math.random() < 0.3) {
+                    return DungeonEvent.KEY_BOX_RANK4;
+                }
+                if (Dungeon.now.rank >= 3 && Math.random() < 0.3) {
+                    return DungeonEvent.KEY_BOX_RANK3;
+                }
                 return DungeonEvent.KEY_BOX_RANK2;
             }
             else {

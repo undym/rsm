@@ -161,7 +161,7 @@ export class Item implements Action, Num{
     /**
      * return res > 0 ? res : 0;
      * */
-    static fluctuateRank(baseRank:number, rankFluctuatePassProb = 0.4){
+    static fluctuateRank(baseRank:number, rankFluctuatePassProb = 0.25){
         let add = 0;
 
         while(Math.random() <= rankFluctuatePassProb){
@@ -534,6 +534,22 @@ export namespace Item{
     export const                         丸い鍵:Item = new class extends Item{
         constructor(){super({uniqueName:"丸い鍵", info:"丸い箱を開ける",
                                 type:ItemType.鍵, rank:2, drop:ItemDrop.BOX})}
+    };
+    export const                         三角鍵:Item = new class extends Item{
+        constructor(){super({uniqueName:"三角鍵", info:"三角形の箱を開ける",
+                                type:ItemType.鍵, rank:3, drop:ItemDrop.BOX})}
+    };
+    export const                         トゲトゲ鍵:Item = new class extends Item{
+        constructor(){super({uniqueName:"トゲトゲ鍵", info:"トゲトゲの箱を開ける",
+                                type:ItemType.鍵, rank:4, drop:ItemDrop.BOX})}
+    };
+    export const                         ツルツル鍵:Item = new class extends Item{
+        constructor(){super({uniqueName:"ツルツル鍵", info:"ツルツルした箱を開ける",
+                                type:ItemType.鍵, rank:5, drop:ItemDrop.BOX})}
+    };
+    export const                         ヘンテコ鍵:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヘンテコ鍵", info:"ヘンテコな箱を開ける",
+                                type:ItemType.鍵, rank:6, drop:ItemDrop.BOX})}
     };
     //-----------------------------------------------------------------
     //

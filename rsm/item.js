@@ -144,7 +144,7 @@ export class Item {
     /**
      * return res > 0 ? res : 0;
      * */
-    static fluctuateRank(baseRank, rankFluctuatePassProb = 0.4) {
+    static fluctuateRank(baseRank, rankFluctuatePassProb = 0.25) {
         let add = 0;
         while (Math.random() <= rankFluctuatePassProb) {
             add += 0.5 + Math.random() * 0.5;
@@ -546,6 +546,30 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "丸い鍵", info: "丸い箱を開ける",
                 type: ItemType.鍵, rank: 2, drop: ItemDrop.BOX });
+        }
+    };
+    Item.三角鍵 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "三角鍵", info: "三角形の箱を開ける",
+                type: ItemType.鍵, rank: 3, drop: ItemDrop.BOX });
+        }
+    };
+    Item.トゲトゲ鍵 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "トゲトゲ鍵", info: "トゲトゲの箱を開ける",
+                type: ItemType.鍵, rank: 4, drop: ItemDrop.BOX });
+        }
+    };
+    Item.ツルツル鍵 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ツルツル鍵", info: "ツルツルした箱を開ける",
+                type: ItemType.鍵, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
+    Item.ヘンテコ鍵 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヘンテコ鍵", info: "ヘンテコな箱を開ける",
+                type: ItemType.鍵, rank: 6, drop: ItemDrop.BOX });
         }
     };
     //-----------------------------------------------------------------
