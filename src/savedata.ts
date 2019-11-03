@@ -14,11 +14,11 @@ import { PartySkill } from "./partyskill.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,20,4);
+    static readonly NOW = new Version(0,20,5);
     static readonly updateInfo =    [
-                                        "(0.20.2)ダンジョンボタンの仕様変更",
                                         "(0.20.3)軽微なバグ修正",
                                         "(0.20.4)エリア画像追加、他",
+                                        "(0.20.5)はじまりの丘のLvを下げた",
                                     ];
 
     private values:number[];

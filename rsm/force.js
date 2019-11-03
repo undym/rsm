@@ -93,6 +93,7 @@ export class Dmg {
         let isHit = Math.random() < _hit;
         if (isHit) {
             value = _pow * Dmg.calcDefCut(_def);
+            value = value * (0.75 + Math.random() * 0.5);
         }
         else {
             value = 0;

@@ -313,7 +313,7 @@ export class DungeonArea {
     Dungeon.はじまりの丘 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "はじまりの丘",
-                rank: 1, enemyLv: 5, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
+                rank: 1, enemyLv: 4, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                 treasures: () => [Eq.オールマント],
                 exItems: () => [Eq.ライダーベルト],
                 trendItems: () => [Item.肉, Item.原木],
