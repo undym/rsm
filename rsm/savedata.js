@@ -39,11 +39,11 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 20, 5);
+Version.NOW = new Version(0, 20, 6);
 Version.updateInfo = [
-    "(0.20.3)軽微なバグ修正",
     "(0.20.4)エリア画像追加、他",
     "(0.20.5)はじまりの丘のLvを下げた",
+    "(0.20.6)エリア移動実装",
 ];
 let saveDataVersion;
 export class SaveData {
