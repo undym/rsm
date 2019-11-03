@@ -223,18 +223,40 @@ namespace BossImg{
 
 
 export class DungeonArea{
+    private static _valueOf = new Map<string,DungeonArea>();
+    static valueOf(uniqueName:string){return this._valueOf.get(uniqueName);}
+
     static now:DungeonArea;
     // private static _values:DungeonArea[] = [];
     // static get values():ReadonlyArray<DungeonArea>{return this._values;}
     private _img:Img;
     get img(){return this._img ? this._img : (this._img = new Img(this.imgSrc, false));}
-    constructor(private name:string, private imgSrc:string){}
 
-    toString(){return this.name;}
+    get areaMoveBtns():{to:DungeonArea, bounds:Rect, isVisible:()=>boolean}[]{
+        const res:{to:DungeonArea, bounds:Rect, isVisible:()=>boolean}[] = [];
+        for(const set of this._areaMoveBtns()){
+            res.push({to:set[0], bounds:set[1], isVisible:set[2]});
+        }
+        return res;
+    }
+
+    constructor(readonly uniqueName:string, private imgSrc:string, private _areaMoveBtns:()=>[DungeonArea, Rect, ()=>boolean][]){
+        DungeonArea._valueOf.set(uniqueName, this);
+    }
+
+    toString(){return this.uniqueName;}
 }
 export namespace DungeonArea{
-    export const 中央島 = new DungeonArea("中央島", "img/area_中央島.jpg");
-    export const 黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg");
+    export const 中央島 =    new DungeonArea("中央島", "img/area_中央島.jpg",
+                                ()=>[
+                                    [DungeonArea.黒地域, new Rect(0.7, 0.4, 0.3, 0.1), ()=>Dungeon.黒平原.isVisible()],
+                                ]
+                            );
+    export const 黒地域 =    new DungeonArea("黒地域", "img/area_黒地域.jpg",
+                                ()=>[
+                                    [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+                                ]
+                            );
 }
 
 export namespace Dungeon{
@@ -362,6 +384,33 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story.MAIN_4.run();
+            }
+        }
+    };
+    export const                         黒平原:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"黒平原",
+                                rank:0, enemyLv:9, au:70, btn:[DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
+                                treasures:  ()=>[],
+                                exItems:    ()=>[],
+                                trendItems: ()=>[],
+        });}
+        isVisible = ()=>false;//Dungeon.予感の街レ.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            // let e = Unit.enemies[0];
+            // Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
+            // e.name = "レ町長";
+            // e.prm(Prm.MAX_HP).base = 80;
+        };
+        setExInner = ()=>{
+            // let e = Unit.enemies[0];
+            // Job.訓練生.setEnemy(e, 5);
+            // e.name = "幻影リリア";
+            // e.prm(Prm.MAX_HP).base = 120;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                // await Story.MAIN_4.run();
             }
         }
     };

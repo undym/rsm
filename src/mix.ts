@@ -146,7 +146,7 @@ export namespace Mix{
     //--------------------------------------------------------
     export const    瞑想所:Mix = new Mix({
         uniqueName:"瞑想所", limit:1, info:"瞑想が可能になる",
-        materials:()=>[[Item.草, 5]],
+        materials:()=>[[Item.原木, 1], [Item.草, 5]],
         action:()=>{},
     });
     export const    転職所:Mix = new Mix({

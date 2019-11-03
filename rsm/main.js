@@ -12,7 +12,7 @@ import { Util, SceneType, Debug } from "./util.js";
 import { Input } from "./undym/input.js";
 import { Unit } from "./unit.js";
 import { FX } from "./fx/fx.js";
-import { Dungeon } from "./dungeon/dungeon.js";
+import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color } from "./undym/type.js";
 import { Graphics, Texture } from "./graphics/graphics.js";
@@ -87,6 +87,7 @@ const init = () => {
     Unit.init();
     SceneType.TOWN.set();
     Dungeon.now = Dungeon.再構成トンネル;
+    DungeonArea.now = DungeonArea.中央島;
     //画像読み込み
     for (const ev of DungeonEvent.values) {
         ev.getImg();

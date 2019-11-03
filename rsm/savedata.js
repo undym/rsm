@@ -1,6 +1,6 @@
 import { Item } from "./item.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
-import { Dungeon } from "./dungeon/dungeon.js";
+import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Prm, Unit } from "./unit.js";
 import { Player } from "./player.js";
 import { Tec, PassiveTec, ActiveTec } from "./tec.js";
@@ -268,6 +268,12 @@ const stragePlayData = (save) => {
         const dungeon = Dungeon.valueOf(load);
         if (dungeon) {
             Dungeon.now = dungeon;
+        }
+    });
+    ioStr(save, `${name}_dungeonAreaNow`, DungeonArea.now.uniqueName, load => {
+        const area = DungeonArea.valueOf(load);
+        if (area) {
+            DungeonArea.now = area;
         }
     });
     ioInt(save, `${name}_dungeonAU`, Dungeon.auNow, load => Dungeon.auNow = load);

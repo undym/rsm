@@ -118,7 +118,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     //--------------------------------------------------------
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
-        materials: () => [[Item.草, 5]],
+        materials: () => [[Item.原木, 1], [Item.草, 5]],
         action: () => { },
     });
     Mix.転職所 = new Mix({

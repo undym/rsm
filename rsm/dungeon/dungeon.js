@@ -210,16 +210,31 @@ var BossImg;
     BossImg.choco = new Img("img/choco.png");
 })(BossImg || (BossImg = {}));
 export class DungeonArea {
-    constructor(name, imgSrc) {
-        this.name = name;
+    constructor(uniqueName, imgSrc, _areaMoveBtns) {
+        this.uniqueName = uniqueName;
         this.imgSrc = imgSrc;
+        this._areaMoveBtns = _areaMoveBtns;
+        DungeonArea._valueOf.set(uniqueName, this);
     }
+    static valueOf(uniqueName) { return this._valueOf.get(uniqueName); }
     get img() { return this._img ? this._img : (this._img = new Img(this.imgSrc, false)); }
-    toString() { return this.name; }
+    get areaMoveBtns() {
+        const res = [];
+        for (const set of this._areaMoveBtns()) {
+            res.push({ to: set[0], bounds: set[1], isVisible: set[2] });
+        }
+        return res;
+    }
+    toString() { return this.uniqueName; }
 }
+DungeonArea._valueOf = new Map();
 (function (DungeonArea) {
-    DungeonArea.中央島 = new DungeonArea("中央島", "img/area_中央島.jpg");
-    DungeonArea.黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg");
+    DungeonArea.中央島 = new DungeonArea("中央島", "img/area_中央島.jpg", () => [
+        [DungeonArea.黒地域, new Rect(0.7, 0.4, 0.3, 0.1), () => Dungeon.黒平原.isVisible()],
+    ]);
+    DungeonArea.黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg", () => [
+        [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), () => true],
+    ]);
 })(DungeonArea || (DungeonArea = {}));
 (function (Dungeon) {
     //-----------------------------------------------------------------
@@ -375,6 +390,40 @@ export class DungeonArea {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
                     yield Story.MAIN_4.run();
+                }
+            });
+        }
+    };
+    Dungeon.黒平原 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "黒平原",
+                rank: 0, enemyLv: 9, au: 70, btn: [DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
+                treasures: () => [],
+                exItems: () => [],
+                trendItems: () => [],
+            });
+            this.isVisible = () => false; //Dungeon.予感の街レ.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                // let e = Unit.enemies[0];
+                // Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
+                // e.name = "レ町長";
+                // e.prm(Prm.MAX_HP).base = 80;
+            };
+            this.setExInner = () => {
+                // let e = Unit.enemies[0];
+                // Job.訓練生.setEnemy(e, 5);
+                // e.name = "幻影リリア";
+                // e.prm(Prm.MAX_HP).base = 120;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    // await Story.MAIN_4.run();
                 }
             });
         }

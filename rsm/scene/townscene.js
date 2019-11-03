@@ -43,20 +43,6 @@ export class TownScene extends Scene {
         super.add(Place.MSG, ILayout.create({ draw: bounds => DungeonArea.中央島.img.draw(bounds) }));
         super.add(Place.MSG, createDungeonBtnLayout());
         super.add(Place.DUNGEON_DATA, Util.msg);
-        // super.add(Place.MSG, Util.msg);
-        // Util.msg.set(`[${d}]`);
-        // Util.msg.set(`Rank:${d.rank}`);
-        // Util.msg.set(`Lv:${d.enemyLv}`);
-        // Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
-        // Util.msg.set(`鍵:${d.treasureKey}`);
-        // Util.msg.set(`財宝:`);
-        // for(const t of d.treasures){
-        //     if(t.totalGetCount > 0){
-        //         Util.msg.add(`${t}/`);
-        //     }else{
-        //         Util.msg.add(`${"？".repeat( t.toString().length )}`, Color.GRAY);
-        //     }
-        // }
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, new VariableLayout(() => TownBtn.ins));
         super.add(Place.E_BOX, new YLayout()
@@ -95,34 +81,13 @@ export class TownScene extends Scene {
                     item.remainingUseNum = item.num;
                 }
                 Util.msg.set(`${choosedDungeon}に侵入しました`);
-                const h = 0.15;
                 FX_DungeonName(choosedDungeon.toString(), Place.DUNGEON_DATA);
                 choosedDungeon = undefined;
                 Scene.load(DungeonScene.ins);
             });
             return new VariableLayout(() => choosedDungeon ? btn : ILayout.empty);
         })()));
-        // super.add(Place.DUNGEON_DATA,
-        //     (()=>{
-        //         const btn = new Btn("侵入", ()=>{
-        //             if(!choosedDungeon){return;}
-        //             Dungeon.now = choosedDungeon;
-        //             Dungeon.auNow = 0;
-        //             DungeonEvent.now = DungeonEvent.empty;
-        //             for(let item of Item.consumableValues()){
-        //                 item.remainingUseNum = item.num;
-        //             }
-        //             Util.msg.set(`${choosedDungeon}に侵入しました`);
-        //             const h = 0.15;
-        //             FX_DungeonName( choosedDungeon.toString(), Place.DUNGEON_DATA );
-        //             choosedDungeon = undefined;
-        //             Scene.load( DungeonScene.ins );
-        //         });
-        //         return new VariableLayout(()=>choosedDungeon ? btn : ILayout.empty);
-        //     })()
-        // );
         super.add(Place.P_BOX, DrawSTBoxes.players);
-        // super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         //----------------------------------------------------
         SceneType.TOWN.set();
@@ -144,7 +109,7 @@ const fullCare = () => {
     }
 };
 const createDungeonBtnLayout = () => {
-    const area = DungeonArea.中央島;
+    const area = DungeonArea.now;
     const l = new RatioLayout();
     Dungeon.values
         .filter(d => d.area === area && (d.isVisible() || Debug.debugMode))
@@ -153,9 +118,22 @@ const createDungeonBtnLayout = () => {
             choosedDungeon = d;
         });
         btn.groundColor = () => d === choosedDungeon ? Color.D_CYAN.bright(Date.now() / 50, 0.15) : Color.BLACK;
-        btn.frameColor = () => Color.CLEAR;
+        btn.frameColor = () => Color.WHITE;
         btn.stringColor = () => Color.WHITE;
         l.add(d.btnBounds, btn);
+    });
+    area.areaMoveBtns
+        .filter(am => am.isVisible() || Debug.debugMode)
+        .forEach(am => {
+        const btn = new Btn(`＞${am.to}`, () => {
+            DungeonArea.now = am.to;
+            choosedDungeon = undefined;
+            TownScene.ins.init();
+        });
+        btn.groundColor = () => Color.BLACK;
+        btn.frameColor = () => Color.YELLOW;
+        btn.stringColor = () => Color.YELLOW;
+        l.add(am.bounds, btn);
     });
     return l;
 };
