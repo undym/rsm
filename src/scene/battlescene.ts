@@ -42,6 +42,9 @@ export class BattleScene extends Scene{
         super.clear();
 
         const drawBG:(bounds:Rect)=>void = (()=>{
+            if(Battle.type === BattleType.NORMAL){
+                return createNormalBG();
+            }
             if(Battle.type === BattleType.BOSS){
                 return createBossBG();
             }
@@ -430,6 +433,20 @@ const finish = async()=>{
 
     btnSpace.clear();
 }
+
+
+const createNormalBG:()=>(bounds:Rect)=>void = ()=>{
+    return bounds=>{
+        for(let i = 0; i < 5; i++){
+            const w = Math.random() * 0.5;
+            const h = Math.random() * 0.5;
+            const x = Math.random() * (1 - w);
+            const y = Math.random() * (1 - h);
+            const c = 0.01 + Math.random() * 0.1;
+            Graphics.fillRect(new Rect(x, y, w, h), new Color(c,c,c));
+        }
+    };
+};
 
 
 const createBossBG:()=>(bounds:Rect)=>void = ()=>{
