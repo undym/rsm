@@ -548,6 +548,20 @@ ActiveTec._valueOf = new Map();
     //         Unit.setCondition(attacker, Condition.闇, 1);
     //     }
     // }
+    /**無習得技. */
+    Tec.魔法カウンター = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "魔法カウンター", info: "！カウンター技用",
+                type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 0.5, num: 1, hit: 1,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.counter = true;
+            return dmg;
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //魔法Passive

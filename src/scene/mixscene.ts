@@ -181,6 +181,7 @@ export class MixScene extends Scene{
                 };
                 this.list.add({
                     left:()=>{
+                        if(mix.result){return `${mix.result.num}`;}
                         if(mix.countLimit === Mix.LIMIT_INF){return `${mix.count}`;}
                         return `${mix.count}/${mix.countLimit}`;
                     },

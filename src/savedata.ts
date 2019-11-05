@@ -14,11 +14,11 @@ import { PartySkill } from "./partyskill.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,20,6);
+    static readonly NOW = new Version(0,20,7);
     static readonly updateInfo =    [
-                                        "(0.20.4)エリア画像追加、他",
                                         "(0.20.5)はじまりの丘のLvを下げた",
                                         "(0.20.6)エリア移動実装",
+                                        "(0.20.7)いろいろ",
                                     ];
 
     private values:number[];

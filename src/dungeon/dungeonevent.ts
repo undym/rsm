@@ -18,6 +18,7 @@ import { SaveData } from "../savedata.js";
 import { Input } from "../undym/input.js";
 import { Num } from "../mix.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
+import { choice } from "../undym/random.js";
 
 
 export abstract class DungeonEvent{
@@ -349,7 +350,7 @@ export namespace DungeonEvent{
     };
     export const STRATUM:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
-        // createImg = ()=> new Img("img/tree.png");
+        createImg = ()=> new Img("img/stratum.png");
         happenInner = ()=>{Util.msg.set("掘れそうな場所がある");};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("掘る", async()=>{
@@ -488,9 +489,12 @@ export namespace DungeonEvent{
                 switch(result){
                     case BattleResult.WIN:
                         Dungeon.now.exKillCount++;
-                        for(const item of Dungeon.now.exItems){
+                        
+                        if(Dungeon.now.exItems.length > 0){
+                            const item = choice( Dungeon.now.exItems );
                             item.add(1); await wait();
                         }
+                        
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:

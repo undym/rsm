@@ -1,7 +1,7 @@
 import { Rect } from "../undym/type.js";
 export class Texture {
     static get empty() {
-        if (this._empty === undefined) {
+        if (!this._empty) {
             this._empty = new Texture({ pixelSize: { w: 1, h: 1 } });
         }
         return this._empty;
@@ -30,7 +30,7 @@ export class Texture {
         }
         this.ctx.imageSmoothingEnabled = false;
     }
-    draw(dstRatio, srcRatio = { x: 0, y: 0, w: 1, h: 1 }) {
+    draw(dstRatio, srcRatio = Rect.FULL) {
         const ctx = Graphics.getRenderTarget().ctx;
         const w = Graphics.getRenderTarget().canvas.width;
         const h = Graphics.getRenderTarget().canvas.height;
@@ -53,15 +53,15 @@ export class Texture {
     get dotH() { return 1 / this.canvas.height; }
 }
 export class Img {
-    constructor(src, lazyLoad = false) {
+    constructor(src, option) {
         this.src = src;
-        this.lazyLoad = lazyLoad;
-        this.image = new Image();
-        this.image.crossOrigin = 'anonymous';
+        this.option = option;
+        this._image = new Image();
+        // this._image.crossOrigin = 'anonymous';
         if (!src) {
             return;
         }
-        if (lazyLoad) {
+        if (option && option.lazyLoad) {
             this.loading = Img.LOADING_YET;
         }
         else {
@@ -77,6 +77,7 @@ export class Img {
         }
         return this._empty;
     }
+    get image() { return this._image; }
     draw(dstRatio, srcRatio = Rect.FULL) {
         if (this.loading !== Img.LOADING_DONE) {
             if (this.loading === Img.LOADING_YET) {
@@ -87,7 +88,7 @@ export class Img {
         const ctx = Graphics.getRenderTarget().ctx;
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
-        ctx.drawImage(this.image, /*sx*/ srcRatio.x * this.image.width, /*sy*/ srcRatio.y * this.image.height, /*sw*/ srcRatio.w * this.image.width, /*sh*/ srcRatio.h * this.image.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        ctx.drawImage(this._image, /*sx*/ srcRatio.x * this._image.width, /*sy*/ srcRatio.y * this._image.height, /*sw*/ srcRatio.w * this._image.width, /*sh*/ srcRatio.h * this._image.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
     }
     drawEx(args) {
         if (this.loading !== Img.LOADING_DONE) {
@@ -124,7 +125,7 @@ export class Img {
             ctx.scale(1, -1);
             dstY = -dstY - dstH;
         }
-        ctx.drawImage(this.image, /*sx*/ srcX * this.image.width, /*sy*/ srcY * this.image.height, /*sw*/ srcW * this.image.width, /*sh*/ srcH * this.image.height, /*dx*/ dstX * cw, /*dy*/ dstY * ch, /*dw*/ dstW * cw, /*dh*/ dstH * ch);
+        ctx.drawImage(this._image, /*sx*/ srcX * this._image.width, /*sy*/ srcY * this._image.height, /*sw*/ srcW * this._image.width, /*sh*/ srcH * this._image.height, /*dx*/ dstX * cw, /*dy*/ dstY * ch, /*dw*/ dstW * cw, /*dh*/ dstH * ch);
         if (args.reverseHorizontal) {
             ctx.scale(-1, 1);
             dstX = -dstX - dstW;
@@ -133,30 +134,6 @@ export class Img {
             ctx.scale(1, -1);
         }
     }
-    // drawCenter(center:Point, zoomMul = 1, srcRatio = Rect.FULL){
-    //     if(this.loading !== Img.LOADING_DONE){
-    //         if(this.loading === Img.LOADING_YET){
-    //             this.load();
-    //         }
-    //         return;
-    //     }
-    //     const ctx = Graphics.getRenderTarget().ctx;
-    //     const cw = Graphics.getRenderTarget().canvas.width;
-    //     const ch = Graphics.getRenderTarget().canvas.height;
-    //     const wRatio_2 = this.image.width  / cw * zoomMul / 2;
-    //     const hRatio_2 = this.image.height / ch * zoomMul / 2;
-    //     ctx.drawImage(
-    //          this.image
-    //         ,/*sx*/srcRatio.x * this.image.width
-    //         ,/*sy*/srcRatio.y * this.image.height
-    //         ,/*sw*/srcRatio.w * this.image.width
-    //         ,/*sh*/srcRatio.h * this.image.height
-    //         ,/*dx*/center.x * cw - wRatio_2
-    //         ,/*dy*/center.y * ch - hRatio_2
-    //         ,/*dw*/center.x * cw + wRatio_2
-    //         ,/*dh*/center.y * ch + hRatio_2
-    //     );
-    // }
     // drawKeepRatio(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
     //     if(!this.loadComplete){return;}
     //     const ctx = Graphics.getRenderTarget().ctx;
@@ -174,21 +151,21 @@ export class Img {
     //         ,/*dh*/dstRatio.h * h
     //     );
     // }
-    get isLoadComplete() { return this.loading === Img.LOADING_DONE; }
+    get complete() { return this._image.complete; }
     /**読み込みが完了するまでは0を返す。 */
-    get pixelW() { return this.image.width; }
+    get pixelW() { return this._image.width; }
     /**読み込みが完了するまでは0を返す。 */
-    get pixelH() { return this.image.height; }
+    get pixelH() { return this._image.height; }
     /**現在のRenderTargetを基準としたサイズ比を返す。 */
-    get ratioW() { return this.image.width / Graphics.getRenderTarget().pixelW; }
+    get ratioW() { return this._image.width / Graphics.getRenderTarget().pixelW; }
     /**現在のRenderTargetを基準としたサイズ比を返す。 */
-    get ratioH() { return this.image.height / Graphics.getRenderTarget().pixelH; }
+    get ratioH() { return this._image.height / Graphics.getRenderTarget().pixelH; }
     load() {
         this.loading = Img.LOADING_NOW;
-        this.image.onload = () => {
+        this._image.onload = () => {
             this.loading = Img.LOADING_DONE;
         };
-        this.image.src = this.src;
+        this._image.src = this.src;
     }
 }
 Img.LOADING_YET = 0;

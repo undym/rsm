@@ -195,7 +195,7 @@ export class Dungeon {
             if (this.dungeonClearCount <= 100 && this.dungeonClearCount % 10 === 0) {
                 Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`);
                 yield cwait();
-                const value = (1 + this.dungeonClearCount / 10) | 0;
+                const value = (this.dungeonClearCount / 10) | 0;
                 Item.ささやかな贈り物.add(value);
                 yield wait();
             }
@@ -205,10 +205,6 @@ export class Dungeon {
 Dungeon._values = [];
 Dungeon._valueOf = new Map();
 Dungeon.auNow = 0;
-var BossImg;
-(function (BossImg) {
-    BossImg.choco = new Img("img/choco.png");
-})(BossImg || (BossImg = {}));
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns) {
         this.uniqueName = uniqueName;
@@ -217,7 +213,7 @@ export class DungeonArea {
         DungeonArea._valueOf.set(uniqueName, this);
     }
     static valueOf(uniqueName) { return this._valueOf.get(uniqueName); }
-    get img() { return this._img ? this._img : (this._img = new Img(this.imgSrc, false)); }
+    get img() { return this._img ? this._img : (this._img = new Img(this.imgSrc, { lazyLoad: false })); }
     get areaMoveBtns() {
         const res = [];
         for (const set of this._areaMoveBtns()) {
@@ -237,11 +233,11 @@ DungeonArea._valueOf = new Map();
     ]);
 })(DungeonArea || (DungeonArea = {}));
 (function (Dungeon) {
-    //-----------------------------------------------------------------
-    //
-    //
-    //
-    //-----------------------------------------------------------------
+    ///////////////////////////////////////////////////////////////////////
+    //                                                                   //
+    //                            中央島                                 //
+    //                                                                   //
+    ///////////////////////////////////////////////////////////////////////
     Dungeon.再構成トンネル = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "再構成トンネル",
@@ -262,7 +258,7 @@ DungeonArea._valueOf = new Map();
                 let e = Unit.enemies[0];
                 Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "チョコチョコ";
-                e.img = BossImg.choco;
+                e.img = new Img("img/choco.png");
                 e.prm(Prm.MAX_HP).base = 30;
                 e.prm(Prm.STR).base = 5;
                 e.prm(Prm.MAG).base = 5;
@@ -304,9 +300,9 @@ DungeonArea._valueOf = new Map();
             };
             this.setExInner = () => {
                 let e = Unit.enemies[0];
-                Job.鎖使い.setEnemy(e, 5);
+                Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "アイアンチョコチョコ";
-                e.img = BossImg.choco;
+                e.img = new Img("img/choco.png");
                 e.prm(Prm.MAX_HP).base = 50;
                 e.prm(Prm.STR).base = 5;
                 e.prm(Prm.MAG).base = 5;
@@ -331,7 +327,7 @@ DungeonArea._valueOf = new Map();
                 rank: 1, enemyLv: 4, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                 treasures: () => [Eq.オールマント],
                 exItems: () => [Eq.ライダーベルト],
-                trendItems: () => [Item.肉, Item.原木],
+                trendItems: () => [Item.肉, Item.ヒノキ],
             });
             this.isVisible = () => Dungeon.見知らぬ海岸.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -343,8 +339,9 @@ DungeonArea._valueOf = new Map();
             };
             this.setExInner = () => {
                 let e = Unit.enemies[0];
-                Job.訓練生.setEnemy(e, 5);
+                Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "亡霊ドロシー";
+                e.img = new Img("img/dorosy.png");
                 e.prm(Prm.MAX_HP).base = 120;
             };
         }
@@ -366,7 +363,7 @@ DungeonArea._valueOf = new Map();
                 rank: 0, enemyLv: 9, au: 70, btn: [DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                 treasures: () => [Eq.ミルテの棍],
                 exItems: () => [Eq.いばらの鎧],
-                trendItems: () => [Item.水],
+                trendItems: () => [Item.杉],
             });
             this.isVisible = () => Dungeon.はじまりの丘.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -377,8 +374,9 @@ DungeonArea._valueOf = new Map();
             };
             this.setExInner = () => {
                 let e = Unit.enemies[0];
-                Job.訓練生.setEnemy(e, 5);
+                Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "幻影リリア";
+                e.img = new Img("img/riria.png");
                 e.prm(Prm.MAX_HP).base = 120;
             };
         }
@@ -394,26 +392,27 @@ DungeonArea._valueOf = new Map();
             });
         }
     };
-    Dungeon.黒平原 = new class extends Dungeon {
+    Dungeon.水の都イス = new class extends Dungeon {
         constructor() {
-            super({ uniqueName: "黒平原",
-                rank: 0, enemyLv: 9, au: 70, btn: [DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
-                treasures: () => [],
-                exItems: () => [],
+            super({ uniqueName: "水の都イス",
+                rank: 2, enemyLv: 14, au: 60, btn: [DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
+                treasures: () => [Eq.レティシアsガン],
+                exItems: () => [Eq.月代],
                 trendItems: () => [],
             });
-            this.isVisible = () => false; //Dungeon.予感の街レ.dungeonClearCount > 0;
+            this.isVisible = () => Dungeon.黒い丘.dungeonClearCount > 0;
             this.setBossInner = () => {
-                // let e = Unit.enemies[0];
-                // Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
-                // e.name = "レ町長";
-                // e.prm(Prm.MAX_HP).base = 80;
+                let e = Unit.enemies[0];
+                Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "イス都長";
+                e.prm(Prm.MAX_HP).base = 250;
             };
             this.setExInner = () => {
-                // let e = Unit.enemies[0];
-                // Job.訓練生.setEnemy(e, 5);
-                // e.name = "幻影リリア";
-                // e.prm(Prm.MAX_HP).base = 120;
+                let e = Unit.enemies[0];
+                Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影ハインリヒ";
+                e.img = new Img("img/haine.png");
+                e.prm(Prm.MAX_HP).base = 250;
             };
         }
         dungeonClearEvent() {
@@ -423,7 +422,83 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    // await Story.MAIN_4.run();
+                    yield Story.MAIN_7.run();
+                }
+            });
+        }
+    };
+    ///////////////////////////////////////////////////////////////////////
+    //                                                                   //
+    //                            黒地域                                 //
+    //                                                                   //
+    ///////////////////////////////////////////////////////////////////////
+    Dungeon.黒平原 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "黒平原",
+                rank: 0, enemyLv: 10, au: 100, btn: [DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
+                treasures: () => [Eq.魔性のマント],
+                exItems: () => [Eq.妖魔の手],
+                trendItems: () => [Item.バッタ],
+            });
+            this.isVisible = () => Dungeon.予感の街レ.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "黒き誘い";
+                e.prm(Prm.MAX_HP).base = 130;
+                e.prm(Prm.DRK).base = 15;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影オーロラ";
+                e.img = new Img("img/orora.png");
+                e.prm(Prm.MAX_HP).base = 150;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story.MAIN_5.run();
+                }
+            });
+        }
+    };
+    Dungeon.黒い丘 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "黒い丘",
+                rank: 1, enemyLv: 12, au: 200, btn: [DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
+                treasures: () => [Eq.魔ヶ玉の手首飾り],
+                exItems: () => [Eq.無色の靴],
+                trendItems: () => [Item.鉄, Item.銅],
+            });
+            this.isVisible = () => Dungeon.黒平原.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.アーチャー.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "黒き獰猛";
+                e.prm(Prm.MAX_HP).base = 250;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影ジレンマ";
+                e.img = new Img("img/jirenma.png");
+                e.prm(Prm.MAX_HP).base = 250;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story.MAIN_6.run();
                 }
             });
         }

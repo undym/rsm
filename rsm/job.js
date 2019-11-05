@@ -215,7 +215,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.ポイズンバタフライ];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.ポイズンバタフライ, Tec.ポイズンバタフライ, Tec.恵まれし者];
         }
     };
     Job.鎖使い = new class extends Job {

@@ -141,11 +141,8 @@ export class BattleScene extends Scene{
                 //init
                 for(const u of Unit.all){
                     u.tp = 0;
-                }
-                
-                for(const p of Unit.players){
                     for(const prm of Prm.values()){
-                        p.prm(prm).battle = 0;
+                        u.prm(prm).battle = 0;
                     }
                 }
 
@@ -348,13 +345,11 @@ export class BattleScene extends Scene{
                 }
             },
             draw:bounds=>{
-                Graphics.setLineWidth(2, ()=>{
+                Graphics.setLineWidth(3, ()=>{
                     for(const u of Unit.all){
                         if(!u.exists){continue;}
 
-                        Graphics.setLineWidth(2, ()=>{     
-                            Graphics.drawRect( u.boxBounds, Color.RED );
-                        });
+                        Graphics.drawRect( u.boxBounds, Color.RED );
                     }
                 });
             },

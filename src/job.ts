@@ -244,7 +244,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.ポイズンバタフライ, Tec.恵まれし者],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.ポイズンバタフライ];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.ポイズンバタフライ, Tec.ポイズンバタフライ, Tec.恵まれし者];
         }
     };
     export const                         鎖使い:Job = new class extends Job{

@@ -185,6 +185,17 @@ EqEar._valueOf = new Map();
                 pos: EqPos.頭, lv: 0 });
         }
     };
+    Eq.月代 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "月代", info: "「斬る」威力+20%",
+                pos: EqPos.頭, lv: 0 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            if (action === ActiveTec.斬る) {
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    };
     // export const                         魔女のとんがり帽:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"魔女のとんがり帽", info:"最大MP+10", 
     //                             pos:EqPos.頭, lv:3});}
@@ -243,6 +254,17 @@ EqEar._valueOf = new Map();
         beforeDoAtk(action, attacker, target, dmg) {
             if (Math.random() < 0.9) {
                 Unit.healHP(attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05);
+            }
+        }
+    };
+    Eq.レティシアsガン = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "レティシア'sガン", info: "銃攻撃時、稀に相手を＜防↓＞化",
+                pos: EqPos.武, lv: 5 });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type.any(TecType.銃術) && Math.random() < 0.7) {
+                Unit.setCondition(target, Condition.防御低下, 1);
             }
         }
     };
@@ -407,13 +429,27 @@ EqEar._valueOf = new Map();
     /**予感の街レEX. */
     Eq.いばらの鎧 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "いばらの鎧", info: "被格闘攻撃時、稀に反撃",
+            super({ uniqueName: "いばらの鎧", info: "被格闘攻撃時、稀に格闘反撃",
                 pos: EqPos.体, lv: 55 });
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && Math.random() < 0.4) {
                     yield Tec.格闘カウンター.run(target, attacker);
+                }
+            });
+        }
+    };
+    /**黒平原財宝. */
+    Eq.魔性のマント = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "魔性のマント", info: "被攻撃時、MP+1",
+                pos: EqPos.体, lv: 15 });
+        }
+        afterBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec) {
+                    target.mp++;
                 }
             });
         }
@@ -511,6 +547,32 @@ EqEar._valueOf = new Map();
         constructor() {
             super({ uniqueName: "手", info: "",
                 pos: EqPos.手, lv: 0 });
+        }
+    };
+    /**黒平原EX. */
+    Eq.妖魔の手 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "妖魔の手", info: "被魔法・過去攻撃時、稀に魔法反撃",
+                pos: EqPos.手, lv: 65 });
+        }
+        afterBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.counter && Math.random() < 0.7) {
+                    yield Tec.魔法カウンター.run(target, attacker);
+                }
+            });
+        }
+    };
+    /**黒い丘財宝. */
+    Eq.魔ヶ玉の手首飾り = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "魔ヶ玉の手首飾り", info: "毎ターンMP+1",
+                pos: EqPos.手, lv: 65 });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.mp++;
+            });
         }
     };
     // export const                         手甲:Eq = new class extends Eq{
@@ -635,6 +697,19 @@ EqEar._valueOf = new Map();
         }
         battleStart(unit) {
             unit.setCondition(Condition.盾, 1);
+        }
+    };
+    Eq.無色の靴 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "無色の靴", info: "格闘攻撃x1.2",
+                pos: EqPos.脚, lv: 15 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
         }
     };
     // export const                         安全靴:Eq = new class extends Eq{

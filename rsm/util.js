@@ -9,6 +9,10 @@ export class Debug {
 }
 Debug.DEBUG = true;
 Debug.debugMode = false;
+// export class CollectingSkill{
+//     private constructor(){}
+//     static tree = 0;
+// }
 export class Util {
     constructor() { }
     static init() {
@@ -28,7 +32,7 @@ export class Place {
     static get P_BOX() { return new Rect(Place.MAIN.xw + Graphics.dotW, 0, Place.ST_W, Place.BOX_H); }
     static E_UNIT(i) {
         const u = Unit.enemies[i];
-        if (!u.img.isLoadComplete) {
+        if (!u.img.complete) {
             return Rect.ZERO;
         }
         const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.enemies.length / 2;
@@ -39,7 +43,7 @@ export class Place {
     }
     static P_UNIT(i) {
         const u = Unit.players[i];
-        if (!u.img.isLoadComplete) {
+        if (!u.img.complete) {
             return Rect.ZERO;
         }
         const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.players.length / 2;

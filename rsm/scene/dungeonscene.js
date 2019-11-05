@@ -50,7 +50,7 @@ class DrawEvent extends InnerLayout {
                     }
                 }
                 zoomCount++;
-                if (!img.isLoadComplete) {
+                if (!img.complete) {
                     return;
                 }
                 let zoom = 0;

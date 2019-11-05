@@ -17,6 +17,13 @@ export class Debug{
 
 
 
+// export class CollectingSkill{
+//     private constructor(){}
+
+//     static tree = 0;
+// }
+
+
 
 export class Util{
     private constructor(){}
@@ -48,7 +55,7 @@ export class Place{
 
     static E_UNIT(i:number){
         const u = Unit.enemies[i];
-        if(!u.img.isLoadComplete){return Rect.ZERO;}
+        if(!u.img.complete){return Rect.ZERO;}
 
         const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.enemies.length / 2;
         const zoomMul = imgScreenPixelH / u.img.pixelH;
@@ -63,7 +70,7 @@ export class Place{
     }
     static P_UNIT(i:number){
         const u = Unit.players[i];
-        if(!u.img.isLoadComplete){return Rect.ZERO;}
+        if(!u.img.complete){return Rect.ZERO;}
 
         const imgScreenPixelH = Graphics.pixelH * Place.BOX_H / Unit.players.length / 2;
         const zoomMul = imgScreenPixelH / u.img.pixelH;

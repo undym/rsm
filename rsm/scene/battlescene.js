@@ -136,10 +136,8 @@ export class BattleScene extends Scene {
                     //init
                     for (const u of Unit.all) {
                         u.tp = 0;
-                    }
-                    for (const p of Unit.players) {
                         for (const prm of Prm.values()) {
-                            p.prm(prm).battle = 0;
+                            u.prm(prm).battle = 0;
                         }
                     }
                     for (const u of Unit.all) {
@@ -316,14 +314,12 @@ export class BattleScene extends Scene {
                     }
                 }),
                 draw: bounds => {
-                    Graphics.setLineWidth(2, () => {
+                    Graphics.setLineWidth(3, () => {
                         for (const u of Unit.all) {
                             if (!u.exists) {
                                 continue;
                             }
-                            Graphics.setLineWidth(2, () => {
-                                Graphics.drawRect(u.boxBounds, Color.RED);
-                            });
+                            Graphics.drawRect(u.boxBounds, Color.RED);
                         }
                     });
                 },
@@ -395,7 +391,7 @@ const createNormalBG = () => {
             const h = Math.random() * 0.5;
             const x = Math.random() * (1 - w);
             const y = Math.random() * (1 - h);
-            const c = 0.01 + Math.random() * 0.2;
+            const c = 0.01 + Math.random() * 0.1;
             Graphics.fillRect(new Rect(x, y, w, h), new Color(c, c, c));
         }
     };

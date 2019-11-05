@@ -1,15 +1,17 @@
-import { Point, Rect } from "../undym/type.js";
+import { Point, Rect, Color } from "../undym/type.js";
 
 
 
 export class Texture{
     private static _empty:Texture;
     static get empty():Texture{
-        if(this._empty === undefined){
+        if(!this._empty){
             this._empty = new Texture({pixelSize:{w:1,h:1}});
         }
         return this._empty;
     }
+
+
 
     readonly canvas:HTMLCanvasElement;
     readonly ctx:CanvasRenderingContext2D;
@@ -24,7 +26,7 @@ export class Texture{
         imageData?:ImageData,
     }){
 
-        if(args.canvas){
+         if(args.canvas){
             this.canvas = args.canvas;
             this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
         }else if(args.pixelSize){
@@ -43,7 +45,7 @@ export class Texture{
         this.ctx.imageSmoothingEnabled = false;
     }
 
-    draw(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
+    draw(dstRatio:Readonly<{x:number, y:number, w:number, h:number}>, srcRatio:Readonly<{x:number, y:number, w:number, h:number}> = Rect.FULL){
         const ctx = Graphics.getRenderTarget().ctx;
         const w = Graphics.getRenderTarget().canvas.width;
         const h = Graphics.getRenderTarget().canvas.height;
@@ -79,9 +81,9 @@ export class Texture{
 
 
 export class Img{
-    private static LOADING_YET  = 0;
-    private static LOADING_NOW  = 1;
-    private static LOADING_DONE = 2;
+    private static readonly LOADING_YET  = 0;
+    private static readonly LOADING_NOW  = 1;
+    private static readonly LOADING_DONE = 2;
 
     private static _empty:Img;
     static get empty():Img{
@@ -93,17 +95,18 @@ export class Img{
         }
         return this._empty;
     }
-    
-    private image:HTMLImageElement;
+
+    private _image:HTMLImageElement;
+    get image(){return this._image;}
     private loading:number;
 
-    constructor(private src:string, private lazyLoad = false){
-        this.image = new Image();
-        this.image.crossOrigin = 'anonymous';
+    constructor(private src:string, private option?:{lazyLoad?:boolean}){
+        this._image = new Image();
+        // this._image.crossOrigin = 'anonymous';
         if(!src){return;}
 
 
-        if(lazyLoad){
+        if(option && option.lazyLoad){
             this.loading = Img.LOADING_YET;
         }else{
             this.load();
@@ -122,11 +125,11 @@ export class Img{
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
         ctx.drawImage(
-             this.image
-            ,/*sx*/srcRatio.x * this.image.width
-            ,/*sy*/srcRatio.y * this.image.height
-            ,/*sw*/srcRatio.w * this.image.width
-            ,/*sh*/srcRatio.h * this.image.height
+             this._image
+            ,/*sx*/srcRatio.x * this._image.width
+            ,/*sy*/srcRatio.y * this._image.height
+            ,/*sw*/srcRatio.w * this._image.width
+            ,/*sh*/srcRatio.h * this._image.height
             ,/*dx*/dstRatio.x * cw
             ,/*dy*/dstRatio.y * ch
             ,/*dw*/dstRatio.w * cw
@@ -178,11 +181,11 @@ export class Img{
         }
         
         ctx.drawImage(
-             this.image
-            ,/*sx*/srcX * this.image.width
-            ,/*sy*/srcY * this.image.height
-            ,/*sw*/srcW * this.image.width
-            ,/*sh*/srcH * this.image.height
+             this._image
+            ,/*sx*/srcX * this._image.width
+            ,/*sy*/srcY * this._image.height
+            ,/*sw*/srcW * this._image.width
+            ,/*sh*/srcH * this._image.height
             ,/*dx*/dstX * cw
             ,/*dy*/dstY * ch
             ,/*dw*/dstW * cw
@@ -197,33 +200,6 @@ export class Img{
             ctx.scale(1,-1);
         }
     }
-    // drawCenter(center:Point, zoomMul = 1, srcRatio = Rect.FULL){
-    //     if(this.loading !== Img.LOADING_DONE){
-    //         if(this.loading === Img.LOADING_YET){
-    //             this.load();
-    //         }
-    //         return;
-    //     }
-
-    //     const ctx = Graphics.getRenderTarget().ctx;
-    //     const cw = Graphics.getRenderTarget().canvas.width;
-    //     const ch = Graphics.getRenderTarget().canvas.height;
-    //     const wRatio_2 = this.image.width  / cw * zoomMul / 2;
-    //     const hRatio_2 = this.image.height / ch * zoomMul / 2;
-        
-    //     ctx.drawImage(
-    //          this.image
-    //         ,/*sx*/srcRatio.x * this.image.width
-    //         ,/*sy*/srcRatio.y * this.image.height
-    //         ,/*sw*/srcRatio.w * this.image.width
-    //         ,/*sh*/srcRatio.h * this.image.height
-    //         ,/*dx*/center.x * cw - wRatio_2
-    //         ,/*dy*/center.y * ch - hRatio_2
-    //         ,/*dw*/center.x * cw + wRatio_2
-    //         ,/*dh*/center.y * ch + hRatio_2
-    //     );
-    // }
-    
     // drawKeepRatio(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
     //     if(!this.loadComplete){return;}
 
@@ -243,24 +219,24 @@ export class Img{
     //     );
     // }
 
-    get isLoadComplete():boolean{return this.loading === Img.LOADING_DONE;}
+    get complete():boolean{return this._image.complete;}
 
     /**読み込みが完了するまでは0を返す。 */
-    get pixelW(){return this.image.width;}
+    get pixelW(){return this._image.width;}
     /**読み込みが完了するまでは0を返す。 */
-    get pixelH(){return this.image.height;}
+    get pixelH(){return this._image.height;}
     /**現在のRenderTargetを基準としたサイズ比を返す。 */
-    get ratioW(){return this.image.width / Graphics.getRenderTarget().pixelW;}
+    get ratioW(){return this._image.width / Graphics.getRenderTarget().pixelW;}
     /**現在のRenderTargetを基準としたサイズ比を返す。 */
-    get ratioH(){return this.image.height / Graphics.getRenderTarget().pixelH;}
+    get ratioH(){return this._image.height / Graphics.getRenderTarget().pixelH;}
 
     private load(){
         this.loading = Img.LOADING_NOW;
 
-        this.image.onload = ()=>{
+        this._image.onload = ()=>{
             this.loading = Img.LOADING_DONE;
         };
-        this.image.src = this.src;
+        this._image.src = this.src;
     }
 }
 

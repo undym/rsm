@@ -23,6 +23,7 @@ import { ItemScene } from "../scene/itemscene.js";
 import { Targeting, Dmg } from "../force.js";
 import { Img } from "../graphics/graphics.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
+import { choice } from "../undym/random.js";
 export class DungeonEvent {
     constructor() {
         DungeonEvent._values.push(this);
@@ -384,7 +385,7 @@ class EventImg {
     DungeonEvent.STRATUM = new class extends DungeonEvent {
         constructor() {
             super();
-            // createImg = ()=> new Img("img/tree.png");
+            this.createImg = () => new Img("img/stratum.png");
             this.happenInner = () => { Util.msg.set("掘れそうな場所がある"); };
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("掘る", () => __awaiter(this, void 0, void 0, function* () {
@@ -525,7 +526,8 @@ class EventImg {
                     switch (result) {
                         case BattleResult.WIN:
                             Dungeon.now.exKillCount++;
-                            for (const item of Dungeon.now.exItems) {
+                            if (Dungeon.now.exItems.length > 0) {
+                                const item = choice(Dungeon.now.exItems);
                                 item.add(1);
                                 yield wait();
                             }
