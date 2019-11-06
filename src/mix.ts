@@ -152,7 +152,7 @@ export namespace Mix{
     });
     export const    転職所:Mix = new Mix({
         uniqueName:"転職所", limit:1, info:"職業選択の自由を得る",
-        materials:()=>[[Item.杉, 3], [Item.ヒノキ, 3]],
+        materials:()=>[[Item.杉材, 1], [Item.ヒノキ材, 1]],
         action:()=>{},
     });
     const           肉のスープ:Mix = new Mix({

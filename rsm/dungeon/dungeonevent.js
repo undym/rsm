@@ -341,6 +341,7 @@ class EventImg {
                         Unit.healMP(p, p.prm(Prm.MAX_MP).total * 0.2 + 1);
                     }
                 }
+                Util.msg.set("休憩した");
                 DungeonEvent.empty.happen();
             })));
         }
