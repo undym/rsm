@@ -15,11 +15,11 @@ import { CollectingSkill } from "./collectingskill.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,20,8);
+    static readonly NOW = new Version(0,20,9);
     static readonly updateInfo =    [
-                                        "(0.20.6)エリア移動実装",
                                         "(0.20.7)いろいろ",
                                         "(0.20.8)いろいろ",
+                                        "(0.20.9)音追加",
                                     ];
 
     private values:number[];
