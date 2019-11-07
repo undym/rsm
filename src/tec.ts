@@ -10,6 +10,7 @@ import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
+import { Sound } from "./sound.js";
 
 
 
@@ -36,6 +37,7 @@ export abstract class TecType{
 
     abstract createDmg(attacker:Unit, target:Unit):Dmg;
     abstract effect(attacker:Unit, target:Unit, dmg:Dmg):void;
+    abstract sound():void;
 
     /**一つでも当てはまればtrue. */
     any(...types:TecType[]){
@@ -57,9 +59,8 @@ export namespace TecType{
                 def:target.prm(Prm.MAG).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_格闘(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_格闘(target.imgBounds.center);}
+        sound(){Sound.PUNCH.play();}
     };
     export const             魔法 = new class extends TecType{
         constructor(){super("魔法");}
@@ -69,9 +70,8 @@ export namespace TecType{
                 def:target.prm(Prm.STR).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_魔法(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_魔法(target.imgBounds.center);}
+        sound(){Sound.MAGIC.play();}
     };
     export const             神格 = new class extends TecType{
         constructor(){super("神格");}
@@ -81,9 +81,8 @@ export namespace TecType{
                 def:target.prm(Prm.DRK).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_神格(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_神格(target.imgBounds.center);}
+        sound(){}
     };
     export const             暗黒 = new class extends TecType{
         constructor(){super("暗黒");}
@@ -93,9 +92,8 @@ export namespace TecType{
                 def:target.prm(Prm.LIG).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_暗黒(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_暗黒(target.imgBounds.center);}
+        sound(){}
     };
     export const             練術 = new class extends TecType{
         constructor(){super("練術");}
@@ -105,9 +103,8 @@ export namespace TecType{
                 def:target.prm(Prm.PST).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_練術(attacker.imgBounds.center, target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_練術(attacker.imgBounds.center, target.imgBounds.center);}
+        sound(){}
     };
     export const             過去 = new class extends TecType{
         constructor(){super("過去");}
@@ -117,9 +114,8 @@ export namespace TecType{
                 def:target.prm(Prm.CHN).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_過去(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_過去(target.imgBounds.center);}
+        sound(){}
     };
     export const             銃術 = new class extends TecType{
         constructor(){super("銃術");}
@@ -129,9 +125,8 @@ export namespace TecType{
                 def:target.prm(Prm.ARR).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_銃術(attacker.imgBounds.center, target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_銃術(attacker.imgBounds.center, target.imgBounds.center);}
+        sound(){}
     };
     export const             弓術 = new class extends TecType{
         constructor(){super("弓術");}
@@ -141,9 +136,8 @@ export namespace TecType{
                 def:target.prm(Prm.GUN).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_銃術(attacker.imgBounds.center, target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_銃術(attacker.imgBounds.center, target.imgBounds.center);}
+        sound(){}
     };
     export const             状態 = new class extends TecType{
         constructor(){super("状態");}
@@ -151,6 +145,7 @@ export namespace TecType{
         effect(attacker:Unit, target:Unit, dmg:Dmg){
             // FX_格闘(target.imgBounds.center);
         }
+        sound(){}
     };
     export const             回復 = new class extends TecType{
         constructor(){super("回復");}
@@ -159,9 +154,8 @@ export namespace TecType{
                 absPow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total,
             });
         }
-        effect(attacker:Unit, target:Unit, dmg:Dmg){
-            FX_回復(target.imgBounds.center);
-        }
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_回復(target.imgBounds.center);}
+        sound(){}
     };
     export const             その他 = new class extends TecType{
         constructor(){super("その他");}
@@ -169,6 +163,7 @@ export namespace TecType{
         effect(attacker:Unit, target:Unit, dmg:Dmg){
             // FX_格闘(target.imgBounds.center);
         }
+        sound(){}
     };
 }
 
@@ -339,6 +334,9 @@ export abstract class ActiveTec extends Tec implements Action{
     effect(attacker:Unit, target:Unit, dmg:Dmg):void{
         this.type.effect(attacker, target, dmg);
     }
+    sound():void{
+        this.type.sound();
+    }
 
     async use(attacker:Unit, targets:Unit[]){
 
@@ -372,6 +370,7 @@ export abstract class ActiveTec extends Tec implements Action{
     async runInner(attacker:Unit, target:Unit, dmg:Dmg){
         await target.doDmg(dmg); 
         this.effect(attacker, target, dmg);
+        this.sound();
         await wait();
     }
 

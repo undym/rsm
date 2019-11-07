@@ -51,6 +51,7 @@ export class BattleType{
     static readonly NORMAL = new BattleType();
     static readonly BOSS = new BattleType();
     static readonly EX = new BattleType();
+    static readonly DUNGEON_CLEAR = new BattleType();
 }
 
 

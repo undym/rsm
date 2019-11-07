@@ -26,6 +26,7 @@ import { MeisouScene } from "./meisouscene.js";
 import { Mix } from "../mix.js";
 import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
+import { Sound } from "../sound.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -91,6 +92,7 @@ export class TownScene extends Scene{
                         }
             
                         Util.msg.set(`${choosedDungeon}に侵入しました`);
+                        Sound.walk2.play();
                         
                         FX_DungeonName( choosedDungeon.toString(), Place.DUNGEON_DATA );
             
@@ -262,6 +264,7 @@ class TownBtn{
                 center:()=>"セーブ",
                 push:elm=>{
                     SaveData.save();
+                    Sound.save.play();
                 },
             });
             l.add({
@@ -275,53 +278,6 @@ class TownBtn{
         this._ins = l;
     }
 
-    private static setDungeonList(){
-        const list = new List(6);
-        // const visibleDungeons = Dungeon.values.filter(d=> d.isVisible() || Debug.debugMode);
-        Dungeon.values
-            .filter(d=> d.isVisible() || Debug.debugMode)
-            .forEach((d,index)=>{
-                list.add({
-                    center:()=> d.dungeonClearCount > 0 ? `★${d}` : `${d}`,
-                    groundColor:()=> d === choosedDungeon ? Color.D_CYAN : Color.BLACK,
-                    push:elm=>{
-                        this.dungeonListScroll = index;
-                        choosedDungeon = d;
-                        
-                        Util.msg.set("");
-                        Util.msg.set("");
-                        Util.msg.set(`[${d}]`);
-                        Util.msg.set(`Rank:${d.rank}`);
-                        Util.msg.set(`Lv:${d.enemyLv}`);
-                        Util.msg.set(`攻略回数:${d.dungeonClearCount}`, d.dungeonClearCount > 0 ? Color.WHITE : Color.GRAY);
-                        Util.msg.set(`鍵:${d.treasureKey}`);
-    
-                        Util.msg.set(`財宝:`);
-                        for(const t of d.treasures){
-                            if(t.totalGetCount > 0){
-                                Util.msg.add(`${t}/`);
-                            }else{
-                                Util.msg.add(`${"？".repeat( t.toString().length )}`, Color.GRAY);
-                            }
-                        }
-                    },
-                });
-            });
-        
-        list.setScroll(this.dungeonListScroll, "center");
-
-        const listH = 0.85;
-        this._ins = new RatioLayout()
-                        .add(new Rect(0, 0, 1, listH), list)
-                        .add(new Rect(0, listH, 1, 1-listH), 
-                            new Btn("<<", ()=>{
-                                choosedDungeon = undefined;
-                                this.reset();
-                            })
-                        )
-                        ;
-        ;
-    }
 
 }
 

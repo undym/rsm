@@ -16,6 +16,7 @@ import { XLayout, ILayout, Label } from "./undym/layout.js";
 import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
 import { randomInt } from "./undym/random.js";
+import { Sound } from "./sound.js";
 
 
 {
@@ -69,6 +70,7 @@ window.onload = ()=>{
         Util.msg.set(s);
     }
 
+    Sound.start.play();
     if(SaveData.exists()){
         continueGame();
         ctrl();
@@ -141,6 +143,14 @@ const setInput = ()=>{
         document.addEventListener("keydown", ev=>{
             if(ev.key === "d"){
                 Debug.debugMode = !Debug.debugMode;
+            }
+            if(Debug.debugMode){
+                if(ev.key === "1"){
+                    Dungeon.auNow = Dungeon.now.au;
+                    for(const u of Unit.enemies){
+                        u.exists = false;
+                    }
+                }
             }
         });
     }

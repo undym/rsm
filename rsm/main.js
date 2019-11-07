@@ -20,6 +20,7 @@ import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
+import { Sound } from "./sound.js";
 {
     const run = document.getElementById("runreload");
     run.onclick = () => {
@@ -61,6 +62,7 @@ window.onload = () => {
     for (const s of Version.updateInfo) {
         Util.msg.set(s);
     }
+    Sound.start.play();
     if (SaveData.exists()) {
         continueGame();
         ctrl();
@@ -117,6 +119,14 @@ const setInput = () => {
         document.addEventListener("keydown", ev => {
             if (ev.key === "d") {
                 Debug.debugMode = !Debug.debugMode;
+            }
+            if (Debug.debugMode) {
+                if (ev.key === "1") {
+                    Dungeon.auNow = Dungeon.now.au;
+                    for (const u of Unit.enemies) {
+                        u.exists = false;
+                    }
+                }
             }
         });
     }

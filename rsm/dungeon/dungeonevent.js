@@ -25,6 +25,7 @@ import { Img } from "../graphics/graphics.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
 import { CollectingSkill } from "../collectingskill.js";
+import { Sound } from "../sound.js";
 export class DungeonEvent {
     constructor() {
         DungeonEvent._values.push(this);
@@ -555,6 +556,7 @@ class EventImg {
                 Util.msg.set(`${Dungeon.now.toString()}を脱出します...`);
                 yield cwait();
                 yield wait();
+                Sound.walk2.play();
                 Scene.load(TownScene.ins);
             });
             this.createBtnLayout = () => ILayout.empty;
@@ -564,6 +566,7 @@ class EventImg {
         constructor() {
             super();
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                BattleScene.ins.background = bounds => { };
                 let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
                 yen = yen | 0;
                 Dungeon.now.dungeonClearCount++;

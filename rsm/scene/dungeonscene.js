@@ -14,7 +14,6 @@ export default class DungeonScene extends Scene {
     init() {
         super.clear();
         super.add(Place.MAIN, DrawEvent.ins);
-        super.add(Place.MSG, Util.msg);
         super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, (() => {
@@ -30,7 +29,11 @@ export default class DungeonScene extends Scene {
         })());
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);
+        super.add(Place.MSG, Util.msg);
         super.add(Place.MAIN, DrawUnitDetail.ins);
+        // super.add(Place.E_BOX, new VariableLayout(()=>{
+        //     if(!Debug.debugMode){return ILayout.empty;}
+        // }));
         SceneType.DUNGEON.set();
     }
 }

@@ -18,6 +18,7 @@ import { Item } from "../item.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
 import { PartySkillWin, PartySkill } from "../partyskill.js";
+import { Sound } from "../sound.js";
 
 let btnSpace:Layout;
 let chooseTargetLayout:ILayout;
@@ -26,6 +27,8 @@ export class BattleScene extends Scene{
     private static _ins:BattleScene;
     static get ins():BattleScene{return this._ins ? this._ins : (this._ins = new BattleScene());}
 
+
+    background:(bounds:Rect)=>void = bounds=>{};
 
     private tecInfo:{tec:Tec, user:Unit} = {tec:Tec.empty, user:Unit.players[0]};
 
@@ -41,21 +44,11 @@ export class BattleScene extends Scene{
 
         super.clear();
 
-        const drawBG:(bounds:Rect)=>void = (()=>{
-            if(Battle.type === BattleType.NORMAL){
-                return createNormalBG();
-            }
-            if(Battle.type === BattleType.BOSS){
-                return createBossBG();
-            }
-            if(Battle.type === BattleType.EX){
-                return createExBG();
-            }
-            return (bounds)=>{};
-        })();
+    
+
         super.add(Place.MAIN, ILayout.create({draw:(bounds)=>{
             Graphics.clip(bounds, ()=>{
-                drawBG(bounds);
+                this.background(bounds);
             });
         }}));
 
@@ -116,8 +109,8 @@ export class BattleScene extends Scene{
             });
         })());
 
-        super.add(Place.MSG, Util.msg);
         super.add(Rect.FULL, DrawUnits.ins);
+        super.add(Place.MSG, Util.msg);
 
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, btnSpace);
@@ -138,6 +131,10 @@ export class BattleScene extends Scene{
             if(Battle.start){
                 Battle.start = false;
                 SceneType.BATTLE.set();
+
+                if(Battle.type === BattleType.NORMAL){this.background = createNormalBG();}
+                if(Battle.type === BattleType.BOSS)  {this.background = createBossBG();}
+                if(Battle.type === BattleType.EX)    {this.background = createExBG();}
                 //init
                 for(const u of Unit.all){
                     u.tp = 0;
@@ -361,6 +358,7 @@ export class BattleScene extends Scene{
 
 const win = async()=>{
     Battle.result = BattleResult.WIN;
+    Sound.win.play();
     Util.msg.set("勝った"); await wait();
 
     const partySkill = new PartySkillWin();

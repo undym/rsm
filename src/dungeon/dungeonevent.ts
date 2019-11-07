@@ -20,6 +20,7 @@ import { Num } from "../mix.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
 import { CollectingSkill } from "../collectingskill.js";
+import { Sound } from "../sound.js";
 
 
 export abstract class DungeonEvent{
@@ -519,6 +520,7 @@ export namespace DungeonEvent{
         happenInner = async()=>{
 
             Util.msg.set(`${Dungeon.now.toString()}を脱出します...`); await cwait(); await wait();
+            Sound.walk2.play();
             
             Scene.load( TownScene.ins );
         };
@@ -527,6 +529,8 @@ export namespace DungeonEvent{
     export const CLEAR_DUNGEON:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
         happenInner = async()=>{
+            BattleScene.ins.background = bounds=>{};
+
             let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
             yen = yen|0;
     

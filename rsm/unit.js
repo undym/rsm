@@ -19,6 +19,7 @@ import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font, Img } from "./graphics/graphics.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
+import { Sound } from "./sound.js";
 class PrmSet {
     constructor() {
         this._base = 0;
@@ -234,6 +235,7 @@ export class Unit {
             if (this.prm(Prm.HP).base > 0) {
                 return;
             }
+            Sound.death.play();
             this.dead = true;
             Util.msg.set(`${this.name}は死んだ`, Color.RED);
             yield wait();

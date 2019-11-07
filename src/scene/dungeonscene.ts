@@ -2,7 +2,7 @@ import { Scene, cwait } from "../undym/scene.js";
 import { RatioLayout, YLayout, ILayout, XLayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect, Color } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { Place, Util, SceneType } from "../util.js";
+import { Place, Util, SceneType, Debug } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Unit } from "../unit.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -10,6 +10,7 @@ import { TownScene } from "./townscene.js";
 import { Img } from "../graphics/graphics.js";
 import { SaveData } from "../savedata.js";
 import { Player } from "../player.js";
+import { Input } from "../undym/input.js";
 
 
 
@@ -29,7 +30,6 @@ export default class DungeonScene extends Scene{
 
         
         super.add(Place.MAIN, DrawEvent.ins);
-        super.add(Place.MSG, Util.msg);
         super.add(Place.DUNGEON_DATA, DrawDungeonData.ins);
 
         super.add(Place.YEN, DrawYen.ins);
@@ -48,7 +48,14 @@ export default class DungeonScene extends Scene{
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);
+        super.add(Place.MSG, Util.msg);
         super.add(Place.MAIN, DrawUnitDetail.ins);
+
+        // super.add(Place.E_BOX, new VariableLayout(()=>{
+        //     if(!Debug.debugMode){return ILayout.empty;}
+
+            
+        // }));
 
         SceneType.DUNGEON.set();
     }

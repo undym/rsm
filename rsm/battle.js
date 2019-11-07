@@ -27,6 +27,7 @@ export class BattleType {
 BattleType.NORMAL = new BattleType();
 BattleType.BOSS = new BattleType();
 BattleType.EX = new BattleType();
+BattleType.DUNGEON_CLEAR = new BattleType();
 export var BattleResult;
 (function (BattleResult) {
     BattleResult[BattleResult["WIN"] = 0] = "WIN";
