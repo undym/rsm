@@ -77,7 +77,7 @@ export namespace TecType{
         constructor(){super("神格");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total * 0.3,
+                pow:attacker.prm(Prm.LIG).total * 0.85 + attacker.prm(Prm.LV).total * 0.3,
                 def:target.prm(Prm.DRK).total,
             });
         }
@@ -137,7 +137,7 @@ export namespace TecType{
         constructor(){super("弓術");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
+                pow:attacker.prm(Prm.ARR).total * 1.5 + attacker.prm(Prm.LV).total * 0.2,
                 def:target.prm(Prm.GUN).total,
             });
         }
@@ -424,6 +424,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
+            Util.msg.set("＞反撃");
             await Tec.格闘カウンター.run( target, attacker );
         }
     }

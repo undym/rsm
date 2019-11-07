@@ -20,15 +20,15 @@ export class CollectingSkill{
     async lvupCheck(rank:number){
         let prob = 1 - (this.lv / (rank+1) * 10);
         //lv = 0, rank = 1,
-        //0 / 10,
-        //1 - 0 / 10
-        //10/10
+        //0 / 20,
+        //1 - 0 / 20
+        //1
         //lv = 9, rank = 1,
-        //9 / 10
-        //lv = 20, rank = 1,
-        //20 / 10,
-        //1 - 2,
-        //-1
+        //9 / 20
+        //lv = 30, rank = 1,
+        //30 / 20,
+        //1 - 1.5,
+        //-0.5
         if(prob > 0 && Math.random() < prob * prob){
             this.lv++;
             Util.msg.set(`${this.uniqueName}スキルが${this.lv}になった`, Color.YELLOW.bright); await wait();

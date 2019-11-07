@@ -40,7 +40,7 @@ export class TownScene extends Scene {
     }
     init() {
         super.clear();
-        super.add(Place.MSG, ILayout.create({ draw: bounds => DungeonArea.中央島.img.draw(bounds) }));
+        super.add(Place.MSG, ILayout.create({ draw: bounds => DungeonArea.now.img.draw(bounds) }));
         super.add(Place.MSG, createDungeonBtnLayout());
         super.add(Place.DUNGEON_DATA, Util.msg);
         super.add(Place.YEN, DrawYen.ins);
