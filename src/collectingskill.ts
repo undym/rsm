@@ -18,7 +18,7 @@ export class CollectingSkill{
     }
 
     async lvupCheck(rank:number){
-        let prob = 1 - (this.lv / rank * 10);
+        let prob = 1 - (this.lv / (rank+1) * 10);
         //lv = 0, rank = 1,
         //0 / 10,
         //1 - 0 / 10

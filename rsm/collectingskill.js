@@ -18,7 +18,7 @@ export class CollectingSkill {
     static get values() { return this._values; }
     lvupCheck(rank) {
         return __awaiter(this, void 0, void 0, function* () {
-            let prob = 1 - (this.lv / rank * 10);
+            let prob = 1 - (this.lv / (rank + 1) * 10);
             //lv = 0, rank = 1,
             //0 / 10,
             //1 - 0 / 10
