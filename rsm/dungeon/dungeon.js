@@ -244,7 +244,7 @@ DungeonArea._valueOf = new Map();
                 rank: 0, enemyLv: 1, au: 50, btn: [DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                 treasures: () => [Eq.安全靴],
                 exItems: () => [Eq.アカデミーバッヂ],
-                trendItems: () => [Item.石, Item.砂],
+                trendItems: () => [Item.杉, Item.ヒノキ],
             });
             this.isVisible = () => true;
             this.setBossInner = () => {
@@ -327,7 +327,7 @@ DungeonArea._valueOf = new Map();
                 rank: 1, enemyLv: 4, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                 treasures: () => [Eq.オールマント],
                 exItems: () => [Eq.ライダーベルト],
-                trendItems: () => [Item.肉, Item.ヒノキ],
+                trendItems: () => [Item.肉, Item.石, Item.砂],
             });
             this.isVisible = () => Dungeon.見知らぬ海岸.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -363,7 +363,7 @@ DungeonArea._valueOf = new Map();
                 rank: 0, enemyLv: 9, au: 70, btn: [DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                 treasures: () => [Eq.ミルテの棍],
                 exItems: () => [Eq.いばらの鎧],
-                trendItems: () => [Item.杉],
+                trendItems: () => [Item.粘土, Item.土, Item.ガラス],
             });
             this.isVisible = () => Dungeon.はじまりの丘.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -398,7 +398,7 @@ DungeonArea._valueOf = new Map();
                 rank: 2, enemyLv: 14, au: 60, btn: [DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
                 treasures: () => [Eq.レティシアsガン],
                 exItems: () => [Eq.月代],
-                trendItems: () => [],
+                trendItems: () => [Item.水, Item.イズミミズ, Item.ジェリーの粘液, Item.精霊の涙],
             });
             this.isVisible = () => Dungeon.黒い丘.dungeonClearCount > 0;
             this.setBossInner = () => {

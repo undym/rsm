@@ -10,6 +10,7 @@ import { PlayData, SceneType, Util } from "./util.js";
 import { Color } from "./undym/type.js";
 import { Mix } from "./mix.js";
 import { PartySkill } from "./partyskill.js";
+import { CollectingSkill } from "./collectingskill.js";
 
 
 
@@ -328,6 +329,10 @@ const stragePlayData = (save:boolean)=>{
                 Unit.setPlayer( i, p );
             }
         });
+    }
+
+    for(const cs of CollectingSkill.values){
+        ioInt(save, `${name}_CollectingSkill_${cs.uniqueName}`, cs.lv, load=> cs.lv = load);
     }
 };
 

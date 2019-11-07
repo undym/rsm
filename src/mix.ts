@@ -198,7 +198,7 @@ export namespace Mix{
         },
     });
     const           ボロ木工所:Mix = new Mix({
-        uniqueName:"ボロ木工所", limit:1, info:"杉・ヒノキの加工が可能になる",
+        uniqueName:"ボロ木工所", limit:1, info:"木材の加工が可能になる",
         materials:()=>[[Item.杉, 3], [Item.ヒノキ, 3]],
         action:()=>{},
     });

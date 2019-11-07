@@ -170,7 +170,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         },
     });
     const ボロ木工所 = new Mix({
-        uniqueName: "ボロ木工所", limit: 1, info: "杉・ヒノキの加工が可能になる",
+        uniqueName: "ボロ木工所", limit: 1, info: "木材の加工が可能になる",
         materials: () => [[Item.杉, 3], [Item.ヒノキ, 3]],
         action: () => { },
     });

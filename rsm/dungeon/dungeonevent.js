@@ -24,6 +24,7 @@ import { Targeting, Dmg } from "../force.js";
 import { Img } from "../graphics/graphics.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
+import { CollectingSkill } from "../collectingskill.js";
 export class DungeonEvent {
     constructor() {
         DungeonEvent._values.push(this);
@@ -75,7 +76,7 @@ class EventImg {
             this.createImg = () => EventImg.OPEN_BOX.img;
             this.isZoomImg = () => false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
-                yield openBox(ItemDrop.BOX, Dungeon.now.rank / 2);
+                yield openBox(ItemDrop.BOX, Dungeon.now.rank / 2, CollectingSkill.宝箱);
                 if (Math.random() < 0.15) {
                     const trends = Dungeon.now.trendItems;
                     if (trends.length > 0) {
@@ -322,7 +323,7 @@ class EventImg {
             this.isZoomImg = () => false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 Util.msg.set("解除した");
-                yield openBox(ItemDrop.BOX, Dungeon.now.rank / 4);
+                yield openBox(ItemDrop.BOX, Dungeon.now.rank / 4, CollectingSkill.解除);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }
@@ -378,7 +379,7 @@ class EventImg {
             this.createImg = () => new Img("img/tree_broken.png");
             this.isZoomImg = () => false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
-                yield openBox(ItemDrop.TREE, Dungeon.now.rank / 2);
+                yield openBox(ItemDrop.TREE, Dungeon.now.rank / 2, CollectingSkill.伐採);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }
@@ -400,7 +401,7 @@ class EventImg {
             // createImg = ()=> new Img("img/tree_broken.png");
             // isZoomImg = ()=> false;
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
-                yield openBox(ItemDrop.STRATUM, Dungeon.now.rank / 2);
+                yield openBox(ItemDrop.STRATUM, Dungeon.now.rank / 2, CollectingSkill.地層);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }
@@ -421,7 +422,7 @@ class EventImg {
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, (() => {
                 const drink = () => __awaiter(this, void 0, void 0, function* () {
-                    yield openBox(ItemDrop.LAKE, Dungeon.now.rank / 2);
+                    yield openBox(ItemDrop.LAKE, Dungeon.now.rank / 2, CollectingSkill.水汲);
                 });
                 const fishingBtn = new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
                     // this.釣る = false;
@@ -648,7 +649,8 @@ class ItemBtn {
         return this._ins;
     }
 }
-const openBox = (dropType, rank) => __awaiter(this, void 0, void 0, function* () {
+/**入手'した'アイテムを返す. */
+const openBox = (dropType, rank, collectingSkill) => __awaiter(this, void 0, void 0, function* () {
     const partySkill = new PartySkillOpenBox();
     PartySkill.skills.forEach(skill => skill.openBox(partySkill, dropType));
     let openNum = 1;
@@ -663,8 +665,9 @@ const openBox = (dropType, rank) => __awaiter(this, void 0, void 0, function* ()
         let item = Item.rndItem(dropType, itemRank);
         let addNum = 1;
         item.add(addNum);
-        if (i < openNum - 1) {
-            yield wait();
+        yield wait();
+        if (collectingSkill) {
+            yield collectingSkill.lvupCheck(item.rank);
         }
     }
 });

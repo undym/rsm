@@ -19,6 +19,7 @@ import { Input } from "../undym/input.js";
 import { Num } from "../mix.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
+import { CollectingSkill } from "../collectingskill.js";
 
 
 export abstract class DungeonEvent{
@@ -83,7 +84,7 @@ export namespace DungeonEvent{
         createImg = ()=> EventImg.OPEN_BOX.img;
         isZoomImg = ()=> false;
         happenInner = async()=>{
-            await openBox( ItemDrop.BOX, Dungeon.now.rank / 2 );
+            await openBox( ItemDrop.BOX, Dungeon.now.rank / 2, CollectingSkill.宝箱 );
 
             if(Math.random() < 0.15){
                 const trends = Dungeon.now.trendItems;
@@ -93,6 +94,7 @@ export namespace DungeonEvent{
                     item.add(1);
                 }
             }
+
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
@@ -295,7 +297,7 @@ export namespace DungeonEvent{
         isZoomImg = ()=> false;
         happenInner = async()=>{
             Util.msg.set("解除した");
-            await openBox( ItemDrop.BOX, Dungeon.now.rank / 4 );
+            await openBox( ItemDrop.BOX, Dungeon.now.rank / 4, CollectingSkill.解除 );
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
@@ -347,7 +349,7 @@ export namespace DungeonEvent{
         createImg = ()=> new Img("img/tree_broken.png");
         isZoomImg = ()=> false;
         happenInner = async()=>{
-            await openBox( ItemDrop.TREE, Dungeon.now.rank / 2);
+            await openBox( ItemDrop.TREE, Dungeon.now.rank / 2, CollectingSkill.伐採 );
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
@@ -366,7 +368,7 @@ export namespace DungeonEvent{
         // createImg = ()=> new Img("img/tree_broken.png");
         // isZoomImg = ()=> false;
         happenInner = async()=>{
-            await openBox( ItemDrop.STRATUM, Dungeon.now.rank / 2 );
+            await openBox( ItemDrop.STRATUM, Dungeon.now.rank / 2, CollectingSkill.地層 );
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
@@ -386,7 +388,7 @@ export namespace DungeonEvent{
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, (()=>{
                                     const drink = async()=>{
-                                        await openBox( ItemDrop.LAKE, Dungeon.now.rank / 2 );
+                                        await openBox( ItemDrop.LAKE, Dungeon.now.rank / 2, CollectingSkill.水汲 );
                                     };
                                     const fishingBtn = new Btn("釣る", async()=>{
                                         // this.釣る = false;
@@ -630,8 +632,8 @@ class ItemBtn{
     }
 }
 
-
-const openBox = async(dropType:ItemDrop, rank:number)=>{
+/**入手'した'アイテムを返す. */
+const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:CollectingSkill|undefined)=>{
     const partySkill = new PartySkillOpenBox();
     PartySkill.skills.forEach(skill=> skill.openBox( partySkill, dropType ) );
 
@@ -646,10 +648,10 @@ const openBox = async(dropType:ItemDrop, rank:number)=>{
         const itemRank = Item.fluctuateRank( baseRank );
         let item = Item.rndItem( dropType, itemRank );
         let addNum = 1;
-        item.add( addNum );
+        item.add( addNum ); await wait();
 
-        if(i < openNum - 1){
-            await wait();
+        if(collectingSkill){
+            await collectingSkill.lvupCheck(item.rank);
         }
     }
 };
