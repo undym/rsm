@@ -1,15 +1,17 @@
 export class Sound {
     constructor(src) {
-        this.src = src;
+        this.audio = new Audio(src);
+        Sound._values.push(this);
     }
+    static get values() { return this._values; }
     play() {
-        if (!this.audio) {
-            this.audio = new Audio(this.src);
-        }
         this.audio.currentTime = 0;
         this.audio.play();
     }
+    get volume() { return this.audio.volume; }
+    set volume(v) { this.audio.volume = v; }
 }
+Sound._values = [];
 (function (Sound) {
     Sound.death = new Sound("sound/death.mp3");
     Sound.MAGIC = new Sound("sound/MAGIC.mp3");

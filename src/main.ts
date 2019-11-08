@@ -70,17 +70,8 @@ window.onload = ()=>{
         Util.msg.set(s);
     }
 
-    Sound.start.play();
-    if(SaveData.exists()){
-        continueGame();
-        ctrl();
-    }else{
-        newGame();
-        Scene.load( TownScene.ins );
-        ctrl();
-    }
 
-    setInterval( draw, 1000 / 30 );
+    setTitle();
 
 
 };
@@ -156,3 +147,39 @@ const setInput = ()=>{
     }
 };
 
+
+const setTitle = ()=>{
+    Graphics.fillRect(Rect.FULL, Color.GREEN);
+
+    let done = false;
+    const listener:(this:Document, ev:TouchEvent)=>any = ev=>{
+        if(done){return;}
+        done = true;
+
+        console.log("a");
+
+        for(const sound of Sound.values){
+            sound.volume = 0;
+            sound.play();
+            sound.volume = 1;
+        }
+
+
+        if(SaveData.exists()){
+            continueGame();
+            ctrl();
+        }else{
+            newGame();
+            Scene.load( TownScene.ins );
+            ctrl();
+        }
+    
+        setInterval( draw, 1000 / 30 );
+
+
+        document.removeEventListener("touchend", listener);
+        document.removeEventListener("click", listener);
+    };
+    document.addEventListener("touchend", listener);
+    document.addEventListener("click", listener);
+};

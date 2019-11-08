@@ -62,17 +62,7 @@ window.onload = () => {
     for (const s of Version.updateInfo) {
         Util.msg.set(s);
     }
-    Sound.start.play();
-    if (SaveData.exists()) {
-        continueGame();
-        ctrl();
-    }
-    else {
-        newGame();
-        Scene.load(TownScene.ins);
-        ctrl();
-    }
-    setInterval(draw, 1000 / 30);
+    setTitle();
 };
 const ctrl = () => __awaiter(this, void 0, void 0, function* () {
     yield Scene.now.ctrl(Rect.FULL);
@@ -130,4 +120,34 @@ const setInput = () => {
             }
         });
     }
+};
+const setTitle = () => {
+    Graphics.fillRect(Rect.FULL, Color.GREEN);
+    let done = false;
+    const listener = ev => {
+        if (done) {
+            return;
+        }
+        done = true;
+        console.log("a");
+        for (const sound of Sound.values) {
+            sound.volume = 0;
+            sound.play();
+            sound.volume = 1;
+        }
+        if (SaveData.exists()) {
+            continueGame();
+            ctrl();
+        }
+        else {
+            newGame();
+            Scene.load(TownScene.ins);
+            ctrl();
+        }
+        setInterval(draw, 1000 / 30);
+        document.removeEventListener("touchend", listener);
+        document.removeEventListener("click", listener);
+    };
+    document.addEventListener("touchend", listener);
+    document.addEventListener("click", listener);
 };

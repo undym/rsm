@@ -6,19 +6,27 @@
 
 
 export class Sound{
-    private audio:HTMLAudioElement;
+    private static _values:Sound[] = [];
+    static get values():ReadonlyArray<Sound>{return this._values;}
 
-    constructor(private src:string){
+
+    private audio:HTMLAudioElement;
+    
+
+    constructor(src:string){
+        this.audio = new Audio(src);
+
+        Sound._values.push(this);
     }
 
     play(){
-        if(!this.audio){
-            this.audio = new Audio(this.src);
-        }
         this.audio.currentTime = 0;
 
         this.audio.play();
     }
+
+    get volume()        {return this.audio.volume;}
+    set volume(v:number){this.audio.volume = v;}
 }
 
 
