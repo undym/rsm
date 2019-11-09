@@ -34,6 +34,12 @@ export class Sound{
         // request.open("GET", this.path, true);
         // request.responseType = 'arraybuffer';
         // request.send();
+        // this.audio.onload = ev=>{
+        //     Util.msg.set("load");
+        // };
+        this.audio.onloadedmetadata = ev=>{
+            Util.msg.set("medialoaded");
+        }
     }
 
     play(){
