@@ -98,7 +98,7 @@ const setSaveDataDeleteBtn2 = ()=>{
         center:()=>"削除実行",
         push:elm=>{
             SaveData.delete();
-            window.location.href = window.location.href;
+            window.location.reload(true);
         },
     });
     // l.add(new Btn("削除実行", ()=>{

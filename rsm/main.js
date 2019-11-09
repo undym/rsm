@@ -135,6 +135,7 @@ const setTitle = () => {
                 msg.push(s);
             }
             msg.push("test3");
+            msg.push(`${window.location}`);
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
             });
