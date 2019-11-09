@@ -13,6 +13,7 @@ export class Sound {
         // this.audio.play();
         // this.audio.pause();
         // this.audio.muted = false;
+        Util.msg.set("init");
         this.ac = new AudioContext();
         const request = new XMLHttpRequest();
         request.onload = () => {
@@ -25,6 +26,7 @@ export class Sound {
                 return "Error with decoding audio data " + this.path;
             });
         };
+        Util.msg.set("beforeGET");
         request.open("GET", window.location + this.path, true);
         Util.msg.set(`${window.location}${this.path}`);
         request.responseType = 'arraybuffer';
