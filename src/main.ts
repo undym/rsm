@@ -167,7 +167,7 @@ const setTitle = ()=>{
             for(const s of Version.updateInfo){
                 msg.push(s);
             }
-            msg.push("test2");
+            msg.push("test3");
 
             msg.forEach((s,i)=>{
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
@@ -181,11 +181,11 @@ const setTitle = ()=>{
         done = true;
 
 
-        // for(const sound of Sound.values){
-        //     sound.init();
-        // }
+        for(const sound of Sound.values){
+            sound.init();
+        }
 
-        // Sound.start.play();
+        Sound.start.play();
 
         if(SaveData.exists()){
             continueGame();
