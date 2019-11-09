@@ -20,12 +20,12 @@ export class Sound{
         // this.audio.play();
         // this.audio.pause();
         // this.audio.muted = false;
-        Util.msg.set("init");
 
         // this.ac = new AudioContext();
         const w:any = window;
         const AC = (w.AudioContext || w.webkitAudioContext);;
-        this.ac =  new AC();
+        this.ac = new AC();
+        Util.msg.set(`${this.ac}`);
         const request = new XMLHttpRequest();
         request.onload = ()=>{
             var audioData = request.response;
@@ -38,7 +38,6 @@ export class Sound{
         };
         Util.msg.set("beforeGET");
         request.open("GET", this.path, true);
-        Util.msg.set(`${window.location}${this.path}`)
         request.responseType = 'arraybuffer';
         request.send();
     }
