@@ -167,7 +167,7 @@ const setTitle = ()=>{
             for(const s of Version.updateInfo){
                 msg.push(s);
             }
-            msg.push("test6");
+            msg.push("test7");
             msg.push(`${window.location}`);
 
             msg.forEach((s,i)=>{
@@ -181,12 +181,15 @@ const setTitle = ()=>{
         if(done){return;}
         done = true;
 
-
-        for(const sound of Sound.values){
-            sound.init();
+        try{
+            for(const sound of Sound.values){
+                sound.init();
+            }
+    
+            Sound.start.play();
+        }catch(e){
+            console.log(e);
         }
-
-        Sound.start.play();
 
         if(SaveData.exists()){
             continueGame();
