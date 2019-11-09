@@ -22,20 +22,22 @@ export class Sound{
         // this.audio.muted = false;
         Util.msg.set("init");
 
-        this.ac = new AudioContext();
+        // this.ac = new AudioContext();
+        const w:any = window;
+        const AC = (w.AudioContext || w.webkitAudioContext);;
+        this.ac =  new AC();
         const request = new XMLHttpRequest();
         request.onload = ()=>{
             var audioData = request.response;
             this.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
-                Util.msg.set("buffer");
             },e=>{
                 Util.msg.set("err"+this.path);
                 return "Error with decoding audio data " + this.path;
             });
         };
         Util.msg.set("beforeGET");
-        request.open("GET", window.location + this.path, true);
+        request.open("GET", this.path, true);
         Util.msg.set(`${window.location}${this.path}`)
         request.responseType = 'arraybuffer';
         request.send();
