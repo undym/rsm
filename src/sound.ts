@@ -6,6 +6,14 @@ export class Sound{
     static get values():ReadonlyArray<Sound>{return this._values;}
 
     private static ac:AudioContext;
+
+    /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
+    static init(){
+        const w:any = window;
+        const AC = (w.AudioContext || w.webkitAudioContext);;
+        Sound.ac = new AC();
+    }
+
     private src:AudioBufferSourceNode;
     private buffer:AudioBuffer;
     // private audio:HTMLAudioElement;
@@ -14,12 +22,7 @@ export class Sound{
         Sound._values.push(this);
     }
     /**ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
-    init(){
-        if(!Sound.ac){
-            const w:any = window;
-            const AC = (w.AudioContext || w.webkitAudioContext);;
-            Sound.ac = new AC();
-        }
+    load(){
         // this.audio = new Audio(this.path);
         // this.audio.muted = true;
         // this.audio.play();
@@ -29,7 +32,6 @@ export class Sound{
         // this.ac = new AudioContext();
         const request = new XMLHttpRequest();
         request.onload = ()=>{
-            Util.msg.set("onload:"+this.path);
             var audioData = request.response;
             Sound.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
@@ -67,14 +69,13 @@ export namespace Sound{
     export const gameover   = new Sound("sound/gameover.mp3");
     /**伐採. */
     export const KEN        = new Sound("sound/KEN.mp3");
+    /**魔法攻撃. */
     export const MAGIC      = new Sound("sound/MAGIC.mp3");
     /**格闘攻撃. */
     export const PUNCH      = new Sound("sound/PUNCH.mp3");
     /**ダンジョン出入り. */
     export const walk2      = new Sound("sound/walk2.mp3");
-    /**ゲーム開始. */
-    export const start      = new Sound("sound/start.mp3");
+    export const save       = new Sound("sound/save.mp3");
     export const TRAGER     = new Sound("sound/TRAGER.mp3");
     export const win        = new Sound("sound/win.mp3");
-    export const save       = new Sound("sound/save.mp3");
 }

@@ -134,8 +134,7 @@ const setTitle = () => {
             for (const s of Version.updateInfo) {
                 msg.push(s);
             }
-            msg.push("test19");
-            msg.push(`${window.location}`);
+            msg.push("test0");
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
             });
@@ -147,16 +146,9 @@ const setTitle = () => {
             return;
         }
         done = true;
-        try {
-            Util.msg.set("beforeInit");
-            for (const sound of Sound.values) {
-                sound.init();
-            }
-            Util.msg.set("afterInit");
-            Sound.start.play();
-        }
-        catch (e) {
-            Util.msg.set("catch");
+        Sound.init();
+        for (const sound of Sound.values) {
+            sound.load();
         }
         if (SaveData.exists()) {
             continueGame();
