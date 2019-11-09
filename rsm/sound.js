@@ -16,7 +16,7 @@ export class Sound {
                 return "Error with decoding audio data " + this.path;
             });
         };
-        request.open("GET", `${window.location}${this.path}`);
+        request.open("GET", `${window.location}${this.path}`, true);
         request.responseType = 'arraybuffer';
         request.send();
     }
