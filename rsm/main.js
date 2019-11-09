@@ -14,8 +14,8 @@ import { Unit } from "./unit.js";
 import { FX } from "./fx/fx.js";
 import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
-import { Rect, Color } from "./undym/type.js";
-import { Graphics, Texture, Img } from "./graphics/graphics.js";
+import { Rect, Color, Point } from "./undym/type.js";
+import { Graphics, Texture, Font, Img } from "./graphics/graphics.js";
 import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
@@ -58,10 +58,6 @@ window.onload = () => {
     Input.init(canvas, rotate);
     setInput();
     init();
-    Util.msg.set(`Version(${Version.NOW})`);
-    for (const s of Version.updateInfo) {
-        Util.msg.set(s);
-    }
     setTitle();
 };
 const ctrl = () => __awaiter(this, void 0, void 0, function* () {
@@ -129,6 +125,19 @@ const setTitle = () => {
             const h = 1;
             const w = img.pixelW / img.pixelH;
             img.draw(new Rect(0.5 - w / 2, 0.5 - h / 2, w, h));
+            // Util.msg.set( `Version(${Version.NOW})` );
+            // for(const s of Version.updateInfo){
+            //     Util.msg.set(s);
+            // }
+            const msg = [];
+            msg.push(`Version(${Version.NOW})`);
+            for (const s of Version.updateInfo) {
+                msg.push(s);
+            }
+            msg.push("test1");
+            msg.forEach((s, i) => {
+                Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
+            });
         },
     });
     let done = false;

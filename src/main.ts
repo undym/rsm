@@ -65,10 +65,6 @@ window.onload = ()=>{
 
     init();
     
-    Util.msg.set( `Version(${Version.NOW})` );
-    for(const s of Version.updateInfo){
-        Util.msg.set(s);
-    }
 
 
     setTitle();
@@ -161,6 +157,21 @@ const setTitle = ()=>{
                 w,
                 h
             ));
+            
+            // Util.msg.set( `Version(${Version.NOW})` );
+            // for(const s of Version.updateInfo){
+            //     Util.msg.set(s);
+            // }
+            const msg:string[] = [];
+            msg.push(`Version(${Version.NOW})`);
+            for(const s of Version.updateInfo){
+                msg.push(s);
+            }
+            msg.push("test1");
+
+            msg.forEach((s,i)=>{
+                Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
+            });
         },
     });
 
