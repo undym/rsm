@@ -149,7 +149,7 @@ const setTitle = () => {
         for (const sound of Sound.values) {
             sound.init();
         }
-        Sound.start.play();
+        // Sound.start.play();
         if (SaveData.exists()) {
             continueGame();
             ctrl();

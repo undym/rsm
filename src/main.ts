@@ -185,7 +185,7 @@ const setTitle = ()=>{
             sound.init();
         }
 
-        Sound.start.play();
+        // Sound.start.play();
 
         if(SaveData.exists()){
             continueGame();
