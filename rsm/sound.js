@@ -8,21 +8,23 @@ export class Sound {
     static get values() { return this._values; }
     /**ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
     init() {
+        if (!Sound.ac) {
+            const w = window;
+            const AC = (w.AudioContext || w.webkitAudioContext);
+            ;
+            Sound.ac = new AC();
+        }
         // this.audio = new Audio(this.path);
         // this.audio.muted = true;
         // this.audio.play();
         // this.audio.pause();
         // this.audio.muted = false;
         // this.ac = new AudioContext();
-        const w = window;
-        const AC = (w.AudioContext || w.webkitAudioContext);
-        ;
-        this.ac = new AC();
         const request = new XMLHttpRequest();
         request.onload = () => {
             Util.msg.set("onload:" + this.path);
             var audioData = request.response;
-            this.ac.decodeAudioData(audioData, buffer => {
+            Sound.ac.decodeAudioData(audioData, buffer => {
                 this.buffer = buffer;
             }, e => {
                 return "Error with decoding audio data " + this.path;
@@ -38,9 +40,9 @@ export class Sound {
         if (!this.buffer) {
             return;
         }
-        this.src = this.ac.createBufferSource();
+        this.src = Sound.ac.createBufferSource();
         this.src.buffer = this.buffer;
-        this.src.connect(this.ac.destination);
+        this.src.connect(Sound.ac.destination);
         this.src.start(0);
     }
 }
