@@ -32,7 +32,12 @@ export class Sound {
 }
 Sound._values = [];
 (function (Sound) {
+    /**休む. */
+    Sound.camp = new Sound("sound/camp.mp3");
     Sound.death = new Sound("sound/death.mp3");
+    Sound.gameover = new Sound("sound/gameover.mp3");
+    /**伐採. */
+    Sound.KEN = new Sound("sound/KEN.mp3");
     Sound.MAGIC = new Sound("sound/MAGIC.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
@@ -41,5 +46,6 @@ Sound._values = [];
     Sound.save = new Sound("sound/save.mp3");
     /**ゲーム開始. */
     Sound.start = new Sound("sound/start.mp3");
+    Sound.TRAGER = new Sound("sound/TRAGER.mp3");
     Sound.win = new Sound("sound/win.mp3");
 })(Sound || (Sound = {}));

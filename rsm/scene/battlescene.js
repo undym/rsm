@@ -361,6 +361,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     yield Battle.battleEndAction(BattleResult.WIN);
 });
 const lose = () => __awaiter(this, void 0, void 0, function* () {
+    Sound.gameover.play();
     Battle.result = BattleResult.LOSE;
     Util.msg.set("負けた");
     yield wait();

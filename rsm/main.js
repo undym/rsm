@@ -151,9 +151,9 @@ const setTitle = () => {
             ctrl();
         }
         setInterval(draw, 1000 / 30);
-        document.removeEventListener("touchend", listener);
-        document.removeEventListener("click", listener);
+        Graphics.getRenderTarget().canvas.removeEventListener("touchend", listener);
+        Graphics.getRenderTarget().canvas.removeEventListener("click", listener);
     };
-    document.addEventListener("touchend", listener);
-    document.addEventListener("click", listener);
+    Graphics.getRenderTarget().canvas.addEventListener("touchend", listener);
+    Graphics.getRenderTarget().canvas.addEventListener("click", listener);
 };

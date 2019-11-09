@@ -67,6 +67,7 @@ class EventImg {
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () { Util.msg.set("宝箱だ"); });
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.TRAGER.play();
                 yield DungeonEvent.OPEN_BOX.happen();
             })));
         }
@@ -99,6 +100,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.丸い鍵.num > 0) {
                     Item.丸い鍵.num--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_KEY_BOX_RANK2.happen();
                 }
                 else {
@@ -130,6 +132,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.三角鍵.num > 0) {
                     Item.三角鍵.num--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_KEY_BOX_RANK3.happen();
                 }
                 else {
@@ -161,6 +164,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.トゲトゲ鍵.num > 0) {
                     Item.トゲトゲ鍵.num--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_KEY_BOX_RANK4.happen();
                 }
                 else {
@@ -192,6 +196,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.ツルツル鍵.num > 0) {
                     Item.ツルツル鍵.num--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_KEY_BOX_RANK5.happen();
                 }
                 else {
@@ -223,6 +228,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.ヘンテコ鍵.num > 0) {
                     Item.ヘンテコ鍵.num--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_KEY_BOX_RANK6.happen();
                 }
                 else {
@@ -256,6 +262,7 @@ class EventImg {
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 if (Dungeon.now.treasureKey > 0) {
                     Dungeon.now.treasureKey--;
+                    Sound.TRAGER.play();
                     yield DungeonEvent.OPEN_TREASURE.happen();
                 }
                 else {
@@ -313,6 +320,12 @@ class EventImg {
                     yield wait();
                     yield p.judgeDead();
                 }
+                if (Unit.players.every(p => !p.exists || p.dead)) {
+                    Util.msg.set("全滅した...", Color.RED);
+                    yield cwait();
+                    yield DungeonEvent.ESCAPE_DUNGEON.happen();
+                    return;
+                }
                 DungeonEvent.empty.happen();
             })).dontMove());
         }
@@ -337,6 +350,7 @@ class EventImg {
             });
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("休む", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.TRAGER.play();
                 for (const p of Unit.players) {
                     if (p.exists && !p.dead) {
                         Unit.healHP(p, p.prm(Prm.MAX_HP).total * 0.2 + 1);
@@ -356,10 +370,12 @@ class EventImg {
                 Util.msg.set("木だ");
             };
             this.createBtnLayout = () => createDefLayout()
-                .set(ReturnBtn.index, new Btn("切る", () => __awaiter(this, void 0, void 0, function* () {
+                .set(ReturnBtn.index, new Btn("斬る", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.KEN.play();
                 yield DungeonEvent.TREE_GET.happen();
             })))
                 .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.PUNCH.play();
                 Util.msg.set("いてっ！", Color.RED);
                 yield wait();
                 for (let p of Unit.players) {
@@ -483,7 +499,7 @@ class EventImg {
                             Scene.load(DungeonScene.ins);
                             break;
                         case BattleResult.LOSE:
-                            DungeonEvent.ESCAPE_DUNGEON.happen();
+                            yield DungeonEvent.ESCAPE_DUNGEON.happen();
                             break;
                         case BattleResult.ESCAPE:
                             Scene.load(DungeonScene.ins);
@@ -576,7 +592,7 @@ class EventImg {
                 Util.msg.set(`報奨金${yen}円入手`, Color.YELLOW.bright);
                 yield cwait();
                 yield Dungeon.now.dungeonClearEvent();
-                DungeonEvent.ESCAPE_DUNGEON.happen();
+                yield DungeonEvent.ESCAPE_DUNGEON.happen();
             });
             this.createBtnLayout = () => ILayout.empty;
         }
