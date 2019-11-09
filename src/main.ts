@@ -167,7 +167,7 @@ const setTitle = ()=>{
             for(const s of Version.updateInfo){
                 msg.push(s);
             }
-            msg.push("test3");
+            msg.push("test4");
             msg.push(`${window.location}`);
 
             msg.forEach((s,i)=>{
