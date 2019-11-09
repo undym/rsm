@@ -43,7 +43,7 @@ export class Sound{
     }
 
     play(){
-        this.audio.currentTime = 0;
+        this.audio.currentTime = 1;
         this.audio.play();
         // if(!this.buffer){return;}
 
