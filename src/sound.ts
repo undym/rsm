@@ -1,3 +1,4 @@
+import { Util } from "./util";
 
 
 
@@ -25,6 +26,7 @@ export class Sound{
             this.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
             },e=>{
+                Util.msg.set("err"+this.path);
                 return "Error with decoding audio data " + this.path;
             });
         };

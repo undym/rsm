@@ -134,7 +134,7 @@ const setTitle = () => {
             for (const s of Version.updateInfo) {
                 msg.push(s);
             }
-            msg.push("test7");
+            msg.push("test8");
             msg.push(`${window.location}`);
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
@@ -154,7 +154,7 @@ const setTitle = () => {
             Sound.start.play();
         }
         catch (e) {
-            console.log(e);
+            Util.msg.set(e);
         }
         if (SaveData.exists()) {
             continueGame();
