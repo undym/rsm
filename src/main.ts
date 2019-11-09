@@ -149,21 +149,32 @@ const setInput = ()=>{
 
 
 const setTitle = ()=>{
-    Graphics.fillRect(Rect.FULL, Color.GREEN);
+    Graphics.fillRect(Rect.FULL, Color.BLACK);
+    const img = new Img("img/title.png", {
+        lazyLoad:false,
+        onload:img=>{
+            const h = 1;
+            const w = img.pixelW / img.pixelH;
+            img.draw(new Rect(
+                0.5 - w / 2,
+                0.5 - h / 2,
+                w,
+                h
+            ));
+        },
+    });
 
     let done = false;
     const listener:(this:Document, ev:TouchEvent)=>any = ev=>{
         if(done){return;}
         done = true;
 
-        console.log("a");
 
         for(const sound of Sound.values){
-            sound.volume = 0;
-            sound.play();
-            sound.volume = 1;
+            sound.init();
         }
 
+        Sound.start.play();
 
         if(SaveData.exists()){
             continueGame();

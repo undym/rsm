@@ -100,7 +100,7 @@ export class Img{
     get image(){return this._image;}
     private loading:number;
 
-    constructor(private src:string, private option?:{lazyLoad?:boolean}){
+    constructor(private src:string, private option?:{lazyLoad?:boolean, onload?:(img:Img)=>void}){
         this._image = new Image();
         // this._image.crossOrigin = 'anonymous';
         if(!src){return;}
@@ -235,6 +235,9 @@ export class Img{
 
         this._image.onload = ()=>{
             this.loading = Img.LOADING_DONE;
+            if(this.option && this.option.onload){
+                this.option.onload(this);
+            }
         };
         this._image.src = this.src;
     }

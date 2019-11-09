@@ -15,7 +15,7 @@ import { FX } from "./fx/fx.js";
 import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color } from "./undym/type.js";
-import { Graphics, Texture } from "./graphics/graphics.js";
+import { Graphics, Texture, Img } from "./graphics/graphics.js";
 import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
@@ -122,19 +122,25 @@ const setInput = () => {
     }
 };
 const setTitle = () => {
-    Graphics.fillRect(Rect.FULL, Color.GREEN);
+    Graphics.fillRect(Rect.FULL, Color.BLACK);
+    const img = new Img("img/title.png", {
+        lazyLoad: false,
+        onload: img => {
+            const h = 1;
+            const w = img.pixelW / img.pixelH;
+            img.draw(new Rect(0.5 - w / 2, 0.5 - h / 2, w, h));
+        },
+    });
     let done = false;
     const listener = ev => {
         if (done) {
             return;
         }
         done = true;
-        console.log("a");
         for (const sound of Sound.values) {
-            sound.volume = 0;
-            sound.play();
-            sound.volume = 1;
+            sound.init();
         }
+        Sound.start.play();
         if (SaveData.exists()) {
             continueGame();
             ctrl();

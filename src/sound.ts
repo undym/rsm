@@ -9,24 +9,41 @@ export class Sound{
     private static _values:Sound[] = [];
     static get values():ReadonlyArray<Sound>{return this._values;}
 
+    private ac:AudioContext;
+    private src:AudioBufferSourceNode;
+    private buffer:AudioBuffer;
 
-    private audio:HTMLAudioElement;
-    
-
-    constructor(src:string){
-        this.audio = new Audio(src);
-
+    constructor(private path:string){
         Sound._values.push(this);
+    }
+    /**ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
+    init(){
+        this.ac = new AudioContext();
+        const request = new XMLHttpRequest();
+        request.onload = ()=>{
+            var audioData = request.response;
+            this.ac.decodeAudioData(audioData, buffer=>{
+                this.buffer = buffer;
+            },e=>{
+                return "Error with decoding audio data " + this.path;
+            });
+        };
+        request.open("GET", this.path);
+        request.responseType = 'arraybuffer';
+        request.send();
     }
 
     play(){
-        this.audio.currentTime = 0;
+        if(!this.buffer){return;}
 
-        this.audio.play();
+        this.src = this.ac.createBufferSource();
+        this.src.buffer = this.buffer;
+        this.src.connect(this.ac.destination);
+        
+        this.src.start(0);
     }
 
-    get volume()        {return this.audio.volume;}
-    set volume(v:number){this.audio.volume = v;}
+    
 }
 
 

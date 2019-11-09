@@ -164,6 +164,9 @@ export class Img {
         this.loading = Img.LOADING_NOW;
         this._image.onload = () => {
             this.loading = Img.LOADING_DONE;
+            if (this.option && this.option.onload) {
+                this.option.onload(this);
+            }
         };
         this._image.src = this.src;
     }
