@@ -134,7 +134,7 @@ const setTitle = () => {
             for (const s of Version.updateInfo) {
                 msg.push(s);
             }
-            msg.push("test8");
+            msg.push("test9");
             msg.push(`${window.location}`);
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
