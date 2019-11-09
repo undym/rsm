@@ -14,6 +14,7 @@ import DungeonScene from "./scene/dungeonscene.js";
 import { Battle } from "./battle.js";
 import { Tec } from "./tec.js";
 import { Condition } from "./condition.js";
+import { Sound } from "./sound.js";
 
 
 
@@ -257,16 +258,19 @@ export namespace Item{
     const itemHealHP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healHP(target, value);
+        Sound.KAIFUKU.play();
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();}
     };
     const itemHealMP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healMP(target, value)
+        Sound.KAIFUKU.play();
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のMPが${value}回復した`, Color.PINK.bright); await wait();}
     };
     const itemHealTP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healTP(target, value)
+        Sound.KAIFUKU.play();
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright); await wait();}
     };
     //-----------------------------------------------------------------
@@ -664,6 +668,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.MAX_HP).base += 2;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の最大HP+2`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -674,6 +679,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.MAX_MP).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の最大MP+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -684,6 +690,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.MAX_TP).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の最大TP+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -694,6 +701,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.STR).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の力+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -704,6 +712,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.MAG).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の魔+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -714,6 +723,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.LIG).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の光+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -724,6 +734,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.DRK).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の闇+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -734,6 +745,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.CHN).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の鎖+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -744,6 +756,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.PST).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の過+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -754,6 +767,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.GUN).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の銃+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -764,6 +778,7 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.prm(Prm.ARR).base += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}の弓+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
@@ -774,16 +789,18 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:10, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     target.bp += 1;
+                                    Sound.bpup.play();
                                     FX_Str(Font.def, `${target.name}のBP+1`, Point.CENTER, Color.WHITE);
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
     };
     export const                         灰色のまぼろし:Item = new class extends Item{
-        constructor(){super({uniqueName:"灰色のまぼろし", info:"対象の経験値+10。レベルアップはしない。",
+        constructor(){super({uniqueName:"灰色のまぼろし", info:"対象の経験値+10",
                                 type:ItemType.ドーピング, rank:0, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    target.exp += 10;
+                                    Sound.exp.play();
+                                    target.exp += 20;
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){
@@ -794,10 +811,11 @@ export namespace Item{
         }
     };
     export const                         黒色のまぼろし:Item = new class extends Item{
-        constructor(){super({uniqueName:"黒色のまぼろし", info:"対象の経験値+20。レベルアップはしない。",
+        constructor(){super({uniqueName:"黒色のまぼろし", info:"対象の経験値+40",
                                 type:ItemType.ドーピング, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    target.exp += 20;
+                                    Sound.exp.play();
+                                    target.exp += 40;
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){

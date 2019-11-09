@@ -306,9 +306,11 @@ class EventImg {
             };
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("解除", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.keyopen.play();
                 yield DungeonEvent.TRAP_BROKEN.happen();
             })))
                 .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.blood.play();
                 Util.msg.set("引っかかった！", Color.RED);
                 yield wait();
                 for (let p of Unit.players) {
@@ -350,7 +352,7 @@ class EventImg {
             });
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("休む", () => __awaiter(this, void 0, void 0, function* () {
-                Sound.TRAGER.play();
+                Sound.camp.play();
                 for (const p of Unit.players) {
                     if (p.exists && !p.dead) {
                         Unit.healHP(p, p.prm(Prm.MAX_HP).total * 0.2 + 1);
@@ -585,9 +587,11 @@ class EventImg {
                 BattleScene.ins.background = bounds => { };
                 let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
                 yen = yen | 0;
+                Sound.lvup.play();
                 Dungeon.now.dungeonClearCount++;
                 Util.msg.set(`[${Dungeon.now}]を踏破した！`, Color.WHITE.bright);
                 yield cwait();
+                Sound.COIN.play();
                 PlayData.yen += yen;
                 Util.msg.set(`報奨金${yen}円入手`, Color.YELLOW.bright);
                 yield cwait();
@@ -609,6 +613,7 @@ class AdvanceBtn {
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "進む", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.walk.play();
                 FX_Advance(Place.MAIN);
                 Dungeon.auNow += 1;
                 if (Dungeon.auNow >= Dungeon.now.au) {
@@ -627,6 +632,7 @@ class ReturnBtn {
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "戻る", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.walk.play();
                 FX_Return(Place.MAIN);
                 Dungeon.auNow -= 1;
                 if (Dungeon.auNow < 0) {
@@ -684,6 +690,7 @@ const openBox = (dropType, rank, collectingSkill) => __awaiter(this, void 0, voi
         let item = Item.rndItem(dropType, itemRank);
         let addNum = 1;
         item.add(addNum);
+        Sound.ITEM_GET.play();
         yield wait();
         if (collectingSkill) {
             yield collectingSkill.lvupCheck(item.rank);
@@ -701,4 +708,5 @@ const openKeyBox = (baseRank, rankFluctuateRange) => {
     }
     const item = Item.rndItem(ItemDrop.BOX, rank);
     item.add(1);
+    Sound.ITEM_GET.play();
 };

@@ -9,10 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Util } from "./util.js";
 import { cwait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
+import { Sound } from "./sound.js";
 export class Story {
     defMsg(msgs) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const msg of msgs) {
+                Sound.moji.play();
                 Util.msg.set(msg, Color.L_GRAY);
                 yield cwait();
             }

@@ -14,6 +14,7 @@ import { SaveData } from "../savedata.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
+import { Sound } from "../sound.js";
 
 const list = new List(6);
 let returnAction:()=>void = ()=>{};
@@ -37,12 +38,34 @@ export const createOptionBtn = ()=>{
 };
 
 const setOptionBtn = ()=>{
+
     list.clear();
 
     list.add({
         center:()=>"データ削除",
         push:elm=>{
             setSaveDataDeleteBtn();
+        },
+    })
+    list.add({
+        center:()=>"-",
+        push:elm=>{
+        },
+    })
+    list.add({
+        center:()=>"音量↑",
+        push:elm=>{
+            Sound.volume++;
+            Util.msg.set(`${Sound.volume}`);
+            Sound.save.play();
+        },
+    })
+    list.add({
+        center:()=>"音量↓",
+        push:elm=>{
+            Sound.volume--;
+            Util.msg.set(`${Sound.volume}`);
+            Sound.save.play();
         },
     })
 

@@ -1,11 +1,7 @@
 import { Util, Place } from "./util.js";
 import { cwait } from "./undym/scene.js";
 import { Color, Rect } from "./undym/type.js";
-import { Battle } from "./battle.js";
-import { BattleScene } from "./scene/battlescene.js";
-import { Graphics, Img } from "./graphics/graphics.js";
-import { ILayout } from "./undym/layout.js";
-import { Unit } from "./unit.js";
+import { Sound } from "./sound.js";
 
 
 
@@ -18,6 +14,7 @@ export abstract class Story{
 
     protected async defMsg(msgs:string[]){
         for(const msg of msgs){
+            Sound.moji.play();
             Util.msg.set(msg, Color.L_GRAY); await cwait();
         }
     }

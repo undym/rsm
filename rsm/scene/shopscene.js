@@ -9,14 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Scene } from "../undym/scene.js";
 import { ILayout, VariableLayout, XLayout, RatioLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
-import { Color } from "../undym/type.js";
+import { Color, Point } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawYen } from "./sceneutil.js";
 import { Place, PlayData } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
+import { FX_Str } from "../fx/fx.js";
 import { Item } from "../item.js";
 import { Dungeon } from "../dungeon/dungeon.js";
+import { Sound } from "../sound.js";
 // let ショットガンmaster = false;
 // let ヤクシャmaster = false;
 export class ShopScene extends Scene {
@@ -130,7 +132,11 @@ class Goods {
 Goods._values = [];
 const initGoods = () => {
     const createItemGoods = (item, price, isVisible) => {
-        new Goods(item.toString(), "＜アイテム＞", item.info, price, isVisible, () => item.add(1), () => item.num);
+        new Goods(item.toString(), "＜アイテム＞", item.info, price, isVisible, () => {
+            item.add(1);
+            Sound.KATAN.play();
+            FX_Str(Font.def, `[${item}](${item.num})を買った`, Point.CENTER, Color.WHITE);
+        }, () => item.num);
     };
     // const createItemGoodsNum = (item:Item, num:number, price:()=>number, isVisible:()=>boolean)=>{
     //     new Goods(
@@ -143,13 +149,25 @@ const initGoods = () => {
     //     );
     // };
     const createEqGoods = (eq, price, isVisible) => {
-        new Goods(eq.toString(), `＜${eq.pos}＞`, eq.info, price, isVisible, () => eq.add(1), () => eq.num);
+        new Goods(eq.toString(), `＜${eq.pos}＞`, eq.info, price, isVisible, () => {
+            eq.add(1);
+            Sound.KATAN.play();
+            FX_Str(Font.def, `[${eq}](${eq.num})を買った`, Point.CENTER, Color.WHITE);
+        }, () => eq.num);
     };
     const createEarGoods = (ear, price, isVisible) => {
-        new Goods(ear.toString(), "＜耳＞", ear.info, price, isVisible, () => ear.add(1), () => ear.num);
+        new Goods(ear.toString(), "＜耳＞", ear.info, price, isVisible, () => {
+            ear.add(1);
+            Sound.KATAN.play();
+            FX_Str(Font.def, `[${ear}](${ear.num})を買った`, Point.CENTER, Color.WHITE);
+        }, () => ear.num);
     };
     const createPartySkill = (skill, price, isVisible) => {
-        new Goods(skill.toString(), "＜パーティースキル＞", "", price, () => isVisible() && !skill.has, () => skill.has = true);
+        new Goods(skill.toString(), "＜パーティースキル＞", "", price, () => isVisible() && !skill.has, () => {
+            skill.has = true;
+            Sound.KATAN.play();
+            FX_Str(Font.def, `[${skill}]を買った`, Point.CENTER, Color.WHITE);
+        });
     };
     // createItemGoods(Item.技習得許可証, ()=>50, ()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.技習得許可証.totalGetCount === 0);
     createItemGoods(Item.合成許可証, () => 300, () => Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0);

@@ -4,6 +4,7 @@ import { Item } from "./item.js";
 import { Player } from "./player.js";
 import { Prm } from "./unit.js";
 import { Dungeon } from "./dungeon/dungeon.js";
+import { Sound } from "./sound.js";
 export class Num {
     static add(obj, v) {
         v = v | 0;
@@ -96,6 +97,7 @@ export class Mix {
         if (!this.canRun()) {
             return;
         }
+        Sound.made.play();
         this.count++;
         for (let m of this.materials) {
             m.object.add(-m.num);
@@ -230,7 +232,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     // });
     const 杉材 = new Mix({
         uniqueName: "杉材", limit: Mix.LIMIT_INF,
-        result: () => [Item.杉, 1],
+        result: () => [Item.杉材, 1],
         materials: () => [[Item.杉, 3]],
         isVisible: () => ボロ木工所.count > 0,
     });

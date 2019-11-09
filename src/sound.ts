@@ -5,31 +5,42 @@ export class Sound{
     private static _values:Sound[] = [];
     static get values():ReadonlyArray<Sound>{return this._values;}
 
+    static readonly MIN_VOLUME = -10;
+    static readonly MAX_VOLUME = 10;
+
+    private static _volume:number;
+    /**-10～10.Int. */
+    static get volume()         {return this._volume;}
+    /**-10～10.Int. */
+    static set volume(v:number) {
+        v = v|0;
+        if(v > this.MAX_VOLUME){v = this.MAX_VOLUME;}
+        if(v < this.MIN_VOLUME){v = this.MIN_VOLUME;}
+        this._volume = v;
+        Sound.gain.gain.value = v / 10;
+    }
+
     private static ac:AudioContext;
+    private static gain:GainNode;
 
     /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
     static init(){
         const w:any = window;
         const AC = (w.AudioContext || w.webkitAudioContext);;
-        Sound.ac = new AC();
+        this.ac = new AC();
+        this.gain = this.ac.createGain();
+        this.gain.connect(this.ac.destination);
+        this.volume = 0;
+        // Sound.gain.gain.value = 0;
     }
 
-    private src:AudioBufferSourceNode;
     private buffer:AudioBuffer;
-    // private audio:HTMLAudioElement;
 
     constructor(private path:string){
         Sound._values.push(this);
     }
-    /**ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
+    
     load(){
-        // this.audio = new Audio(this.path);
-        // this.audio.muted = true;
-        // this.audio.play();
-        // this.audio.pause();
-        // this.audio.muted = false;
-
-        // this.ac = new AudioContext();
         const request = new XMLHttpRequest();
         request.onload = ()=>{
             var audioData = request.response;
@@ -42,37 +53,52 @@ export class Sound{
         request.open("GET", this.path, true);
         request.responseType = 'arraybuffer';
         request.send();
+        
     }
 
     play(){
-        // this.audio.currentTime = 0;
-        // this.audio.play();
-
-
         if(!this.buffer){return;}
 
-        this.src = Sound.ac.createBufferSource();
-        this.src.buffer = this.buffer;
-        this.src.connect(Sound.ac.destination);
+        const src = Sound.ac.createBufferSource();
+        src.buffer = this.buffer;
+        src.connect(Sound.ac.destination);
+        src.connect(Sound.gain);
         
-        this.src.start(0);
+        src.start(0);
     }
-
-    
 }
 
 
 export namespace Sound{
+    /**罠発動. */
+    export const blood      = new Sound("sound/blood.mp3");
+    /**瞑想. */
+    export const bpup       = new Sound("sound/bpup.mp3");
     /**休む. */
     export const camp       = new Sound("sound/camp.mp3");
+    export const COIN       = new Sound("sound/COIN.mp3");
     export const death      = new Sound("sound/death.mp3");
+    export const exp        = new Sound("sound/exp.mp3");
     export const gameover   = new Sound("sound/gameover.mp3");
+    export const ITEM_GET   = new Sound("sound/ITEM_GET.mp3");
+    export const KAIFUKU    = new Sound("sound/KAIFUKU.mp3");
+    /**買い物. */
+    export const KATAN      = new Sound("sound/KATAN.mp3");
     /**伐採. */
     export const KEN        = new Sound("sound/KEN.mp3");
+    /**罠解除. */
+    export const keyopen    = new Sound("sound/keyopen.mp3");
+    /**合成. */
+    export const made       = new Sound("sound/made.mp3");
     /**魔法攻撃. */
     export const MAGIC      = new Sound("sound/MAGIC.mp3");
+    /**story. */
+    export const moji       = new Sound("sound/moji.mp3");
+    /**踏破. */
+    export const lvup       = new Sound("sound/lvup.mp3");
     /**格闘攻撃. */
     export const PUNCH      = new Sound("sound/PUNCH.mp3");
+    export const walk       = new Sound("sound/walk.mp3");
     /**ダンジョン出入り. */
     export const walk2      = new Sound("sound/walk2.mp3");
     export const save       = new Sound("sound/save.mp3");

@@ -9,6 +9,7 @@ import { FX_Str } from "../fx/fx.js";
 import { Input } from "../undym/input.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { TownScene } from "./townscene.js";
+import { Sound } from "../sound.js";
 export class MeisouScene extends Scene {
     constructor() {
         super();
@@ -24,6 +25,7 @@ export class MeisouScene extends Scene {
             this.target.bp--;
             this.target.prm(prm).base += value;
             FX_Str(Font.def, `[${prm}]が${this.target.prm(prm).total}になった`, Point.CENTER, Color.CYAN);
+            Sound.bpup.play();
         };
         super.add(Place.LIST_MAIN, new XLayout()
             .add(new XLayout()

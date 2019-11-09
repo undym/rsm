@@ -282,9 +282,11 @@ export namespace DungeonEvent{
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("解除", async()=>{
+                                    Sound.keyopen.play();
                                     await  DungeonEvent.TRAP_BROKEN.happen();
                                 }))
                                 .set(AdvanceBtn.index, new Btn("進む", async()=>{
+                                    Sound.blood.play();
                                     Util.msg.set("引っかかった！", Color.RED); await wait();
 
                                     for(let p of Unit.players){
@@ -322,7 +324,7 @@ export namespace DungeonEvent{
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("休む", async()=>{
-                                    Sound.TRAGER.play();
+                                    Sound.camp.play();
 
                                     for(const p of Unit.players){
                                         if(p.exists && !p.dead){
@@ -550,10 +552,12 @@ export namespace DungeonEvent{
 
             let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
             yen = yen|0;
-    
+            
+            Sound.lvup.play();
             Dungeon.now.dungeonClearCount++;
             Util.msg.set(`[${Dungeon.now}]を踏破した！`, Color.WHITE.bright); await cwait();
-    
+            
+            Sound.COIN.play();
             PlayData.yen += yen;
             Util.msg.set(`報奨金${yen}円入手`, Color.YELLOW.bright); await cwait();
 
@@ -581,6 +585,7 @@ class AdvanceBtn{
     static get ins():Btn{
         if(!this._ins){
             this._ins = new Btn(()=>"進む", async()=>{
+                Sound.walk.play();
                 FX_Advance( Place.MAIN );
 
                 Dungeon.auNow += 1;
@@ -606,6 +611,7 @@ class ReturnBtn{
     static get ins():Btn{
         if(!this._ins){
             this._ins = new Btn(()=>"戻る", async()=>{
+                Sound.walk.play();
                 FX_Return( Place.MAIN );
                 Dungeon.auNow -= 1;
                 if(Dungeon.auNow < 0){
@@ -669,7 +675,8 @@ const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:Collecting
         const itemRank = Item.fluctuateRank( baseRank );
         let item = Item.rndItem( dropType, itemRank );
         let addNum = 1;
-        item.add( addNum ); await wait();
+        
+        item.add( addNum ); Sound.ITEM_GET.play(); await wait();
 
         if(collectingSkill){
             await collectingSkill.lvupCheck(item.rank);
@@ -684,5 +691,5 @@ const openKeyBox = (baseRank:number, rankFluctuateRange:number)=>{
     let rank = baseRank + frank;
     if(rank < 0){rank = 0;}
     const item = Item.rndItem( ItemDrop.BOX, rank );
-    item.add(1);
+    item.add(1); Sound.ITEM_GET.play();
 };

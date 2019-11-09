@@ -260,6 +260,7 @@ export class BattleScene extends Scene {
             list.add({
                 center: () => "アイテム",
                 push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                    choosedTec = undefined;
                     chooseTargetLayout = ILayout.empty;
                     Scene.load(ItemScene.ins({
                         user: attacker,
@@ -346,6 +347,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     Util.msg.set(`${exp}の経験値を入手`, Color.CYAN.bright);
     const jobExp = (partySkill.jobExp.base * partySkill.jobExp.mul) | 0;
     Util.msg.set(`ジョブ経験+${jobExp}`, Color.YELLOW.bright);
+    Sound.exp.play();
     yield wait();
     for (let p of Unit.players.filter(p => p.exists)) {
         yield p.addExp(exp);
@@ -356,6 +358,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     const yen = (partySkill.yen.base * partySkill.yen.mul) | 0;
     PlayData.yen += yen;
     Util.msg.set(`${yen}円入手`, Color.YELLOW.bright);
+    Sound.COIN.play();
     yield wait();
     yield finish();
     yield Battle.battleEndAction(BattleResult.WIN);

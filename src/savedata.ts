@@ -11,15 +11,16 @@ import { Color } from "./undym/type.js";
 import { Mix } from "./mix.js";
 import { PartySkill } from "./partyskill.js";
 import { CollectingSkill } from "./collectingskill.js";
+import { Sound } from "./sound.js";
 
 
 
 export class Version{
-    static readonly NOW = new Version(0,20,9);
+    static readonly NOW = new Version(0,20,10);
     static readonly updateInfo =    [
-                                        "(0.20.7)いろいろ",
                                         "(0.20.8)いろいろ",
                                         "(0.20.9)音追加",
+                                        "(0.20.10)音追加",
                                     ];
 
     private values:number[];
@@ -108,7 +109,20 @@ const ioInt = (save:boolean, key:string, value:number, loadAction:(load:number)=
         if(strage){
             const parsed:number = Number.parseInt(strage);
             if(parsed !== undefined){loadAction(parsed);}
-            else                    {console.log(`ioInt(), parseFail, "${key}":${strage}`);}
+            else                    {console.log(`ioInt() parseFail: "${key}":${strage}`);}
+        }
+    }
+};
+
+const ioFloat = (save:boolean, key:string, value:number, loadAction:(load:number)=>void)=>{
+    if(save){
+        window.localStorage.setItem(key, `${value}`);
+    }else{
+        const strage = window.localStorage.getItem(key);
+        if(strage){
+            const parsed:number = Number.parseFloat(strage);
+            if(parsed !== undefined){loadAction(parsed);}
+            else                    {console.log(`ioFloat() parseFail: "${key}":${strage}`);}
         }
     }
 };
@@ -334,6 +348,8 @@ const stragePlayData = (save:boolean)=>{
     for(const cs of CollectingSkill.values){
         ioInt(save, `${name}_CollectingSkill_${cs.uniqueName}`, cs.lv, load=> cs.lv = load);
     }
+
+    ioFloat(save, `${name}_SoundVolume`, Sound.volume, load=> Sound.volume = load);
 };
 
 const stragePartySkill = (save:boolean)=>{

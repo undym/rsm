@@ -284,6 +284,7 @@ export class BattleScene extends Scene{
         list.add({
             center:()=>"アイテム",
             push:async elm=>{
+                choosedTec = undefined;
                 chooseTargetLayout = ILayout.empty;
 
                 Scene.load( ItemScene.ins({
@@ -374,11 +375,13 @@ const win = async()=>{
         skill.win( partySkill );
     }
 
+    
     const exp = (partySkill.exp.base * partySkill.exp.mul)|0;
     Util.msg.set(`${exp}の経験値を入手`, Color.CYAN.bright);
     const jobExp = (partySkill.jobExp.base * partySkill.jobExp.mul)|0;
     Util.msg.set(`ジョブ経験+${jobExp}`, Color.YELLOW.bright);
     
+    Sound.exp.play();
     await wait();
 
     for(let p of Unit.players.filter(p=> p.exists)){
@@ -391,7 +394,7 @@ const win = async()=>{
     
     const yen = (partySkill.yen.base * partySkill.yen.mul)|0;
     PlayData.yen += yen;
-    Util.msg.set(`${yen}円入手`, Color.YELLOW.bright); await wait();
+    Util.msg.set(`${yen}円入手`, Color.YELLOW.bright); Sound.COIN.play(); await wait();
 
     await finish();
     await Battle.battleEndAction(BattleResult.WIN);

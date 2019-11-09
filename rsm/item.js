@@ -20,6 +20,7 @@ import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { SaveData } from "./savedata.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Condition } from "./condition.js";
+import { Sound } from "./sound.js";
 export class ItemType {
     constructor(name) {
         this.toString = () => name;
@@ -216,6 +217,7 @@ Item.DEF_NUM_LIMIT = 9999;
     const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healHP(target, value);
+        Sound.KAIFUKU.play();
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
             yield wait();
@@ -224,6 +226,7 @@ Item.DEF_NUM_LIMIT = 9999;
     const itemHealMP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healMP(target, value);
+        Sound.KAIFUKU.play();
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}のMPが${value}回復した`, Color.PINK.bright);
             yield wait();
@@ -232,6 +235,7 @@ Item.DEF_NUM_LIMIT = 9999;
     const itemHealTP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healTP(target, value);
+        Sound.KAIFUKU.play();
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright);
             yield wait();
@@ -740,6 +744,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.MAX_HP).base += 2;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の最大HP+2`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -752,6 +757,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.MAX_MP).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の最大MP+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -764,6 +770,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.MAX_TP).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の最大TP+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -776,6 +783,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.STR).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の力+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -788,6 +796,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.MAG).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の魔+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -800,6 +809,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.LIG).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の光+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -812,6 +822,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.DRK).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の闇+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -824,6 +835,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.CHN).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の鎖+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -836,6 +848,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.PST).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の過+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -848,6 +861,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.GUN).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の銃+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -860,6 +874,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.prm(Prm.ARR).base += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}の弓+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -872,6 +887,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ドーピング, rank: 10, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     target.bp += 1;
+                    Sound.bpup.play();
                     FX_Str(Font.def, `${target.name}のBP+1`, Point.CENTER, Color.WHITE);
                 }),
             });
@@ -880,10 +896,11 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.灰色のまぼろし = new class extends Item {
         constructor() {
-            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+10。レベルアップはしない。",
+            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+10",
                 type: ItemType.ドーピング, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    target.exp += 10;
+                    Sound.exp.play();
+                    target.exp += 20;
                 }),
             });
         }
@@ -898,10 +915,11 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.黒色のまぼろし = new class extends Item {
         constructor() {
-            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+20。レベルアップはしない。",
+            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+40",
                 type: ItemType.ドーピング, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    target.exp += 20;
+                    Sound.exp.play();
+                    target.exp += 40;
                 }),
             });
         }

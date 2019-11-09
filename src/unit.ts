@@ -290,6 +290,11 @@ export abstract class Unit{
         Sound.death.play();
         this.dead = true;
         Util.msg.set(`${this.name}は死んだ`, Color.RED); await wait();
+
+        for(const set of this.conditions){
+            set.condition = Condition.empty;
+            set.value = 0;
+        }
     }
     //---------------------------------------------------------
     //

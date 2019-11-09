@@ -239,6 +239,10 @@ export class Unit {
             this.dead = true;
             Util.msg.set(`${this.name}は死んだ`, Color.RED);
             yield wait();
+            for (const set of this.conditions) {
+                set.condition = Condition.empty;
+                set.value = 0;
+            }
         });
     }
     //---------------------------------------------------------

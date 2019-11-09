@@ -3,7 +3,7 @@ import { FlowLayout, ILayout, VariableLayout, XLayout, RatioLayout, Layout, YLay
 import { Btn } from "../widget/btn.js";
 import { Unit, PUnit, Prm } from "../unit.js";
 import { Input } from "../undym/input.js";
-import { Rect, Color } from "../undym/type.js";
+import { Rect, Color, Point } from "../undym/type.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawPlayInfo, DrawYen } from "./sceneutil.js";
 import { Place, PlayData } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
@@ -17,6 +17,7 @@ import { Item } from "../item.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Job } from "../job.js";
 import { PartySkill } from "../partyskill.js";
+import { Sound } from "../sound.js";
 
 
 // let ショットガンmaster = false;
@@ -178,7 +179,11 @@ const initGoods = ()=>{
             item.info,
             price,
             isVisible,
-            ()=> item.add(1),
+            ()=>{
+                item.add(1);
+                Sound.KATAN.play();
+                FX_Str(Font.def, `[${item}](${item.num})を買った`, Point.CENTER, Color.WHITE);
+            },
             ()=> item.num,
         );
     };
@@ -199,7 +204,11 @@ const initGoods = ()=>{
             eq.info,
             price,
             isVisible,
-            ()=> eq.add(1),
+            ()=>{
+                eq.add(1);
+                Sound.KATAN.play();
+                FX_Str(Font.def, `[${eq}](${eq.num})を買った`, Point.CENTER, Color.WHITE);
+            },
             ()=> eq.num,
         );
     };
@@ -210,7 +219,11 @@ const initGoods = ()=>{
             ear.info,
             price,
             isVisible,
-            ()=> ear.add(1),
+            ()=>{
+                ear.add(1);
+                Sound.KATAN.play();
+                FX_Str(Font.def, `[${ear}](${ear.num})を買った`, Point.CENTER, Color.WHITE);
+            },
             ()=> ear.num,
         );
     };
@@ -221,7 +234,11 @@ const initGoods = ()=>{
             "",
             price,
             ()=> isVisible() && !skill.has,
-            ()=> skill.has = true,
+            ()=>{
+                skill.has = true;
+                Sound.KATAN.play();
+                FX_Str(Font.def, `[${skill}]を買った`, Point.CENTER, Color.WHITE);
+            },
         );
     };
     

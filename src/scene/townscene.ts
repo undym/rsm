@@ -141,7 +141,6 @@ const createDungeonBtnLayout = ()=>{
         .forEach(d=>{
             const btn = new Btn(d.dungeonClearCount > 0 ? `★${d}` : `${d}`, ()=>{
                             choosedDungeon = d;
-                            Sound.walk2.play();
                         });
             btn.groundColor = ()=> d === choosedDungeon ? Color.D_CYAN.bright(Date.now() / 50, 0.15) : Color.BLACK;
             btn.frameColor = ()=>Color.WHITE;

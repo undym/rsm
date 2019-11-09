@@ -6,6 +6,7 @@ import { Eq, EqEar } from "./eq.js";
 import { Prm } from "./unit.js";
 import { SaveData } from "./savedata.js";
 import { Dungeon } from "./dungeon/dungeon.js";
+import { Sound } from "./sound.js";
 
 
 export class Num{
@@ -122,6 +123,7 @@ export class Mix{
     run(){
         if(!this.canRun()){return;}
 
+        Sound.made.play();
         this.count++;
         
         for(let m of this.materials){
@@ -258,7 +260,7 @@ export namespace Mix{
     // });
     const           杉材:Mix = new Mix({
         uniqueName:"杉材", limit:Mix.LIMIT_INF,
-        result:()=>[Item.杉, 1],
+        result:()=>[Item.杉材, 1],
         materials:()=>[[Item.杉, 3]],
         isVisible:()=>ボロ木工所.count > 0,
     });

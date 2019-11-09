@@ -21,6 +21,7 @@ import { Player } from "../player.js";
 import { SaveData } from "../savedata.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
+import { Sound } from "../sound.js";
 const list = new List(6);
 let returnAction = () => { };
 export const createOptionBtn = () => {
@@ -42,6 +43,27 @@ const setOptionBtn = () => {
         center: () => "データ削除",
         push: elm => {
             setSaveDataDeleteBtn();
+        },
+    });
+    list.add({
+        center: () => "-",
+        push: elm => {
+        },
+    });
+    list.add({
+        center: () => "音量↑",
+        push: elm => {
+            Sound.volume++;
+            Util.msg.set(`${Sound.volume}`);
+            Sound.save.play();
+        },
+    });
+    list.add({
+        center: () => "音量↓",
+        push: elm => {
+            Sound.volume--;
+            Util.msg.set(`${Sound.volume}`);
+            Sound.save.play();
         },
     });
     if (Debug.debugMode) {
