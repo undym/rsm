@@ -76,6 +76,7 @@ export namespace DungeonEvent{
         happenInner = async()=>{Util.msg.set("宝箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
+                                    Sound.TRAGER.play();
                                     await DungeonEvent.OPEN_BOX.happen();
                                 }))
                                 ;
@@ -107,6 +108,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Item.丸い鍵.num > 0){
                                         Item.丸い鍵.num--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_KEY_BOX_RANK2.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -133,6 +135,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Item.三角鍵.num > 0){
                                         Item.三角鍵.num--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_KEY_BOX_RANK3.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -159,6 +162,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Item.トゲトゲ鍵.num > 0){
                                         Item.トゲトゲ鍵.num--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_KEY_BOX_RANK4.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -185,6 +189,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Item.ツルツル鍵.num > 0){
                                         Item.ツルツル鍵.num--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_KEY_BOX_RANK5.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -211,6 +216,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Item.ヘンテコ鍵.num > 0){
                                         Item.ヘンテコ鍵.num--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_KEY_BOX_RANK6.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -239,6 +245,7 @@ export namespace DungeonEvent{
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     if(Dungeon.now.treasureKey > 0){
                                         Dungeon.now.treasureKey--;
+                                        Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_TREASURE.happen();
                                     }else{
                                         Util.msg.set("鍵を持っていない");
@@ -288,6 +295,12 @@ export namespace DungeonEvent{
                                         await p.judgeDead();
                                     }
 
+                                    if(Unit.players.every(p=> !p.exists || p.dead)){
+                                        Util.msg.set("全滅した...", Color.RED); await cwait();
+                                        await ESCAPE_DUNGEON.happen();
+                                        return;
+                                    }
+
                                     DungeonEvent.empty.happen();
                                 }).dontMove())
                                 ;
@@ -309,6 +322,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("休む", async()=>{
+                                    Sound.TRAGER.play();
+
                                     for(const p of Unit.players){
                                         if(p.exists && !p.dead){
                                             Unit.healHP(p, p.prm(Prm.MAX_HP).total * 0.2 + 1);
@@ -329,10 +344,12 @@ export namespace DungeonEvent{
             Util.msg.set("木だ");
         };
         createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("切る", async()=>{
+                                .set(ReturnBtn.index, new Btn("斬る", async()=>{
+                                    Sound.KEN.play();
                                     await DungeonEvent.TREE_GET.happen();
                                 }))
                                 .set(AdvanceBtn.index, new Btn("進む", async()=>{
+                                    Sound.PUNCH.play();
                                     Util.msg.set("いてっ！", Color.RED); await wait();
 
                                     for(let p of Unit.players){
@@ -453,7 +470,7 @@ export namespace DungeonEvent{
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:
-                        DungeonEvent.ESCAPE_DUNGEON.happen();
+                        await DungeonEvent.ESCAPE_DUNGEON.happen();
                         break;
                     case BattleResult.ESCAPE:
                         Scene.load( DungeonScene.ins );
@@ -542,7 +559,7 @@ export namespace DungeonEvent{
 
             await Dungeon.now.dungeonClearEvent();
             
-            DungeonEvent.ESCAPE_DUNGEON.happen();
+            await DungeonEvent.ESCAPE_DUNGEON.happen();
         };
         createBtnLayout = ()=> ILayout.empty;
     };

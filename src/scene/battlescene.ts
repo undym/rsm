@@ -399,6 +399,7 @@ const win = async()=>{
 
 
 const lose = async()=>{
+    Sound.gameover.play();
     Battle.result = BattleResult.LOSE;
     Util.msg.set("負けた"); await wait();
 
