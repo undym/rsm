@@ -25,18 +25,16 @@ export class Sound{
         const w:any = window;
         const AC = (w.AudioContext || w.webkitAudioContext);;
         this.ac = new AC();
-        Util.msg.set(`${this.ac}`);
         const request = new XMLHttpRequest();
         request.onload = ()=>{
+            Util.msg.set("onload:"+this.path);
             var audioData = request.response;
             this.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
             },e=>{
-                Util.msg.set("err"+this.path);
                 return "Error with decoding audio data " + this.path;
             });
         };
-        Util.msg.set("beforeGET");
         request.open("GET", this.path, true);
         request.responseType = 'arraybuffer';
         request.send();
