@@ -5,53 +5,53 @@ export class Sound{
     private static _values:Sound[] = [];
     static get values():ReadonlyArray<Sound>{return this._values;}
 
-    // private ac:AudioContext;
-    // private src:AudioBufferSourceNode;
-    // private buffer:AudioBuffer;
-    private audio:HTMLAudioElement;
+    private ac:AudioContext;
+    private src:AudioBufferSourceNode;
+    private buffer:AudioBuffer;
+    // private audio:HTMLAudioElement;
 
     constructor(private path:string){
         Sound._values.push(this);
     }
     /**ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
     init(){
-        this.audio = new Audio(this.path);
-        this.audio.muted = true;
-        this.audio.play();
-        this.audio.pause();
-        this.audio.muted = false;
-        // this.ac = new AudioContext();
-        // const request = new XMLHttpRequest();
-        // request.onload = ()=>{
-        //     var audioData = request.response;
-        //     this.ac.decodeAudioData(audioData, buffer=>{
-        //         this.buffer = buffer;
-        //     },e=>{
-        //         Util.msg.set("err"+this.path);
-        //         return "Error with decoding audio data " + this.path;
-        //     });
-        // };
-        // request.open("GET", this.path, true);
-        // request.responseType = 'arraybuffer';
-        // request.send();
-        // this.audio.onload = ev=>{
-        //     Util.msg.set("load");
-        // };
-        this.audio.onloadedmetadata = ev=>{
-            Util.msg.set("medialoaded");
-        }
+        // this.audio = new Audio(this.path);
+        // this.audio.muted = true;
+        // this.audio.play();
+        // this.audio.pause();
+        // this.audio.muted = false;
+
+
+        this.ac = new AudioContext();
+        const request = new XMLHttpRequest();
+        request.onload = ()=>{
+            var audioData = request.response;
+            this.ac.decodeAudioData(audioData, buffer=>{
+                this.buffer = buffer;
+                Util.msg.set("buffer");
+            },e=>{
+                Util.msg.set("err"+this.path);
+                return "Error with decoding audio data " + this.path;
+            });
+        };
+        request.open("GET", window.location + this.path, true);
+        Util.msg.set(`${window.location}${this.path}`)
+        request.responseType = 'arraybuffer';
+        request.send();
     }
 
     play(){
-        this.audio.currentTime = 1;
-        this.audio.play();
-        // if(!this.buffer){return;}
+        // this.audio.currentTime = 0;
+        // this.audio.play();
 
-        // this.src = this.ac.createBufferSource();
-        // this.src.buffer = this.buffer;
-        // this.src.connect(this.ac.destination);
+
+        if(!this.buffer){return;}
+
+        this.src = this.ac.createBufferSource();
+        this.src.buffer = this.buffer;
+        this.src.connect(this.ac.destination);
         
-        // this.src.start(0);
+        this.src.start(0);
     }
 
     
