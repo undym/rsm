@@ -22,7 +22,7 @@ import { Sound } from "./sound.js";
 {
     const run = document.getElementById("runreload") as HTMLButtonElement;
     run.onclick = ()=>{
-        window.location.href = window.location.href;
+        window.location.reload(true);
     };
     const reload = document.getElementById("reloadbutton") as HTMLButtonElement;
     reload.onclick = ()=>{

@@ -23,7 +23,7 @@ import { PartySkill } from "./partyskill.js";
 {
     const run = document.getElementById("runreload");
     run.onclick = () => {
-        window.location.href = window.location.href;
+        window.location.reload(true);
     };
     const reload = document.getElementById("reloadbutton");
     reload.onclick = () => {
