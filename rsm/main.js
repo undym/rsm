@@ -20,7 +20,6 @@ import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
-import { Sound } from "./sound.js";
 {
     const run = document.getElementById("runreload");
     run.onclick = () => {
@@ -134,7 +133,7 @@ const setTitle = () => {
             for (const s of Version.updateInfo) {
                 msg.push(s);
             }
-            msg.push("test1");
+            msg.push("test2");
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
             });
@@ -146,9 +145,9 @@ const setTitle = () => {
             return;
         }
         done = true;
-        for (const sound of Sound.values) {
-            sound.init();
-        }
+        // for(const sound of Sound.values){
+        //     sound.init();
+        // }
         // Sound.start.play();
         if (SaveData.exists()) {
             continueGame();
