@@ -13,6 +13,7 @@ import { Targeting } from "../force.js";
 import { Battle } from "../battle.js";
 import { BattleScene } from "./battlescene.js";
 import { Graphics, Font } from "../graphics/graphics.js";
+import { Sound } from "../sound.js";
 
 
 
@@ -109,6 +110,7 @@ export class ItemScene extends Scene{
                         typeList.add({
                             center:()=>type.toString(),
                             push:elm=>{
+                                Sound.pi.play();
                                 this.setList(type);
                             },
                         })
@@ -121,6 +123,7 @@ export class ItemScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 this.returnScene();
             })
         );

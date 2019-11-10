@@ -184,6 +184,7 @@ class TownBtn{
             l.add({
                 center:()=>"アイテム",
                 push:elm=>{
+                    Sound.pi.play();
                     Scene.load( ItemScene.ins({
                         selectUser:true,
                         user:Unit.players[0],
@@ -208,6 +209,7 @@ class TownBtn{
                 l.add({
                     center:()=>"お店",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new ShopScene());
                     },
                 });
@@ -216,6 +218,7 @@ class TownBtn{
                 l.add({
                     center:()=>"合成",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new MixScene());
                     },
                 });
@@ -224,14 +227,16 @@ class TownBtn{
                 l.add({
                     center:()=>"技のセット",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new SetTecScene());
                     },
                 });
             }
             if(Mix.転職所.count > 0 || Debug.debugMode){
                 l.add({
-                    center:()=>"ジョブ",
+                    center:()=>"転職",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new JobChangeScene());
                     },
                 });
@@ -240,6 +245,7 @@ class TownBtn{
                 l.add({
                     center:()=>"装備",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new EqScene());
                     },
                 });
@@ -256,6 +262,7 @@ class TownBtn{
                 l.add({
                     center:()=>"瞑想",
                     push:elm=>{
+                        Sound.pi.play();
                         Scene.load(new MeisouScene());
                     },
                 });
@@ -270,6 +277,7 @@ class TownBtn{
             l.add({
                 center:()=>"OPTION",
                 push:elm=>{
+                    Sound.pi.play();
                     this._ins = createOptionBtn();
                 },
             });

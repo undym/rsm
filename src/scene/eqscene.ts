@@ -14,6 +14,7 @@ import { FX_Str } from "../fx/fx.js";
 import { Eq, EqPos, EqEar } from "../eq.js";
 import { SaveData } from "../savedata.js";
 import { Player } from "../player.js";
+import { Sound } from "../sound.js";
 
 
 enum ChoosedType{
@@ -84,14 +85,14 @@ export class EqScene extends Scene{
                                     if(!this.choosedEq){return;}
                                     
                                     equip( this.target, this.choosedEq );
-                                    
+                                    Sound.keyopen.play();
                                     FX_Str(Font.def, `${this.choosedEq}をセットしました`, Point.CENTER, Color.WHITE);
                                 });
                                 const unset = new Btn("外す",async()=>{
                                     if(!this.choosedEq){return;}
             
                                     equip( this.target, Eq.getDef(this.pos));
-            
+                                    Sound.keyopen.play();
                                     FX_Str(Font.def, `${this.choosedEq}を外しました`, Point.CENTER, Color.WHITE);
                                 });
                                 const setEar = new Btn("装備",async()=>{
@@ -105,12 +106,14 @@ export class EqScene extends Scene{
                                         }
                                     }
                                     equipEar( this.target, index, this.choosedEar );
+                                    Sound.keyopen.play();
                                     FX_Str(Font.def, `耳${index+1}に${this.choosedEar}をセットしました`, Point.CENTER, Color.WHITE);
                                 });
                                 const unsetEar = new Btn("外す",async()=>{
                                     for(let i = 0; i < Unit.EAR_NUM; i++){
                                         if(this.target.getEqEar(i) === this.choosedEar){
                                             equipEar( this.target, i, EqEar.getDef() );
+                                            Sound.keyopen.play();
                                             FX_Str(Font.def, `耳${i+1}の${this.choosedEar}を外しました`, Point.CENTER, Color.WHITE);
                                             break;
                                         }
@@ -147,6 +150,7 @@ export class EqScene extends Scene{
                 typeList.add({
                     center:()=>"全て",
                     push:elm=>{
+                        Sound.pi.play();
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -159,6 +163,7 @@ export class EqScene extends Scene{
                 typeList.add({
                     center:()=>"耳",
                     push:elm=>{
+                        Sound.pi.play();
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -170,6 +175,7 @@ export class EqScene extends Scene{
                     typeList.add({
                         center:()=>`${pos}`,
                         push:elm=>{
+                            Sound.pi.play();
                             (this.resetList = ()=>{
                                 this.list.clear();
                                 this.setList( pos );
@@ -184,6 +190,7 @@ export class EqScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 Scene.load(TownScene.ins);
             })
         );

@@ -651,6 +651,7 @@ class ItemBtn {
     static get ins() {
         if (!this._ins) {
             this._ins = new Btn(() => "アイテム", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.pi.play();
                 Scene.load(ItemScene.ins({
                     selectUser: true,
                     user: Unit.players[0],

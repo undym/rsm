@@ -449,6 +449,7 @@ export class PUnit extends Unit {
             if (this.prm(Prm.EXP).base >= this.getNextLvExp()) {
                 this.prm(Prm.LV).base++;
                 this.prm(Prm.EXP).base = 0;
+                Sound.lvup.play();
                 Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright);
                 yield wait();
                 const growHP = this.prm(Prm.LV).base / 50 + 1;
@@ -484,6 +485,7 @@ export class PUnit extends Unit {
             if (set.exp >= this.job.lvupExp) {
                 set.lv += 1;
                 set.exp = 0;
+                Sound.lvup.play();
                 Util.msg.set(`${this.name}の${this.job}Lvが${set.lv}になった`, Color.ORANGE.bright);
                 yield wait();
                 const learnings = this.job.learningTecs;

@@ -19,6 +19,7 @@ import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { FX_Str } from "../fx/fx.js";
 import { Eq, EqPos, EqEar } from "../eq.js";
+import { Sound } from "../sound.js";
 var ChoosedType;
 (function (ChoosedType) {
     ChoosedType[ChoosedType["NO"] = 0] = "NO";
@@ -71,6 +72,7 @@ export class EqScene extends Scene {
                     return;
                 }
                 equip(this.target, this.choosedEq);
+                Sound.keyopen.play();
                 FX_Str(Font.def, `${this.choosedEq}をセットしました`, Point.CENTER, Color.WHITE);
             }));
             const unset = new Btn("外す", () => __awaiter(this, void 0, void 0, function* () {
@@ -78,6 +80,7 @@ export class EqScene extends Scene {
                     return;
                 }
                 equip(this.target, Eq.getDef(this.pos));
+                Sound.keyopen.play();
                 FX_Str(Font.def, `${this.choosedEq}を外しました`, Point.CENTER, Color.WHITE);
             }));
             const setEar = new Btn("装備", () => __awaiter(this, void 0, void 0, function* () {
@@ -92,12 +95,14 @@ export class EqScene extends Scene {
                     }
                 }
                 equipEar(this.target, index, this.choosedEar);
+                Sound.keyopen.play();
                 FX_Str(Font.def, `耳${index + 1}に${this.choosedEar}をセットしました`, Point.CENTER, Color.WHITE);
             }));
             const unsetEar = new Btn("外す", () => __awaiter(this, void 0, void 0, function* () {
                 for (let i = 0; i < Unit.EAR_NUM; i++) {
                     if (this.target.getEqEar(i) === this.choosedEar) {
                         equipEar(this.target, i, EqEar.getDef());
+                        Sound.keyopen.play();
                         FX_Str(Font.def, `耳${i + 1}の${this.choosedEar}を外しました`, Point.CENTER, Color.WHITE);
                         break;
                     }
@@ -130,6 +135,7 @@ export class EqScene extends Scene {
             typeList.add({
                 center: () => "全て",
                 push: elm => {
+                    Sound.pi.play();
                     (this.resetList = () => {
                         this.list.clear();
                         this.setEarList();
@@ -142,6 +148,7 @@ export class EqScene extends Scene {
             typeList.add({
                 center: () => "耳",
                 push: elm => {
+                    Sound.pi.play();
                     (this.resetList = () => {
                         this.list.clear();
                         this.setEarList();
@@ -152,6 +159,7 @@ export class EqScene extends Scene {
                 typeList.add({
                     center: () => `${pos}`,
                     push: elm => {
+                        Sound.pi.play();
                         (this.resetList = () => {
                             this.list.clear();
                             this.setList(pos);
@@ -163,6 +171,7 @@ export class EqScene extends Scene {
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.pi.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

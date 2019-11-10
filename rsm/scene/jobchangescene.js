@@ -11,6 +11,7 @@ import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { FX_Str } from "../fx/fx.js";
 import { Job } from "../job.js";
+import { Sound } from "../sound.js";
 export class JobChangeScene extends Scene {
     constructor() {
         super();
@@ -34,6 +35,7 @@ export class JobChangeScene extends Scene {
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, ILayout.empty);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.pi.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
@@ -107,6 +109,7 @@ export class JobChangeScene extends Scene {
                         }
                         else {
                             this.target.job = job;
+                            Sound.bpup.play();
                             FX_Str(Font.def, `${this.target.name}は[${job}]になった`, Point.CENTER, Color.WHITE);
                         }
                     }).dontMove();

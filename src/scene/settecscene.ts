@@ -11,6 +11,7 @@ import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { TecType, Tec, ActiveTec } from "../tec.js";
 import { FX_Str } from "../fx/fx.js";
+import { Sound } from "../sound.js";
 
 
 
@@ -49,7 +50,7 @@ export class SetTecScene extends Scene{
                                 typeList.add({
                                     center:()=>"全て",
                                     push:elm=>{
-
+                                        Sound.pi.play();
                                         (this.resetList = keepScroll=>{
                                             this.list.clear(keepScroll);
                                             for(let type of TecType.values()){
@@ -64,7 +65,7 @@ export class SetTecScene extends Scene{
                                     typeList.add({
                                         center:()=>type.toString(),
                                         push:elm=>{
-
+                                            Sound.pi.play();
                                             (this.resetList = keepScroll=>{
                                                 this.list.clear(keepScroll);
                                                 this.setList( this.target, `${type}`, type.tecs);
@@ -97,6 +98,7 @@ export class SetTecScene extends Scene{
 
         super.add(Place.LIST_BTN, 
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -192,28 +194,6 @@ export class SetTecScene extends Scene{
                 }
             });
 
-        // tecs
-        //     .filter(tec=>{
-        //         if(unit.isMasteredTec(tec)){return false;}
-        //         const learning = tec.learning;
-        //         return (learning && learning.origins.every(t=> unit.isMasteredTec(t)));
-        //     })
-        //     .forEach(tec=>{
-        //         const learning = tec.learning;
-        //         if(!learning){return;}
-
-        //         this.list.add({
-        //             left:()=>`${learning.bp}`,
-        //             right:()=>`${tec}`,
-        //             groundColor:()=>tec === this.choosedTec ? Color.ORANGE.darker() : Color.BLACK,
-        //             push:(elm)=>{
-        //                 this.choosedTec = tec;
-        //                 this.info = createTecInfo(tec, unit);
-        //                 this.useBtn = this.createLearnBtn(tec, unit);
-        //             },
-
-        //         });
-        //     });
     }
 
     private createSetBtn(tec:Tec, unit:PUnit){
@@ -221,6 +201,7 @@ export class SetTecScene extends Scene{
             for(let i = 0; i < unit.tecs.length; i++){
                 if(unit.tecs[i] === tec){
                     unit.tecs[i] = Tec.empty;
+                    Sound.keyopen.play();
                     FX_Str(Font.def, `${tec}を外しました`, {x:0.5, y:0.5}, Color.WHITE);
     
                     this.setSettingTecList(unit, true);
@@ -233,6 +214,7 @@ export class SetTecScene extends Scene{
             for(let i = 0; i < unit.tecs.length; i++){
                 if(unit.tecs[i] === Tec.empty){
                         unit.tecs[i] = tec;
+                        Sound.keyopen.play();
                         FX_Str(Font.def, `${tec}をセットしました`, Point.CENTER, Color.WHITE);
     
                         this.setSettingTecList(unit, true);

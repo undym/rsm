@@ -303,6 +303,8 @@ export class DrawUnitDetail extends InnerLayout{
                                         .add(()=>`鎖:${getUnit().prm(Prm.CHN).total}`)
                                         .add(()=>`銃:${getUnit().prm(Prm.GUN).total}`)
                                         .add(()=>`EP:${getUnit().ep}`)
+                                        .add(()=>``)
+                                        .add(()=>`BP:${getUnit().bp}`)
                                     )
                                     .add(new Labels(font)
                                         .add(()=>`魔:${getUnit().prm(Prm.MAG).total}`)

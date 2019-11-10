@@ -17,6 +17,7 @@ import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { FX_Str } from "../fx/fx.js";
 import { PartySkill } from "../partyskill.js";
+import { Sound } from "../sound.js";
 export class PartySkillScene extends Scene {
     constructor() {
         super();
@@ -48,6 +49,7 @@ export class PartySkillScene extends Scene {
                 for (let i = 0; i < PartySkill.skills.length; i++) {
                     if (PartySkill.skills[i] === PartySkill.empty) {
                         PartySkill.skills[i] = this.choosedSkill;
+                        Sound.keyopen.play();
                         FX_Str(Font.def, `${this.choosedSkill}をセットしました`, { x: 0.5, y: 0.5 }, Color.WHITE);
                         SettingSkillMap.reset();
                         this.setSettingSkillList();
@@ -60,6 +62,7 @@ export class PartySkillScene extends Scene {
                 for (let i = 0; i < PartySkill.skills.length; i++) {
                     if (PartySkill.skills[i] === this.choosedSkill) {
                         PartySkill.skills[i] = PartySkill.empty;
+                        Sound.keyopen.play();
                         FX_Str(Font.def, `${this.choosedSkill}を外しました`, { x: 0.5, y: 0.5 }, Color.WHITE);
                         SettingSkillMap.reset();
                         this.setSettingSkillList();
@@ -80,6 +83,7 @@ export class PartySkillScene extends Scene {
         })())));
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.pi.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

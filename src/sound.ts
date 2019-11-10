@@ -96,6 +96,8 @@ export namespace Sound{
     export const moji       = new Sound("sound/moji.mp3");
     /**踏破. */
     export const lvup       = new Sound("sound/lvup.mp3");
+    /**選択音. */
+    export const pi         = new Sound("sound/pi.mp3");
     /**格闘攻撃. */
     export const PUNCH      = new Sound("sound/PUNCH.mp3");
     export const walk       = new Sound("sound/walk.mp3");

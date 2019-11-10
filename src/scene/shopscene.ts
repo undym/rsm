@@ -89,6 +89,8 @@ export class ShopScene extends Scene{
                                     if(PlayData.yen >= goods.price()){
                                         PlayData.yen -= goods.price();
             
+                                        Sound.KATAN.play();
+                                        FX_Str(Font.def, `[${goods}]を買った`, Point.CENTER, Color.WHITE);
                                         goods.buy();
                                     }
                                 });
@@ -109,6 +111,7 @@ export class ShopScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -179,11 +182,7 @@ const initGoods = ()=>{
             item.info,
             price,
             isVisible,
-            ()=>{
-                item.add(1);
-                Sound.KATAN.play();
-                FX_Str(Font.def, `[${item}](${item.num})を買った`, Point.CENTER, Color.WHITE);
-            },
+            ()=>item.add(1),
             ()=> item.num,
         );
     };
@@ -204,11 +203,7 @@ const initGoods = ()=>{
             eq.info,
             price,
             isVisible,
-            ()=>{
-                eq.add(1);
-                Sound.KATAN.play();
-                FX_Str(Font.def, `[${eq}](${eq.num})を買った`, Point.CENTER, Color.WHITE);
-            },
+            ()=>eq.add(1),
             ()=> eq.num,
         );
     };
@@ -219,11 +214,7 @@ const initGoods = ()=>{
             ear.info,
             price,
             isVisible,
-            ()=>{
-                ear.add(1);
-                Sound.KATAN.play();
-                FX_Str(Font.def, `[${ear}](${ear.num})を買った`, Point.CENTER, Color.WHITE);
-            },
+            ()=>ear.add(1),
             ()=> ear.num,
         );
     };
@@ -234,11 +225,7 @@ const initGoods = ()=>{
             "",
             price,
             ()=> isVisible() && !skill.has,
-            ()=>{
-                skill.has = true;
-                Sound.KATAN.play();
-                FX_Str(Font.def, `[${skill}]を買った`, Point.CENTER, Color.WHITE);
-            },
+            ()=>skill.has = true,
         );
     };
     

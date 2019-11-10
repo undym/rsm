@@ -123,7 +123,6 @@ export class Mix{
     run(){
         if(!this.canRun()){return;}
 
-        Sound.made.play();
         this.count++;
         
         for(let m of this.materials){

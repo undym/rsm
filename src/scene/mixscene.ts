@@ -11,6 +11,7 @@ import { Item } from "../item.js";
 import { Num, Mix } from "../mix.js";
 import { Eq, EqEar } from "../eq.js";
 import { SaveData } from "../savedata.js";
+import { Sound } from "../sound.js";
 
 
 
@@ -37,6 +38,7 @@ export class MixScene extends Scene{
                                     push:elm=>{
                                         const values = Mix.values
                                                             .filter(m=> !m.result && m.isVisible());
+                                        Sound.pi.play();
                                         this.setList("建築", values);
                                     },
                                 });
@@ -49,6 +51,7 @@ export class MixScene extends Scene{
                                                                 if(result && result.object instanceof Eq && m.isVisible()){return true;}
                                                                 return false;
                                                             });
+                                        Sound.pi.play();
                                         this.setList("装備", values);
                                     },
                                 });
@@ -61,6 +64,7 @@ export class MixScene extends Scene{
                                                                 if(result && result.object instanceof Item && m.isVisible()){return true;}
                                                                 return false;
                                                             });
+                                        Sound.pi.play();
                                         this.setList("アイテム", values);
                                     },
                                 });
@@ -135,7 +139,8 @@ export class MixScene extends Scene{
                                 };
                                 const run = new Btn("合成",async()=>{
                                     if(!this.choosedMix){return;}
-            
+                                    
+                                    Sound.made.play();
                                     this.choosedMix.run();
                                 });
                                 const noRun = new Btn("-",async()=>{});
@@ -152,6 +157,7 @@ export class MixScene extends Scene{
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -181,7 +187,7 @@ export class MixScene extends Scene{
                 };
                 this.list.add({
                     left:()=>{
-                        if(mix.result){return `${mix.result.num}`;}
+                        if(mix.result){return `${mix.result.object.num}`;}
                         if(mix.countLimit === Mix.LIMIT_INF){return `${mix.count}`;}
                         return `${mix.count}/${mix.countLimit}`;
                     },

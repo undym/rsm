@@ -153,6 +153,7 @@ export class MeisouScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
+                Sound.pi.play();
                 Scene.load( TownScene.ins );
             })
         );

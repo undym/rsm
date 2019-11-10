@@ -17,6 +17,7 @@ import { Rect, Color } from "../undym/type.js";
 import { Item, ItemParentType } from "../item.js";
 import { Input } from "../undym/input.js";
 import { Graphics, Font } from "../graphics/graphics.js";
+import { Sound } from "../sound.js";
 export class ItemScene extends Scene {
     constructor() {
         super();
@@ -76,6 +77,7 @@ export class ItemScene extends Scene {
                 typeList.add({
                     center: () => type.toString(),
                     push: elm => {
+                        Sound.pi.play();
                         this.setList(type);
                     },
                 });
@@ -85,6 +87,7 @@ export class ItemScene extends Scene {
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.pi.play();
             this.returnScene();
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

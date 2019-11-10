@@ -18,6 +18,7 @@ import { TownScene } from "./townscene.js";
 import { Item } from "../item.js";
 import { Mix } from "../mix.js";
 import { Eq, EqEar } from "../eq.js";
+import { Sound } from "../sound.js";
 export class MixScene extends Scene {
     constructor() {
         super();
@@ -33,6 +34,7 @@ export class MixScene extends Scene {
                 push: elm => {
                     const values = Mix.values
                         .filter(m => !m.result && m.isVisible());
+                    Sound.pi.play();
                     this.setList("建築", values);
                 },
             });
@@ -47,6 +49,7 @@ export class MixScene extends Scene {
                         }
                         return false;
                     });
+                    Sound.pi.play();
                     this.setList("装備", values);
                 },
             });
@@ -61,6 +64,7 @@ export class MixScene extends Scene {
                         }
                         return false;
                     });
+                    Sound.pi.play();
                     this.setList("アイテム", values);
                 },
             });
@@ -133,6 +137,7 @@ export class MixScene extends Scene {
                 if (!this.choosedMix) {
                     return;
                 }
+                Sound.made.play();
                 this.choosedMix.run();
             }));
             const noRun = new Btn("-", () => __awaiter(this, void 0, void 0, function* () { }));
@@ -143,6 +148,7 @@ export class MixScene extends Scene {
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.pi.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
@@ -165,7 +171,7 @@ export class MixScene extends Scene {
             this.list.add({
                 left: () => {
                     if (mix.result) {
-                        return `${mix.result.num}`;
+                        return `${mix.result.object.num}`;
                     }
                     if (mix.countLimit === Mix.LIMIT_INF) {
                         return `${mix.count}`;
