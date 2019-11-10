@@ -4,7 +4,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting, Action } from "./force.js";
 import { Condition, ConditionType } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復 } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収 } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
@@ -1384,6 +1384,7 @@ export namespace Tec{
                 target.hp += 5;
                 
                 Sound.drain.play();
+                FX_吸収(target.imgCenter, attacker.imgCenter);
                 Util.msg.set("＞血技の技巧"); await wait();
             }
         }

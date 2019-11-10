@@ -98,6 +98,7 @@ export class SetTecScene extends Scene {
                         this.target = p;
                         this.setSettingTecList(p, false);
                         this.resetList(false);
+                        Sound.system.play();
                         break;
                     }
                 }
@@ -124,6 +125,7 @@ export class SetTecScene extends Scene {
                         this.choosedTec = tec;
                         this.info = createTecInfo(tec, unit);
                         this.useBtn = this.createSetBtn(tec, unit);
+                        Sound.system.play();
                     },
                 });
             }
@@ -164,6 +166,7 @@ export class SetTecScene extends Scene {
                         this.choosedTec = tec;
                         this.info = createTecInfo(tec, unit);
                         this.useBtn = this.createSetBtn(tec, unit);
+                        Sound.system.play();
                     },
                 });
             }

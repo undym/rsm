@@ -183,6 +183,7 @@ export class MixScene extends Scene {
                 rightColor: color,
                 groundColor: () => mix === this.choosedMix ? Color.D_CYAN : Color.BLACK,
                 push: (elm) => {
+                    Sound.system.play();
                     this.choosedMix = mix;
                     this.choosed = true;
                 },

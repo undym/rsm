@@ -114,6 +114,7 @@ export class PartySkillScene extends Scene {
                     rightColor: color,
                     groundColor: () => SettingSkillMap.has(skill) ? Color.D_CYAN : Color.BLACK,
                     push: (elm) => {
+                        Sound.system.play();
                         this.choosedSkill = skill;
                     },
                 });
@@ -140,6 +141,7 @@ export class PartySkillScene extends Scene {
                 rightColor: color,
                 groundColor: () => SettingSkillMap.has(skill) ? Color.D_CYAN : Color.BLACK,
                 push: (elm) => {
+                    Sound.system.play();
                     this.choosedSkill = skill;
                 },
             });

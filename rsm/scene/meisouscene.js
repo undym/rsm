@@ -132,6 +132,7 @@ export class MeisouScene extends Scene {
                 for (let p of Unit.players.filter(p => p.exists)) {
                     if (p.boxBounds.contains(Input.point)) {
                         this.target = p;
+                        Sound.system.play();
                         break;
                     }
                 }

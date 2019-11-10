@@ -592,7 +592,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
         value = value | 0;
-        const p = new Point(target.imgBounds.cx, (target.imgBounds.y + target.imgBounds.cy) / 2);
+        const p = new Point(target.imgBounds.cx, (target.imgBounds.y - target.imgBounds.cy) / 2);
         FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
         target.hp += value;
     };

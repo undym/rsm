@@ -52,6 +52,7 @@ export class JobChangeScene extends Scene {
                         this.target = p;
                         this.info = ILayout.empty;
                         this.jobChangeBtn = ILayout.empty;
+                        Sound.system.play();
                         this.setList();
                         break;
                     }
@@ -93,6 +94,7 @@ export class JobChangeScene extends Scene {
                 rightColor: color,
                 groundColor: () => choosedJob === job ? Color.D_CYAN : Color.BLACK,
                 push: (elm) => {
+                    Sound.system.play();
                     choosedJob = job;
                     this.info = new Labels(Font.def)
                         .add(() => `${job}`)

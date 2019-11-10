@@ -486,3 +486,18 @@ export const FX_回復 = (target) => {
     });
 };
 FXTest.add(FX_回復.name, () => FX_回復(FXTest.target));
+export const FX_吸収 = (attacker, target) => {
+    FX.add((count) => {
+        const over = 20;
+        const color = new Color(1, 0, 0, 0.3);
+        for (let i = 0; i < 3; i++) {
+            const shake = () => -0.02 + 0.04 * Math.random();
+            const over2 = over - 1;
+            const x = (target.x * (over2 - count) + attacker.x * count) / over2 + shake();
+            const y = (target.y * (over2 - count) + attacker.y * count) / over2 + shake();
+            Graphics.fillOval(new Point(x, y), 0.02, color.bright());
+        }
+        return count < over;
+    });
+};
+FXTest.add(FX_吸収.name, () => FX_吸収(FXTest.attacker, FXTest.target));

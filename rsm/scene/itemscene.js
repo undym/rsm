@@ -104,6 +104,7 @@ export class ItemScene extends Scene {
                 }
                 for (let p of Unit.players.filter(p => p.exists)) {
                     if (p.boxBounds.contains(Input.point)) {
+                        Sound.system.play();
                         this.user = p;
                         break;
                     }
@@ -128,6 +129,7 @@ export class ItemScene extends Scene {
                     right: () => `${item}`,
                     groundColor: () => item === this.selectedItem ? Color.D_CYAN : Color.BLACK,
                     push: (elm) => {
+                        Sound.system.play();
                         this.selected = true;
                         this.selectedItem = item;
                     },

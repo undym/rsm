@@ -110,6 +110,7 @@ export class ShopScene extends Scene {
                 groundColor: () => goods === this.choosedGoods ? Color.D_CYAN : Color.BLACK,
                 push: (elm) => {
                     this.choosedGoods = goods;
+                    Sound.system.play();
                 },
             });
         });

@@ -83,6 +83,7 @@ Sound.MAX_VOLUME = 10;
     Sound.KEN = new Sound("sound/KEN.mp3");
     /**罠解除. */
     Sound.keyopen = new Sound("sound/keyopen.mp3");
+    Sound.drain = new Sound("sound/kyuusyuu.mp3");
     /**合成. */
     Sound.made = new Sound("sound/made.mp3");
     /**魔法攻撃. */
@@ -91,8 +92,6 @@ Sound.MAX_VOLUME = 10;
     Sound.moji = new Sound("sound/moji.mp3");
     /**踏破. */
     Sound.lvup = new Sound("sound/lvup.mp3");
-    /**選択音. */
-    Sound.system = new Sound("sound/pi.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
     Sound.save = new Sound("sound/save.mp3");
@@ -100,6 +99,8 @@ Sound.MAX_VOLUME = 10;
     Sound.seikou = new Sound("sound/seikou.mp3");
     /**神格攻撃. */
     Sound.sin = new Sound("sound/sin.mp3");
+    /**選択音. */
+    Sound.system = new Sound("sound/1.mp3");
     Sound.TRAGER = new Sound("sound/TRAGER.mp3");
     /**状態強化. */
     Sound.up = new Sound("sound/up.mp3");

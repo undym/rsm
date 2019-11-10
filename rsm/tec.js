@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Dmg, Targeting } from "./force.js";
 import { Condition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復 } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収 } from "./fx/fx.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 export class TecType {
@@ -1446,6 +1446,8 @@ ActiveTec._valueOf = new Map();
                 if (action instanceof ActiveTec && Math.random() < 0.5) {
                     attacker.hp -= 5;
                     target.hp += 5;
+                    Sound.drain.play();
+                    FX_吸収(target.imgCenter, attacker.imgCenter);
                     Util.msg.set("＞血技の技巧");
                     yield wait();
                 }
