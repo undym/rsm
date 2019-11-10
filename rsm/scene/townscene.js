@@ -163,27 +163,10 @@ class TownBtn {
         //     },
         // });
         l.add({
-            center: () => "アイテム",
+            center: () => "セーブ",
             push: elm => {
-                Sound.system.play();
-                Scene.load(ItemScene.ins({
-                    selectUser: true,
-                    user: Unit.players[0],
-                    use: (item, user) => __awaiter(this, void 0, void 0, function* () {
-                        if (item.targetings & Targeting.SELECT) {
-                            yield item.use(user, [user]);
-                        }
-                        else {
-                            let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
-                            if (targets.length > 0) {
-                                yield item.use(user, targets);
-                            }
-                        }
-                    }),
-                    returnScene: () => {
-                        Scene.load(TownScene.ins);
-                    },
-                }));
+                SaveData.save();
+                Sound.save.play();
             },
         });
         if (Dungeon.再構成トンネル.dungeonClearCount > 0 || Debug.debugMode) {
@@ -206,19 +189,19 @@ class TownBtn {
         }
         if (Mix.転職所.count > 0 || Debug.debugMode) {
             l.add({
-                center: () => "技のセット",
+                center: () => "転職",
                 push: elm => {
                     Sound.system.play();
-                    Scene.load(new SetTecScene());
+                    Scene.load(new JobChangeScene());
                 },
             });
         }
         if (Mix.転職所.count > 0 || Debug.debugMode) {
             l.add({
-                center: () => "転職",
+                center: () => "技のセット",
                 push: elm => {
                     Sound.system.play();
-                    Scene.load(new JobChangeScene());
+                    Scene.load(new SetTecScene());
                 },
             });
         }
@@ -249,10 +232,27 @@ class TownBtn {
             });
         }
         l.add({
-            center: () => "セーブ",
+            center: () => "アイテム",
             push: elm => {
-                SaveData.save();
-                Sound.save.play();
+                Sound.system.play();
+                Scene.load(ItemScene.ins({
+                    selectUser: true,
+                    user: Unit.players[0],
+                    use: (item, user) => __awaiter(this, void 0, void 0, function* () {
+                        if (item.targetings & Targeting.SELECT) {
+                            yield item.use(user, [user]);
+                        }
+                        else {
+                            let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
+                            if (targets.length > 0) {
+                                yield item.use(user, targets);
+                            }
+                        }
+                    }),
+                    returnScene: () => {
+                        Scene.load(TownScene.ins);
+                    },
+                }));
             },
         });
         l.add({
