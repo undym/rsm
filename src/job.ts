@@ -187,6 +187,18 @@ export namespace Job{
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風];
         }
     };
+    export const                         格闘家:Job = new class extends Job{
+        constructor(){super({uniqueName:"格闘家", info:"",
+                                appearLv:15, img:new Img("img/unit/格闘家.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> p.isMasteredJob( Job.訓練生二年生 ),
+                                growthPrms:()=>[[Prm.STR, 1]],
+                                learningTecs:()=>[Tec.格闘攻撃UP, Tec.格闘防御UP],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP];
+        }
+    };
     export const                         剣士:Job = new class extends Job{
         constructor(){super({uniqueName:"剣士", info:"",
                                 appearLv:7, img:new Img("img/unit/剣士.png"),
@@ -199,16 +211,16 @@ export namespace Job{
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.大いなる動き];
         }
     };
-    export const                         格闘家:Job = new class extends Job{
-        constructor(){super({uniqueName:"格闘家", info:"",
-                                appearLv:15, img:new Img("img/unit/格闘家.png"),
+    export const                         忍者:Job = new class extends Job{
+        constructor(){super({uniqueName:"忍者", info:"",
+                                appearLv:50, img:new Img("img/unit/忍者.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 2,
-                                canJobChange:p=> p.isMasteredJob( Job.訓練生二年生 ),
-                                growthPrms:()=>[[Prm.STR, 1]],
-                                learningTecs:()=>[Tec.格闘攻撃UP, Tec.格闘防御UP],
+                                canJobChange:p=> p.isMasteredJob( Job.剣士 ),
+                                growthPrms:()=>[[Prm.STR, 1], [Prm.ARR, 1]],
+                                learningTecs:()=>[Tec.二刀流, Tec.手裏剣, Tec.ジライヤ],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.手裏剣, Tec.手裏剣, Tec.ジライヤ];
         }
     };
     export const                         魔法使い:Job = new class extends Job{
@@ -272,6 +284,18 @@ export namespace Job{
             e.tecs = [Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.殴る, Tec.凍てつく波動];
         }
     };
+    export const                         スネイカー:Job = new class extends Job{
+        constructor(){super({uniqueName:"スネイカー", info:"",
+                                appearLv:72, img:new Img("img/unit/スネイカー.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> p.isMasteredJob( Job.鎖使い ),
+                                growthPrms:()=>[[Prm.CHN, 2]],
+                                learningTecs:()=>[Tec.TP自動回復, Tec.ホワイトスネイク, Tec.血技の技巧],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.殴る, Tec.TP自動回復, Tec.ホワイトスネイク, Tec.血技の技巧];
+        }
+    };
     export const                         ダウザー:Job = new class extends Job{
         constructor(){super({uniqueName:"ダウザー", info:"",
                                 appearLv:32, img:new Img("img/unit/ダウザー.png"),
@@ -306,18 +330,6 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.殴る, Tec.殴る];
-        }
-    };
-    export const                         忍者:Job = new class extends Job{
-        constructor(){super({uniqueName:"忍者", info:"",
-                                appearLv:50, img:new Img("img/unit/忍者.png"),
-                                lvupExp:Job.DEF_LVUP_EXP * 2,
-                                canJobChange:p=> p.isMasteredJob( Job.剣士 ),
-                                growthPrms:()=>[[Prm.STR, 1], [Prm.ARR, 1]],
-                                learningTecs:()=>[Tec.二刀流, Tec.手裏剣, Tec.ジライヤ],
-        });}
-        setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.手裏剣, Tec.手裏剣, Tec.ジライヤ];
         }
     };
     // export const                         格闘家:Job = new class extends Job{

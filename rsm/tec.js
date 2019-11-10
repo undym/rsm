@@ -123,7 +123,7 @@ TecType._values = [];
         constructor() { super("弓術"); }
         createDmg(attacker, target) {
             return new Dmg({
-                pow: attacker.prm(Prm.ARR).total * 1.5 + attacker.prm(Prm.LV).total * 0.2,
+                pow: attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
                 def: target.prm(Prm.GUN).total,
             });
         }
@@ -823,12 +823,14 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          コブラ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"コブラ", info:"一体に練術攻撃2回",
-    //                           type:TecType.練術, targetings:Targeting.SELECT,
-    //                           mul:1, num:2, hit:0.85, tp:3,
-    //     });}
-    // }
+    Tec.ホワイトスネイク = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ホワイトスネイク", info: "一体に練術攻撃x2",
+                type: TecType.練術, targetings: Targeting.SELECT,
+                mul: 2, num: 1, hit: 0.85, tp: 2,
+            });
+        }
+    };
     // export const                          ハブ:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ハブ", info:"全体に練術攻撃　稀に対象を<毒>化",
     //                           type:TecType.練術, targetings:Targeting.ALL,
@@ -1293,8 +1295,11 @@ ActiveTec._valueOf = new Map();
                 target.prm(Prm.MAX_MP).battle += target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
                 target.mp = target.prm(Prm.MAX_MP).total;
                 target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
+                Sound.sin.play();
+                Util.msg.set(`${target.name}に魔力が満ちる...！`);
+                yield wait();
                 Sound.up.play();
-                Util.msg.set(`${target.name}に魔力が満ちた！`);
+                Util.msg.set(`MP全回復 & 魔力x2！！`);
                 yield wait();
             });
         }
@@ -1418,16 +1423,35 @@ ActiveTec._valueOf = new Map();
     //         Unit.healMP(unit, value);
     //     }
     // };
-    // export const                         TP自動回復:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"TP自動回復", info:"行動開始時TP+1%",
-    //                             type:TecType.回復,
-    //     });}
-    //     phaseStart(unit:Unit){
-    //         let value = unit.prm(Prm.MAX_TP).total * 0.01;
-    //         if(value < 1){value = 1;}
-    //         Unit.healTP(unit, value);
-    //     }
-    // };
+    Tec.TP自動回復 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "TP自動回復", info: "行動開始時TP+1　HPMP-1",
+                type: TecType.回復,
+            });
+        }
+        phaseStart(unit) {
+            unit.hp--;
+            unit.mp--;
+            Unit.healTP(unit, 1);
+        }
+    };
+    Tec.血技の技巧 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "血技の技巧", info: "敵から攻撃を受けた時、稀にHP5を吸収",
+                type: TecType.回復,
+            });
+        }
+        afterBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && Math.random() < 0.5) {
+                    attacker.hp -= 5;
+                    target.hp += 5;
+                    Util.msg.set("＞血技の技巧");
+                    yield wait();
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Active

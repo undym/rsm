@@ -829,12 +829,12 @@ export namespace Tec{
                               mul:1, num:1, hit:0.85, tp:1,
         });}
     }
-    // export const                          コブラ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"コブラ", info:"一体に練術攻撃2回",
-    //                           type:TecType.練術, targetings:Targeting.SELECT,
-    //                           mul:1, num:2, hit:0.85, tp:3,
-    //     });}
-    // }
+    export const                          ホワイトスネイク:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ホワイトスネイク", info:"一体に練術攻撃x2",
+                              type:TecType.練術, targetings:Targeting.SELECT,
+                              mul:2, num:1, hit:0.85, tp:2,
+        });}
+    }
     // export const                          ハブ:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ハブ", info:"全体に練術攻撃　稀に対象を<毒>化",
     //                           type:TecType.練術, targetings:Targeting.ALL,
@@ -1364,16 +1364,29 @@ export namespace Tec{
     //         Unit.healMP(unit, value);
     //     }
     // };
-    // export const                         TP自動回復:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"TP自動回復", info:"行動開始時TP+1%",
-    //                             type:TecType.回復,
-    //     });}
-    //     phaseStart(unit:Unit){
-    //         let value = unit.prm(Prm.MAX_TP).total * 0.01;
-    //         if(value < 1){value = 1;}
-    //         Unit.healTP(unit, value);
-    //     }
-    // };
+    export const                         TP自動回復:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"TP自動回復", info:"行動開始時TP+1　HPMP-1",
+                                type:TecType.回復,
+        });}
+        phaseStart(unit:Unit){
+            unit.hp--;
+            unit.mp--;
+            Unit.healTP(unit, 1);
+        }
+    };
+    export const                         血技の技巧:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"血技の技巧", info:"敵から攻撃を受けた時、稀にHP5を吸収",
+                                type:TecType.回復,
+        });}
+        async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && Math.random() < 0.5){
+                attacker.hp -= 5;
+                target.hp += 5;
+
+                Util.msg.set("＞血技の技巧"); await wait();
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Active

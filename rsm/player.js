@@ -53,7 +53,7 @@ Player._valueOf = new Map();
         constructor() { super("ルイン"); }
         createInner(p) {
             p.job = Job.訓練生;
-            p.img = new Img("img/ルイン.png");
+            p.img = new Img("img/unit/ルイン.png");
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -72,7 +72,7 @@ Player._valueOf = new Map();
         createInner(p) {
             p.job = Job.魔法使い;
             p.setJobLv(Job.魔法使い, 1);
-            p.img = new Img("img/ピアー.png");
+            p.img = new Img("img/unit/ピアー.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 4;
             p.prm(Prm.MAX_TP).base = 1;

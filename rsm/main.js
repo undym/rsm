@@ -125,10 +125,6 @@ const setTitle = () => {
             const h = 1;
             const w = img.pixelW / img.pixelH;
             img.draw(new Rect(0.5 - w / 2, 0.5 - h / 2, w, h));
-            // Util.msg.set( `Version(${Version.NOW})` );
-            // for(const s of Version.updateInfo){
-            //     Util.msg.set(s);
-            // }
             const msg = [];
             msg.push(`Version(${Version.NOW})`);
             for (const s of Version.updateInfo) {
@@ -139,8 +135,6 @@ const setTitle = () => {
             });
         },
     });
-    const a = new Img("a");
-    a.draw(Rect.FULL);
     let done = false;
     const listener = ev => {
         if (done) {

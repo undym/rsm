@@ -280,7 +280,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "チョコチョコ";
-            e.img = new Img("img/choco.png");
+            e.img = new Img("img/unit/choco.png");
             e.prm(Prm.MAX_HP).base = 30;
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
@@ -315,7 +315,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "アイアンチョコチョコ";
-            e.img = new Img("img/choco.png");
+            e.img = new Img("img/unit/choco.png");
             e.prm(Prm.MAX_HP).base = 50;
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
@@ -347,7 +347,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊ドロシー";
-            e.img = new Img("img/dorosy.png");
+            e.img = new Img("img/unit/dorosy.png");
             e.prm(Prm.MAX_HP).base = 120;
         };
         async dungeonClearEvent(){
@@ -375,7 +375,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影リリア";
-            e.img = new Img("img/riria.png");
+            e.img = new Img("img/unit/riria.png");
             e.prm(Prm.MAX_HP).base = 120;
         };
         async dungeonClearEvent(){
@@ -403,7 +403,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ハインリヒ";
-            e.img = new Img("img/haine.png");
+            e.img = new Img("img/unit/haine.png");
             e.prm(Prm.MAX_HP).base = 250;
         };
         async dungeonClearEvent(){
@@ -438,7 +438,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影オーロラ";
-            e.img = new Img("img/orora.png");
+            e.img = new Img("img/unit/orora.png");
             e.prm(Prm.MAX_HP).base = 150;
         };
         async dungeonClearEvent(){
@@ -466,7 +466,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ジレンマ";
-            e.img = new Img("img/jirenma.png");
+            e.img = new Img("img/unit/jirenma.png");
             e.prm(Prm.MAX_HP).base = 250;
         };
         async dungeonClearEvent(){
