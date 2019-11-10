@@ -46,7 +46,7 @@ export class SetTecScene extends Scene {
             typeList.add({
                 center: () => "全て",
                 push: elm => {
-                    Sound.pi.play();
+                    Sound.system.play();
                     (this.resetList = keepScroll => {
                         this.list.clear(keepScroll);
                         for (let type of TecType.values()) {
@@ -60,7 +60,7 @@ export class SetTecScene extends Scene {
                 typeList.add({
                     center: () => type.toString(),
                     push: elm => {
-                        Sound.pi.play();
+                        Sound.system.play();
                         (this.resetList = keepScroll => {
                             this.list.clear(keepScroll);
                             this.setList(this.target, `${type}`, type.tecs);
@@ -81,7 +81,7 @@ export class SetTecScene extends Scene {
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.YEN, new Label(Font.def, () => `BP:${this.target.bp}`, () => Color.ORANGE).setBase(Font.RIGHT));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            Sound.pi.play();
+            Sound.system.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

@@ -1382,7 +1382,8 @@ export namespace Tec{
             if(action instanceof ActiveTec && Math.random() < 0.5){
                 attacker.hp -= 5;
                 target.hp += 5;
-
+                
+                Sound.drain.play();
                 Util.msg.set("＞血技の技巧"); await wait();
             }
         }

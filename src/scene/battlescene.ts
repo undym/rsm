@@ -224,7 +224,7 @@ export class BattleScene extends Scene{
                     push:async elm=>{
                         chooseTargetLayout = ILayout.empty;
                         choosedTec = tec;
-                        Sound.pi.play();
+                        Sound.system.play();
 
                         attacker.tecListScroll = index;
 
@@ -287,7 +287,7 @@ export class BattleScene extends Scene{
             push:async elm=>{
                 choosedTec = undefined;
                 chooseTargetLayout = ILayout.empty;
-                Sound.pi.play();
+                Sound.system.play();
 
                 Scene.load( ItemScene.ins({
                     user:attacker,

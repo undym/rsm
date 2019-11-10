@@ -50,7 +50,7 @@ export class SetTecScene extends Scene{
                                 typeList.add({
                                     center:()=>"全て",
                                     push:elm=>{
-                                        Sound.pi.play();
+                                        Sound.system.play();
                                         (this.resetList = keepScroll=>{
                                             this.list.clear(keepScroll);
                                             for(let type of TecType.values()){
@@ -65,7 +65,7 @@ export class SetTecScene extends Scene{
                                     typeList.add({
                                         center:()=>type.toString(),
                                         push:elm=>{
-                                            Sound.pi.play();
+                                            Sound.system.play();
                                             (this.resetList = keepScroll=>{
                                                 this.list.clear(keepScroll);
                                                 this.setList( this.target, `${type}`, type.tecs);
@@ -98,7 +98,7 @@ export class SetTecScene extends Scene{
 
         super.add(Place.LIST_BTN, 
             new Btn("<<", ()=>{
-                Sound.pi.play();
+                Sound.system.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -117,6 +117,7 @@ export class SetTecScene extends Scene{
                     this.target = p;
                     this.setSettingTecList(p, false);
                     this.resetList(false);
+                    Sound.system.play();
                     break;
                 }
             }
@@ -147,6 +148,7 @@ export class SetTecScene extends Scene{
                             this.choosedTec = tec;
                             this.info = createTecInfo(tec, unit);
                             this.useBtn = this.createSetBtn(tec, unit);
+                            Sound.system.play();
                         },
                     });
                 }
@@ -188,6 +190,7 @@ export class SetTecScene extends Scene{
                             this.choosedTec = tec;
                             this.info = createTecInfo(tec, unit);
                             this.useBtn = this.createSetBtn(tec, unit);
+                            Sound.system.play();
                         },
     
                     });

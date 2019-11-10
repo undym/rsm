@@ -150,7 +150,7 @@ export class EqScene extends Scene{
                 typeList.add({
                     center:()=>"全て",
                     push:elm=>{
-                        Sound.pi.play();
+                        Sound.system.play();
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -163,7 +163,7 @@ export class EqScene extends Scene{
                 typeList.add({
                     center:()=>"耳",
                     push:elm=>{
-                        Sound.pi.play();
+                        Sound.system.play();
                         (this.resetList = ()=>{
                             this.list.clear();
                             this.setEarList();
@@ -175,7 +175,7 @@ export class EqScene extends Scene{
                     typeList.add({
                         center:()=>`${pos}`,
                         push:elm=>{
-                            Sound.pi.play();
+                            Sound.system.play();
                             (this.resetList = ()=>{
                                 this.list.clear();
                                 this.setList( pos );
@@ -190,7 +190,7 @@ export class EqScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
-                Sound.pi.play();
+                Sound.system.play();
                 Scene.load(TownScene.ins);
             })
         );
@@ -206,6 +206,7 @@ export class EqScene extends Scene{
 
             for(let p of Unit.players.filter(p=> p.exists)){
                 if(p.boxBounds.contains( Input.point )){
+                    Sound.system.play();
                     this.target = p;
                     this.resetList();
                     break;
@@ -260,6 +261,7 @@ export class EqScene extends Scene{
                     rightColor:color,
                     groundColor:()=>this.choosedType === ChoosedType.EAR && ear === this.choosedEar ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
+                        Sound.system.play();
                         this.choosedEar = ear;
                         this.choosedType = ChoosedType.EAR;
                     },
@@ -292,6 +294,7 @@ export class EqScene extends Scene{
                     rightColor:color,
                     groundColor:()=> this.choosedType === ChoosedType.EQ && eq === this.choosedEq ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
+                        Sound.system.play();
                         this.choosedEq = eq;
                         this.choosedType = ChoosedType.EQ;
                     },

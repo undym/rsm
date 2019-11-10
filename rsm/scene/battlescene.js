@@ -208,7 +208,7 @@ export class BattleScene extends Scene {
                         push: (elm) => __awaiter(this, void 0, void 0, function* () {
                             chooseTargetLayout = ILayout.empty;
                             choosedTec = tec;
-                            Sound.pi.play();
+                            Sound.system.play();
                             attacker.tecListScroll = index;
                             this.tecInfo.tec = Tec.empty;
                             if (tec.targetings & Targeting.SELECT) {
@@ -263,7 +263,7 @@ export class BattleScene extends Scene {
                 push: (elm) => __awaiter(this, void 0, void 0, function* () {
                     choosedTec = undefined;
                     chooseTargetLayout = ILayout.empty;
-                    Sound.pi.play();
+                    Sound.system.play();
                     Scene.load(ItemScene.ins({
                         user: attacker,
                         selectUser: false,

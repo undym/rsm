@@ -34,7 +34,7 @@ export class MixScene extends Scene {
                 push: elm => {
                     const values = Mix.values
                         .filter(m => !m.result && m.isVisible());
-                    Sound.pi.play();
+                    Sound.system.play();
                     this.setList("建築", values);
                 },
             });
@@ -49,7 +49,7 @@ export class MixScene extends Scene {
                         }
                         return false;
                     });
-                    Sound.pi.play();
+                    Sound.system.play();
                     this.setList("装備", values);
                 },
             });
@@ -64,7 +64,7 @@ export class MixScene extends Scene {
                         }
                         return false;
                     });
-                    Sound.pi.play();
+                    Sound.system.play();
                     this.setList("アイテム", values);
                 },
             });
@@ -148,7 +148,7 @@ export class MixScene extends Scene {
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, typeList);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            Sound.pi.play();
+            Sound.system.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

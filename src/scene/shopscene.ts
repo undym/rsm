@@ -111,7 +111,7 @@ export class ShopScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
-                Sound.pi.play();
+                Sound.system.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -142,6 +142,7 @@ export class ShopScene extends Scene{
                     groundColor:()=>goods === this.choosedGoods ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
                         this.choosedGoods = goods;
+                        Sound.system.play();
                     },
                 });
             });

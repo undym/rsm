@@ -92,7 +92,7 @@ Sound.MAX_VOLUME = 10;
     /**踏破. */
     Sound.lvup = new Sound("sound/lvup.mp3");
     /**選択音. */
-    Sound.pi = new Sound("sound/pi.mp3");
+    Sound.system = new Sound("sound/pi.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
     Sound.save = new Sound("sound/save.mp3");

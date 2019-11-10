@@ -83,7 +83,7 @@ export class PartySkillScene extends Scene {
         })())));
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            Sound.pi.play();
+            Sound.system.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

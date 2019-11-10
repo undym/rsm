@@ -77,7 +77,7 @@ export class ItemScene extends Scene {
                 typeList.add({
                     center: () => type.toString(),
                     push: elm => {
-                        Sound.pi.play();
+                        Sound.system.play();
                         this.setList(type);
                     },
                 });
@@ -87,7 +87,7 @@ export class ItemScene extends Scene {
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            Sound.pi.play();
+            Sound.system.play();
             this.returnScene();
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

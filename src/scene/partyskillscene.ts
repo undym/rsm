@@ -100,7 +100,7 @@ export class PartySkillScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
-                Sound.pi.play();
+                Sound.system.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -133,6 +133,7 @@ export class PartySkillScene extends Scene{
                         rightColor:color,
                         groundColor:()=>SettingSkillMap.has(skill) ? Color.D_CYAN : Color.BLACK,
                         push:(elm)=>{
+                            Sound.system.play();
                             this.choosedSkill = skill;
                         },
     
@@ -162,6 +163,7 @@ export class PartySkillScene extends Scene{
                     rightColor:color,
                     groundColor:()=>SettingSkillMap.has(skill) ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
+                        Sound.system.play();
                         this.choosedSkill = skill;
                     },
                 });

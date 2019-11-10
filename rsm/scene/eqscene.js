@@ -135,7 +135,7 @@ export class EqScene extends Scene {
             typeList.add({
                 center: () => "全て",
                 push: elm => {
-                    Sound.pi.play();
+                    Sound.system.play();
                     (this.resetList = () => {
                         this.list.clear();
                         this.setEarList();
@@ -148,7 +148,7 @@ export class EqScene extends Scene {
             typeList.add({
                 center: () => "耳",
                 push: elm => {
-                    Sound.pi.play();
+                    Sound.system.play();
                     (this.resetList = () => {
                         this.list.clear();
                         this.setEarList();
@@ -159,7 +159,7 @@ export class EqScene extends Scene {
                 typeList.add({
                     center: () => `${pos}`,
                     push: elm => {
-                        Sound.pi.play();
+                        Sound.system.play();
                         (this.resetList = () => {
                             this.list.clear();
                             this.setList(pos);
@@ -171,7 +171,7 @@ export class EqScene extends Scene {
             .setRadioBtnMode(true, () => Color.BLACK, () => Color.D_CYAN)
             .push(0));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            Sound.pi.play();
+            Sound.system.play();
             Scene.load(TownScene.ins);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);

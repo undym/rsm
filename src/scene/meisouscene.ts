@@ -153,7 +153,7 @@ export class MeisouScene extends Scene{
 
         super.add(Place.LIST_BTN,
             new Btn("<<", ()=>{
-                Sound.pi.play();
+                Sound.system.play();
                 Scene.load( TownScene.ins );
             })
         );
@@ -169,6 +169,7 @@ export class MeisouScene extends Scene{
             for(let p of Unit.players.filter(p=> p.exists)){
                 if(p.boxBounds.contains( Input.point )){
                     this.target = p;
+                    Sound.system.play();
                     break;
                 }
             }
