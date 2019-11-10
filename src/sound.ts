@@ -70,18 +70,25 @@ export class Sound{
 
 
 export namespace Sound{
+    /**毒. */
+    export const awa        = new Sound("sound/awa.mp3");
     /**罠発動. */
     export const blood      = new Sound("sound/blood.mp3");
     /**瞑想. */
     export const bpup       = new Sound("sound/bpup.mp3");
+    export const chain      = new Sound("sound/chain.mp3");
     /**休む. */
     export const camp       = new Sound("sound/camp.mp3");
     export const COIN       = new Sound("sound/COIN.mp3");
+    // /**状態弱化. */
+    // export const DARK       = new Sound("sound/DARK.mp3");
     export const death      = new Sound("sound/death.mp3");
     export const exp        = new Sound("sound/exp.mp3");
     export const gameover   = new Sound("sound/gameover.mp3");
+    export const gun        = new Sound("sound/gun.mp3");
     export const ITEM_GET   = new Sound("sound/ITEM_GET.mp3");
     export const KAIFUKU    = new Sound("sound/KAIFUKU.mp3");
+    export const kako       = new Sound("sound/kako.mp3");
     /**買い物. */
     export const KATAN      = new Sound("sound/KATAN.mp3");
     /**伐採. */
@@ -100,10 +107,18 @@ export namespace Sound{
     export const pi         = new Sound("sound/pi.mp3");
     /**格闘攻撃. */
     export const PUNCH      = new Sound("sound/PUNCH.mp3");
+    export const save       = new Sound("sound/save.mp3");
+    /**凍てつく波動. */
+    export const seikou     = new Sound("sound/seikou.mp3");
+    /**神格攻撃. */
+    export const sin        = new Sound("sound/sin.mp3");
+    export const TRAGER     = new Sound("sound/TRAGER.mp3");
+    /**状態強化. */
+    export const up         = new Sound("sound/up.mp3");
+    export const win        = new Sound("sound/win.mp3");
     export const walk       = new Sound("sound/walk.mp3");
     /**ダンジョン出入り. */
     export const walk2      = new Sound("sound/walk2.mp3");
-    export const save       = new Sound("sound/save.mp3");
-    export const TRAGER     = new Sound("sound/TRAGER.mp3");
-    export const win        = new Sound("sound/win.mp3");
+    /**arr. */
+    export const ya         = new Sound("sound/ya.mp3");
 }

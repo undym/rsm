@@ -73,7 +73,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_神格(target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.sin.play(); }
     };
     TecType.暗黒 = new class extends TecType {
         constructor() { super("暗黒"); }
@@ -84,7 +84,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_暗黒(target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.KEN.play(); }
     };
     TecType.練術 = new class extends TecType {
         constructor() { super("練術"); }
@@ -95,7 +95,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_練術(attacker.imgBounds.center, target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.chain.play(); }
     };
     TecType.過去 = new class extends TecType {
         constructor() { super("過去"); }
@@ -106,7 +106,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_過去(target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.kako.play(); }
     };
     TecType.銃術 = new class extends TecType {
         constructor() { super("銃術"); }
@@ -117,7 +117,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_銃術(attacker.imgBounds.center, target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.gun.play(); }
     };
     TecType.弓術 = new class extends TecType {
         constructor() { super("弓術"); }
@@ -128,7 +128,7 @@ TecType._values = [];
             });
         }
         effect(attacker, target, dmg) { FX_銃術(attacker.imgBounds.center, target.imgBounds.center); }
-        sound() { }
+        sound() { Sound.ya.play(); }
     };
     TecType.状態 = new class extends TecType {
         constructor() { super("状態"); }
@@ -447,6 +447,7 @@ ActiveTec._valueOf = new Map();
     //格闘Passive
     //
     //--------------------------------------------------------------------------
+    /**格闘家. */
     Tec.格闘攻撃UP = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "格闘攻撃UP", info: "格闘攻撃x1.2",
@@ -459,6 +460,7 @@ ActiveTec._valueOf = new Map();
             }
         }
     };
+    /**格闘家. */
     Tec.格闘防御UP = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "格闘防御UP", info: "被格闘攻撃-20%",
@@ -486,6 +488,21 @@ ActiveTec._valueOf = new Map();
                     yield Tec.格闘カウンター.run(target, attacker);
                 }
             });
+        }
+    };
+    /**忍者. */
+    Tec.二刀流 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "二刀流", info: "追加格闘攻撃",
+                type: TecType.格闘,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                dmg.additinalAttacks.push((dmg, i) => {
+                    return dmg.result.value / 2;
+                });
+            }
         }
     };
     // export const                         急所:PassiveTec = new class extends PassiveTec{
@@ -525,27 +542,52 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          エヴィン:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"エヴィン", info:"一体に魔法攻撃x2",
-    //                           type:TecType.魔法, targetings:Targeting.SELECT,
-    //                           mul:2, num:1, hit:1.2, mp:2,
-    //     });}
-    // }
+    /**魔法使い. */
+    Tec.エヴィン = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "エヴィン", info: "一体に魔法攻撃x1.5",
+                type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 1.5, num: 1, hit: 1.2, mp: 2,
+            });
+        }
+    };
+    /**ウィザード. */
+    Tec.オグマ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "オグマ", info: "一体に魔法攻撃x2",
+                type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 2, num: 1, hit: 1.2, mp: 4,
+            });
+        }
+    };
+    /**ウィザード. */
+    Tec.ルー = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ルー", info: "一体に魔法攻撃x2.5",
+                type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 2.5, num: 1, hit: 1.2, mp: 7,
+            });
+        }
+    };
+    /**未設定. */
+    Tec.エヴァ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "エヴァ", info: "一体に暗黒値を加えて魔法攻撃",
+                type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1.2, mp: 5,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.abs.add += attacker.prm(Prm.DRK).total;
+            return dmg;
+        }
+    };
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
     //                           type:TecType.魔法, targetings:Targeting.SELECT,
     //                           mul:3, num:1, hit:1.2, mp:4,
     //     });}
-    // }
-    // export const                          オグマ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"オグマ", info:"一体に魔法攻撃　自分を＜闇1＞（攻撃に暗黒値を加算）化",
-    //                           type:TecType.魔法, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:1.2, mp:4,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         await super.run(attacker, target);
-    //         Unit.setCondition(attacker, Condition.闇, 1);
-    //     }
     // }
     /**無習得技. */
     Tec.魔法カウンター = new class extends ActiveTec {
@@ -566,16 +608,19 @@ ActiveTec._valueOf = new Map();
     //魔法Passive
     //
     //--------------------------------------------------------------------------
-    // export const                         魔法攻撃UP:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"魔法攻撃UP", info:"魔法攻撃x1.2",
-    //                             type:TecType.魔法,
-    //     });}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type === TecType.魔法){
-    //             dmg.pow.mul *= 1.2;
-    //         }
-    //     }
-    // };
+    /**ウィザード. */
+    Tec.魔法攻撃UP = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "魔法攻撃UP", info: "魔法攻撃x1.2",
+                type: TecType.魔法,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            if (action instanceof ActiveTec && action.type === TecType.魔法) {
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    };
     // export const                         保湿クリーム:PassiveTec = new class extends PassiveTec{
     //     constructor(){super({uniqueName:"保湿クリーム", info:"被魔法・暗黒・過去・弓術攻撃-20%",
     //                             type:TecType.魔法,
@@ -956,11 +1001,21 @@ ActiveTec._valueOf = new Map();
     /**アーチャー. */
     Tec.アスラの矢 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "アスラの矢", info: "全体に弓攻撃",
+            super({ uniqueName: "アスラの矢", info: "全体に弓術攻撃",
                 type: TecType.弓術, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 0.8, ep: 1,
             });
         }
+    };
+    /**忍者. */
+    Tec.手裏剣 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "手裏剣", info: "ランダムに2～3回弓術攻撃",
+                type: TecType.弓術, targetings: Targeting.RANDOM,
+                mul: 1, num: 1, hit: 0.8,
+            });
+        }
+        rndAttackNum() { return randomInt(2, 4, "[]"); }
     };
     // export const                          ヤクシャ:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ヤクシャ", info:"一体に弓術攻撃2回　夜叉の矢",
@@ -1002,6 +1057,7 @@ ActiveTec._valueOf = new Map();
                     return;
                 }
                 Unit.setCondition(target, Condition.練, value);
+                Sound.up.play();
             });
         }
     };
@@ -1028,6 +1084,7 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 const value = attacker.prm(Prm.DRK).total + 1;
                 Unit.setCondition(target, Condition.毒, value);
+                Sound.awa.play();
             });
         }
     };
@@ -1037,6 +1094,16 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "恵まれし者", info: "味方全体を＜癒＞化、敵全体を＜毒＞化",
                 type: TecType.状態, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
                 mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.use.call(this, attacker, targets);
+                Sound.up.play();
+                Sound.awa.play();
             });
         }
         run(attacker, target) {
@@ -1062,6 +1129,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 target.clearAllCondition();
+                Sound.seikou.play();
                 Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright);
                 yield wait();
             });
@@ -1077,6 +1145,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Unit.setCondition(target, Condition.癒, 10);
+                Sound.up.play();
             });
         }
     };
@@ -1192,11 +1261,13 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                this.effect(attacker, target, new Dmg());
                 const dmg = this.createDmg(attacker, target);
                 const value = dmg.calc().value;
                 Unit.healHP(target, value);
+                Sound.KAIFUKU.play();
+                this.effect(attacker, target, new Dmg());
                 Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                yield wait();
             });
         }
     };
@@ -1212,7 +1283,7 @@ ActiveTec._valueOf = new Map();
     /**魔法使い. */
     Tec.ジョンD = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ジョンD", info: "自分の最大MPを倍加　MP回復",
+            super({ uniqueName: "ジョンD", info: "自分の最大MPを倍加　MP回復　魔x2",
                 type: TecType.回復, targetings: Targeting.SELF,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
@@ -1221,6 +1292,8 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 target.prm(Prm.MAX_MP).battle += target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
                 target.mp = target.prm(Prm.MAX_MP).total;
+                target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
+                Sound.up.play();
                 Util.msg.set(`${target.name}に魔力が満ちた！`);
                 yield wait();
             });
@@ -1234,13 +1307,52 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.use.call(this, attacker, targets);
+                Sound.KAIFUKU.play();
+            });
+        }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                this.effect(attacker, target, new Dmg());
                 target.dead = false;
                 Unit.healHP(target, target.prm(Prm.MAX_HP).total);
                 Unit.healMP(target, target.prm(Prm.MAX_MP).total);
                 Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                this.effect(attacker, target, new Dmg());
+            });
+        }
+    };
+    /**忍者. */
+    Tec.ジライヤ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ジライヤ", info: "自分のHPMPTP回復　ステータスx1.2　＜風3＞化",
+                type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                this.effect(attacker, target, new Dmg());
+                Unit.healHP(target, target.prm(Prm.MAX_HP).total);
+                Unit.healMP(target, target.prm(Prm.MAX_MP).total);
+                Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                Sound.KAIFUKU.play();
+                Util.msg.set("全回復！");
+                yield wait();
+                for (const prm of [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR]) {
+                    target.prm(prm).battle += target.prm(prm).total * 0.2;
+                }
+                Sound.up.play();
+                Util.msg.set("ステータス増加！！");
+                yield wait();
+                Unit.setCondition(target, Condition.風, 3);
+                Sound.up.play();
+                Util.msg.set("＜風＞化！！！");
+                yield wait();
             });
         }
     };
@@ -1330,6 +1442,7 @@ ActiveTec._valueOf = new Map();
         }
         use(attacker, targets) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.camp.play();
                 Util.msg.set(`${attacker.name}は空を眺めている...`);
                 yield wait();
             });

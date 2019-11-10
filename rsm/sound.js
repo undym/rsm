@@ -58,18 +58,25 @@ Sound._values = [];
 Sound.MIN_VOLUME = -10;
 Sound.MAX_VOLUME = 10;
 (function (Sound) {
+    /**毒. */
+    Sound.awa = new Sound("sound/awa.mp3");
     /**罠発動. */
     Sound.blood = new Sound("sound/blood.mp3");
     /**瞑想. */
     Sound.bpup = new Sound("sound/bpup.mp3");
+    Sound.chain = new Sound("sound/chain.mp3");
     /**休む. */
     Sound.camp = new Sound("sound/camp.mp3");
     Sound.COIN = new Sound("sound/COIN.mp3");
+    // /**状態弱化. */
+    // export const DARK       = new Sound("sound/DARK.mp3");
     Sound.death = new Sound("sound/death.mp3");
     Sound.exp = new Sound("sound/exp.mp3");
     Sound.gameover = new Sound("sound/gameover.mp3");
+    Sound.gun = new Sound("sound/gun.mp3");
     Sound.ITEM_GET = new Sound("sound/ITEM_GET.mp3");
     Sound.KAIFUKU = new Sound("sound/KAIFUKU.mp3");
+    Sound.kako = new Sound("sound/kako.mp3");
     /**買い物. */
     Sound.KATAN = new Sound("sound/KATAN.mp3");
     /**伐採. */
@@ -88,10 +95,18 @@ Sound.MAX_VOLUME = 10;
     Sound.pi = new Sound("sound/pi.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
+    Sound.save = new Sound("sound/save.mp3");
+    /**凍てつく波動. */
+    Sound.seikou = new Sound("sound/seikou.mp3");
+    /**神格攻撃. */
+    Sound.sin = new Sound("sound/sin.mp3");
+    Sound.TRAGER = new Sound("sound/TRAGER.mp3");
+    /**状態強化. */
+    Sound.up = new Sound("sound/up.mp3");
+    Sound.win = new Sound("sound/win.mp3");
     Sound.walk = new Sound("sound/walk.mp3");
     /**ダンジョン出入り. */
     Sound.walk2 = new Sound("sound/walk2.mp3");
-    Sound.save = new Sound("sound/save.mp3");
-    Sound.TRAGER = new Sound("sound/TRAGER.mp3");
-    Sound.win = new Sound("sound/win.mp3");
+    /**arr. */
+    Sound.ya = new Sound("sound/ya.mp3");
 })(Sound || (Sound = {}));

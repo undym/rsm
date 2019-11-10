@@ -246,7 +246,7 @@ export abstract class Unit{
     //
     //
     //---------------------------------------------------------
-    async doDmg(dmg:Dmg){
+    doDmg(dmg:Dmg){
         if(!this.exists || this.dead){return;}
 
         const result = dmg.calc();
@@ -505,7 +505,8 @@ export class PUnit extends Unit{
 
     getNextLvExp():number{
         const lv = this.prm(Prm.LV).base;
-        return (lv * (lv/30+1) * 10)|0;
+        const grade = (lv/100+1)|0;
+        return (lv * grade * 10)|0;
     }
     //---------------------------------------------------------
     //

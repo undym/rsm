@@ -194,38 +194,36 @@ export class Unit {
     //
     //---------------------------------------------------------
     doDmg(dmg) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.exists || this.dead) {
-                return;
-            }
-            const result = dmg.calc();
-            const font = new Font(80, Font.BOLD);
-            const point = {
-                x: this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
-                y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
-            };
-            if (result.isHit) {
-                this.hp -= result.value;
-                // FX_Shake(this.bounds);
-                const stbox = new DrawSTBox(() => this);
-                FX_Shake(this.boxBounds, bounds => {
-                    Graphics.fillRect(bounds, Color.BLACK);
-                    stbox.draw(bounds);
-                });
-                FX_RotateStr(font, `${result.value}`, point, Color.WHITE);
-                Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
-                dmg.additinalAttacks.forEach((aa, index) => {
-                    const value = aa(dmg, index) | 0;
-                    this.hp -= value;
-                    Util.msg.set(`+${value}`, Color.RED.bright);
-                });
-            }
-            else {
-                FX_RotateStr(font, `MISS`, point, Color.RED);
-                Util.msg.set("MISS");
-            }
-            this.tp += 1;
-        });
+        if (!this.exists || this.dead) {
+            return;
+        }
+        const result = dmg.calc();
+        const font = new Font(80, Font.BOLD);
+        const point = {
+            x: this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
+            y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
+        };
+        if (result.isHit) {
+            this.hp -= result.value;
+            // FX_Shake(this.bounds);
+            const stbox = new DrawSTBox(() => this);
+            FX_Shake(this.boxBounds, bounds => {
+                Graphics.fillRect(bounds, Color.BLACK);
+                stbox.draw(bounds);
+            });
+            FX_RotateStr(font, `${result.value}`, point, Color.WHITE);
+            Util.msg.set(`${this.name}に${result.value}のダメージ`, Color.RED.bright);
+            dmg.additinalAttacks.forEach((aa, index) => {
+                const value = aa(dmg, index) | 0;
+                this.hp -= value;
+                Util.msg.set(`+${value}`, Color.RED.bright);
+            });
+        }
+        else {
+            FX_RotateStr(font, `MISS`, point, Color.RED);
+            Util.msg.set("MISS");
+        }
+        this.tp += 1;
     }
     judgeDead() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -465,7 +463,8 @@ export class PUnit extends Unit {
     }
     getNextLvExp() {
         const lv = this.prm(Prm.LV).base;
-        return (lv * (lv / 30 + 1) * 10) | 0;
+        const grade = (lv / 100 + 1) | 0;
+        return (lv * grade * 10) | 0;
     }
     //---------------------------------------------------------
     //

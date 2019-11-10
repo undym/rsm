@@ -1,7 +1,17 @@
 /**[)*/
-export const randomInt = (min, max) => {
-    const _min = min | 0;
-    const _max = (max | 0) - _min;
+export const randomInt = (min, max, boundaries = "[)") => {
+    if (boundaries.length > 2) {
+        console.log(`randomInt() illiegal boundaries: ${boundaries}`);
+        boundaries = "[)";
+    }
+    let _min = min | 0;
+    if (boundaries.substring(0, 1) === "(") {
+        _min++;
+    }
+    let _max = (max | 0) - _min;
+    if (boundaries.substring(1, 2) === "]") {
+        _max++;
+    }
     return (_min + Math.random() * _max) | 0;
 };
 export const randomFloat = (min, max) => {

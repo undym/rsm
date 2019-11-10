@@ -403,7 +403,7 @@ DungeonArea._valueOf = new Map();
             this.isVisible = () => Dungeon.黒い丘.dungeonClearCount > 0;
             this.setBossInner = () => {
                 let e = Unit.enemies[0];
-                Job.ガンマン.setEnemy(e, e.prm(Prm.LV).base);
+                Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "イス都長";
                 e.prm(Prm.MAX_HP).base = 250;
             };
