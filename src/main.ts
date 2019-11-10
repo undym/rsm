@@ -159,22 +159,18 @@ const setTitle = ()=>{
                 h
             ));
             
-            // Util.msg.set( `Version(${Version.NOW})` );
-            // for(const s of Version.updateInfo){
-            //     Util.msg.set(s);
-            // }
             const msg:string[] = [];
             msg.push(`Version(${Version.NOW})`);
             for(const s of Version.updateInfo){
                 msg.push(s);
             }
-            msg.push("test0");
 
             msg.forEach((s,i)=>{
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
             });
         },
     });
+    
 
     let done = false;
     const listener:(this:Document, ev:TouchEvent)=>any = ev=>{

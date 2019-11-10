@@ -132,7 +132,7 @@ export namespace TecType{
         constructor(){super("弓術");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.ARR).total * 1.5 + attacker.prm(Prm.LV).total * 0.2,
+                pow:attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
                 def:target.prm(Prm.GUN).total,
             });
         }
@@ -1250,8 +1250,11 @@ export namespace Tec{
             target.mp = target.prm(Prm.MAX_MP).total;
             target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
 
+            Sound.sin.play();
+            Util.msg.set(`${target.name}に魔力が満ちる...！`); await wait();
+
             Sound.up.play();
-            Util.msg.set(`${target.name}に魔力が満ちた！`); await wait();
+            Util.msg.set(`MP全回復 & 魔力x2！！`); await wait();
         }
     }
     /**天使. */

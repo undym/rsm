@@ -165,7 +165,7 @@ export abstract class Job{
 export namespace Job{
     export const                         訓練生:Job = new class extends Job{
         constructor(){super({uniqueName:"訓練生", info:"",
-                                appearLv:0, img:new Img("img/訓練生.png"),
+                                appearLv:0, img:new Img("img/unit/訓練生.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> true,
                                 growthPrms:()=>[[Prm.MAX_HP, 1]],
@@ -177,7 +177,7 @@ export namespace Job{
     };
     export const                         訓練生二年生:Job = new class extends Job{
         constructor(){super({uniqueName:"訓練生二年生", info:"",
-                                appearLv:30, img:new Img("img/訓練生二年生.png"),
+                                appearLv:30, img:new Img("img/unit/訓練生二年生.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob(訓練生),
                                 growthPrms:()=>[[Prm.MAX_HP, 1]],
@@ -189,7 +189,7 @@ export namespace Job{
     };
     export const                         剣士:Job = new class extends Job{
         constructor(){super({uniqueName:"剣士", info:"",
-                                appearLv:7, img:new Img("img/剣士.png"),
+                                appearLv:7, img:new Img("img/unit/剣士.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.STR, 1]],
@@ -201,7 +201,7 @@ export namespace Job{
     };
     export const                         格闘家:Job = new class extends Job{
         constructor(){super({uniqueName:"格闘家", info:"",
-                                appearLv:15, img:new Img("img/格闘家.png"),
+                                appearLv:15, img:new Img("img/unit/格闘家.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 2,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生二年生 ),
                                 growthPrms:()=>[[Prm.STR, 1]],
@@ -213,7 +213,7 @@ export namespace Job{
     };
     export const                         魔法使い:Job = new class extends Job{
         constructor(){super({uniqueName:"魔法使い", info:"魔法攻撃を扱う職業",
-                                appearLv:5, img:new Img("img/魔法使い.png"),
+                                appearLv:5, img:new Img("img/unit/魔法使い.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.MAG, 1]],
@@ -226,7 +226,7 @@ export namespace Job{
     };
     export const                         ウィザード:Job = new class extends Job{
         constructor(){super({uniqueName:"ウィザード", info:"魔法攻撃を扱う職業",
-                                appearLv:55, img:new Img("img/ウィザード.png"),
+                                appearLv:55, img:new Img("img/unit/ウィザード.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 2,
                                 canJobChange:p=> p.isMasteredJob( Job.魔法使い ),
                                 growthPrms:()=>[[Prm.MAG, 2]],
@@ -238,7 +238,7 @@ export namespace Job{
     };
     export const                         天使:Job = new class extends Job{
         constructor(){super({uniqueName:"天使", info:"",
-                                appearLv:12, img:new Img("img/天使.png"),
+                                appearLv:12, img:new Img("img/unit/天使.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.LIG, 1]],
@@ -250,7 +250,7 @@ export namespace Job{
     };
     export const                         毒使い:Job = new class extends Job{
         constructor(){super({uniqueName:"毒使い", info:"",
-                                appearLv:20, img:new Img("img/毒使い.png"),
+                                appearLv:20, img:new Img("img/unit/毒使い.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.DRK, 1]],
@@ -262,7 +262,7 @@ export namespace Job{
     };
     export const                         鎖使い:Job = new class extends Job{
         constructor(){super({uniqueName:"鎖使い", info:"",
-                                appearLv:52, img:new Img("img/鎖使い.png"),
+                                appearLv:52, img:new Img("img/unit/鎖使い.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.CHN, 1]],
@@ -274,7 +274,7 @@ export namespace Job{
     };
     export const                         ダウザー:Job = new class extends Job{
         constructor(){super({uniqueName:"ダウザー", info:"",
-                                appearLv:32, img:new Img("img/ダウザー.png"),
+                                appearLv:32, img:new Img("img/unit/ダウザー.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.PST, 1]],
@@ -286,7 +286,7 @@ export namespace Job{
     };
     export const                         カウボーイ:Job = new class extends Job{
         constructor(){super({uniqueName:"カウボーイ", info:"",
-                                appearLv:22, img:new Img("img/カウボーイ.png"),
+                                appearLv:22, img:new Img("img/unit/カウボーイ.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.GUN, 1]],
@@ -298,7 +298,7 @@ export namespace Job{
     };
     export const                         アーチャー:Job = new class extends Job{
         constructor(){super({uniqueName:"アーチャー", info:"",
-                                appearLv:25, img:new Img("img/アーチャー.png"),
+                                appearLv:25, img:new Img("img/unit/アーチャー.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.ARR, 1]],
@@ -310,7 +310,7 @@ export namespace Job{
     };
     export const                         忍者:Job = new class extends Job{
         constructor(){super({uniqueName:"忍者", info:"",
-                                appearLv:50, img:new Img("img/忍者.png"),
+                                appearLv:50, img:new Img("img/unit/忍者.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 2,
                                 canJobChange:p=> p.isMasteredJob( Job.剣士 ),
                                 growthPrms:()=>[[Prm.STR, 1], [Prm.ARR, 1]],

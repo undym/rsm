@@ -134,12 +134,13 @@ const setTitle = () => {
             for (const s of Version.updateInfo) {
                 msg.push(s);
             }
-            msg.push("test0");
             msg.forEach((s, i) => {
                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
             });
         },
     });
+    const a = new Img("a");
+    a.draw(Rect.FULL);
     let done = false;
     const listener = ev => {
         if (done) {
