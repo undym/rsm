@@ -998,31 +998,43 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.消耗品のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "消耗品のメモ", info: "一部の消耗品はダンジョンに入る度に補充される",
+            super({ uniqueName: "消耗品のメモ", info: "ごく一部の消耗品はダンジョンに入る度に補充される。脱出ポッドなどがそれに該当する...と書かれている",
                 type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.セーブのメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "セーブのメモ", info: "このゲームに自動セーブの機能はないらしい...",
+            super({ uniqueName: "セーブのメモ", info: "このゲームに自動セーブの機能はないらしい...と書かれている",
                 type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.夏のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "夏のメモ", info: "夏はいつ終わるの？",
+            super({ uniqueName: "夏のメモ", info: "夏はいつ終わるの？...と書かれている",
+                type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.HP至上主義のメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "HP至上主義のメモ", info: "とりあえずHPを上げれば間違いはない、俺は詳しいんだ...と書かれている",
+                type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.HP懐疑主義のメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "HP懐疑主義のメモ", info: "何も考えずにHPを上げるのは危険だ、騙されないぞ...と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.ジスカルドのメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん",
+            super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん...と書かれている",
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.合成許可証 = new class extends Item {
         constructor() {
-            super({ uniqueName: "合成許可証", info: "合成してもいいよ",
+            super({ uniqueName: "合成許可証", info: "合成してもいいよ...と書かれている",
                 type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
