@@ -98,7 +98,7 @@ Sound.MAX_VOLUME = 10;
     /**神格攻撃. */
     Sound.sin = new Sound("sound/sin.mp3");
     /**選択音. */
-    Sound.system = new Sound("sound/1.mp3");
+    Sound.system = new Sound("sound/turn_who.mp3");
     Sound.TRAGER = new Sound("sound/TRAGER.mp3");
     /**状態強化. */
     Sound.up = new Sound("sound/up.mp3");

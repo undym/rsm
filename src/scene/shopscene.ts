@@ -133,7 +133,7 @@ export class ShopScene extends Scene{
             .forEach(goods=>{
                 this.list.add({
                     left:()=>goods.left,
-                    right:()=> goods.isVisible() ? goods.toString() : `-`,
+                    right:()=> goods.isVisible() ? goods.name : `-`,
                     groundColor:()=>goods === this.choosedGoods ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
                         this.choosedGoods = goods;

@@ -110,7 +110,7 @@ export namespace Sound{
     /**神格攻撃. */
     export const sin        = new Sound("sound/sin.mp3");
     /**選択音. */
-    export const system     = new Sound("sound/1.mp3");
+    export const system     = new Sound("sound/turn_who.mp3");
     export const TRAGER     = new Sound("sound/TRAGER.mp3");
     /**状態強化. */
     export const up         = new Sound("sound/up.mp3");

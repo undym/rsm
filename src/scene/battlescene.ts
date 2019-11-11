@@ -303,7 +303,7 @@ export class BattleScene extends Scene{
                                 await this.phaseEnd();
                             });
                         }else{
-                            let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
+                            let targets = Targeting.filter( item.targetings, user, Unit.all, /*num*/1 );
                             
                             await item.use( user, targets );
                             await this.phaseEnd();
