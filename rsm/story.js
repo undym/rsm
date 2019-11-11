@@ -8,8 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Util } from "./util.js";
 import { cwait } from "./undym/scene.js";
-import { Color } from "./undym/type.js";
+import { Color, Rect } from "./undym/type.js";
 import { Sound } from "./sound.js";
+import { ILayout } from "./undym/layout.js";
+import { BattleScene } from "./scene/battlescene.js";
+import { Graphics } from "./graphics/graphics.js";
 export class Story {
     defMsg(msgs) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -21,10 +24,30 @@ export class Story {
         });
     }
 }
+const setStoryFX = () => {
+    BattleScene.ins.add(Rect.FULL, ILayout.create({ draw: bounds => {
+            // const lineNum = (Math.random() * 10)|0;
+            // for(let i = 0; i < lineNum; i++){
+            //     const p1 = new Point(Math.random(), Math.random());
+            //     const p2 = new Point(Math.random(), p1.y * (0.9 + 0.2 * Math.random()));
+            //     Graphics.line(p1, p2, Color.BLACK);
+            // }
+            if (Math.random() < 0.8) {
+                return;
+            }
+            const r = new Rect(Math.random(), Math.random(), Math.random(), Math.random());
+            if (r.w <= Graphics.dotW * 10 || r.h <= Graphics.dotH * 10) {
+                return;
+            }
+            const texture = Graphics.createTexture(r);
+            texture.draw(new Rect(r.x * (0.95 + 0.1 * Math.random()), r.y * (0.95 + 0.1 * Math.random()), r.w * (0.95 + 0.1 * Math.random()), r.h * (0.95 + 0.1 * Math.random())));
+        } }));
+};
 (function (Story) {
     Story.MAIN_1 = new class extends Story {
         run() {
             return __awaiter(this, void 0, void 0, function* () {
+                setStoryFX();
                 yield this.defMsg([
                     ".",
                     ".",

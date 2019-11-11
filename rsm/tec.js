@@ -1607,7 +1607,7 @@ ActiveTec._valueOf = new Map();
         }
         use(attacker, targets) {
             return __awaiter(this, void 0, void 0, function* () {
-                Sound.camp.play();
+                Sound.exp.play();
                 Util.msg.set(`${attacker.name}は空を眺めている...`);
                 yield wait();
             });

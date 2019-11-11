@@ -57,7 +57,7 @@ export class ItemParentType {
 }
 ItemParentType._values = [];
 ItemParentType.回復 = new ItemParentType("回復", [ItemType.蘇生, ItemType.HP回復, ItemType.MP回復]);
-ItemParentType.状態 = new ItemParentType("戦闘", [ItemType.状態]);
+ItemParentType.状態 = new ItemParentType("状態", [ItemType.状態]);
 ItemParentType.ダンジョン = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾, ItemType.鍵]);
 ItemParentType.戦闘 = new ItemParentType("戦闘", [ItemType.ダメージ]);
 ItemParentType.強化 = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);

@@ -136,23 +136,23 @@ export class EqScene extends Scene {
                 center: () => "全て",
                 push: elm => {
                     Sound.system.play();
-                    (this.resetList = () => {
-                        this.list.clear();
+                    (this.resetList = (keepScroll) => {
+                        this.list.clear(keepScroll);
                         this.setEarList();
                         for (const pos of EqPos.values()) {
                             this.setList(pos);
                         }
-                    })();
+                    })(false);
                 },
             });
             typeList.add({
                 center: () => "耳",
                 push: elm => {
                     Sound.system.play();
-                    (this.resetList = () => {
-                        this.list.clear();
+                    (this.resetList = (keepScroll) => {
+                        this.list.clear(keepScroll);
                         this.setEarList();
-                    })();
+                    })(false);
                 }
             });
             for (let pos of EqPos.values()) {
@@ -160,10 +160,10 @@ export class EqScene extends Scene {
                     center: () => `${pos}`,
                     push: elm => {
                         Sound.system.play();
-                        (this.resetList = () => {
-                            this.list.clear();
+                        (this.resetList = (keepScroll) => {
+                            this.list.clear(keepScroll);
                             this.setList(pos);
-                        })();
+                        })(false);
                     },
                 });
             }
@@ -187,7 +187,7 @@ export class EqScene extends Scene {
                     if (p.boxBounds.contains(Input.point)) {
                         Sound.system.play();
                         this.target = p;
-                        this.resetList();
+                        this.resetList(true);
                         break;
                     }
                 }

@@ -59,12 +59,12 @@ export class TownScene extends Scene{
                                     .add(()=>`Lv:${d().enemyLv}`)
                                     .add(()=>`攻略回数:${d().dungeonClearCount}`, ()=>d().dungeonClearCount > 0 ? Color.WHITE : Color.GRAY)
                                     .add(()=>`鍵:${d().treasureKey}`)
-                                    .add(()=>`EX:`)
+                                    .add(()=>`Extra:`)
                                     .addArray(()=>{
                                         const res:[string,Color?][] = [];
                                         for(const t of d().exItems){
-                                            if(t.totalGetCount > 0) {res.push([`${t}/`]);}
-                                            else                    {res.push([`${"？".repeat( t.toString().length )}`, Color.GRAY]);}
+                                            if(t.totalGetCount > 0) {res.push([` ${t}`]);}
+                                            else                    {res.push([` ${"？".repeat( t.toString().length )}`, Color.GRAY]);}
                                         }
                                         return res;
                                     })
@@ -72,8 +72,8 @@ export class TownScene extends Scene{
                                     .addArray(()=>{
                                         const res:[string,Color?][] = [];
                                         for(const t of d().treasures){
-                                            if(t.totalGetCount > 0) {res.push([`${t}/`]);}
-                                            else                    {res.push([`${"？".repeat( t.toString().length )}`, Color.GRAY]);}
+                                            if(t.totalGetCount > 0) {res.push([` ${t}`]);}
+                                            else                    {res.push([` ${"？".repeat( t.toString().length )}`, Color.GRAY]);}
                                         }
                                         return res;
                                     })

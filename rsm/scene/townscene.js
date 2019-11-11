@@ -55,15 +55,15 @@ export class TownScene extends Scene {
                 .add(() => `Lv:${d().enemyLv}`)
                 .add(() => `攻略回数:${d().dungeonClearCount}`, () => d().dungeonClearCount > 0 ? Color.WHITE : Color.GRAY)
                 .add(() => `鍵:${d().treasureKey}`)
-                .add(() => `EX:`)
+                .add(() => `Extra:`)
                 .addArray(() => {
                 const res = [];
                 for (const t of d().exItems) {
                     if (t.totalGetCount > 0) {
-                        res.push([`${t}/`]);
+                        res.push([` ${t}`]);
                     }
                     else {
-                        res.push([`${"？".repeat(t.toString().length)}`, Color.GRAY]);
+                        res.push([` ${"？".repeat(t.toString().length)}`, Color.GRAY]);
                     }
                 }
                 return res;
@@ -73,10 +73,10 @@ export class TownScene extends Scene {
                 const res = [];
                 for (const t of d().treasures) {
                     if (t.totalGetCount > 0) {
-                        res.push([`${t}/`]);
+                        res.push([` ${t}`]);
                     }
                     else {
-                        res.push([`${"？".repeat(t.toString().length)}`, Color.GRAY]);
+                        res.push([` ${"？".repeat(t.toString().length)}`, Color.GRAY]);
                     }
                 }
                 return res;
@@ -131,6 +131,7 @@ const createDungeonBtnLayout = () => {
         .forEach(d => {
         const btn = new Btn(d.dungeonClearCount > 0 ? `★${d}` : `${d}`, () => {
             choosedDungeon = d;
+            Sound.system.play();
         });
         btn.groundColor = () => d === choosedDungeon ? Color.D_CYAN.bright(Date.now() / 50, 0.15) : Color.BLACK;
         btn.frameColor = () => Color.WHITE;

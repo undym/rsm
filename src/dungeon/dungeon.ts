@@ -326,6 +326,9 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story.MAIN_2.run();
             }
+            if(Item.動かない映写機.totalGetCount === 0){
+                Item.動かない映写機.add(1); await wait();
+            }
         }
     };
     export const                         はじまりの丘:Dungeon = new class extends Dungeon{

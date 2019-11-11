@@ -318,6 +318,10 @@ DungeonArea._valueOf = new Map();
                 if (this.dungeonClearCount === 1) {
                     yield Story.MAIN_2.run();
                 }
+                if (Item.動かない映写機.totalGetCount === 0) {
+                    Item.動かない映写機.add(1);
+                    yield wait();
+                }
             });
         }
     };

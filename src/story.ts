@@ -1,7 +1,11 @@
 import { Util, Place } from "./util.js";
 import { cwait } from "./undym/scene.js";
-import { Color, Rect } from "./undym/type.js";
+import { Color, Rect, Point } from "./undym/type.js";
 import { Sound } from "./sound.js";
+import { ILayout } from "./undym/layout.js";
+import { BattleScene } from "./scene/battlescene.js";
+import { randomFloat } from "./undym/random.js";
+import { Graphics } from "./graphics/graphics.js";
 
 
 
@@ -19,7 +23,6 @@ export abstract class Story{
         }
     }
 }
-
 
 
 export namespace Story{

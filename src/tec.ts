@@ -1486,7 +1486,7 @@ export namespace Tec{
                               mul:1, num:1, hit:1,
         });}
         async use(attacker:Unit, targets:Unit[]){
-            Sound.camp.play();
+            Sound.exp.play();
             Util.msg.set(`${attacker.name}は空を眺めている...`); await wait();
         }
     }

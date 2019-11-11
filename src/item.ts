@@ -71,7 +71,7 @@ export class ItemParentType{
     }
 
     static readonly 回復       = new ItemParentType("回復", [ItemType.蘇生, ItemType.HP回復, ItemType.MP回復]);
-    static readonly 状態       = new ItemParentType("戦闘", [ItemType.状態]);
+    static readonly 状態       = new ItemParentType("状態", [ItemType.状態]);
     static readonly ダンジョン  = new ItemParentType("ダンジョン", [ItemType.ダンジョン, ItemType.弾, ItemType.鍵]);
     static readonly 戦闘       = new ItemParentType("戦闘", [ItemType.ダメージ]);
     static readonly 強化       = new ItemParentType("強化", [ItemType.ドーピング, ItemType.書]);
@@ -880,23 +880,31 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         消耗品のメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"消耗品のメモ", info:"一部の消耗品はダンジョンに入る度に補充される", 
+        constructor(){super({uniqueName:"消耗品のメモ", info:"ごく一部の消耗品はダンジョンに入る度に補充される。脱出ポッドなどがそれに該当する...と書かれている", 
                                 type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         セーブのメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"セーブのメモ", info:"このゲームに自動セーブの機能はないらしい...", 
+        constructor(){super({uniqueName:"セーブのメモ", info:"このゲームに自動セーブの機能はないらしい...と書かれている", 
                                 type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         夏のメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"夏のメモ", info:"夏はいつ終わるの？", 
+        constructor(){super({uniqueName:"夏のメモ", info:"夏はいつ終わるの？...と書かれている", 
+                                type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
+    };
+    export const                         HP至上主義のメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"HP至上主義のメモ", info:"とりあえずHPを上げれば間違いはない、俺は詳しいんだ...と書かれている", 
+                                type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
+    };
+    export const                         HP懐疑主義のメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"HP懐疑主義のメモ", info:"何も考えずにHPを上げるのは危険だ、騙されないぞ...と書かれている", 
                                 type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         ジスカルドのメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ジスカルドのメモ", info:"じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん", 
+        constructor(){super({uniqueName:"ジスカルドのメモ", info:"じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん...と書かれている", 
                                 type:ItemType.メモ, rank:9, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         合成許可証:Item = new class extends Item{
-        constructor(){super({uniqueName:"合成許可証", info:"合成してもいいよ", 
+        constructor(){super({uniqueName:"合成許可証", info:"合成してもいいよ...と書かれている", 
                                 type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
     };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
