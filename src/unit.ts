@@ -6,7 +6,7 @@ import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
 import { Dmg, Force, Action, Targeting } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str } from "./fx/fx.js";
-import { ConditionType, Condition } from "./condition.js";
+import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font, Img } from "./graphics/graphics.js";
@@ -155,6 +155,7 @@ export abstract class Unit{
     protected equips:Eq[] = [];
     protected eqEars:EqEar[] = [];
     protected conditions:{condition:Condition, value:number}[] = [];
+    protected invisibleConditions:InvisibleCondition[] = [];
 
     job:Job;
 
@@ -328,6 +329,9 @@ export abstract class Unit{
         for(const cond of this.conditions.values()){
             await forceDlgt( cond.condition );
         }
+        for(const icond of this.invisibleConditions.values()){
+            await forceDlgt( icond );
+        }
     }
     //---------------------------------------------------------
     //
@@ -343,7 +347,7 @@ export abstract class Unit{
         }
         return false;
     }
-    clearCondition(condition:Condition|ConditionType){
+    removeCondition(condition:Condition|ConditionType){
         if(condition instanceof Condition){
             const set = this.conditions[condition.type.ordinal];
             if(set.condition === condition){
@@ -356,7 +360,7 @@ export abstract class Unit{
             return;
         }
     }
-    clearAllCondition(){
+    clearConditions(){
         for(const set of this.conditions){
             set.condition = Condition.empty;
             set.value = 0;
@@ -412,6 +416,18 @@ export abstract class Unit{
             }
             return;
         }
+    }
+    //---------------------------------------------------------
+    //
+    //InvisibleCondition
+    //
+    //---------------------------------------------------------
+    clearInvisibleConditions(){this.invisibleConditions = [];}
+    removeInvisibleCondition(remove:InvisibleCondition){
+        this.invisibleConditions = this.invisibleConditions.filter(c=> c !== remove);
+    }
+    addInvisibleCondition(iCondition:InvisibleCondition){
+        this.invisibleConditions.push( iCondition );
     }
     //---------------------------------------------------------
     //

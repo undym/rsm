@@ -511,7 +511,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "血清", info: "＜毒＞状態を解除する",
                 type: ItemType.状態, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.clearCondition(Condition.毒); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.毒); }),
             });
         }
     };
@@ -614,8 +614,8 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.動かない映写機 = new class extends Item {
         constructor() {
             super({ uniqueName: "動かない映写機", info: "ダンジョン内で使用するとセーブできる",
-                type: ItemType.ダンジョン, rank: 10,
-                consumable: true, drop: ItemDrop.NO,
+                type: ItemType.ダンジョン, rank: 10, drop: ItemDrop.NO,
+                consumable: true,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     //-------------------------
                     //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
@@ -633,8 +633,8 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.脱出ポッド = new class extends Item {
         constructor() {
             super({ uniqueName: "脱出ポッド", info: "ダンジョンから脱出する。なくならない。",
-                type: ItemType.ダンジョン, rank: 10,
-                consumable: true, drop: ItemDrop.NO,
+                type: ItemType.ダンジョン, rank: 10, drop: ItemDrop.NO,
+                consumable: true,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Scene.load(DungeonScene.ins);
                     yield DungeonEvent.ESCAPE_DUNGEON.happen();
@@ -694,10 +694,20 @@ Item.DEF_NUM_LIMIT = 9999;
     //     constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
     //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
     // };
-    // export const                         夜叉の矢:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"夜叉の矢", info:"ヤクシャに使用",
-    //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
-    // };
+    Item.夜叉の矢 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "夜叉の矢", info: "ヤクシャに使用",
+                type: ItemType.弾, rank: 8, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.降雨の矢 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "降雨の矢", info: "ナーガに使用",
+                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //鍵

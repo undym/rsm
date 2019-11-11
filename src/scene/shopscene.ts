@@ -20,8 +20,7 @@ import { PartySkill } from "../partyskill.js";
 import { Sound } from "../sound.js";
 
 
-// let ショットガンmaster = false;
-// let ヤクシャmaster = false;
+let ヤクシャmaster = false;
 
 
 export class ShopScene extends Scene{
@@ -33,8 +32,7 @@ export class ShopScene extends Scene{
     constructor(){
         super();
 
-        // ヤクシャmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ヤクシャ));
-        // ショットガンmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ショットガン));
+        if(!ヤクシャmaster){ヤクシャmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ヤクシャ));}
 
         if(!ShopScene.completedInitGoods){
             ShopScene.completedInitGoods = true;
@@ -58,12 +56,12 @@ export class ShopScene extends Scene{
                                 
                                 font.draw(`[${goods}]`, moveP(), Color.WHITE);
                                 font.draw(`${goods.type}`, moveP(), Color.WHITE);
-                                font.draw(`${goods.price()}円`, moveP(), Color.WHITE);
-                                if(goods.num()){
-                                    font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
-                                }else{
-                                    moveP();
-                                }
+                                font.draw(`${goods.price}円`, moveP(), Color.WHITE);
+                                // if(goods.num){
+                                //     font.draw(`所持:${goods.num()}`, moveP(), Color.WHITE);
+                                // }else{
+                                //     moveP();
+                                // }
 
                                 moveP();
 
@@ -86,8 +84,8 @@ export class ShopScene extends Scene{
                                     const goods = this.choosedGoods;
                                     
                                     if(!goods.isVisible()){return;}
-                                    if(PlayData.yen >= goods.price()){
-                                        PlayData.yen -= goods.price();
+                                    if(PlayData.yen >= goods.price){
+                                        PlayData.yen -= goods.price;
             
                                         Sound.KATAN.play();
                                         FX_Str(Font.def, `[${goods}]を買った`, Point.CENTER, Color.WHITE);
@@ -134,10 +132,7 @@ export class ShopScene extends Scene{
             .filter(g=> g.isVisible())
             .forEach(goods=>{
                 this.list.add({
-                    left:()=>{
-                        const num = goods.num();
-                        return num ? `${num}` : "";
-                    },
+                    left:()=>goods.left,
                     right:()=> goods.isVisible() ? goods.toString() : `-`,
                     groundColor:()=>goods === this.choosedGoods ? Color.D_CYAN : Color.BLACK,
                     push:(elm)=>{
@@ -157,18 +152,40 @@ class Goods{
         return this._values;
     }
 
+    get name(){return this.args.name;}
+    get type(){return this.args.type;}
+    get info(){return this.args.info;}
+    get price(){return this.args.price();}
+    isVisible(){return this.args.isVisible();}
+    buy(){this.args.buy();}
+    get left(){return this.args.left ? this.args.left() : "";}
+
     constructor(
-        private readonly name:string,
-        public readonly type:string,
-        public readonly info:string,
-        public readonly price:()=>number,
-        public readonly isVisible:()=>boolean,
-        public readonly buy:()=>void,
-        public readonly num:()=>(number|undefined) = ()=>undefined,
+        private args:{
+            readonly name:string,
+            readonly type:string,
+            readonly info:string,
+            readonly price:()=>number,
+            readonly isVisible:()=>boolean,
+            readonly buy:()=>void,
+            readonly left?:()=>string,
+        }
     ){
-        this.toString = ()=>this.name;
+
         Goods._values.push(this);
     }
+    // constructor(
+    //     private readonly name:string,
+    //     public readonly type:string,
+    //     public readonly info:string,
+    //     public readonly price:()=>number,
+    //     public readonly isVisible:()=>boolean,
+    //     public readonly buy:()=>void,
+    //     public readonly num:()=>(number|undefined) = ()=>undefined,
+    // ){
+    //     this.toString = ()=>this.name;
+    //     Goods._values.push(this);
+    // }
 
 }
 
@@ -176,17 +193,28 @@ class Goods{
 
 
 const initGoods = ()=>{
-    const createItemGoods = (item:Item, price:()=>number, isVisible:()=>boolean)=>{
-        new Goods(
-            item.toString(),
-            "＜アイテム＞",
-            item.info,
-            price,
-            isVisible,
-            ()=>item.add(1),
-            ()=> item.num,
-        );
-    };
+    const createItemGoods = (args:{
+        item:Item,
+        price:()=>number,
+        isVisible:()=>boolean,
+        num?:number,
+    })=>{
+        new Goods({
+            name:(()=>{
+                if(args.num){return `${args.item}x${args.num}`;}
+                return args.item.toString();
+            })(),
+            type:"＜アイテム＞",
+            info:args.item.info,
+            price:args.price,
+            isVisible:args.isVisible,
+            buy:()=>{
+                if(args.num){args.item.add( args.num );}
+                else        {args.item.add(1);}
+            },
+            left:()=>`${args.item.num}`,
+        });
+    }
     // const createItemGoodsNum = (item:Item, num:number, price:()=>number, isVisible:()=>boolean)=>{
     //     new Goods(
     //         item.toString(),
@@ -197,47 +225,48 @@ const initGoods = ()=>{
     //         ()=> item.num,
     //     );
     // };
-    const createEqGoods = (eq:Eq, price:()=>number, isVisible:()=>boolean)=>{
-        new Goods(
-            eq.toString(),
-            `＜${eq.pos}＞`,
-            eq.info,
-            price,
-            isVisible,
-            ()=>eq.add(1),
-            ()=> eq.num,
-        );
-    };
-    const createEarGoods = (ear:EqEar, price:()=>number, isVisible:()=>boolean)=>{
-        new Goods(
-            ear.toString(),
-            "＜耳＞",
-            ear.info,
-            price,
-            isVisible,
-            ()=>ear.add(1),
-            ()=> ear.num,
-        );
-    };
-    const createPartySkill = (skill:PartySkill, price:()=>number, isVisible:()=>boolean)=>{
-        new Goods(
-            skill.toString(),
-            "＜パーティースキル＞",
-            "",
-            price,
-            ()=> isVisible() && !skill.has,
-            ()=>skill.has = true,
-        );
-    };
+    // const createEqGoods = (eq:Eq, price:()=>number, isVisible:()=>boolean)=>{
+    //     new Goods(
+    //         eq.toString(),
+    //         `＜${eq.pos}＞`,
+    //         eq.info,
+    //         price,
+    //         isVisible,
+    //         ()=>eq.add(1),
+    //         ()=> eq.num,
+    //     );
+    // };
+    // const createEarGoods = (ear:EqEar, price:()=>number, isVisible:()=>boolean)=>{
+    //     new Goods(
+    //         ear.toString(),
+    //         "＜耳＞",
+    //         ear.info,
+    //         price,
+    //         isVisible,
+    //         ()=>ear.add(1),
+    //         ()=> ear.num,
+    //     );
+    // };
+    // const createPartySkill = (skill:PartySkill, price:()=>number, isVisible:()=>boolean)=>{
+    //     new Goods(
+    //         skill.toString(),
+    //         "＜パーティースキル＞",
+    //         "",
+    //         price,
+    //         ()=> isVisible() && !skill.has,
+    //         ()=>skill.has = true,
+    //     );
+    // };
     
     // createItemGoods(Item.技習得許可証, ()=>50, ()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.技習得許可証.totalGetCount === 0);
-    createItemGoods(Item.合成許可証,     ()=>300, ()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0);
+    createItemGoods({item:Item.合成許可証, 
+        price:()=>300, isVisible:()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0});
     
-    createItemGoods(Item.スティックパン, ()=>30, ()=>true);
-    createItemGoods(Item.赤い水,        ()=>50, ()=>true);
-    createItemGoods(Item.サンタクララ薬, ()=>100, ()=>true);
+    createItemGoods({item:Item.スティックパン,   price:()=>30,  isVisible:()=>true});
+    createItemGoods({item:Item.赤い水,          price:()=>50,  isVisible:()=>true});
+    createItemGoods({item:Item.サンタクララ薬,   price:()=>100, isVisible:()=>true});
 
-    // createItemGoods(Item.夜叉の矢,   ()=>(Item.夜叉の矢.num+1) * 500, ()=>ヤクシャmaster);
+    createItemGoods({item:Item.夜叉の矢, num:2,  price:()=>(Item.夜叉の矢.num+1) * 1000, isVisible:()=>ヤクシャmaster});
     // createItemGoods(Item.散弾,       ()=>(Item.散弾.num+1) * 500,    ()=>ショットガンmaster);
     
     // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);

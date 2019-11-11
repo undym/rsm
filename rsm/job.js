@@ -108,7 +108,7 @@ export class Job {
         for (const pos of EqPos.values()) {
             e.setEq(pos, Eq.rnd(pos, lv));
         }
-        e.clearAllCondition();
+        e.clearCondition();
         this.setEnemyInner(e);
         e.equip();
         e.hp = e.prm(Prm.MAX_HP).total;
@@ -311,6 +311,20 @@ Job.DEF_LVUP_EXP = 10;
                 canJobChange: p => p.isMasteredJob(Job.訓練生),
                 growthPrms: () => [[Prm.ARR, 1]],
                 learningTecs: () => [Tec.射る, Tec.アスラの矢],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.殴る, Tec.殴る];
+        }
+    };
+    Job.クピド = new class extends Job {
+        constructor() {
+            super({ uniqueName: "クピド", info: "",
+                appearLv: 35, img: new Img("img/unit/アーチャー.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                canJobChange: p => p.isMasteredJob(Job.アーチャー) && p.isMasteredJob(Job.訓練生二年生),
+                growthPrms: () => [[Prm.ARR, 2]],
+                learningTecs: () => [Tec.ヤクシャ],
             });
         }
         setEnemyInner(e) {

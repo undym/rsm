@@ -383,10 +383,13 @@ const finish = () => __awaiter(this, void 0, void 0, function* () {
     for (const e of Unit.enemies) {
         e.exists = false;
     }
-    for (const p of Unit.players) {
+    for (const u of Unit.all) {
         for (const prm of Prm.values()) {
-            p.prm(prm).battle = 0;
+            u.prm(prm).battle = 0;
         }
+        u.clearInvisibleCondition();
+    }
+    for (const p of Unit.players) {
     }
     btnSpace.clear();
 });

@@ -2,7 +2,7 @@
 
 /**[)*/
 export const randomInt = (min:number, max:number, boundaries:string = "[)"):number=>{
-    if(boundaries.length > 2){
+    if(boundaries.length < 2 || boundaries.length > 2){
         console.log(`randomInt() illiegal boundaries: ${boundaries}`);
         boundaries = "[)";
     }

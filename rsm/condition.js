@@ -50,7 +50,6 @@ ConditionType.GOOD_LV3 = new ConditionType("GOOD_LV3");
 ConditionType.BAD_LV1 = new ConditionType("BAD_LV1");
 ConditionType.BAD_LV2 = new ConditionType("BAD_LV2");
 ConditionType.BAD_LV3 = new ConditionType("BAD_LV3");
-ConditionType.INVISIBLE = new ConditionType("INVISIBLE");
 export class Condition {
     constructor(uniqueName, type) {
         this.uniqueName = uniqueName;
@@ -68,14 +67,30 @@ export class Condition {
     //Force
     //
     //--------------------------------------------------------------------------
-    equip(unit) { }
-    battleStart(unit) { }
-    phaseStart(unit) { }
-    beforeDoAtk(action, attacker, target, dmg) { }
-    beforeBeAtk(action, attacker, target, dmg) { }
-    afterDoAtk(action, attacker, target, dmg) { }
-    afterBeAtk(action, attacker, target, dmg) { }
-    phaseEnd(unit) { }
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
 }
 Condition._values = [];
 Condition._valueOf = new Map();
@@ -235,7 +250,7 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 const value = unit.getConditionValue(this);
                 if (value < unit.prm(Prm.DRK).total + 1) {
-                    unit.clearCondition(this);
+                    unit.removeCondition(this);
                     Util.msg.set(`${unit.name}の<毒>が解除された`);
                     yield wait();
                     return;
@@ -254,3 +269,29 @@ Condition._valueOf = new Map();
     //
     //--------------------------------------------------------------------------
 })(Condition || (Condition = {}));
+export class InvisibleCondition {
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+}

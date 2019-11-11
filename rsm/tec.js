@@ -10,9 +10,10 @@ import { Unit, Prm, PUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Dmg, Targeting } from "./force.js";
-import { Condition } from "./condition.js";
+import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
 import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術 } from "./fx/fx.js";
+import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 export class TecType {
@@ -169,14 +170,30 @@ export class Tec {
     //Force
     //
     //--------------------------------------------------------------------------
-    equip(unit) { }
-    battleStart(unit) { }
-    phaseStart(unit) { }
-    beforeDoAtk(action, attacker, target, dmg) { }
-    beforeBeAtk(action, attacker, target, dmg) { }
-    afterDoAtk(action, attacker, target, dmg) { }
-    afterBeAtk(action, attacker, target, dmg) { }
-    phaseEnd(unit) { }
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
 }
 export class PassiveTec extends Tec {
     constructor(args) {
@@ -451,9 +468,11 @@ ActiveTec._valueOf = new Map();
             });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
-                dmg.pow.mul *= 1.2;
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
         }
     };
     /**格闘家. */
@@ -464,9 +483,11 @@ ActiveTec._valueOf = new Map();
             });
         }
         beforeBeAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
-                dmg.pow.mul *= 0.8;
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.mul *= 0.8;
+                }
+            });
         }
     };
     /**未設定. */
@@ -494,11 +515,13 @@ ActiveTec._valueOf = new Map();
             });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
-                dmg.additinalAttacks.push((dmg, i) => {
-                    return dmg.result.value / 2;
-                });
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.additinalAttacks.push((dmg, i) => {
+                        return dmg.result.value / 2;
+                    });
+                }
+            });
         }
     };
     // export const                         急所:PassiveTec = new class extends PassiveTec{
@@ -519,9 +542,11 @@ ActiveTec._valueOf = new Map();
             });
         }
         beforeBeAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)) {
-                dmg.pow.mul *= 0.80;
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)) {
+                    dmg.pow.mul *= 0.80;
+                }
+            });
         }
     };
     //--------------------------------------------------------------------------
@@ -612,9 +637,11 @@ ActiveTec._valueOf = new Map();
             });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type === TecType.魔法) {
-                dmg.pow.mul *= 1.2;
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type === TecType.魔法) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
         }
     };
     // export const                         保湿クリーム:PassiveTec = new class extends PassiveTec{
@@ -1015,6 +1042,50 @@ ActiveTec._valueOf = new Map();
         }
         rndAttackNum() { return randomInt(2, 4, "[]"); }
     };
+    /**クピド. */
+    Tec.ヤクシャ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ヤクシャ", info: "一体に2回弓術攻撃",
+                type: TecType.弓術, targetings: Targeting.RANDOM,
+                mul: 1, num: 2, hit: 0.8, item: () => [[Item.夜叉の矢, 2]],
+            });
+        }
+    };
+    /**クピド. */
+    Tec.ナーガ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ナーガ", info: "次の行動時、敵全体に弓術攻撃",
+                type: TecType.弓術, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 0.8, item: () => [[Item.夜叉の矢, 2]],
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.checkCost(attacker)) {
+                    attacker.addInvisibleCondition(new class extends InvisibleCondition {
+                        phaseStart(u) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                Util.msg.set("空から矢が降り注ぐ！");
+                                yield wait();
+                                targets.filter(t => t.exists && !t.dead)
+                                    .forEach(t => {
+                                    Tec.射る.run(attacker, t);
+                                });
+                                attacker.removeInvisibleCondition(this);
+                            });
+                        }
+                    });
+                }
+                yield _super.use.call(this, attacker, targets);
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () { });
+        }
+    };
     // export const                          ヤクシャ:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ヤクシャ", info:"一体に弓術攻撃2回　夜叉の矢",
     //                           type:TecType.弓術, targetings:Targeting.SELECT,
@@ -1099,9 +1170,11 @@ ActiveTec._valueOf = new Map();
                 use: { get: () => super.use }
             });
             return __awaiter(this, void 0, void 0, function* () {
+                if (this.checkCost(attacker)) {
+                    Sound.up.play();
+                    Sound.awa.play();
+                }
                 yield _super.use.call(this, attacker, targets);
-                Sound.up.play();
-                Sound.awa.play();
             });
         }
         run(attacker, target) {
@@ -1126,7 +1199,7 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                target.clearAllCondition();
+                target.clearCondition();
                 Sound.seikou.play();
                 Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright);
                 yield wait();
@@ -1237,11 +1310,13 @@ ActiveTec._valueOf = new Map();
             });
         }
         phaseEnd(unit) {
-            if (unit.existsCondition(Condition.毒)) {
-                const value = unit.getConditionValue(Condition.毒);
-                Unit.healHP(unit, value);
-                unit.clearCondition(Condition.毒);
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (unit.existsCondition(Condition.毒)) {
+                    const value = unit.getConditionValue(Condition.毒);
+                    Unit.healHP(unit, value);
+                    unit.removeCondition(Condition.毒);
+                }
+            });
         }
     };
     //--------------------------------------------------------------------------
@@ -1313,8 +1388,10 @@ ActiveTec._valueOf = new Map();
                 use: { get: () => super.use }
             });
             return __awaiter(this, void 0, void 0, function* () {
+                if (this.checkCost(attacker)) {
+                    Sound.KAIFUKU.play();
+                }
                 yield _super.use.call(this, attacker, targets);
-                Sound.KAIFUKU.play();
             });
         }
         run(attacker, target) {
@@ -1382,7 +1459,9 @@ ActiveTec._valueOf = new Map();
             });
         }
         phaseStart(unit) {
-            Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
+            });
         }
     };
     // export const                         衛生:PassiveTec = new class extends PassiveTec{
@@ -1426,9 +1505,11 @@ ActiveTec._valueOf = new Map();
             });
         }
         phaseStart(unit) {
-            unit.hp--;
-            unit.mp--;
-            Unit.healTP(unit, 1);
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.hp--;
+                unit.mp--;
+                Unit.healTP(unit, 1);
+            });
         }
     };
     Tec.血技の技巧 = new class extends PassiveTec {

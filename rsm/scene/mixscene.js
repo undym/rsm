@@ -179,7 +179,12 @@ export class MixScene extends Scene {
                     return `${mix.count}/${mix.countLimit}`;
                 },
                 leftColor: color,
-                right: () => mix.toString(),
+                right: () => {
+                    if (mix.result) {
+                        return `${mix.toString()}x${mix.result.num}`;
+                    }
+                    return mix.toString();
+                },
                 rightColor: color,
                 groundColor: () => mix === this.choosedMix ? Color.D_CYAN : Color.BLACK,
                 push: (elm) => {

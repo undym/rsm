@@ -483,7 +483,7 @@ export namespace Item{
     export const                         血清:Item = new class extends Item{
         constructor(){super({uniqueName:"血清", info:"＜毒＞状態を解除する",
                                 type:ItemType.状態, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>target.clearCondition(Condition.毒),
+                                use:async(user,target)=>target.removeCondition(Condition.毒),
         })}
     };
     export const                         火の尻尾:Item = new class extends Item{
@@ -564,8 +564,8 @@ export namespace Item{
     //-----------------------------------------------------------------
     export const                         動かない映写機:Item = new class extends Item{
         constructor(){super({uniqueName:"動かない映写機", info:"ダンジョン内で使用するとセーブできる",
-                                type:ItemType.ダンジョン, rank:10,
-                                consumable:true, drop:ItemDrop.NO,
+                                type:ItemType.ダンジョン, rank:10, drop:ItemDrop.NO,
+                                consumable:true, 
                                 use:async(user,target)=>{
                                     //-------------------------
                                     //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
@@ -581,8 +581,8 @@ export namespace Item{
     };
     export const                         脱出ポッド:Item = new class extends Item{
         constructor(){super({uniqueName:"脱出ポッド", info:"ダンジョンから脱出する。なくならない。",
-                                type:ItemType.ダンジョン, rank:10,
-                                consumable:true, drop:ItemDrop.NO,
+                                type:ItemType.ダンジョン, rank:10, drop:ItemDrop.NO,
+                                consumable:true,
                                 use:async(user,target)=>{
                                     Scene.load( DungeonScene.ins );
                                     await DungeonEvent.ESCAPE_DUNGEON.happen();
@@ -629,10 +629,26 @@ export namespace Item{
     //     constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
     //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
     // };
-    // export const                         夜叉の矢:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"夜叉の矢", info:"ヤクシャに使用",
-    //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
-    // };
+    export const                         降雨の矢:Item = new class extends Item{
+        constructor(){super({uniqueName:"降雨の矢", info:"ナーガに使用",
+                                type:ItemType.弾, rank:7, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         夜叉の矢:Item = new class extends Item{
+        constructor(){super({uniqueName:"夜叉の矢", info:"ヤクシャに使用",
+                                type:ItemType.弾, rank:8, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         金翅鳥の矢:Item = new class extends Item{
+        constructor(){super({uniqueName:"金翅鳥の矢", info:"ガルダに使用",
+                                type:ItemType.弾, rank:9, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         歌舞の矢:Item = new class extends Item{
+        constructor(){super({uniqueName:"歌舞の矢", info:"キンナラに使用",
+                                type:ItemType.弾, rank:9, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
     //-----------------------------------------------------------------
     //
     //鍵

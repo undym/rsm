@@ -127,7 +127,7 @@ const fullCare = ()=>{
         u.ep = u.prm(Prm.MAX_EP).total;
         
         for(const type of ConditionType.values){
-            u.clearCondition(type);
+            u.removeCondition(type);
         }
     }
 };

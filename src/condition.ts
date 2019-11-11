@@ -51,7 +51,6 @@ export class ConditionType{
     static readonly BAD_LV1  = new ConditionType("BAD_LV1");
     static readonly BAD_LV2  = new ConditionType("BAD_LV2");
     static readonly BAD_LV3  = new ConditionType("BAD_LV3");
-    static readonly INVISIBLE= new ConditionType("INVISIBLE");
 }
 
 
@@ -78,14 +77,14 @@ export abstract class Condition implements Force{
     //Force
     //
     //--------------------------------------------------------------------------
-    equip(unit:Unit):void{}
-    battleStart(unit:Unit):void{}
-    phaseStart(unit:Unit):void{}
-    beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    phaseEnd(unit:Unit):void{}
+    async equip(unit:Unit){}
+    async battleStart(unit:Unit){}
+    async phaseStart(unit:Unit){}
+    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async phaseEnd(unit:Unit){}
 }
 
 
@@ -233,7 +232,7 @@ export namespace Condition{
         async phaseEnd(unit:Unit){
             const value = unit.getConditionValue(this);
             if(value < unit.prm(Prm.DRK).total + 1){
-                unit.clearCondition(this);
+                unit.removeCondition(this);
                 Util.msg.set(`${unit.name}の<毒>が解除された`); await wait();
                 return;
             }
@@ -252,4 +251,17 @@ export namespace Condition{
     //BAD_LV3
     //
     //--------------------------------------------------------------------------
+}
+
+
+
+export class InvisibleCondition implements Force{
+    async equip(unit:Unit){}
+    async battleStart(unit:Unit){}
+    async phaseStart(unit:Unit){}
+    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async phaseEnd(unit:Unit){}
 }

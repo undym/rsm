@@ -1,16 +1,40 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { choice } from "./undym/random.js";
 export class Force {
     // private static _empty:Force;
     // static get empty():Force{return this._empty ? this._empty : (this._empty = new Force());}
-    equip(unit) { }
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     ;
-    battleStart(unit) { }
-    phaseStart(unit) { }
-    beforeDoAtk(action, attacker, target, dmg) { }
-    beforeBeAtk(action, attacker, target, dmg) { }
-    afterDoAtk(action, attacker, target, dmg) { }
-    afterBeAtk(action, attacker, target, dmg) { }
-    phaseEnd(unit) { }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
 }
 export class Dmg {
     constructor(args) {

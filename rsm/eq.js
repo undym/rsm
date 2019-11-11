@@ -114,14 +114,30 @@ export class Eq {
     //
     //
     //--------------------------------------------------------------------------
-    equip(unit) { }
-    battleStart(unit) { }
-    phaseStart(unit) { }
-    beforeDoAtk(action, attacker, target, dmg) { }
-    beforeBeAtk(action, attacker, target, dmg) { }
-    afterDoAtk(action, attacker, target, dmg) { }
-    afterBeAtk(action, attacker, target, dmg) { }
-    phaseEnd(unit) { }
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     add(v) {
         Num.add(this, v);
         PlayData.gotAnyEq = true;
@@ -158,14 +174,30 @@ export class EqEar {
     //
     //
     //--------------------------------------------------------------------------
-    equip(unit) { }
-    battleStart(unit) { }
-    phaseStart(unit) { }
-    beforeDoAtk(action, attacker, target, dmg) { }
-    beforeBeAtk(action, attacker, target, dmg) { }
-    afterDoAtk(action, attacker, target, dmg) { }
-    afterBeAtk(action, attacker, target, dmg) { }
-    phaseEnd(unit) { }
+    equip(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    battleStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beforeBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    phaseEnd(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     add(v) {
         Num.add(this, v);
         PlayData.gotAnyEq = true;
@@ -191,9 +223,11 @@ EqEar._valueOf = new Map();
                 pos: EqPos.頭, lv: 0 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            if (action === ActiveTec.斬る) {
-                dmg.pow.mul *= 1.2;
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action === ActiveTec.斬る) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
         }
     };
     // export const                         魔女のとんがり帽:Eq = new class extends Eq{
@@ -252,9 +286,11 @@ EqEar._valueOf = new Map();
                 pos: EqPos.武, lv: 5 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            if (Math.random() < 0.9) {
-                Unit.healHP(attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05);
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (Math.random() < 0.9) {
+                    Unit.healHP(attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05);
+                }
+            });
         }
     };
     Eq.レティシアsガン = new class extends Eq {
@@ -263,9 +299,11 @@ EqEar._valueOf = new Map();
                 pos: EqPos.武, lv: 5 });
         }
         afterDoAtk(action, attacker, target, dmg) {
-            if (action instanceof ActiveTec && action.type.any(TecType.銃術) && Math.random() < 0.7) {
-                Unit.setCondition(target, Condition.防御低下, 1);
-            }
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃術) && Math.random() < 0.7) {
+                    Unit.setCondition(target, Condition.防御低下, 1);
+                }
+            });
         }
     };
     // export const                         棒:Eq = new class extends Eq{
@@ -374,7 +412,9 @@ EqEar._valueOf = new Map();
                 pos: EqPos.盾, lv: 12 });
         }
         beforeBeAtk(action, attacker, target, dmg) {
-            dmg.def.add += 100;
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.def.add += 100;
+            });
         }
     };
     // export const                         鉄板:Eq = new class extends Eq{
@@ -414,7 +454,9 @@ EqEar._valueOf = new Map();
             super({ uniqueName: "草の服", info: "最大HP+20",
                 pos: EqPos.体, lv: 15 });
         }
-        equip(unit) { unit.prm(Prm.MAX_HP).eq += 20; }
+        equip(unit) {
+            return __awaiter(this, void 0, void 0, function* () { unit.prm(Prm.MAX_HP).eq += 20; });
+        }
     };
     /**はじまりの丘財宝. */
     Eq.オールマント = new class extends Eq {
@@ -423,7 +465,9 @@ EqEar._valueOf = new Map();
                 pos: EqPos.体, lv: 55 });
         }
         equip(unit) {
-            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).eq += 20);
+            return __awaiter(this, void 0, void 0, function* () {
+                [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).eq += 20);
+            });
         }
     };
     /**予感の街レEX. */
@@ -521,7 +565,9 @@ EqEar._valueOf = new Map();
                 pos: EqPos.腰, lv: 35 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
-            dmg.pow.add += 10;
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.pow.add += 10;
+            });
         }
     };
     // export const                         オホーツクのひも:Eq = new class extends Eq{
@@ -644,14 +690,16 @@ EqEar._valueOf = new Map();
                 pos: EqPos.指, lv: 30 });
         }
         equip(u) {
-            u.prm(Prm.STR).base += 10;
-            u.prm(Prm.MAG).base += 10;
-            u.prm(Prm.LIG).base += 10;
-            u.prm(Prm.DRK).base += 10;
-            u.prm(Prm.CHN).base += 10;
-            u.prm(Prm.PST).base += 10;
-            u.prm(Prm.GUN).base += 10;
-            u.prm(Prm.ARR).base += 10;
+            return __awaiter(this, void 0, void 0, function* () {
+                u.prm(Prm.STR).base += 10;
+                u.prm(Prm.MAG).base += 10;
+                u.prm(Prm.LIG).base += 10;
+                u.prm(Prm.DRK).base += 10;
+                u.prm(Prm.CHN).base += 10;
+                u.prm(Prm.PST).base += 10;
+                u.prm(Prm.GUN).base += 10;
+                u.prm(Prm.ARR).base += 10;
+            });
         }
     };
     // export const                         魔ヶ玉の指輪:Eq = new class extends Eq{
@@ -696,7 +744,9 @@ EqEar._valueOf = new Map();
                 pos: EqPos.脚, lv: 10 });
         }
         battleStart(unit) {
-            unit.setCondition(Condition.盾, 1);
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.setCondition(Condition.盾, 1);
+            });
         }
     };
     Eq.無色の靴 = new class extends Eq {

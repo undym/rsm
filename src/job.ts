@@ -143,7 +143,7 @@ export abstract class Job{
             e.setEq(pos, Eq.rnd(pos, lv));
         }
         
-        e.clearAllCondition();
+        e.clearConditions();
         
         this.setEnemyInner(e);
 
@@ -330,6 +330,18 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.殴る, Tec.殴る];
+        }
+    };
+    export const                         クピド:Job = new class extends Job{
+        constructor(){super({uniqueName:"クピド", info:"",
+                                appearLv:35, img:new Img("img/unit/クピド.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> p.isMasteredJob( Job.アーチャー ) && p.isMasteredJob( Job.訓練生二年生 ),
+                                growthPrms:()=>[[Prm.ARR, 2]],
+                                learningTecs:()=>[Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.射る, Tec.ナーガ, Tec.殴る, Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ];
         }
     };
     // export const                         格闘家:Job = new class extends Job{

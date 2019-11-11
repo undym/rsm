@@ -6,14 +6,14 @@ export class Force{
     // private static _empty:Force;
     // static get empty():Force{return this._empty ? this._empty : (this._empty = new Force());}
 
-    equip(unit:Unit):void{};
-    battleStart(unit:Unit):void{}
-    phaseStart(unit:Unit):void{}
-    beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg):void{}
-    phaseEnd(unit:Unit):void{}
+    async equip(unit:Unit){};
+    async battleStart(unit:Unit){}
+    async phaseStart(unit:Unit){}
+    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async phaseEnd(unit:Unit){}
 }
 
 

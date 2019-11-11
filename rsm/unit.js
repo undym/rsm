@@ -87,6 +87,7 @@ export class Unit {
         this.equips = [];
         this.eqEars = [];
         this.conditions = [];
+        this.invisibleConditions = [];
         this.boxBounds = Rect.ZERO;
         this.imgBounds = Rect.ZERO;
         this.img = Img.empty;
@@ -291,6 +292,9 @@ export class Unit {
             for (const cond of this.conditions.values()) {
                 yield forceDlgt(cond.condition);
             }
+            for (const icond of this.invisibleConditions.values()) {
+                yield forceDlgt(icond);
+            }
         });
     }
     //---------------------------------------------------------
@@ -307,7 +311,7 @@ export class Unit {
         }
         return false;
     }
-    clearCondition(condition) {
+    removeCondition(condition) {
         if (condition instanceof Condition) {
             const set = this.conditions[condition.type.ordinal];
             if (set.condition === condition) {
@@ -320,7 +324,7 @@ export class Unit {
             return;
         }
     }
-    clearAllCondition() {
+    clearCondition() {
         for (const set of this.conditions) {
             set.condition = Condition.empty;
             set.value = 0;
@@ -372,6 +376,18 @@ export class Unit {
             }
             return;
         }
+    }
+    //---------------------------------------------------------
+    //
+    //InvisibleCondition
+    //
+    //---------------------------------------------------------
+    clearInvisibleCondition() { this.invisibleConditions = []; }
+    removeInvisibleCondition(remove) {
+        this.invisibleConditions = this.invisibleConditions.filter(c => c !== remove);
+    }
+    addInvisibleCondition(iCondition) {
+        this.invisibleConditions.push(iCondition);
     }
     //---------------------------------------------------------
     //

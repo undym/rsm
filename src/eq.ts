@@ -130,14 +130,14 @@ export abstract class Eq implements Force, Num{
     //
     //
     //--------------------------------------------------------------------------
-    equip(unit:Unit){}
-    battleStart(unit:Unit){}
-    phaseStart(unit:Unit){}
-    beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    phaseEnd(unit:Unit){}
+    async equip(unit:Unit){}
+    async battleStart(unit:Unit){}
+    async phaseStart(unit:Unit){}
+    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async phaseEnd(unit:Unit){}
 
     add(v:number){
         Num.add(this, v);
@@ -192,14 +192,14 @@ export class EqEar implements Force, Num{
     //
     //
     //--------------------------------------------------------------------------
-    equip(unit:Unit){}
-    battleStart(unit:Unit){}
-    phaseStart(unit:Unit){}
-    beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    phaseEnd(unit:Unit){}
+    async equip(unit:Unit){}
+    async battleStart(unit:Unit){}
+    async phaseStart(unit:Unit){}
+    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async phaseEnd(unit:Unit){}
 
     add(v:number){
         Num.add(this, v);
@@ -223,7 +223,7 @@ export namespace Eq{
     export const                         月代:Eq = new class extends Eq{
         constructor(){super({uniqueName:"月代", info:"「斬る」威力+20%", 
                                 pos:EqPos.頭, lv:0});}
-        beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action === ActiveTec.斬る){
                 dmg.pow.mul *= 1.2;
             }
@@ -280,7 +280,7 @@ export namespace Eq{
     export const                         ミルテの棍:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ミルテの棍", info:"攻撃時、確率でHP+5%",
                                 pos:EqPos.武, lv:5});}
-        beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(Math.random() < 0.9){
                 Unit.healHP( attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05 );
             }
@@ -289,7 +289,7 @@ export namespace Eq{
     export const                         レティシアsガン:Eq = new class extends Eq{
         constructor(){super({uniqueName:"レティシア'sガン", info:"銃攻撃時、稀に相手を＜防↓＞化",
                                 pos:EqPos.武, lv:5});}
-        afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.銃術) && Math.random() < 0.7){
                 Unit.setCondition( target, Condition.防御低下, 1 );
             }
@@ -396,7 +396,7 @@ export namespace Eq{
     export const                         銅板:Eq = new class extends Eq{
         constructor(){super({uniqueName:"銅板", info:"防御値+100",
                                 pos:EqPos.盾, lv:12});}
-        beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             dmg.def.add += 100;
         }
     }
@@ -433,13 +433,13 @@ export namespace Eq{
     export const                         草の服:Eq = new class extends Eq{
         constructor(){super({uniqueName:"草の服", info:"最大HP+20",
                                 pos:EqPos.体, lv:15});}
-        equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
+        async equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 20;}
     }
     /**はじまりの丘財宝. */
     export const                         オールマント:Eq = new class extends Eq{
         constructor(){super({uniqueName:"オールマント", info:"全ステータス+20",
                                 pos:EqPos.体, lv:55});}
-        equip(unit:Unit){
+        async equip(unit:Unit){
             [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).eq += 20);
         }
     }
@@ -525,7 +525,7 @@ export namespace Eq{
     export const                         ライダーベルト:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ライダーベルト", info:"攻撃+10",
                                 pos:EqPos.腰, lv:35});}
-        beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             dmg.pow.add += 10;
         }
     }
@@ -634,7 +634,7 @@ export namespace Eq{
     export const                         アカデミーバッヂ:Eq = new class extends Eq{
         constructor(){super({uniqueName:"アカデミーバッヂ", info:"全ステータス+10",
                                 pos:EqPos.指, lv:30});}
-        equip(u:Unit){
+        async equip(u:Unit){
             u.prm(Prm.STR).base += 10; u.prm(Prm.MAG).base += 10;
             u.prm(Prm.LIG).base += 10; u.prm(Prm.DRK).base += 10;
             u.prm(Prm.CHN).base += 10; u.prm(Prm.PST).base += 10;
@@ -678,7 +678,7 @@ export namespace Eq{
     export const                         安全靴:Eq = new class extends Eq{
         constructor(){super({uniqueName:"安全靴", info:"戦闘開始時<盾>化",
                                 pos:EqPos.脚, lv:10});}
-        battleStart(unit:Unit){
+        async battleStart(unit:Unit){
             unit.setCondition( Condition.盾, 1 );
         }
     }

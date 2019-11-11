@@ -604,7 +604,6 @@ export const FX_回復 = (target:Point)=>{
 FXTest.add(FX_回復.name, () => FX_回復( FXTest.target ));
 
 
-
 export const FX_吸収 = (attacker:Point, target:Point)=>{
     FX.add((count)=>{
         const over = 20;
@@ -620,3 +619,18 @@ export const FX_吸収 = (attacker:Point, target:Point)=>{
     });
 };
 FXTest.add(FX_吸収.name, () => FX_吸収( FXTest.attacker, FXTest.target ));
+
+
+export const FX_ナーガ = (attacker:Point, target:Point)=>{
+    const rnd = target.x - attacker.x;
+    const x = attacker.x + rnd * Math.random();
+    const center = new Point(x, 0);
+    FX.add((count)=>{
+        const over = 20;
+        
+        const color = new Color(1, 0, 0, 1 - count / over);
+        Graphics.line(attacker, center, color);
+        return count < over;
+    });
+};
+FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
