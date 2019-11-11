@@ -554,54 +554,54 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.呪素 = new class extends Item {
         constructor() {
-            super({ uniqueName: "呪素", info: "戦闘時、1ダメージを与える",
+            super({ uniqueName: "呪素", info: "戦闘時、10ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
     Item.呪 = new class extends Item {
         constructor() {
-            super({ uniqueName: "呪", info: "戦闘時、5ダメージを与える",
+            super({ uniqueName: "呪", info: "戦闘時、50ダメージを与える",
                 type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 5 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 50 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
     Item.呪詛 = new class extends Item {
         constructor() {
-            super({ uniqueName: "呪詛", info: "戦闘時、10ダメージを与える",
+            super({ uniqueName: "呪詛", info: "戦闘時、150ダメージを与える",
                 type: ItemType.ダメージ, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 150 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
     Item.鬼火 = new class extends Item {
         constructor() {
-            super({ uniqueName: "鬼火", info: "戦闘時、敵全体に1ダメージを与える",
+            super({ uniqueName: "鬼火", info: "戦闘時、敵全体に10ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
     Item.ウィルスα = new class extends Item {
         constructor() {
-            super({ uniqueName: "ウィルスα", info: "戦闘時、敵全体に3ダメージを与える",
+            super({ uniqueName: "ウィルスα", info: "戦闘時、敵全体に25ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 3 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 25 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
     Item.手榴弾 = new class extends Item {
         constructor() {
-            super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に10ダメージを与える",
-                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
+            super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に100ダメージを与える",
+                type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 100 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }

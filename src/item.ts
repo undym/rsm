@@ -516,44 +516,44 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         呪素:Item = new class extends Item{
-        constructor(){super({uniqueName:"呪素", info:"戦闘時、1ダメージを与える",
+        constructor(){super({uniqueName:"呪素", info:"戦闘時、10ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:1})),
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         呪:Item = new class extends Item{
-        constructor(){super({uniqueName:"呪", info:"戦闘時、5ダメージを与える",
+        constructor(){super({uniqueName:"呪", info:"戦闘時、50ダメージを与える",
                                 type:ItemType.ダメージ, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:5})),
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:50})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         呪詛:Item = new class extends Item{
-        constructor(){super({uniqueName:"呪詛", info:"戦闘時、10ダメージを与える",
+        constructor(){super({uniqueName:"呪詛", info:"戦闘時、150ダメージを与える",
                                 type:ItemType.ダメージ, rank:2, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:150})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         鬼火:Item = new class extends Item{
-        constructor(){super({uniqueName:"鬼火", info:"戦闘時、敵全体に1ダメージを与える",
+        constructor(){super({uniqueName:"鬼火", info:"戦闘時、敵全体に10ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:1})),
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         ウィルスα:Item = new class extends Item{
-        constructor(){super({uniqueName:"ウィルスα", info:"戦闘時、敵全体に3ダメージを与える",
+        constructor(){super({uniqueName:"ウィルスα", info:"戦闘時、敵全体に25ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:3})),
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:25})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         手榴弾:Item = new class extends Item{
-        constructor(){super({uniqueName:"手榴弾", info:"戦闘時、敵全体に10ダメージを与える",
-                                type:ItemType.ダメージ, rank:3, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
+        constructor(){super({uniqueName:"手榴弾", info:"戦闘時、敵全体に100ダメージを与える",
+                                type:ItemType.ダメージ, rank:1, drop:ItemDrop.BOX, targetings: Targeting.ALL,
+                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:100})),
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
