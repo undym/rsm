@@ -68,8 +68,6 @@ Sound.MAX_VOLUME = 10;
     /**休む. */
     Sound.camp = new Sound("sound/camp.mp3");
     Sound.COIN = new Sound("sound/COIN.mp3");
-    // /**状態弱化. */
-    // export const DARK       = new Sound("sound/DARK.mp3");
     Sound.death = new Sound("sound/death.mp3");
     Sound.exp = new Sound("sound/exp.mp3");
     Sound.gameover = new Sound("sound/gameover.mp3");

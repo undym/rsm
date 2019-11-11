@@ -124,6 +124,12 @@ const setSaveDataDeleteBtn2 = () => {
 const setDebugBtn = () => {
     list.clear();
     list.add({
+        center: () => "EffectTest",
+        push: elm => {
+            Scene.load(new EffectTest());
+        },
+    });
+    list.add({
         center: () => "アイテム入手",
         push: elm => {
             for (let item of Item.values) {
@@ -192,12 +198,6 @@ const setDebugBtn = () => {
                 p.ins.bp += value;
             }
             Util.msg.set(`bp+${value}`);
-        },
-    });
-    list.add({
-        center: () => "EffectTest",
-        push: elm => {
-            Scene.load(new EffectTest());
         },
     });
     list.add({

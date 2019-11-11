@@ -549,6 +549,22 @@ FXTest.add(FX_銃術.name, () => FX_銃術(FXTest.attacker, FXTest.target));
 
 
 
+export const FX_弓術 = (attacker:Point, target:Point)=>{
+    const rnd = target.x - attacker.x;
+    const x = attacker.x + rnd * Math.random();
+    const center = new Point(x, 0);
+    FX.add((count)=>{
+        const over = 20;
+        
+        const color = new Color(1, 0, 0, 1 - count / over);
+        Graphics.line(attacker, center, color);
+        Graphics.line(target, center, color);
+        return count < over;
+    });
+};
+FXTest.add(FX_弓術.name, () => FX_弓術( FXTest.attacker, FXTest.target ));
+
+
 export const FX_回復 = (target:Point)=>{
     const addStar = (x:number, y:number)=>{
         let w = Graphics.dotW * 12;

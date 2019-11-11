@@ -174,7 +174,7 @@ class TownBtn{
     private static dungeonListScroll = 0;
 
     static reset(){
-        const l = new List(6);
+        const l = new List(7);
             // l.add({
             //     center:()=>"ダンジョン",
             //     push:elm=>{

@@ -213,7 +213,7 @@ export class BattleScene extends Scene{
     
 
     private async setPlayerPhase(attacker:Unit){
-        const list = new List(6);
+        const list = new List(7);
 
         let choosedTec:Tec|undefined;
 

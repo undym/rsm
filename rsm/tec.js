@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Dmg, Targeting } from "./force.js";
 import { Condition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収 } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術 } from "./fx/fx.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 export class TecType {
@@ -127,15 +127,13 @@ TecType._values = [];
                 def: target.prm(Prm.GUN).total,
             });
         }
-        effect(attacker, target, dmg) { FX_銃術(attacker.imgBounds.center, target.imgBounds.center); }
+        effect(attacker, target, dmg) { FX_弓術(attacker.imgBounds.center, target.imgBounds.center); }
         sound() { Sound.ya.play(); }
     };
     TecType.状態 = new class extends TecType {
         constructor() { super("状態"); }
         createDmg(attacker, target) { return new Dmg(); }
-        effect(attacker, target, dmg) {
-            // FX_格闘(target.imgBounds.center);
-        }
+        effect(attacker, target, dmg) { }
         sound() { }
     };
     TecType.回復 = new class extends TecType {
@@ -151,9 +149,7 @@ TecType._values = [];
     TecType.その他 = new class extends TecType {
         constructor() { super("その他"); }
         createDmg(attacker, target) { return new Dmg(); }
-        effect(attacker, target, dmg) {
-            // FX_格闘(target.imgBounds.center);
-        }
+        effect(attacker, target, dmg) { }
         sound() { }
     };
 })(TecType || (TecType = {}));

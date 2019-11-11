@@ -80,8 +80,6 @@ export namespace Sound{
     /**休む. */
     export const camp       = new Sound("sound/camp.mp3");
     export const COIN       = new Sound("sound/COIN.mp3");
-    // /**状態弱化. */
-    // export const DARK       = new Sound("sound/DARK.mp3");
     export const death      = new Sound("sound/death.mp3");
     export const exp        = new Sound("sound/exp.mp3");
     export const gameover   = new Sound("sound/gameover.mp3");

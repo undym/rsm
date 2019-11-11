@@ -199,7 +199,7 @@ export class BattleScene extends Scene {
     }
     setPlayerPhase(attacker) {
         return __awaiter(this, void 0, void 0, function* () {
-            const list = new List(6);
+            const list = new List(7);
             let choosedTec;
             attacker.tecs.forEach((tec, index) => {
                 if (tec instanceof ActiveTec) {

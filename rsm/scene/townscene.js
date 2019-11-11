@@ -155,7 +155,7 @@ const createDungeonBtnLayout = () => {
 class TownBtn {
     static get ins() { return this._ins; }
     static reset() {
-        const l = new List(6);
+        const l = new List(7);
         // l.add({
         //     center:()=>"ダンジョン",
         //     push:elm=>{
