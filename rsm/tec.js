@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術 } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術, FX_ナーガ } from "./fx/fx.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
@@ -929,7 +929,7 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 0.8,
             });
         }
-        rndAttackNum() { return randomInt(1, 3); }
+        rndAttackNum() { return randomInt(1, 2, "[]"); }
     };
     // export const                          二丁拳銃:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"二丁拳銃", info:"一体に銃術攻撃2回",
@@ -945,7 +945,7 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 4, hit: 0.8, ep: 1,
             });
         }
-        rndAttackNum() { return randomInt(3, 7); }
+        rndAttackNum() { return randomInt(3, 6, "[]"); }
     };
     // export const                          ショットガン:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ショットガン", info:"ランダムに銃術攻撃4回x0.7",
@@ -1047,7 +1047,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "ヤクシャ", info: "一体に2回弓術攻撃",
                 type: TecType.弓術, targetings: Targeting.RANDOM,
-                mul: 1, num: 2, hit: 0.8, item: () => [[Item.夜叉の矢, 2]],
+                mul: 1, num: 2, hit: 0.8, tp: 1, item: () => [[Item.夜叉の矢, 2]],
             });
         }
     };
@@ -1056,21 +1056,25 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "ナーガ", info: "次の行動時、敵全体に弓術攻撃",
                 type: TecType.弓術, targetings: Targeting.ALL,
-                mul: 1, num: 1, hit: 0.8, item: () => [[Item.夜叉の矢, 2]],
+                mul: 1, num: 1, hit: 0.8, tp: 2, item: () => [[Item.降雨の矢, 4]],
             });
         }
-        use(attacker, targets) {
+        use(attacker, fakeTargets) {
             const _super = Object.create(null, {
                 use: { get: () => super.use }
             });
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.checkCost(attacker)) {
+                const canUse = this.checkCost(attacker);
+                yield _super.use.call(this, attacker, fakeTargets);
+                if (canUse) {
+                    const tec = this;
                     attacker.addInvisibleCondition(new class extends InvisibleCondition {
                         phaseStart(u) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 Util.msg.set("空から矢が降り注ぐ！");
                                 yield wait();
-                                targets.filter(t => t.exists && !t.dead)
+                                const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
+                                realTargets.filter(t => t.exists && !t.dead)
                                     .forEach(t => {
                                     Tec.射る.run(attacker, t);
                                 });
@@ -1078,8 +1082,66 @@ ActiveTec._valueOf = new Map();
                             });
                         }
                     });
+                    for (const t of fakeTargets) {
+                        FX_ナーガ(attacker.imgCenter, t.imgCenter);
+                    }
+                    Sound.ya.play();
+                    Util.msg.set(`${attacker.name}は空高く矢を放った`);
+                    yield wait();
                 }
-                yield _super.use.call(this, attacker, targets);
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () { });
+        }
+    };
+    /**クピド. */
+    Tec.ガルダ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ガルダ", info: "一体に弓術攻撃x2",
+                type: TecType.弓術, targetings: Targeting.SELECT,
+                mul: 2, num: 1, hit: 0.8, tp: 1, item: () => [[Item.金翅鳥の矢, 1]],
+            });
+        }
+    };
+    /**クピド. */
+    Tec.キンナラ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "キンナラ", info: "次の行動時、ランダムに6回弓術攻撃",
+                type: TecType.弓術, targetings: Targeting.RANDOM,
+                mul: 1, num: 6, hit: 0.8, tp: 2, item: () => [[Item.歌舞の矢, 6]],
+            });
+        }
+        use(attacker, fakeTargets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                const canUse = this.checkCost(attacker);
+                yield _super.use.call(this, attacker, fakeTargets);
+                if (canUse) {
+                    const tec = this;
+                    attacker.addInvisibleCondition(new class extends InvisibleCondition {
+                        phaseStart(u) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                Util.msg.set("空から矢が降り注ぐ！");
+                                yield wait();
+                                const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
+                                realTargets.filter(t => t.exists && !t.dead)
+                                    .forEach(t => {
+                                    Tec.射る.run(attacker, t);
+                                });
+                                attacker.removeInvisibleCondition(this);
+                            });
+                        }
+                    });
+                    for (const t of fakeTargets) {
+                        FX_ナーガ(attacker.imgCenter, t.imgCenter);
+                    }
+                    Sound.ya.play();
+                    Util.msg.set(`${attacker.name}は空高く矢を放った`);
+                    yield wait();
+                }
             });
         }
         run(attacker, target) {
@@ -1199,7 +1261,7 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                target.clearCondition();
+                target.clearConditions();
                 Sound.seikou.play();
                 Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright);
                 yield wait();

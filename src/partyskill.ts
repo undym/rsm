@@ -59,9 +59,6 @@ export namespace PartySkill{
     export const                         empty:PartySkill = new class extends PartySkill{
         constructor(){super({uniqueName:"empty", info:""});}
         toString(){return "";}
-        win(arg:PartySkillWin){
-            arg.exp.mul += 1;
-        }
     }
     export const                         センス:PartySkill = new class extends PartySkill{
         constructor(){super({uniqueName:"センス", info:"入手経験値x2"});}

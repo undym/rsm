@@ -694,6 +694,13 @@ Item.DEF_NUM_LIMIT = 9999;
     //     constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
     //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
     // };
+    Item.降雨の矢 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "降雨の矢", info: "ナーガに使用",
+                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     Item.夜叉の矢 = new class extends Item {
         constructor() {
             super({ uniqueName: "夜叉の矢", info: "ヤクシャに使用",
@@ -701,10 +708,17 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
-    Item.降雨の矢 = new class extends Item {
+    Item.金翅鳥の矢 = new class extends Item {
         constructor() {
-            super({ uniqueName: "降雨の矢", info: "ナーガに使用",
-                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+            super({ uniqueName: "金翅鳥の矢", info: "ガルダに使用",
+                type: ItemType.弾, rank: 9, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.歌舞の矢 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "歌舞の矢", info: "キンナラに使用",
+                type: ItemType.弾, rank: 9, drop: ItemDrop.NO,
                 consumable: true });
         }
     };

@@ -43,9 +43,6 @@ PartySkill.skills = [];
     PartySkill.empty = new class extends PartySkill {
         constructor() { super({ uniqueName: "empty", info: "" }); }
         toString() { return ""; }
-        win(arg) {
-            arg.exp.mul += 1;
-        }
     };
     PartySkill.センス = new class extends PartySkill {
         constructor() { super({ uniqueName: "センス", info: "入手経験値x2" }); }

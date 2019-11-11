@@ -387,9 +387,7 @@ const finish = () => __awaiter(this, void 0, void 0, function* () {
         for (const prm of Prm.values()) {
             u.prm(prm).battle = 0;
         }
-        u.clearInvisibleCondition();
-    }
-    for (const p of Unit.players) {
+        u.clearInvisibleConditions();
     }
     btnSpace.clear();
 });

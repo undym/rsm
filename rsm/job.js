@@ -108,7 +108,7 @@ export class Job {
         for (const pos of EqPos.values()) {
             e.setEq(pos, Eq.rnd(pos, lv));
         }
-        e.clearCondition();
+        e.clearConditions();
         this.setEnemyInner(e);
         e.equip();
         e.hp = e.prm(Prm.MAX_HP).total;
@@ -320,185 +320,15 @@ Job.DEF_LVUP_EXP = 10;
     Job.クピド = new class extends Job {
         constructor() {
             super({ uniqueName: "クピド", info: "",
-                appearLv: 35, img: new Img("img/unit/アーチャー.png"),
+                appearLv: 35, img: new Img("img/unit/クピド.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
                 canJobChange: p => p.isMasteredJob(Job.アーチャー) && p.isMasteredJob(Job.訓練生二年生),
                 growthPrms: () => [[Prm.ARR, 2]],
-                learningTecs: () => [Tec.ヤクシャ],
+                learningTecs: () => [Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.射る, Tec.射る, Tec.ナーガ, Tec.殴る, Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ];
         }
     };
-    // export const                         格闘家:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"格闘家", info:"格闘攻撃を扱う職業",
-    //                             appearLv:1,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.二回殴る, Tec.人狼剣];
-    //     }
-    // };
-    // export const                         剣士:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"剣士", info:"",
-    //                             appearLv:5,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.二回殴る, Tec.人狼剣, Tec.急所];
-    //     }
-    // };
-    // export const                         騎士:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"騎士", info:"",
-    //                             appearLv:35,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.殴る, Tec.衛生, Tec.ばんそうこう, Tec.聖剣, Tec.聖剣, Tec.天籟];
-    //     }
-    // };
-    // export const                         ウィザード:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"ウィザード", info:"魔法攻撃を扱う職業",
-    //                             appearLv:50,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.ヴァハ, Tec.ヴァハ,Tec.ヴァハ,Tec.ヴァハ, Tec.エヴィン, Tec.エヴィン, Tec.殴る];
-    //     }
-    // };
-    // export const                         女神:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"女神", info:"",
-    //                             appearLv:40,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.天籟, Tec.衛生, Tec.ばんそうこう, Tec.ばんそうこう, Tec.ひんやりゼリー, Tec.殴る];
-    //         e.prm(Prm.LIG).base *= 1.5;
-    //     }
-    // };
-    // export const                         暗黒戦士:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"暗黒戦士", info:"自分の身を削り強力な攻撃を放つ",
-    //                             appearLv:8,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.暗黒剣, Tec.暗黒剣, Tec.殴る, Tec.殴る, Tec.殴る];
-    //     }
-    // };
-    // export const                         ヴァンパイア:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"ヴァンパイア", info:"",
-    //                             appearLv:40,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.吸心, Tec.吸心, Tec.吸心, Tec.殴る, Tec.殴る, Tec.殴る];
-    //         e.prm(Prm.DRK).base *= 1.5;
-    //     }
-    // };
-    // export const                         阿修羅:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"阿修羅", info:"",
-    //                             appearLv:80,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.宵闇];
-    //     }
-    // };
-    // export const                         ダークナイト:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"ダークナイト", info:"",
-    //                             appearLv:50,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.インドラ, Tec.撃つ, Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.宵闇];
-    //     }
-    // };
-    // export const                         スネイカー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"スネイカー", info:"蛇を虐待してる",
-    //                             appearLv:20,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.スネイク, Tec.スネイク, Tec.TP自動回復, Tec.殴る, Tec.殴る, Tec.凍てつく波動];
-    //     }
-    // };
-    // export const                         蛇使い:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"蛇使い", info:"",
-    //                             appearLv:40,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.スネイク, Tec.スネイク, Tec.TP自動回復, Tec.殴る, Tec.コブラ, Tec.コブラ, Tec.コブラ, Tec.ハブ];
-    //     }
-    // };
-    // export const                         触手:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"触手", info:"",
-    //                             appearLv:40,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.スネイク, Tec.スネイク, Tec.TP自動回復, Tec.殴る, Tec.念力, Tec.念力, Tec.凍てつく波動];
-    //     }
-    // };
-    // export const                         ダウザー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"ダウザー", info:"全体攻撃に長ける",
-    //                             appearLv:30,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.念, Tec.殴る, Tec.殴る, Tec.殴る];
-    //     }
-    // };
-    // export const                         エスパー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"エスパー", info:"",
-    //                             appearLv:50,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.MP自動回復, Tec.殴る, Tec.殴る, Tec.やる気0];
-    //     }
-    // };
-    // export const                         ハイパー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"ハイパー", info:"",
-    //                             appearLv:80,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.念力, Tec.念, Tec.念, Tec.念, Tec.ネガティヴフィードバック, Tec.MP自動回復, Tec.弱体液, Tec.やる気0];
-    //     }
-    // };
-    // export const                         砲撃手:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"砲撃手", info:"",
-    //                             appearLv:37,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.二丁拳銃, Tec.二丁拳銃, Tec.殴る, Tec.殴る, Tec.テーブルシールド];
-    //     }
-    // };
-    // export const                         アーチャー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"アーチャー", info:"致命の一撃を放つ",
-    //                             appearLv:10,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.射る, Tec.殴る, Tec.殴る, Tec.インドラ];
-    //     }
-    // };
-    // export const                         クピド:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"クピド", info:"",
-    //                             appearLv:60,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.射る, Tec.射る, Tec.射る, Tec.射る, Tec.インドラ, Tec.殴る, Tec.フェニックスアロー];
-    //     }
-    // };
-    // export const                         測量士:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"測量士", info:"",
-    //                             appearLv:20,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.二丁拳銃, Tec.射る, Tec.射る, Tec.インドラ, Tec.殴る];
-    //     }
-    // };
-    // export const                         探検家 = new class extends Job{
-    //     constructor(){super({uniqueName:"探検家", info:"",
-    //                             appearLv:14,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.撃つ, Tec.撃つ, Tec.射る, Tec.射る, Tec.HP自動回復, Tec.天籟, Tec.便風, Tec.石肌];
-    //     }
-    // };
-    // export const                         探求家 = new class extends Job{
-    //     constructor(){super({uniqueName:"探求家", info:"",
-    //                             appearLv:14,
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.撃つ, Tec.撃つ, Tec.射る, Tec.射る, Tec.ヴァハ, Tec.暗黒剣, Tec.保湿クリーム];
-    //     }
-    // };
 })(Job || (Job = {}));

@@ -324,7 +324,7 @@ export class Unit {
             return;
         }
     }
-    clearCondition() {
+    clearConditions() {
         for (const set of this.conditions) {
             set.condition = Condition.empty;
             set.value = 0;
@@ -382,7 +382,7 @@ export class Unit {
     //InvisibleCondition
     //
     //---------------------------------------------------------
-    clearInvisibleCondition() { this.invisibleConditions = []; }
+    clearInvisibleConditions() { this.invisibleConditions = []; }
     removeInvisibleCondition(remove) {
         this.invisibleConditions = this.invisibleConditions.filter(c => c !== remove);
     }
@@ -480,7 +480,7 @@ export class PUnit extends Unit {
     getNextLvExp() {
         const lv = this.prm(Prm.LV).base;
         const grade = (lv / 100 + 1) | 0;
-        return (lv * grade * 10) | 0;
+        return (lv * grade * 5) | 0;
     }
     //---------------------------------------------------------
     //

@@ -1,6 +1,6 @@
 /**[)*/
 export const randomInt = (min, max, boundaries = "[)") => {
-    if (boundaries.length > 2) {
+    if (boundaries.length < 2 || boundaries.length > 2) {
         console.log(`randomInt() illiegal boundaries: ${boundaries}`);
         boundaries = "[)";
     }
