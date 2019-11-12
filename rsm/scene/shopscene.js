@@ -45,7 +45,7 @@ export class ShopScene extends Scene {
                 let font = Font.def;
                 let p = bounds.upperLeft.move(1 / Graphics.pixelW, 2 / Graphics.pixelH);
                 const moveP = () => p = p.move(0, font.ratioH);
-                font.draw(`[${goods}]`, moveP(), Color.WHITE);
+                font.draw(`[${goods.name}]`, moveP(), Color.WHITE);
                 font.draw(`${goods.type}`, moveP(), Color.WHITE);
                 font.draw(`${goods.price}円`, moveP(), Color.WHITE);
                 // if(goods.num){

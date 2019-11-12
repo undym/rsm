@@ -57,7 +57,9 @@ export class Sound{
     }
 
     play(){
-        Util.msg.set(`${Sound.ac.state}`);
+        if(Sound.ac.state !== "running"){
+            Sound.ac.resume();
+        }
         if(!this.buffer){return;}
 
         const src = Sound.ac.createBufferSource();

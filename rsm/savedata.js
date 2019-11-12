@@ -317,7 +317,7 @@ const stragePlayData = (save) => {
     for (const cs of CollectingSkill.values) {
         ioInt(save, `${name}_CollectingSkill_${cs.uniqueName}`, cs.lv, load => cs.lv = load);
     }
-    ioFloat(save, `${name}_SoundVolume`, Sound.volume, load => Sound.volume = load);
+    ioInt(save, `${name}_SoundVolume`, Sound.volume, load => Sound.volume = load);
 };
 const stragePartySkill = (save) => {
     for (const skill of PartySkill.values) {
