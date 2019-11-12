@@ -16,11 +16,11 @@ import { Sound } from "./sound.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,20,15);
+    static readonly NOW = new Version(0,21,0);
     static readonly updateInfo =    [
-                                        "(0.20.13)細かいバグ修正・他",
                                         "(0.20.14)色々追加",
                                         "(0.20.15)バグ修正",
+                                        "(0.21.0)もろもろ追加",
                                     ];
 
     private values:number[];
