@@ -722,6 +722,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.手裏剣 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "手裏剣", info: "手裏剣に使用",
+                type: ItemType.弾, rank: 10, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //鍵
@@ -920,11 +927,11 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.灰色のまぼろし = new class extends Item {
         constructor() {
-            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+10",
+            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+30",
                 type: ItemType.ドーピング, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.exp.play();
-                    target.exp += 20;
+                    target.exp += 30;
                 }),
             });
         }
@@ -939,11 +946,11 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.黒色のまぼろし = new class extends Item {
         constructor() {
-            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+40",
+            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+50",
                 type: ItemType.ドーピング, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.exp.play();
-                    target.exp += 40;
+                    target.exp += 50;
                 }),
             });
         }
@@ -1016,13 +1023,13 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.HP至上主義のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "HP至上主義のメモ", info: "とりあえずHPを上げれば間違いはない、俺は詳しいんだ...と書かれている",
+            super({ uniqueName: "HP至上主義のメモ", info: "とりあえずHPを上げれば間違いはない。俺は詳しいんだ...と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.HP懐疑主義のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "HP懐疑主義のメモ", info: "何も考えずにHPを上げるのは危険だ、騙されないぞ...と書かれている",
+            super({ uniqueName: "HP懐疑主義のメモ", info: "何も考えずにHPを上げるのは危険だ。騙されないぞ...と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };

@@ -47,7 +47,6 @@ export class Sound {
         if (Sound.ac.state !== "running") {
             Sound.ac.resume();
         }
-        console.log(Sound.ac.state);
         if (!this.buffer) {
             return;
         }

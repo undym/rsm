@@ -20,8 +20,23 @@ import { PartySkill } from "../partyskill.js";
 import { Sound } from "../sound.js";
 
 
-let ヤクシャmaster = false;
+class TecMaster{
+    static map = new Map<Tec,boolean>();
 
+    static check(tec:Tec):boolean{
+        return this.map.get(tec) ? true : false;
+    }
+
+    static setCandidates(tecs:Tec[]){
+        const members = Player.values.filter(p=> p.member);
+        for(const tec of tecs){
+            if(!this.map.get(tec)){
+                const master = members.some(p=> p.ins.isMasteredTec(tec));
+                this.map.set(tec, master);
+            }
+        }
+    }
+}
 
 export class ShopScene extends Scene{
 
@@ -32,7 +47,9 @@ export class ShopScene extends Scene{
     constructor(){
         super();
 
-        if(!ヤクシャmaster){ヤクシャmaster = Player.values.some(p=> p.ins.isMasteredTec(Tec.ヤクシャ));}
+        TecMaster.setCandidates([
+            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣,
+        ]);
 
         if(!ShopScene.completedInitGoods){
             ShopScene.completedInitGoods = true;
@@ -266,7 +283,11 @@ const initGoods = ()=>{
     createItemGoods({item:Item.赤い水,          price:()=>50,  isVisible:()=>true});
     createItemGoods({item:Item.サンタクララ薬,   price:()=>100, isVisible:()=>true});
 
-    createItemGoods({item:Item.夜叉の矢, num:2,  price:()=>(Item.夜叉の矢.num+1) * 1000, isVisible:()=>ヤクシャmaster});
+    createItemGoods({item:Item.夜叉の矢,   num:2,  price:()=>(Item.夜叉の矢.num+2) * 1000, isVisible:()=>TecMaster.check(Tec.ヤクシャ)});
+    createItemGoods({item:Item.降雨の矢,   num:4,  price:()=>(Item.降雨の矢.num+4) * 1000, isVisible:()=>TecMaster.check(Tec.ナーガ)});
+    createItemGoods({item:Item.金翅鳥の矢, num:1,  price:()=>(Item.金翅鳥の矢.num+1) * 1000, isVisible:()=>TecMaster.check(Tec.ガルダ)});
+    createItemGoods({item:Item.歌舞の矢,   num:6,  price:()=>(Item.歌舞の矢.num+6) * 1000, isVisible:()=>TecMaster.check(Tec.キンナラ)});
+    createItemGoods({item:Item.手裏剣,     num:2,  price:()=>(Item.手裏剣.num+2) * 1000, isVisible:()=>TecMaster.check(Tec.手裏剣)});
     // createItemGoods(Item.散弾,       ()=>(Item.散弾.num+1) * 500,    ()=>ショットガンmaster);
     
     // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);

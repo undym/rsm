@@ -1291,15 +1291,20 @@ ActiveTec._valueOf = new Map();
     //         Tec.癒しの風.run(attacker, target);
     //     }
     // }
-    // export const                          風:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"風", info:"自分を＜風3＞（回避UP）状態にする",
-    //                           type:TecType.状態, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
-    //                           mul:1, num:1, hit:1, mp:1, tp:1,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition( target, Condition.風, 5 );
-    //     }
-    // }
+    /**シーフ. */
+    Tec.風 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "風", info: "味方全員を＜風2＞（回避UP）状態にする",
+                type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(target, Condition.風, 2);
+            });
+        }
+    };
     // export const                          やる気0:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"やる気0", info:"一体を＜攻↓3＞状態にする",
     //                           type:TecType.状態, targetings:Targeting.SELECT,
@@ -1638,6 +1643,21 @@ ActiveTec._valueOf = new Map();
     //その他Passive
     //
     //--------------------------------------------------------------------------
+    /**シーフ. */
+    Tec.回避UP = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "回避UP", info: "格闘・銃術・弓術攻撃回避UP",
+                type: TecType.その他,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.銃術, TecType.弓術)) {
+                    dmg.hit.mul *= 0.9;
+                }
+            });
+        }
+    };
     // export const                         我慢:PassiveTec = new class extends PassiveTec{
     //     constructor(){super({uniqueName:"我慢", info:"防御値x1.2+99",
     //                             type:TecType.その他,

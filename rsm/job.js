@@ -148,6 +148,20 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風];
         }
     };
+    Job.シーフ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "シーフ", info: "",
+                appearLv: 40, img: new Img("img/unit/シーフ.png"),
+                lvupExp: Job.DEF_LVUP_EXP,
+                canJobChange: p => p.isMasteredJob(Job.訓練生二年生),
+                growthPrms: () => [[Prm.MAX_TP, 1]],
+                learningTecs: () => [Tec.回避UP, Tec.風],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.手裏剣, Tec.癒しの風, Tec.回避UP, Tec.風];
+        }
+    };
     Job.格闘家 = new class extends Job {
         constructor() {
             super({ uniqueName: "格闘家", info: "",
@@ -181,7 +195,7 @@ Job.DEF_LVUP_EXP = 10;
             super({ uniqueName: "忍者", info: "",
                 appearLv: 50, img: new Img("img/unit/忍者.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
-                canJobChange: p => p.isMasteredJob(Job.剣士),
+                canJobChange: p => p.isMasteredJob(Job.剣士) && p.isMasteredJob(Job.シーフ),
                 growthPrms: () => [[Prm.STR, 1], [Prm.ARR, 1]],
                 learningTecs: () => [Tec.二刀流, Tec.手裏剣, Tec.ジライヤ],
             });
