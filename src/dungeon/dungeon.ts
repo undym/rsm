@@ -389,7 +389,7 @@ export namespace Dungeon{
         }
     };
     export const                         水の都イス:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"水の都イス",
+        constructor(){super({uniqueName:"水の都・イス",
                                 rank:2, enemyLv:14, au:60, btn:[DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.レティシアsガン],
                                 exItems:    ()=>[Eq.月代],
@@ -416,6 +416,34 @@ export namespace Dungeon{
             }
         }
     };
+    export const                         リテの門:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"リ・テの門",
+                                rank:2, enemyLv:16, au:200, btn:[DungeonArea.中央島, new Rect(0, 0.75, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.忍者ソード],
+                                exItems:    ()=>[Eq.反精霊の盾],
+                                trendItems: ()=>[Item.ファーストキス, Item.エレタクレヨン],
+        });}
+        isVisible = ()=>Dungeon.水の都イス.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "リテの門番";
+            e.prm(Prm.MAX_HP).base = 280;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "亡霊運命兄さん";
+            e.img = new Img("img/unit/unmei.png");
+            e.prm(Prm.MAX_HP).base = 280;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_8.run();
+            }
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
@@ -427,7 +455,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:10, au:100, btn:[DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔性のマント],
                                 exItems:    ()=>[Eq.妖魔の手],
-                                trendItems: ()=>[Item.バッタ],
+                                trendItems: ()=>[Item.バッタ, Item.クワ],
         });}
         isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -456,7 +484,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:12, au:200, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉の手首飾り],
                                 exItems:    ()=>[Eq.無色の靴],
-                                trendItems: ()=>[Item.鉄, Item.銅],
+                                trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト],
         });}
         isVisible = ()=>Dungeon.黒平原.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -476,6 +504,34 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story.MAIN_6.run();
+            }
+        }
+    };
+    export const                         黒遺跡:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"黒遺跡",
+                                rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.95, 0.3, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.ダークネスロード],
+                                exItems:    ()=>[Item.ヴァンパイアの血],
+                                trendItems: ()=>[Item.黒色のまぼろし],
+        });}
+        isVisible = ()=>Dungeon.リテの門.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.ヴァンパイア.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "スプリガン";
+            e.prm(Prm.MAX_HP).base = 330;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "亡霊VBS";
+            e.img = new Img("img/unit/vbs2.png");
+            e.prm(Prm.MAX_HP).base = 330;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_9.run();
             }
         }
     };

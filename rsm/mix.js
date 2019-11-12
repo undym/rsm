@@ -72,7 +72,7 @@ export class Mix {
     get info() { return this.args.info; }
     toString() { return this.uniqueName; }
     isVisible() {
-        return this.args.isVisible();
+        return this.args.isVisible() && this.count < this.countLimit;
         // if(!this.materials){return false;}
         // if(this.args.isVisible && !this.args.isVisible()){return false;}
         // return this.materials[0].object.totalGetCount > 0 && this.count < this.countLimit;
@@ -143,6 +143,26 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.銅板, 2], [Item.合板, 4],],
         isVisible: () => ルインドアースLv5.count > 0,
     });
+    const ルインドアースLv7 = new Mix({
+        uniqueName: "ルインドアースLv7", limit: 1, info: "",
+        materials: () => [[Item.クワ, 10],],
+        isVisible: () => ルインドアースLv6.count > 0,
+    });
+    const ルインドアースLv8 = new Mix({
+        uniqueName: "ルインドアースLv8", limit: 1, info: "",
+        materials: () => [[Item.粘土, 5], [Item.ガラス, 5], [Item.桜, 2]],
+        isVisible: () => ルインドアースLv7.count > 0,
+    });
+    const ルインドアースLv9 = new Mix({
+        uniqueName: "ルインドアースLv9", limit: 1, info: "",
+        materials: () => [[Item.ファーストキス, 3],],
+        isVisible: () => ルインドアースLv8.count > 0,
+    });
+    const ルインドアースLv10 = new Mix({
+        uniqueName: "ルインドアースLv10", limit: 1, info: "",
+        materials: () => [[Item.サクラ材, 4], [Item.松材, 4], [Item.エデン樹, 4]],
+        isVisible: () => ルインドアースLv9.count > 0,
+    });
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
         materials: () => [[Item.ヒノキ, 1], [Item.草, 5]],
@@ -201,11 +221,6 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
             Player.ピアー.ins.prm(Prm.MAG).base += 1;
         },
     });
-    const ガラス工場 = new Mix({
-        uniqueName: "ガラス工場", limit: 1, info: "ガラスの加工が可能になる",
-        materials: () => [[Item.砂, 3], [Item.石, 1]],
-        isVisible: () => ルインドアースLv3.count > 0,
-    });
     const 竹林 = new Mix({
         uniqueName: "竹林", limit: 1, info: "竹の加工が可能になる",
         materials: () => [[Item.竹, 3]],
@@ -221,6 +236,16 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.松, 3], [Item.クワ, 3]],
         isVisible: () => ルインドアースLv5.count > 0,
     });
+    const 大きな木工所 = new Mix({
+        uniqueName: "大きな木工所", limit: 1, info: "木材の加工が可能になる",
+        materials: () => [[Item.桜, 3], [Item.松, 6]],
+        isVisible: () => ルインドアースLv8.count > 0,
+    });
+    const ガラス工場 = new Mix({
+        uniqueName: "ガラス工場", limit: 1, info: "ガラスの加工が可能になる",
+        materials: () => [[Item.砂, 3], [Item.石, 1]],
+        isVisible: () => ルインドアースLv3.count > 0,
+    });
     const ボロ鉄工所 = new Mix({
         uniqueName: "ボロ鉄工所", limit: 1, info: "金属の加工が可能になる",
         materials: () => [[Item.鉄, 3]],
@@ -230,6 +255,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         uniqueName: "小さな鉄工所", limit: 1, info: "金属の加工が可能になる",
         materials: () => [[Item.銅, 3], [Item.針金, 1]],
         isVisible: () => ルインドアースLv4.count > 0,
+    });
+    const 大きな鉄工所 = new Mix({
+        uniqueName: "大きな鉄工所", limit: 1, info: "金属の加工が可能になる",
+        materials: () => [[Item.金, 4], [Item.銀, 3]],
+        isVisible: () => ルインドアースLv10.count > 0,
     });
     // //--------------------------------------------------------
     // //
@@ -262,6 +292,12 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     //     result:()=>[Item.天地創造の書, 1],
     //     materials:()=>[[Item.血粉末, 1], [Item.サファイア, 3], [Item.紙, 10]],
     // });
+    const 兵法指南の書 = new Mix({
+        uniqueName: "兵法指南の書", limit: Mix.LIMIT_INF,
+        result: () => [Item.兵法指南の書, 1],
+        materials: () => [[Item.ファーストキス, 3], [Item.杉材, 10], [Item.ヒノキ材, 10], [Item.針金, 6],],
+        isVisible: () => ルインドアースLv9.count > 0,
+    });
     const 杉材 = new Mix({
         uniqueName: "杉材", limit: Mix.LIMIT_INF,
         result: () => [Item.杉材, 1],
@@ -286,6 +322,24 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.松, 2], [Item.クワ, 2]],
         isVisible: () => 小さな木工所.count > 0,
     });
+    const サクラ材 = new Mix({
+        uniqueName: "サクラ材", limit: Mix.LIMIT_INF,
+        result: () => [Item.サクラ材, 1],
+        materials: () => [[Item.桜, 3],],
+        isVisible: () => 大きな木工所.count > 0,
+    });
+    const 松材 = new Mix({
+        uniqueName: "松材", limit: Mix.LIMIT_INF,
+        result: () => [Item.松材, 1],
+        materials: () => [[Item.松, 3],],
+        isVisible: () => 大きな木工所.count > 0,
+    });
+    const ガラス = new Mix({
+        uniqueName: "ガラス", limit: Mix.LIMIT_INF,
+        result: () => [Item.ガラス, 2],
+        materials: () => [[Item.砂, 3]],
+        isVisible: () => ガラス工場.count > 0,
+    });
     const 針金 = new Mix({
         uniqueName: "針金", limit: Mix.LIMIT_INF,
         result: () => [Item.針金, 2],
@@ -298,11 +352,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.銅, 3], [Item.針金, 1]],
         isVisible: () => 小さな鉄工所.count > 0,
     });
-    const ガラス = new Mix({
-        uniqueName: "ガラス", limit: Mix.LIMIT_INF,
-        result: () => [Item.ガラス, 2],
-        materials: () => [[Item.砂, 3]],
-        isVisible: () => ガラス工場.count > 0,
+    const エレクトラム = new Mix({
+        uniqueName: "エレクトラム", limit: Mix.LIMIT_INF,
+        result: () => [Item.エレクトラム, 2],
+        materials: () => [[Item.金, 3], [Item.銀, 3]],
+        isVisible: () => 大きな鉄工所.count > 0,
     });
     //--------------------------------------------------------
     //

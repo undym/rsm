@@ -271,7 +271,7 @@ export abstract class Unit{
 
 
 
-            dmg.additinalAttacks.forEach((aa,index)=>{
+            dmg.additionalAttacks.forEach((aa,index)=>{
                 const value = aa(dmg, index)|0;
                 this.hp -= value;
                 Util.msg.set(`+${value}`, Color.RED.bright);

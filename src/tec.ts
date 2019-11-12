@@ -530,7 +530,7 @@ export namespace Tec{
         });}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
-                dmg.additinalAttacks.push((dmg,i)=>{
+                dmg.additionalAttacks.push((dmg,i)=>{
                     return dmg.result.value / 2;
                 });
             }
@@ -753,19 +753,6 @@ export namespace Tec{
             attacker.doDmg(cdmg); await wait();
         }
     }
-    // export const                          吸血:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"吸血", info:"相手からHPを吸収暗黒依存",
-    //                           type:TecType.暗黒, targetings:Targeting.SELECT,
-    //                           mul:0.5, num:1, hit:2, mp:3, tp:2,
-    //     });}
-    //     async runInner(attacker:Unit, target:Unit, dmg:Dmg){
-    //         super.runInner(attacker, target, dmg);
-
-    //         if(dmg.result.isHit){
-    //             attacker.hp += dmg.result.value;
-    //         }
-    //     }
-    // }
     // export const                          VBS:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"VBS", info:"敵全体に吸血",
     //                           type:TecType.暗黒, targetings:Targeting.SELECT,
@@ -1001,9 +988,9 @@ export namespace Tec{
     export const                          手裏剣:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"手裏剣", info:"ランダムに2～3回弓術攻撃",
                               type:TecType.弓術, targetings:Targeting.RANDOM,
-                              mul:1, num:1, hit:0.8,
+                              mul:1, num:1, hit:0.8, tp:2,
         });}
-        rndAttackNum(){return randomInt(2,4,"[]");}
+        rndAttackNum(){return randomInt(2,3,"[]");}
     }
     /**クピド. */
     export const                          ヤクシャ:ActiveTec = new class extends ActiveTec{
@@ -1488,6 +1475,30 @@ export namespace Tec{
         async use(attacker:Unit, targets:Unit[]){
             Sound.exp.play();
             Util.msg.set(`${attacker.name}は空を眺めている...`); await wait();
+        }
+    }
+    export const                          吸血:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"吸血", info:"相手からHPを吸収　暗黒依存",
+                              type:TecType.暗黒, targetings:Targeting.SELECT,
+                              mul:0.5, num:1, hit:1.1, mp:2,
+        });}
+        sound(){Sound.drain.play();}
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_吸収(target.imgCenter, attacker.imgCenter);}
+        async runInner(attacker:Unit, target:Unit, dmg:Dmg){
+            await super.runInner(attacker, target, dmg);
+
+            if(dmg.result.isHit){
+                attacker.hp += dmg.result.value;
+            }
+        }
+    }
+    export const                          VAMPIRE_VLOODY_STAR:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"VAMPIRE VLOODY STAR", info:"敵全体からHPを吸収　暗黒依存",
+                              type:TecType.暗黒, targetings:Targeting.SELECT,
+                              mul:0.5, num:1, hit:1.1, ep:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await Tec.吸血.run(attacker, target);
         }
     }
     // export const                          自爆:ActiveTec = new class extends ActiveTec{

@@ -19,8 +19,10 @@ import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { SaveData } from "./savedata.js";
 import DungeonScene from "./scene/dungeonscene.js";
+import { Tec } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Sound } from "./sound.js";
+import { Job } from "./job.js";
 export class ItemType {
     constructor(name) {
         this.toString = () => name;
@@ -782,6 +784,19 @@ Item.DEF_NUM_LIMIT = 9999;
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
     };
+    Item.林ライス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "林ライス", info: "最大HP+3",
+                type: ItemType.ドーピング, rank: 12, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    target.prm(Prm.MAX_HP).base += 3;
+                    Sound.bpup.play();
+                    FX_Str(Font.def, `${target.name}の最大HP+3`, Point.CENTER, Color.WHITE);
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
+    };
     Item.おおげつ姫 = new class extends Item {
         constructor() {
             super({ uniqueName: "おおげつ姫", info: "最大MP+1",
@@ -970,30 +985,54 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.ヴァンパイアの血 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァンパイアの血", info: "ヴァンパイアに転職できるようになる",
+                type: ItemType.ドーピング, rank: 6, drop: ItemDrop.NO,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    if (target instanceof PUnit) {
+                        Sound.exp.play();
+                        target.setJobLv(Job.ヴァンパイア, 1);
+                    }
+                }),
+            });
+        }
+        canUse(user, targets) {
+            for (const t of targets) {
+                if (!(t instanceof PUnit && t.getJobLv(Job.ヴァンパイア) === 0)) {
+                    return false;
+                }
+            }
+            return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+        }
+    };
     //-----------------------------------------------------------------
     //
     //書
     //
     //-----------------------------------------------------------------
-    // const createAddTecNumBook = (uniqueName:string, tecNum:number)=>{
-    //     return new class extends Item{
-    //         constructor(){super({uniqueName:uniqueName, info:`技のセット可能数を${tecNum}に増やす`,
-    //                                 type:ItemType.書, rank:10, drop:ItemDrop.NO,
-    //                                 use:async(user,target)=>{
-    //                                     target.tecs.push( Tec.empty );
-    //                                     FX_Str(Font.def, `${target.name}の技セット可能数が${tecNum}になった`, Point.CENTER, Color.WHITE);
-    //                                 },
-    //         })}
-    //         canUse(user:Unit, targets:Unit[]){
-    //             for(const u of targets){
-    //                 if(!(u instanceof PUnit && u.tecs.length === tecNum-1) ){return false;}
-    //             }
-    //             return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
-    //         }
-    //     };
-    // };
-    // export const                         兵法指南の書:Item = 
-    //                 createAddTecNumBook("兵法指南の書", 6);
+    const createAddTecNumBook = (uniqueName, tecNum) => {
+        return new class extends Item {
+            constructor() {
+                super({ uniqueName: uniqueName, info: `技のセット可能数を${tecNum}に増やす`,
+                    type: ItemType.書, rank: 13, drop: ItemDrop.NO,
+                    use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                        target.tecs.push(Tec.empty);
+                        FX_Str(Font.def, `${target.name}の技セット可能数が${tecNum}になった`, Point.CENTER, Color.WHITE);
+                    }),
+                });
+            }
+            canUse(user, targets) {
+                for (const u of targets) {
+                    if (!(u instanceof PUnit && u.tecs.length === tecNum - 1)) {
+                        return false;
+                    }
+                }
+                return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+            }
+        };
+    };
+    Item.兵法指南の書 = createAddTecNumBook("兵法指南の書", 6);
     // export const                         五輪の書:Item = 
     //                 createAddTecNumBook("五輪の書", 7);
     // export const                         天地創造の書:Item = 
@@ -1005,43 +1044,43 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.消耗品のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "消耗品のメモ", info: "ごく一部の消耗品はダンジョンに入る度に補充される。脱出ポッドなどがそれに該当する...と書かれている",
+            super({ uniqueName: "消耗品のメモ", info: "「ごく一部の消耗品はダンジョンに入る度に補充される。脱出ポッドなどがそれに該当する」と書かれている",
                 type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.セーブのメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "セーブのメモ", info: "このゲームに自動セーブの機能はないらしい...と書かれている",
+            super({ uniqueName: "セーブのメモ", info: "「このゲームに自動セーブの機能はないらしい」と書かれている",
                 type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.夏のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "夏のメモ", info: "夏はいつ終わるの？...と書かれている",
+            super({ uniqueName: "夏のメモ", info: "「夏はいつ終わるの？」と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.HP至上主義のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "HP至上主義のメモ", info: "とりあえずHPを上げれば間違いはない。俺は詳しいんだ...と書かれている",
+            super({ uniqueName: "HP至上主義のメモ", info: "「とりあえずHPを上げれば間違いはない。俺は詳しいんだ」と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.HP懐疑主義のメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "HP懐疑主義のメモ", info: "何も考えずにHPを上げるのは危険だ。騙されないぞ...と書かれている",
+            super({ uniqueName: "HP懐疑主義のメモ", info: "「何も考えずにHPを上げるのは危険だ。騙されないぞ」と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.ジスカルドのメモ = new class extends Item {
         constructor() {
-            super({ uniqueName: "ジスカルドのメモ", info: "じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん...と書かれている",
+            super({ uniqueName: "ジスカルドのメモ", info: "「じすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさんじすさん」と書かれている",
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.合成許可証 = new class extends Item {
         constructor() {
-            super({ uniqueName: "合成許可証", info: "合成してもいいよ...と書かれている",
+            super({ uniqueName: "合成許可証", info: "「合成してもいいよ」と書かれている",
                 type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
@@ -1099,6 +1138,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.エレタクレヨン = new class extends Item {
         constructor() {
             super({ uniqueName: "エレ・タ・クレヨン", info: "おえかきしようね",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
+        }
+    };
+    Item.ファーストキス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ファーストキス", info: "",
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
         }
     };
@@ -1316,6 +1361,18 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
         }
     };
+    Item.サクラ材 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "サクラ材", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
+    Item.松材 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "松材", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //STRATUM
@@ -1351,6 +1408,30 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.バーミキュライト = new class extends Item {
+        constructor() {
+            super({ uniqueName: "バーミキュライト", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.銀 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "銀", info: "",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.金 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "金", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.白金 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "白金", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.オムナイト = new class extends Item {
         constructor() {
             super({ uniqueName: "オムナイト", info: "おおむかし うみに すんでいた こだい ポケモン。10ぽんの あしを くねらせて およぐ。",
@@ -1378,6 +1459,12 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "銅板", info: "",
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
+        }
+    };
+    Item.エレクトラム = new class extends Item {
+        constructor() {
+            super({ uniqueName: "エレクトラム", info: "",
+                type: ItemType.素材, rank: 7, drop: ItemDrop.BOX });
         }
     };
     //-----------------------------------------------------------------

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { RatioLayout, YLayout, ILayout, VariableLayout, Labels } from "../undym/layout.js";
+import { RatioLayout, ILayout, VariableLayout, Labels } from "../undym/layout.js";
 import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon, DungeonArea } from "../dungeon/dungeon.js";
@@ -46,8 +46,8 @@ export class TownScene extends Scene {
         super.add(Place.DUNGEON_DATA, Util.msg);
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, new VariableLayout(() => TownBtn.ins));
-        super.add(Place.E_BOX, new YLayout()
-            .add((() => {
+        super.add(Place.E_BOX, new RatioLayout()
+            .add(new Rect(0, 0, 1, 0.7), (() => {
             const d = () => choosedDungeon;
             const l = new Labels(Font.def)
                 .add(() => `[${d()}]`)
@@ -83,7 +83,7 @@ export class TownScene extends Scene {
             });
             return new VariableLayout(() => choosedDungeon ? l : ILayout.empty);
         })())
-            .add((() => {
+            .add(new Rect(0, 0.7, 1, 0.3), (() => {
             const btn = new Btn("侵入", () => {
                 if (!choosedDungeon) {
                     return;

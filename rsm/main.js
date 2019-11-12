@@ -94,7 +94,6 @@ const newGame = () => {
     setItem(Item.スティックパン, 10);
     setItem(Item.赤い水, 5);
     setItem(Item.サンタクララ薬, 5);
-    setItem(Item.動かない映写機, 1);
 };
 const continueGame = () => {
     Util.msg.set("CONTINUE");

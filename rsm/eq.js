@@ -219,13 +219,13 @@ EqEar._valueOf = new Map();
     };
     Eq.月代 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "月代", info: "「斬る」威力+20%",
+            super({ uniqueName: "月代", info: "「斬る」威力+25%",
                 pos: EqPos.頭, lv: 0 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action === ActiveTec.斬る) {
-                    dmg.pow.mul *= 1.2;
+                    dmg.pow.mul *= 1.25;
                 }
             });
         }
@@ -287,7 +287,7 @@ EqEar._valueOf = new Map();
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (Math.random() < 0.9) {
+                if (Math.random() < 0.8) {
                     Unit.healHP(attacker, 1 + attacker.prm(Prm.MAX_HP).total * 0.05);
                 }
             });
@@ -306,84 +306,22 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         棒:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"棒", info:"格闘攻撃x1.5",
-    //                             pos:EqPos.武, lv:20});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type === TecType.格闘){
-    //             dmg.pow.mul *= 1.5;
-    //         }
-    //     }
-    // }
-    // export const                         魔法の杖:Eq = new class extends Eq{//再構成トンネル・財宝
-    //     constructor(){super({uniqueName:"魔法の杖", info:"魔法攻撃x1.5",
-    //                             pos:EqPos.武, lv:40});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type === TecType.魔法){
-    //             dmg.pow.mul *= 1.5;
-    //         }
-    //     }
-    // }
-    // export const                         う棒:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"う棒", info:"力+20光+20",
-    //                             pos:EqPos.武, lv:25});}
-    //     equip(unit:Unit){ unit.prm(Prm.STR).eq += 20; unit.prm(Prm.LIG).eq += 20; }
-    // }
-    // export const                         銅剣:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"銅剣", info:"力+40光+40",
-    //                             pos:EqPos.武, lv:45});}
-    //     equip(unit:Unit){ unit.prm(Prm.STR).eq += 40; unit.prm(Prm.LIG).eq += 40; }
-    // }
-    // export const                         はがねの剣:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"はがねの剣", info:"力+70光+70",
-    //                             pos:EqPos.武, lv:65});}
-    //     equip(unit:Unit){ unit.prm(Prm.STR).eq += 70; unit.prm(Prm.LIG).eq += 70; }
-    // }
-    // export const                         杖:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"杖", info:"魔+20闇+20",
-    //                             pos:EqPos.武, lv:25});}
-    //     equip(unit:Unit){ unit.prm(Prm.MAG).eq += 20; unit.prm(Prm.DRK).eq += 20; }
-    // }
-    // export const                         スギの杖:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"スギの杖", info:"魔+40闇+40",
-    //                             pos:EqPos.武, lv:45});}
-    //     equip(unit:Unit){ unit.prm(Prm.MAG).eq += 40; unit.prm(Prm.DRK).eq += 40; }
-    // }
-    // export const                         ヒノキの杖:Eq = new class extends Eq{//mix
-    //     constructor(){super({uniqueName:"ヒノキの杖", info:"魔+70闇+70",
-    //                             pos:EqPos.武, lv:65});}
-    //     equip(unit:Unit){ unit.prm(Prm.MAG).eq += 70; unit.prm(Prm.DRK).eq += 70; }
-    // }
-    // export const                         木の鎖:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"木の鎖", info:"鎖+20過+20",
-    //                             pos:EqPos.武, lv:25});}
-    //     equip(unit:Unit){ unit.prm(Prm.CHN).eq += 20; unit.prm(Prm.PST).eq += 20; }
-    // }
-    // export const                         銅の鎖:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"銅の鎖", info:"鎖+40過+40",
-    //                             pos:EqPos.武, lv:45});}
-    //     equip(unit:Unit){ unit.prm(Prm.CHN).eq += 40; unit.prm(Prm.PST).eq += 40; }
-    // }
-    // export const                         鉄の鎖:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"鉄の鎖", info:"鎖+70過+70",
-    //                             pos:EqPos.武, lv:65});}
-    //     equip(unit:Unit){ unit.prm(Prm.CHN).eq += 70; unit.prm(Prm.PST).eq += 70; }
-    // }
-    // export const                         パチンコ:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"パチンコ", info:"銃+20弓+20",
-    //                             pos:EqPos.武, lv:25});}
-    //     equip(unit:Unit){ unit.prm(Prm.GUN).eq += 20; unit.prm(Prm.ARR).eq += 20; }
-    // }
-    // export const                         ボウガン:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"ボウガン", info:"銃+40弓+40",
-    //                             pos:EqPos.武, lv:45});}
-    //     equip(unit:Unit){ unit.prm(Prm.GUN).eq += 40; unit.prm(Prm.ARR).eq += 40; }
-    // }
-    // export const                         投石器:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"投石器", info:"銃+70弓+70",
-    //                             pos:EqPos.武, lv:65});}
-    //     equip(unit:Unit){ unit.prm(Prm.GUN).eq += 70; unit.prm(Prm.ARR).eq += 70; }
-    // }
+    /**リテの門財宝. */
+    Eq.忍者ソード = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "忍者ソード", info: "格闘攻撃時、稀に追加攻撃",
+                pos: EqPos.武, lv: 105 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && Math.random() < 0.75) {
+                    dmg.additionalAttacks.push((dmg, i) => {
+                        return dmg.result.value / 2;
+                    });
+                }
+            });
+        }
+    };
     // export const                         マーザン砲:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"マーザン砲", info:"銃術攻撃時稀に追加攻撃",
     //                             pos:EqPos.武, lv:65});}
@@ -417,13 +355,18 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         鉄板:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"鉄板", info:"防御値+100",
-    //                             pos:EqPos.盾, lv:22});}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.def.add += 100;
-    //     }
-    // }
+    /**リテの門EX. */
+    Eq.反精霊の盾 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "反精霊の盾", info: "防御値+200",
+                pos: EqPos.盾, lv: 52 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.def.add += 200;
+            });
+        }
+    };
     // export const                         鋼鉄板:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"鋼鉄板", info:"防御値+200",
     //                             pos:EqPos.盾, lv:32});}
@@ -495,6 +438,23 @@ EqEar._valueOf = new Map();
                 if (action instanceof ActiveTec) {
                     target.mp++;
                 }
+            });
+        }
+    };
+    /**黒遺跡財宝. */
+    Eq.ダークネスロード = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ダークネスロード", info: "攻撃倍率+10%　防御倍率-20%",
+                pos: EqPos.体, lv: 35 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.def.mul *= 0.8;
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.pow.mul *= 1.1;
             });
         }
     };

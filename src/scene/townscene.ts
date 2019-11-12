@@ -50,8 +50,8 @@ export class TownScene extends Scene{
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.BTN, new VariableLayout(()=>TownBtn.ins));
         super.add(Place.E_BOX,
-            new YLayout()
-                .add((()=>{
+            new RatioLayout()
+                .add(new Rect(0, 0, 1, 0.7), (()=>{
                     const d = ()=> choosedDungeon as Dungeon;
                     const l = new Labels(Font.def)
                                     .add(()=>`[${d()}]`)
@@ -80,7 +80,7 @@ export class TownScene extends Scene{
                                     ;
                     return new VariableLayout(()=> choosedDungeon ? l : ILayout.empty);
                 })())
-                .add((()=>{
+                .add(new Rect(0, 0.7, 1, 0.3), (()=>{
                     const btn = new Btn("侵入", ()=>{
                         if(!choosedDungeon){return;}
             

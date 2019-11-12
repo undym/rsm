@@ -356,4 +356,16 @@ export namespace Job{
             e.tecs = [Tec.射る, Tec.射る, Tec.ナーガ, Tec.殴る, Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ];
         }
     };
+    export const                         ヴァンパイア:Job = new class extends Job{
+        constructor(){super({uniqueName:"ヴァンパイア", info:"",
+                                appearLv:25, img:new Img("img/unit/クピド.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> false,//ヴァンパイアの血を使っての転職
+                                growthPrms:()=>[[Prm.DRK, 1]],
+                                learningTecs:()=>[Tec.吸血, Tec.VAMPIRE_VLOODY_STAR],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+        }
+    };
 }
