@@ -129,6 +129,9 @@ export class MeisouScene extends Scene {
                 Graphics.fillRect(this.target.boxBounds, new Color(0, 1, 1, 0.2));
             } }));
         super.add(Rect.FULL, ILayout.create({ ctrl: (bounds) => {
+                if (!Input.click) {
+                    return;
+                }
                 for (let p of Unit.players.filter(p => p.exists)) {
                     if (p.boxBounds.contains(Input.point)) {
                         this.target = p;

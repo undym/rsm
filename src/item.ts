@@ -1013,6 +1013,10 @@ export namespace Item{
         constructor(){super({uniqueName:"セルダンの危機", info:"",
                                 type:ItemType.素材, rank:11, drop:ItemDrop.BOX})}
     };
+    export const                         フロントミッション:Item = new class extends Item{
+        constructor(){super({uniqueName:"フロントミッション", info:"",
+                                type:ItemType.素材, rank:11, drop:ItemDrop.BOX})}
+    };
     export const                         獣神イリューガ:Item = new class extends Item{
         constructor(){super({uniqueName:"獣神イリューガ", info:"",
                                 type:ItemType.素材, rank:12, drop:ItemDrop.BOX})}

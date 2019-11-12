@@ -1192,6 +1192,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 11, drop: ItemDrop.BOX });
         }
     };
+    Item.フロントミッション = new class extends Item {
+        constructor() {
+            super({ uniqueName: "フロントミッション", info: "",
+                type: ItemType.素材, rank: 11, drop: ItemDrop.BOX });
+        }
+    };
     Item.獣神イリューガ = new class extends Item {
         constructor() {
             super({ uniqueName: "獣神イリューガ", info: "",

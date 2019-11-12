@@ -105,7 +105,7 @@ export class ShopScene extends Scene{
                                         PlayData.yen -= goods.price;
             
                                         Sound.KATAN.play();
-                                        FX_Str(Font.def, `[${goods}]を買った`, Point.CENTER, Color.WHITE);
+                                        FX_Str(Font.def, `[${goods.name}]を買った`, Point.CENTER, Color.WHITE);
                                         goods.buy();
                                     }
                                 });
