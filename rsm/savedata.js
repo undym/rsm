@@ -45,7 +45,7 @@ Version.NOW = new Version(0, 20, 13);
 Version.updateInfo = [
     "(0.20.11)音・ジョブ・技追加",
     "(0.20.12)いろいろ",
-    "(0.20.13)細かいバグ修正",
+    "(0.20.13)細かいバグ修正・他",
 ];
 let saveDataVersion;
 export class SaveData {

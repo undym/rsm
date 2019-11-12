@@ -1,3 +1,4 @@
+import { Util } from "./util.js";
 export class Sound {
     constructor(path) {
         this.path = path;
@@ -44,6 +45,7 @@ export class Sound {
         request.send();
     }
     play() {
+        Util.msg.set(`${Sound.ac.state}`);
         if (!this.buffer) {
             return;
         }

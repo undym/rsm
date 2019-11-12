@@ -57,6 +57,7 @@ export class Sound{
     }
 
     play(){
+        Util.msg.set(`${Sound.ac.state}`);
         if(!this.buffer){return;}
 
         const src = Sound.ac.createBufferSource();
