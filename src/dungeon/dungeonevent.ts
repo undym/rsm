@@ -77,6 +77,7 @@ export namespace DungeonEvent{
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     Sound.TRAGER.play();
+                                    Util.msg.set("開けた");
                                     await DungeonEvent.OPEN_BOX.happen();
                                 }))
                                 ;
@@ -100,32 +101,35 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
+    export const OPEN_KEY_BOX:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super();}
+        createImg = ()=> EventImg.OPEN_BOX.img;
+        isZoomImg = ()=> false;
+        happenInner = async()=>{};
+        createBtnLayout = DungeonEvent.empty.createBtnLayout;
+    };
     export const KEY_BOX_RANK2:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
         createImg = ()=> EventImg.BOX.img;
         happenInner = async()=>{Util.msg.set("丸い箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    if(Item.丸い鍵.num > 0){
-                                        Item.丸い鍵.num--;
+                                    const key = Item.丸い鍵;
+                                    if(key.num > 0){
+                                        key.num--;
                                         Sound.TRAGER.play();
-                                        await DungeonEvent.OPEN_KEY_BOX_RANK2.happen();
+                                        Util.msg.set(`開けた(${key}残り${key.num})`);
+                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+
+                                        for(let i = 0; i < 5; i++){
+                                            await wait();
+                                            openKeyBox(/*base*/2, /*fluctuateRange*/2);
+                                        }
                                     }else{
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
                                 ;
-    };
-    export const OPEN_KEY_BOX_RANK2:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.OPEN_BOX.img;
-        isZoomImg = ()=> false;
-        happenInner = async()=>{
-            for(let i = 0; i < 5; i++){
-                openKeyBox(/*base*/2, /*fluctuateRange*/2); await wait();
-            }
-        };
-        createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
     export const KEY_BOX_RANK3:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
@@ -133,26 +137,22 @@ export namespace DungeonEvent{
         happenInner = async()=>{Util.msg.set("三角型の箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    if(Item.三角鍵.num > 0){
-                                        Item.三角鍵.num--;
+                                    const key = Item.三角鍵;
+                                    if(key.num > 0){
+                                        key.num--;
                                         Sound.TRAGER.play();
-                                        await DungeonEvent.OPEN_KEY_BOX_RANK3.happen();
+                                        Util.msg.set(`開けた(${key}残り${key.num})`);
+                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+
+                                        for(let i = 0; i < 6; i++){
+                                            await wait();
+                                            openKeyBox(/*base*/3, /*fluctuateRange*/2);
+                                        }
                                     }else{
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
                                 ;
-    };
-    export const OPEN_KEY_BOX_RANK3:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.OPEN_BOX.img;
-        isZoomImg = ()=> false;
-        happenInner = async()=>{
-            for(let i = 0; i < 6; i++){
-                openKeyBox(/*base*/3, /*fluctuateRange*/2); await wait();
-            }
-        };
-        createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
     export const KEY_BOX_RANK4:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
@@ -160,26 +160,22 @@ export namespace DungeonEvent{
         happenInner = async()=>{Util.msg.set("トゲトゲの箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    if(Item.トゲトゲ鍵.num > 0){
-                                        Item.トゲトゲ鍵.num--;
+                                    const key = Item.トゲトゲ鍵;
+                                    if(key.num > 0){
+                                        key.num--;
                                         Sound.TRAGER.play();
-                                        await DungeonEvent.OPEN_KEY_BOX_RANK4.happen();
+                                        Util.msg.set(`開けた(${key}残り${key.num})`);
+                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+
+                                        for(let i = 0; i < 7; i++){
+                                            await wait();
+                                            openKeyBox(/*base*/4, /*fluctuateRange*/2);
+                                        }
                                     }else{
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
                                 ;
-    };
-    export const OPEN_KEY_BOX_RANK4:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.OPEN_BOX.img;
-        isZoomImg = ()=> false;
-        happenInner = async()=>{
-            for(let i = 0; i < 7; i++){
-                openKeyBox(/*base*/4, /*fluctuateRange*/2); await wait();
-            }
-        };
-        createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
     export const KEY_BOX_RANK5:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
@@ -187,26 +183,22 @@ export namespace DungeonEvent{
         happenInner = async()=>{Util.msg.set("ツルツルの箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    if(Item.ツルツル鍵.num > 0){
-                                        Item.ツルツル鍵.num--;
+                                    const key = Item.ツルツル鍵;
+                                    if(key.num > 0){
+                                        key.num--;
                                         Sound.TRAGER.play();
-                                        await DungeonEvent.OPEN_KEY_BOX_RANK5.happen();
+                                        Util.msg.set(`開けた(${key}残り${key.num})`);
+                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+
+                                        for(let i = 0; i < 8; i++){
+                                            await wait();
+                                            openKeyBox(/*base*/5, /*fluctuateRange*/2);
+                                        }
                                     }else{
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
                                 ;
-    };
-    export const OPEN_KEY_BOX_RANK5:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.OPEN_BOX.img;
-        isZoomImg = ()=> false;
-        happenInner = async()=>{
-            for(let i = 0; i < 8; i++){
-                openKeyBox(/*base*/5, /*fluctuateRange*/2); await wait();
-            }
-        };
-        createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
     export const KEY_BOX_RANK6:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
@@ -214,26 +206,22 @@ export namespace DungeonEvent{
         happenInner = async()=>{Util.msg.set("ヘンテコな箱だ")};
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    if(Item.ヘンテコ鍵.num > 0){
-                                        Item.ヘンテコ鍵.num--;
+                                    const key = Item.ヘンテコ鍵;
+                                    if(key.num > 0){
+                                        key.num--;
                                         Sound.TRAGER.play();
-                                        await DungeonEvent.OPEN_KEY_BOX_RANK6.happen();
+                                        Util.msg.set(`開けた(${key}残り${key.num})`);
+                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+
+                                        for(let i = 0; i < 9; i++){
+                                            await wait();
+                                            openKeyBox(/*base*/6, /*fluctuateRange*/2);
+                                        }
                                     }else{
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
                                 ;
-    };
-    export const OPEN_KEY_BOX_RANK6:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.OPEN_BOX.img;
-        isZoomImg = ()=> false;
-        happenInner = async()=>{
-            for(let i = 0; i < 9; i++){
-                openKeyBox(/*base*/6, /*fluctuateRange*/2); await wait();
-            }
-        };
-        createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
     export const TREASURE:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
@@ -660,7 +648,7 @@ class ItemBtn{
     }
 }
 
-/**入手'した'アイテムを返す. */
+/***/
 const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:CollectingSkill|undefined)=>{
     const partySkill = new PartySkillOpenBox();
     PartySkill.skills.forEach(skill=> skill.openBox( partySkill, dropType ) );
@@ -677,7 +665,8 @@ const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:Collecting
         let item = Item.rndItem( dropType, itemRank );
         let addNum = 1;
         
-        item.add( addNum ); Sound.ITEM_GET.play(); await wait();
+        await wait();
+        item.add( addNum ); Sound.ITEM_GET.play();
 
         if(collectingSkill){
             await collectingSkill.lvupCheck(item.rank);

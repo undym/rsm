@@ -1187,8 +1187,9 @@ ActiveTec._valueOf = new Map();
                 if (value > 4) {
                     return;
                 }
-                Unit.setCondition(target, Condition.練, value);
                 Sound.up.play();
+                Unit.setCondition(target, Condition.練, value);
+                yield wait();
             });
         }
     };
@@ -1213,9 +1214,10 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
                 const value = attacker.prm(Prm.DRK).total + 1;
                 Unit.setCondition(target, Condition.毒, value);
-                Sound.awa.play();
+                yield wait();
             });
         }
     };

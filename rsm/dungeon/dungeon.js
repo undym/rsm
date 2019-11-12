@@ -244,7 +244,7 @@ DungeonArea._valueOf = new Map();
                 rank: 0, enemyLv: 1, au: 50, btn: [DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                 treasures: () => [Eq.安全靴],
                 exItems: () => [Eq.アカデミーバッヂ],
-                trendItems: () => [Item.杉, Item.ヒノキ],
+                trendItems: () => [Item.石, Item.杉, Item.ヒノキ],
             });
             this.isVisible = () => true;
             this.setBossInner = () => {
@@ -331,7 +331,7 @@ DungeonArea._valueOf = new Map();
                 rank: 1, enemyLv: 4, au: 100, btn: [DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                 treasures: () => [Eq.オールマント],
                 exItems: () => [Eq.ライダーベルト],
-                trendItems: () => [Item.肉, Item.石, Item.砂],
+                trendItems: () => [Item.肉, Item.竹, Item.砂],
             });
             this.isVisible = () => Dungeon.見知らぬ海岸.dungeonClearCount > 0;
             this.setBossInner = () => {

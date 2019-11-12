@@ -1127,9 +1127,8 @@ export namespace Tec{
             const value = target.getConditionValue(Condition.練) + 1;
             if(value > 4){return;}
 
-            Unit.setCondition( target, Condition.練, value );
-
             Sound.up.play();
+            Unit.setCondition( target, Condition.練, value ); await wait();
         }
     }
     // export const                          グレートウォール:ActiveTec = new class extends ActiveTec{
@@ -1151,9 +1150,9 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:1,
         });}
         async run(attacker:Unit, target:Unit){
-            const value = attacker.prm(Prm.DRK).total + 1;
-            Unit.setCondition(target, Condition.毒, value);
             Sound.awa.play();
+            const value = attacker.prm(Prm.DRK).total + 1;
+            Unit.setCondition(target, Condition.毒, value); await wait();
         }
     }
     /**毒使い. */

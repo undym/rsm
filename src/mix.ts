@@ -89,9 +89,9 @@ export class Mix{
             limit:number,
             materials:()=>[Num, number][],
             result?:()=>[Num, number],
-            action?:()=>void,
             info?:string,
-            isVisible?:()=>boolean,
+            isVisible:()=>boolean,
+            action?:()=>void,
         }
     ){
 
@@ -103,9 +103,10 @@ export class Mix{
     toString(){return this.uniqueName;}
 
     isVisible():boolean{
-        if(!this.materials){return false;}
-        if(this.args.isVisible && !this.args.isVisible()){return false;}
-        return this.materials[0].object.totalGetCount > 0 && this.count < this.countLimit;
+        return this.args.isVisible();
+        // if(!this.materials){return false;}
+        // if(this.args.isVisible && !this.args.isVisible()){return false;}
+        // return this.materials[0].object.totalGetCount > 0 && this.count < this.countLimit;
     }
 
     canRun(){
@@ -146,40 +147,81 @@ export namespace Mix{
     //建築
     //
     //--------------------------------------------------------
+    const           ルインドアースLv1:Mix = new Mix({
+        uniqueName:"ルインドアースLv1", limit:1, info:"",
+        materials:()=>[[Item.石, 1],],
+        isVisible:()=>true,
+    });
+    const           ルインドアースLv2:Mix = new Mix({
+        uniqueName:"ルインドアースLv2", limit:1, info:"",
+        materials:()=>[[Item.水, 4],],
+        isVisible:()=>ルインドアースLv1.count > 0,
+    });
+    const           ルインドアースLv3:Mix = new Mix({
+        uniqueName:"ルインドアースLv3", limit:1, info:"",
+        materials:()=>[[Item.草, 6],],
+        isVisible:()=>ルインドアースLv2.count > 0,
+    });
+    const           ルインドアースLv4:Mix = new Mix({
+        uniqueName:"ルインドアースLv4", limit:1, info:"",
+        materials:()=>[[Item.竹材, 2],],
+        isVisible:()=>ルインドアースLv3.count > 0,
+    });
+    const           ルインドアースLv5:Mix = new Mix({
+        uniqueName:"ルインドアースLv5", limit:1, info:"",
+        materials:()=>[[Item.銅板, 2], [Item.針金, 3],],
+        isVisible:()=>ルインドアースLv4.count > 0,
+    });
+    const           ルインドアースLv6:Mix = new Mix({
+        uniqueName:"ルインドアースLv6", limit:1, info:"",
+        materials:()=>[[Item.銅板, 2], [Item.合板, 4],],
+        isVisible:()=>ルインドアースLv5.count > 0,
+    });
+
+
+
     export const    瞑想所:Mix = new Mix({
         uniqueName:"瞑想所", limit:1, info:"瞑想が可能になる",
         materials:()=>[[Item.ヒノキ, 1], [Item.草, 5]],
-        action:()=>{},
+        isVisible:()=>ルインドアースLv1.count > 0,
     });
     export const    転職所:Mix = new Mix({
         uniqueName:"転職所", limit:1, info:"職業選択の自由を得る",
         materials:()=>[[Item.杉材, 1], [Item.ヒノキ材, 1]],
-        action:()=>{},
+        isVisible:()=>ルインドアースLv4.count > 0,
     });
+
+
+
+
     const           肉のスープ:Mix = new Mix({
         uniqueName:"肉のスープ", limit:10, info:"ルインの最大HP+1",
         materials:()=>[[Item.石, 3], [Item.肉, 3], [Item.水, 3]],
+        isVisible:()=>ルインドアースLv2.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
-        },
-    });
-    const           銅像:Mix = new Mix({
-        uniqueName:"銅像", limit:5, info:"ルインの最大TP+1",
-        materials:()=>[[Item.銅板, 3], [Item.少女の心を持ったおっさん, 3], [Item.たんぽぽ, 1]],
-        action:()=>{
-            Player.ルイン.ins.prm(Prm.MAX_TP).base += 1;
         },
     });
     const           ねこじゃらし:Mix = new Mix({
         uniqueName:"ねこじゃらし", limit:5, info:"ルインの力+1",
         materials:()=>[[Item.竹材, 3], [Item.バッタ, 3], [Item.つる, 1]],
+        isVisible:()=>ルインドアースLv3.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.STR).base += 1;
+        },
+    });
+    const           銅像:Mix = new Mix({
+        uniqueName:"銅像", limit:5, info:"ルインの最大TP+1",
+        materials:()=>[[Item.銅板, 3], [Item.少女の心を持ったおっさん, 3], [Item.たんぽぽ, 1]],
+        isVisible:()=>ルインドアースLv4.count > 0,
+        action:()=>{
+            Player.ルイン.ins.prm(Prm.MAX_TP).base += 1;
         },
     });
     const           バッタのスープ:Mix = new Mix({
         uniqueName:"バッタのスープ", limit:10, info:"ピアーの最大HP+1",
         materials:()=>[[Item.石, 2], [Item.バッタ, 2], [Item.水, 2]],
+        isVisible:()=>ルインドアースLv2.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -187,6 +229,7 @@ export namespace Mix{
     const           ゴーグルケース:Mix = new Mix({
         uniqueName:"ゴーグルケース", limit:5, info:"ピアーの最大MP+1",
         materials:()=>[[Item.ガラス, 3], [Item.ヒノキ, 2], [Item.針金, 1]],
+        isVisible:()=>ルインドアースLv3.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_MP).base += 1;
         },
@@ -194,37 +237,43 @@ export namespace Mix{
     const           水晶玉:Mix = new Mix({
         uniqueName:"水晶玉", limit:5, info:"ピアーの魔+1",
         materials:()=>[[Item.ガラス, 3], [Item.水, 2]],
+        isVisible:()=>ルインドアースLv4.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAG).base += 1;
         },
     });
-    const           ボロ木工所:Mix = new Mix({
-        uniqueName:"ボロ木工所", limit:1, info:"木材の加工が可能になる",
-        materials:()=>[[Item.杉, 3], [Item.ヒノキ, 3]],
-        action:()=>{},
+
+
+
+    const           ガラス工場:Mix = new Mix({
+        uniqueName:"ガラス工場", limit:1, info:"ガラスの加工が可能になる",
+        materials:()=>[[Item.砂, 3], [Item.石, 1]],
+        isVisible:()=>ルインドアースLv3.count > 0,
     });
     const           竹林:Mix = new Mix({
         uniqueName:"竹林", limit:1, info:"竹の加工が可能になる",
         materials:()=>[[Item.竹, 3]],
-        action:()=>{},
+        isVisible:()=>ルインドアースLv3.count > 0,
+    });
+    const           ボロ木工所:Mix = new Mix({
+        uniqueName:"ボロ木工所", limit:1, info:"木材の加工が可能になる",
+        materials:()=>[[Item.杉, 3], [Item.ヒノキ, 3]],
+        isVisible:()=>ルインドアースLv4.count > 0,
+    });
+    const           小さな木工所:Mix = new Mix({
+        uniqueName:"小さな木工所", limit:1, info:"木材の加工が可能になる",
+        materials:()=>[[Item.松, 3], [Item.クワ, 3]],
+        isVisible:()=>ルインドアースLv5.count > 0,
     });
     const           ボロ鉄工所:Mix = new Mix({
         uniqueName:"ボロ鉄工所", limit:1, info:"金属の加工が可能になる",
         materials:()=>[[Item.鉄, 3]],
-        action:()=>{},
-        isVisible:()=>Dungeon.黒平原.dungeonClearCount > 0,
+        isVisible:()=>ルインドアースLv4.count > 0,
     });
     const           小さな鉄工所:Mix = new Mix({
         uniqueName:"小さな鉄工所", limit:1, info:"金属の加工が可能になる",
         materials:()=>[[Item.銅, 3], [Item.針金, 1]],
-        action:()=>{},
-        isVisible:()=>ボロ鉄工所.count > 0,
-    });
-    const           ガラス工場:Mix = new Mix({
-        uniqueName:"ガラス工場", limit:1, info:"ガラスの加工が可能になる",
-        materials:()=>[[Item.砂, 3], [Item.石, 1]],
-        action:()=>{},
-        isVisible:()=>小さな鉄工所.count > 0,
+        isVisible:()=>ルインドアースLv4.count > 0,
     });
     // //--------------------------------------------------------
     // //
@@ -275,6 +324,12 @@ export namespace Mix{
         materials:()=>[[Item.竹, 3]],
         isVisible:()=>竹林.count > 0,
     });
+    const           合板:Mix = new Mix({
+        uniqueName:"合板", limit:Mix.LIMIT_INF,
+        result:()=>[Item.合板, 1],
+        materials:()=>[[Item.松, 2], [Item.クワ, 2]],
+        isVisible:()=>小さな木工所.count > 0,
+    });
     const           針金:Mix = new Mix({
         uniqueName:"針金", limit:Mix.LIMIT_INF,
         result:()=>[Item.針金, 2],
@@ -291,7 +346,7 @@ export namespace Mix{
         uniqueName:"ガラス", limit:Mix.LIMIT_INF,
         result:()=>[Item.ガラス, 2],
         materials:()=>[[Item.砂, 3]],
-        isVisible:()=>小さな鉄工所.count > 0,
+        isVisible:()=>ガラス工場.count > 0,
     });
     //--------------------------------------------------------
     //
