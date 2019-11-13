@@ -538,7 +538,7 @@ export namespace Dungeon{
     export const                         黒の廃村:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒の廃村",
                                 rank:3, enemyLv:19, au:350, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
-                                treasures:  ()=>[],
+                                treasures:  ()=>[Eq.機工の指輪],
                                 exItems:    ()=>[Item.霊術戦士の血],
                                 trendItems: ()=>[Item.エデン樹, Item.ロウ, Item.桐],
         });}

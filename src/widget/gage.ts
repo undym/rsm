@@ -18,8 +18,8 @@ export default class Gage extends ILayout{
         private pixelH:number = 1,
     ){
         super();
-        this.leftLabel = new Label(this.font, leftStr).setBase(Font.UPPER_LEFT);
-        this.rightLabel = new Label(this.font, rightStr).setBase(Font.UPPER_RIGHT);
+        this.leftLabel = new Label(this.font, leftStr).setBase("upperLeft");
+        this.rightLabel = new Label(this.font, rightStr).setBase("upperRight");
     }
 
     ctrlInner(bounds:Rect){

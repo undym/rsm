@@ -28,8 +28,8 @@ export class DrawPlayInfo extends InnerLayout{
                 if(Debug.debugMode) {return `Debug{${Version.NOW}}`;}
                 else                {return `Version{${Version.NOW}}`;}
             }, ()=>Debug.DEBUG ? Color.RED : Color.WHITE)
-                .setBase(Font.LEFT))
-            .add(new Label(Font.def, ()=>`${PlayData.yen|0}円`, ()=>Color.YELLOW).setBase(Font.RIGHT))
+                .setBase("left"))
+            .add(new Label(Font.def, ()=>`${PlayData.yen|0}円`, ()=>Color.YELLOW).setBase("right"))
         );
     }
 }
@@ -41,7 +41,7 @@ export class DrawYen extends InnerLayout{
     private constructor(){
         super();
 
-        super.add(new Label(Font.def, ()=>`${PlayData.yen|0}円`, ()=>Color.YELLOW).setBase(Font.RIGHT));
+        super.add(new Label(Font.def, ()=>`${PlayData.yen|0}円`, ()=>Color.YELLOW).setBase("right"));
     }
 }
 
@@ -95,7 +95,7 @@ export class DrawSTBox extends InnerLayout{
                                 const u = getUnit();
                                 return (u instanceof PUnit && u.isMasteredJob( u.job )) ? Color.YELLOW : Color.WHITE;
                             }
-                        ).setBase(Font.RIGHT)
+                        ).setBase("right")
                     )
                 )
                 .add(new Gage(
@@ -419,8 +419,8 @@ export class DrawUnits extends InnerLayout{
 
                         const str = `${u.hp}`;
                         const point = u.imgBounds.top;
-                        Font.def.draw( str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM );
-                        Font.def.draw( str, point, Color.WHITE, Font.BOTTOM );
+                        Font.def.draw( str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, "bottom" );
+                        Font.def.draw( str, point, Color.WHITE, "bottom" );
                     }
                 });
         }}));

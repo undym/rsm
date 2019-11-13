@@ -83,7 +83,7 @@ export class Btn extends ILayout{
         let rect = new Rect(bounds.x - move, bounds.y, bounds.w, bounds.h);
         Graphics.fillRect(rect, this.cursorON ? this.groundColor().darker() : this.groundColor());
         Graphics.drawRect(rect, this.frameColor());
-        this.font.draw( this.name(), rect.center, this.stringColor(), Font.CENTER);
+        this.font.draw( this.name(), rect.center, this.stringColor(), "center");
 
         this.count += 4;
     }

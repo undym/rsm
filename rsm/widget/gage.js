@@ -1,6 +1,6 @@
 import { ILayout, Label } from "../undym/layout.js";
 import { Color, Rect } from "../undym/type.js";
-import { Graphics, Font } from "../graphics/graphics.js";
+import { Graphics } from "../graphics/graphics.js";
 export default class Gage extends ILayout {
     constructor(now, max, leftStr, rightStr, color, font, pixelH = 1) {
         super();
@@ -9,8 +9,8 @@ export default class Gage extends ILayout {
         this.color = color;
         this.font = font;
         this.pixelH = pixelH;
-        this.leftLabel = new Label(this.font, leftStr).setBase(Font.UPPER_LEFT);
-        this.rightLabel = new Label(this.font, rightStr).setBase(Font.UPPER_RIGHT);
+        this.leftLabel = new Label(this.font, leftStr).setBase("upperLeft");
+        this.rightLabel = new Label(this.font, rightStr).setBase("upperRight");
     }
     ctrlInner(bounds) {
     }

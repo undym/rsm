@@ -94,7 +94,7 @@ export class SetTecScene extends Scene{
         
         super.add(Place.LIST_TYPE, typeList);
         
-        super.add(Place.YEN, new Label(Font.def, ()=>`BP:${this.target.bp}`, ()=>Color.ORANGE).setBase(Font.RIGHT))
+        super.add(Place.YEN, new Label(Font.def, ()=>`BP:${this.target.bp}`, ()=>Color.ORANGE).setBase("right"))
 
         super.add(Place.LIST_BTN, 
             new Btn("<<", ()=>{

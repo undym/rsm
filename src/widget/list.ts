@@ -368,13 +368,13 @@ export class ListElm extends ILayout{
         Graphics.drawRect(bounds, this.frameColor());
 
         if(this.left !== undefined){
-            this.font.draw( this.left(), bounds.left, this.leftColor(), Font.LEFT );
+            this.font.draw( this.left(), bounds.left, this.leftColor(), "left" );
         }
         if(this.right !== undefined){
-            this.font.draw( this.right(), bounds.right, this.rightColor(), Font.RIGHT );
+            this.font.draw( this.right(), bounds.right, this.rightColor(), "right" );
         }
         if(this.center !== undefined){
-            this.font.draw( this.center(), bounds.center, this.centerColor(), Font.CENTER );
+            this.font.draw( this.center(), bounds.center, this.centerColor(), "center" );
         }
     }
 

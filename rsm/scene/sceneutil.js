@@ -27,8 +27,8 @@ export class DrawPlayInfo extends InnerLayout {
                 return `Version{${Version.NOW}}`;
             }
         }, () => Debug.DEBUG ? Color.RED : Color.WHITE)
-            .setBase(Font.LEFT))
-            .add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase(Font.RIGHT)));
+            .setBase("left"))
+            .add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase("right")));
     }
 }
 export class DrawYen extends InnerLayout {
@@ -38,7 +38,7 @@ export class DrawYen extends InnerLayout {
     }
     constructor() {
         super();
-        super.add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase(Font.RIGHT));
+        super.add(new Label(Font.def, () => `${PlayData.yen | 0}円`, () => Color.YELLOW).setBase("right"));
     }
 }
 export class DrawDungeonData extends InnerLayout {
@@ -68,7 +68,7 @@ export class DrawSTBox extends InnerLayout {
             .add(new Label(font, () => `Lv${getUnit().prm(Prm.LV).total | 0}`, () => {
             const u = getUnit();
             return (u instanceof PUnit && u.isMasteredJob(u.job)) ? Color.YELLOW : Color.WHITE;
-        }).setBase(Font.RIGHT)))
+        }).setBase("right")))
             .add(new Gage(() => getUnit().hp, () => getUnit().prm(Prm.MAX_HP).total, () => "HP", () => `${getUnit().hp | 0}`, () => Color.D_GREEN.bright(), font, 2))
             .add(new XLayout()
             .setPixelMargin(4)
@@ -336,8 +336,8 @@ export class DrawUnits extends InnerLayout {
                         });
                         const str = `${u.hp}`;
                         const point = u.imgBounds.top;
-                        Font.def.draw(str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, Font.BOTTOM);
-                        Font.def.draw(str, point, Color.WHITE, Font.BOTTOM);
+                        Font.def.draw(str, point.move(Graphics.dotW, Graphics.dotH), Color.BLACK, "bottom");
+                        Font.def.draw(str, point, Color.WHITE, "bottom");
                     }
                 });
             } }));

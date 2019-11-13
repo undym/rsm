@@ -199,7 +199,7 @@ export class Label extends ILayout{
         this.createStr = createStr;
         this.createColor = createColor != null ? createColor : ()=>Color.WHITE;
 
-        this.base = Font.LEFT;
+        this.base = "left";
 
         this.strSize = Size.ZERO;
     }
@@ -226,15 +226,15 @@ export class Label extends ILayout{
 
     drawInner(bounds:Rect){
         switch(this.base){
-            case Font.UPPER_LEFT : this.font.draw( this.createStr(), bounds.upperLeft,  this.createColor() ); break;
-            case Font.TOP        : this.font.draw( this.createStr(), bounds.top,        this.createColor(), this.base ); break;
-            case Font.UPPER_RIGHT: this.font.draw( this.createStr(), bounds.upperRight, this.createColor(), this.base ); break;
-            case Font.LEFT       : this.font.draw( this.createStr(), bounds.left,       this.createColor(), this.base ); break;
-            case Font.CENTER     : this.font.draw( this.createStr(), bounds.center,     this.createColor(), this.base ); break;
-            case Font.RIGHT      : this.font.draw( this.createStr(), bounds.right,      this.createColor(), this.base ); break;
-            case Font.LOWER_LEFT : this.font.draw( this.createStr(), bounds.lowerLeft,  this.createColor(), this.base ); break;
-            case Font.BOTTOM     : this.font.draw( this.createStr(), bounds.bottom,     this.createColor(), this.base ); break;
-            case Font.LOWER_RIGHT: this.font.draw( this.createStr(), bounds.lowerRight, this.createColor(), this.base ); break;
+            case "upperLeft"  : this.font.draw( this.createStr(), bounds.upperLeft,  this.createColor() ); break;
+            case "top"        : this.font.draw( this.createStr(), bounds.top,        this.createColor(), this.base ); break;
+            case "upperRight" : this.font.draw( this.createStr(), bounds.upperRight, this.createColor(), this.base ); break;
+            case "left"       : this.font.draw( this.createStr(), bounds.left,       this.createColor(), this.base ); break;
+            case "center"     : this.font.draw( this.createStr(), bounds.center,     this.createColor(), this.base ); break;
+            case "right"      : this.font.draw( this.createStr(), bounds.right,      this.createColor(), this.base ); break;
+            case "lowerLeft"  : this.font.draw( this.createStr(), bounds.lowerLeft,  this.createColor(), this.base ); break;
+            case "bottom"     : this.font.draw( this.createStr(), bounds.bottom,     this.createColor(), this.base ); break;
+            case "lowerRight" : this.font.draw( this.createStr(), bounds.lowerRight, this.createColor(), this.base ); break;
         }
     }
 
@@ -256,7 +256,7 @@ export class Labels extends ILayout{
     }
 
 
-    add(str:()=>string, color:()=>Color = ()=>Color.WHITE, base:string = Font.UPPER_LEFT):this{
+    add(str:()=>string, color:()=>Color = ()=>Color.WHITE, base:"center"|"top"|"upperRight"|"right"|"lowerRight"|"bottom"|"lowerLeft"|"left"|"upperLeft" = "upperLeft"):this{
         this.elms.push({
             ctrl:bounds=>{
 

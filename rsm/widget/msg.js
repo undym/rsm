@@ -126,7 +126,7 @@ export default class Msg extends ILayout {
             let move = Date.now() / 80;
             move = move % 5;
             move = move * Graphics.dotH;
-            this.font.draw("▼", bounds.lowerRight.move(0, -move), Color.WHITE, Font.LOWER_RIGHT);
+            this.font.draw("▼", bounds.lowerRight.move(0, -move), Color.WHITE, "lowerRight");
         }
     }
 }

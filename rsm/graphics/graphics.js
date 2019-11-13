@@ -344,43 +344,43 @@ export class Font {
         Graphics.getRenderTarget().ctx.font = `${weight} ${size}px ${name}`;
         return Graphics.getRenderTarget().ctx.font;
     }
-    draw(_str, point, color, base = Font.UPPER_LEFT) {
+    draw(_str, point, color, base = "upperLeft") {
         const ctx = Graphics.getRenderTarget().ctx;
         ctx.fillStyle = toHTMLColorString(color);
         switch (base) {
-            case Font.UPPER_LEFT:
+            case "upperLeft":
                 ctx.textBaseline = "top";
                 ctx.textAlign = "left";
                 break;
-            case Font.TOP:
+            case "top":
                 ctx.textBaseline = "top";
                 ctx.textAlign = "center";
                 break;
-            case Font.UPPER_RIGHT:
+            case "upperRight":
                 ctx.textBaseline = "top";
                 ctx.textAlign = "right";
                 break;
-            case Font.LEFT:
+            case "left":
                 ctx.textBaseline = "middle";
                 ctx.textAlign = "left";
                 break;
-            case Font.CENTER:
+            case "center":
                 ctx.textBaseline = "middle";
                 ctx.textAlign = "center";
                 break;
-            case Font.RIGHT:
+            case "right":
                 ctx.textBaseline = "middle";
                 ctx.textAlign = "right";
                 break;
-            case Font.LOWER_LEFT:
+            case "lowerLeft":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign = "left";
                 break;
-            case Font.BOTTOM:
+            case "bottom":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign = "center";
                 break;
-            case Font.LOWER_RIGHT:
+            case "lowerRight":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign = "right";
                 break;
@@ -424,15 +424,6 @@ export class Font {
     }
 }
 Font.MONOSPACE = "monospace";
-Font.UPPER_LEFT = "upperLeft";
-Font.TOP = "top";
-Font.UPPER_RIGHT = "upperRight";
-Font.LEFT = "left";
-Font.CENTER = "center";
-Font.RIGHT = "right";
-Font.LOWER_LEFT = "lowerLeft";
-Font.BOTTOM = "bottom";
-Font.LOWER_RIGHT = "lowerRight";
 Font.NORMAL = "normal";
 Font.BOLD = "bold";
 Font.ITALIC = "italic";

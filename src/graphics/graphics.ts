@@ -481,16 +481,6 @@ export class Font{
 
     static readonly MONOSPACE:string = "monospace";
 
-    static readonly UPPER_LEFT  = "upperLeft";
-    static readonly TOP         = "top";
-    static readonly UPPER_RIGHT = "upperRight";
-    static readonly LEFT        = "left";
-    static readonly CENTER      = "center";
-    static readonly RIGHT       = "right";
-    static readonly LOWER_LEFT  = "lowerLeft";
-    static readonly BOTTOM      = "bottom";
-    static readonly LOWER_RIGHT = "lowerRight";
-
     static readonly NORMAL  = "normal";
     static readonly BOLD    = "bold";
     static readonly ITALIC  = "italic";
@@ -506,44 +496,49 @@ export class Font{
         this.toString = ()=>htmlString;
     }
 
-    draw(_str:string, point:{x:number, y:number}, color:{r:number, g:number, b:number, a:number}, base:string = Font.UPPER_LEFT){
+    draw(
+        _str:string, 
+        point:{x:number, y:number}, 
+        color:{r:number, g:number, b:number, a:number}, 
+        base:"center"|"top"|"upperRight"|"right"|"lowerRight"|"bottom"|"lowerLeft"|"left"|"upperLeft" = "upperLeft"
+    ){
         const ctx = Graphics.getRenderTarget().ctx;
         ctx.fillStyle = toHTMLColorString(color);
 
         switch(base){
-            case Font.UPPER_LEFT:
+            case "upperLeft":
                 ctx.textBaseline = "top";
                 ctx.textAlign    = "left";
                 break;
-            case Font.TOP:
+            case "top":
                 ctx.textBaseline = "top";
                 ctx.textAlign    = "center";
                 break;
-            case Font.UPPER_RIGHT:
+            case "upperRight":
                 ctx.textBaseline = "top";
                 ctx.textAlign    = "right";
                 break;
-            case Font.LEFT:
+            case "left":
                 ctx.textBaseline = "middle";
                 ctx.textAlign    = "left";
                 break;
-            case Font.CENTER:
+            case "center":
                 ctx.textBaseline = "middle";
                 ctx.textAlign    = "center";
                 break;
-            case Font.RIGHT:
+            case "right":
                 ctx.textBaseline = "middle";
                 ctx.textAlign    = "right";
                 break;
-            case Font.LOWER_LEFT:
+            case "lowerLeft":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign    = "left";
                 break;
-            case Font.BOTTOM:
+            case "bottom":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign    = "center";
                 break;
-            case Font.LOWER_RIGHT:
+            case "lowerRight":
                 ctx.textBaseline = "bottom";
                 ctx.textAlign    = "right";
                 break;

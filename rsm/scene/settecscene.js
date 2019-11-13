@@ -79,7 +79,7 @@ export class SetTecScene extends Scene {
             .add(Place.LIST_INFO, infoLayout)
             .add(Place.LIST_USE_BTN, new VariableLayout(() => this.useBtn))));
         super.add(Place.LIST_TYPE, typeList);
-        super.add(Place.YEN, new Label(Font.def, () => `BP:${this.target.bp}`, () => Color.ORANGE).setBase(Font.RIGHT));
+        super.add(Place.YEN, new Label(Font.def, () => `BP:${this.target.bp}`, () => Color.ORANGE).setBase("right"));
         super.add(Place.LIST_BTN, new Btn("<<", () => {
             Sound.system.play();
             Scene.load(TownScene.ins);
