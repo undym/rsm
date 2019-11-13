@@ -1006,6 +1006,13 @@ Item.DEF_NUM_LIMIT = 9999;
             return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
         }
     };
+    Item.霊術戦士の血 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "霊術戦士の血", info: "未実装",
+                type: ItemType.ドーピング, rank: 7, drop: ItemDrop.NO,
+            });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //書
@@ -1126,12 +1133,6 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.たんぽぽ = new class extends Item {
         constructor() {
             super({ uniqueName: "たんぽぽ", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
-        }
-    };
-    Item.つる = new class extends Item {
-        constructor() {
-            super({ uniqueName: "つる", info: "",
                 type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
         }
     };
@@ -1420,9 +1421,21 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.錫 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "錫", info: "",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.金 = new class extends Item {
         constructor() {
             super({ uniqueName: "金", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.良い土 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "良い土", info: "",
                 type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };

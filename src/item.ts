@@ -880,6 +880,11 @@ export namespace Item{
             return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
         }
     };
+    export const                         霊術戦士の血:Item = new class extends Item{
+        constructor(){super({uniqueName:"霊術戦士の血", info:"未実装",
+                                type:ItemType.ドーピング, rank:7, drop:ItemDrop.NO,
+        })}
+    };
     //-----------------------------------------------------------------
     //
     //書
@@ -972,10 +977,6 @@ export namespace Item{
     };
     export const                         たんぽぽ:Item = new class extends Item{
         constructor(){super({uniqueName:"たんぽぽ", info:"",
-                                type:ItemType.素材, rank:1, drop:ItemDrop.BOX})}
-    };
-    export const                         つる:Item = new class extends Item{
-        constructor(){super({uniqueName:"つる", info:"",
                                 type:ItemType.素材, rank:1, drop:ItemDrop.BOX})}
     };
     export const                         エレタクレヨン:Item = new class extends Item{
@@ -1174,8 +1175,16 @@ export namespace Item{
         constructor(){super({uniqueName:"銀", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
+    export const                         錫:Item = new class extends Item{
+        constructor(){super({uniqueName:"錫", info:"",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
     export const                         金:Item = new class extends Item{
         constructor(){super({uniqueName:"金", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         良い土:Item = new class extends Item{
+        constructor(){super({uniqueName:"良い土", info:"",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
     export const                         白金:Item = new class extends Item{

@@ -359,4 +359,18 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
         }
     };
+    Job.霊術戦士 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "霊術戦士", info: "",
+                appearLv: 75, img: new Img("img/unit/霊術戦士.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                canJobChange: p => false,
+                growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
+                learningTecs: () => [],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+        }
+    };
 })(Job || (Job = {}));

@@ -587,6 +587,15 @@ export namespace Eq{
             u.prm(Prm.GUN).base += 10; u.prm(Prm.ARR).base += 10;
         }
     }
+    export const                         機工の指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"機工の指輪", info:"銃術攻撃+20%",
+                                pos:EqPos.指, lv:1});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃術)){
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    }
     // export const                         魔ヶ玉の指輪:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"魔ヶ玉の指輪", info:"行動開始時MP+10%",
     //                             pos:EqPos.指, lv:20});}

@@ -368,4 +368,16 @@ export namespace Job{
             e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
         }
     };
+    export const                         霊術戦士:Job = new class extends Job{
+        constructor(){super({uniqueName:"霊術戦士", info:"",
+                                appearLv:75, img:new Img("img/unit/霊術戦士.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> false,//霊術戦士の血を使っての転職
+                                growthPrms:()=>[[Prm.STR, 1], [Prm.DRK, 1]],
+                                learningTecs:()=>[],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+        }
+    };
 }

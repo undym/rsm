@@ -662,6 +662,19 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    Eq.機工の指輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "機工の指輪", info: "銃術攻撃+20%",
+                pos: EqPos.指, lv: 1 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃術)) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
     // export const                         魔ヶ玉の指輪:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"魔ヶ玉の指輪", info:"行動開始時MP+10%",
     //                             pos:EqPos.指, lv:20});}

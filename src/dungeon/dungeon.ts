@@ -512,7 +512,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.95, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ダークネスロード],
                                 exItems:    ()=>[Item.ヴァンパイアの血],
-                                trendItems: ()=>[Item.黒色のまぼろし],
+                                trendItems: ()=>[Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.桜],
         });}
         isVisible = ()=>Dungeon.リテの門.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -532,6 +532,34 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story.MAIN_9.run();
+            }
+        }
+    };
+    export const                         黒の廃村:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"黒の廃村",
+                                rank:3, enemyLv:19, au:350, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
+                                treasures:  ()=>[],
+                                exItems:    ()=>[Item.霊術戦士の血],
+                                trendItems: ()=>[Item.エデン樹, Item.ロウ, Item.桐],
+        });}
+        isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "黒の門番";
+            e.prm(Prm.MAX_HP).base = 350;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "ティル王";
+            e.img = new Img("img/unit/tilou.png");
+            e.prm(Prm.MAX_HP).base = 350;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.MAIN_10.run();
             }
         }
     };
