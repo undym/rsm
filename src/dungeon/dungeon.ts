@@ -288,7 +288,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_1.run();
+                await Story.runMain1();
             }
             if(Item.脱出ポッド.totalGetCount === 0){
                 Item.脱出ポッド.add(1); await wait();
@@ -324,7 +324,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_2.run();
+                await Story.runMain2();
             }
             if(Item.動かない映写機.totalGetCount === 0){
                 Item.動かない映写機.add(1); await wait();
@@ -356,7 +356,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_3.run();
+                await Story.runMain3();
             }
         }
     };
@@ -384,7 +384,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_4.run();
+                await Story.runMain4();
             }
         }
     };
@@ -412,7 +412,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_7.run();
+                await Story.runMain7();
             }
         }
     };
@@ -440,7 +440,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_8.run();
+                await Story.runMain8();
             }
         }
     };
@@ -475,7 +475,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_5.run();
+                await Story.runMain5();
             }
         }
     };
@@ -503,13 +503,13 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_6.run();
+                await Story.runMain6();
             }
         }
     };
     export const                         黒遺跡:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒遺跡",
-                                rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.95, 0.3, 0.3, 0.1)],
+                                rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.75, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ダークネスロード],
                                 exItems:    ()=>[Item.ヴァンパイアの血],
                                 trendItems: ()=>[Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.桜],
@@ -531,7 +531,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_9.run();
+                await Story.runMain9();
             }
         }
     };
@@ -559,7 +559,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.MAIN_10.run();
+                await Story.runMain10();
             }
         }
     };

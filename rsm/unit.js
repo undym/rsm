@@ -440,7 +440,6 @@ export class PUnit extends Unit {
         this.player = player;
         this.jobLvs = new Map();
         this.masteredTecs = new Map();
-        this.jobExps = new Map();
         for (let job of Job.values) {
             this.jobLvs.set(job, { lv: 0, exp: 0 });
         }

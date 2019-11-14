@@ -474,7 +474,6 @@ export abstract class Unit{
 export class PUnit extends Unit{
     private jobLvs = new Map<Job,{lv:number, exp:number}>();
     private masteredTecs = new Map<Tec,boolean>();
-    private jobExps = new Map<Job,number>();
 
     constructor(readonly player:Player){
         super();

@@ -271,7 +271,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_1.run();
+                    yield Story.runMain1();
                 }
                 if (Item.脱出ポッド.totalGetCount === 0) {
                     Item.脱出ポッド.add(1);
@@ -316,7 +316,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_2.run();
+                    yield Story.runMain2();
                 }
                 if (Item.動かない映写機.totalGetCount === 0) {
                     Item.動かない映写機.add(1);
@@ -356,7 +356,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_3.run();
+                    yield Story.runMain3();
                 }
             });
         }
@@ -391,7 +391,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_4.run();
+                    yield Story.runMain4();
                 }
             });
         }
@@ -426,7 +426,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_7.run();
+                    yield Story.runMain7();
                 }
             });
         }
@@ -461,7 +461,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_8.run();
+                    yield Story.runMain8();
                 }
             });
         }
@@ -502,7 +502,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_5.run();
+                    yield Story.runMain5();
                 }
             });
         }
@@ -537,7 +537,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_6.run();
+                    yield Story.runMain6();
                 }
             });
         }
@@ -545,7 +545,7 @@ DungeonArea._valueOf = new Map();
     Dungeon.黒遺跡 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "黒遺跡",
-                rank: 2, enemyLv: 18, au: 250, btn: [DungeonArea.黒地域, new Rect(0.95, 0.3, 0.3, 0.1)],
+                rank: 2, enemyLv: 18, au: 250, btn: [DungeonArea.黒地域, new Rect(0.75, 0.3, 0.3, 0.1)],
                 treasures: () => [Eq.ダークネスロード],
                 exItems: () => [Item.ヴァンパイアの血],
                 trendItems: () => [Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.桜],
@@ -572,7 +572,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_9.run();
+                    yield Story.runMain9();
                 }
             });
         }
@@ -607,7 +607,7 @@ DungeonArea._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.MAIN_10.run();
+                    yield Story.runMain10();
                 }
             });
         }

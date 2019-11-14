@@ -137,11 +137,15 @@ export class Img{
         );
     }
 
+    /**
+     * keepRatio:dstRatioを中心に、縦横を大きい側に合わせる。小さい側はdstRatioに合わず、隙間ができる。
+     */
     drawEx(args:{
         dstRatio:Rect,
         srcRatio?:Rect,
         reverseHorizontal?:boolean,
         reverseVertical?:boolean,
+        keepRatio?:boolean,
     }){
         if(this.loading !== Img.LOADING_DONE){
             if(this.loading === Img.LOADING_YET){
@@ -169,6 +173,19 @@ export class Img{
             srcY = 0;
             srcW = 1;
             srcH = 1;
+        }
+
+        if(args.keepRatio){
+            const rw = args.dstRatio.w - this.ratioW;
+            const rh = args.dstRatio.h - this.ratioH;
+            let mul = 1;
+            if(rw < rh) {mul = args.dstRatio.h / this.ratioH;}
+            else        {mul = args.dstRatio.w / this.ratioW;}
+
+            dstW = this.ratioW * mul;
+            dstH = this.ratioH * mul;
+            dstX = args.dstRatio.cx - dstW / 2;
+            dstY = args.dstRatio.cy - dstH / 2;
         }
 
         if(args.reverseHorizontal){
@@ -200,23 +217,47 @@ export class Img{
             ctx.scale(1,-1);
         }
     }
-    // drawKeepRatio(dstRatio:{x:number, y:number, w:number, h:number}, srcRatio = {x:0, y:0, w:1, h:1}){
-    //     if(!this.loadComplete){return;}
+    
+    // drawKeepRatio(dstRatio:Rect, srcRatio = Rect.FULL){
+    //     if(this.loading !== Img.LOADING_DONE){
+    //         if(this.loading === Img.LOADING_YET){
+    //             this.load();
+    //         }
+    //         return;
+    //     }
 
-    //     const ctx = Graphics.getRenderTarget().ctx;
-    //     const w = Graphics.getRenderTarget().canvas.width;
-    //     const h = Graphics.getRenderTarget().canvas.height;
-    //     ctx.drawImage(
-    //          this.image
-    //         ,/*sx*/srcRatio.x * this.image.width
-    //         ,/*sy*/srcRatio.y * this.image.height
-    //         ,/*sw*/srcRatio.w * this.image.width
-    //         ,/*sh*/srcRatio.h * this.image.height
-    //         ,/*dx*/dstRatio.x * w
-    //         ,/*dy*/dstRatio.y * h
-    //         ,/*dw*/dstRatio.w * w
-    //         ,/*dh*/dstRatio.h * h
-    //     );
+    //     Graphics.clip(dstRatio, ()=>{
+
+    //         const ctx = Graphics.getRenderTarget().ctx;
+    //         const cw = Graphics.getRenderTarget().canvas.width;
+    //         const ch = Graphics.getRenderTarget().canvas.height;            
+    //         const rw = dstRatio.w - this.ratioW;
+    //         const rh = dstRatio.h - this.ratioH;
+    //         let mul = 1;
+    //         if(rw < rh) {mul = dstRatio.h / this.ratioH;}
+    //         else        {mul = dstRatio.w / this.ratioW;}
+
+    //         const w = this.ratioW * mul;
+    //         const h = this.ratioH * mul;
+    //         const r = new Rect(
+    //             dstRatio.cx - w / 2,
+    //             dstRatio.cy - h / 2,
+    //             w,
+    //             h,
+    //         );
+
+    //         ctx.drawImage(
+    //              this._image
+    //             ,/*sx*/srcRatio.x * this._image.width
+    //             ,/*sy*/srcRatio.y * this._image.height
+    //             ,/*sw*/srcRatio.w * this._image.width
+    //             ,/*sh*/srcRatio.h * this._image.height
+    //             ,/*dx*/r.x * cw
+    //             ,/*dy*/r.y * ch
+    //             ,/*dw*/r.w * cw
+    //             ,/*dh*/r.h * ch
+    //         );
+    //     });
     // }
 
     get complete():boolean{return this._image.complete;}
