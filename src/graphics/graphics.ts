@@ -179,8 +179,8 @@ export class Img{
             const rw = args.dstRatio.w - this.ratioW;
             const rh = args.dstRatio.h - this.ratioH;
             let mul = 1;
-            if(rw < rh) {mul = args.dstRatio.h / this.ratioH;}
-            else        {mul = args.dstRatio.w / this.ratioW;}
+            if(rw < rh) {mul = args.dstRatio.w / this.ratioW;}
+            else        {mul = args.dstRatio.h / this.ratioH;}
 
             dstW = this.ratioW * mul;
             dstH = this.ratioH * mul;
