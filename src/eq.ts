@@ -1,4 +1,4 @@
-import { Force, Dmg, Action } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce } from "./force.js";
 import { Unit, Prm } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
@@ -132,7 +132,7 @@ export abstract class Eq implements Force, Num{
     //--------------------------------------------------------------------------
     async equip(unit:Unit){}
     async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}

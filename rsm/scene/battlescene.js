@@ -15,7 +15,7 @@ import { Unit, PUnit, Prm } from "../unit.js";
 import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec } from "../tec.js";
 import { Input } from "../undym/input.js";
-import { Targeting } from "../force.js";
+import { Targeting, PhaseStartForce } from "../force.js";
 import { List } from "../widget/list.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -150,8 +150,9 @@ export class BattleScene extends Scene {
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () {
             if (Battle.turn > 0) {
-                for (const u of Unit.all.filter(u => u.exists && !u.dead)) {
-                    yield u.phaseEnd();
+                const phaseUnit = Battle.getPhaseUnit();
+                if (phaseUnit.exists && !phaseUnit.dead) {
+                    yield Battle.getPhaseUnit().phaseEnd();
                 }
             }
             for (let u of Unit.all) {
@@ -177,11 +178,19 @@ export class BattleScene extends Scene {
                 return;
             }
             Util.msg.set(`${attacker.name}の行動`, Color.ORANGE);
-            attacker.phaseStart();
+            const pForce = new PhaseStartForce();
+            attacker.phaseStart(pForce);
             for (const u of Unit.all) {
                 u.judgeDead();
             }
             if (attacker.dead) {
+                yield this.phaseEnd();
+                return;
+            }
+            if (pForce.phaseSkip) {
+                yield wait();
+                Util.msg.set(`${attacker.name}は行動できない...`);
+                yield wait();
                 yield this.phaseEnd();
                 return;
             }

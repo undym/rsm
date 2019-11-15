@@ -73,7 +73,7 @@ export class Condition {
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    phaseStart(unit) {
+    phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     beforeDoAtk(action, attacker, target, dmg) {
@@ -239,13 +239,8 @@ Condition._valueOf = new Map();
             });
         }
     };
-    //--------------------------------------------------------------------------
-    //
-    //BAD_LV2
-    //
-    //--------------------------------------------------------------------------
     Condition.毒 = new class extends Condition {
-        constructor() { super("毒", ConditionType.BAD_LV2); }
+        constructor() { super("毒", ConditionType.BAD_LV1); }
         phaseEnd(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 const value = unit.getConditionValue(this);
@@ -265,6 +260,31 @@ Condition._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //BAD_LV2
+    //
+    //--------------------------------------------------------------------------
+    Condition.眠 = new class extends Condition {
+        constructor() { super("眠", ConditionType.BAD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                pForce.phaseSkip = true;
+                Util.msg.set(`${unit.name}は眠っている...`);
+                yield wait();
+                unit.addConditionValue(this, -1);
+            });
+        }
+        afterBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.銃術) && Math.random() < 0.5) {
+                    target.removeCondition(this);
+                    Util.msg.set(`${target.name}は目を覚ました！`);
+                    yield wait();
+                }
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
     //BAD_LV3
     //
     //--------------------------------------------------------------------------
@@ -276,7 +296,7 @@ export class InvisibleCondition {
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    phaseStart(unit) {
+    phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     beforeDoAtk(action, attacker, target, dmg) {

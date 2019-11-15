@@ -176,7 +176,7 @@ export class Tec {
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    phaseStart(unit) {
+    phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     beforeDoAtk(action, attacker, target, dmg) {
@@ -995,7 +995,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "射る", info: "一体に弓術攻撃",
                 type: TecType.弓術, targetings: Targeting.SELECT,
-                mul: 1, num: 1, hit: 0.8,
+                mul: 1, num: 1, hit: 0.85,
             });
         }
     };
@@ -1016,7 +1016,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "アスラの矢", info: "全体に弓術攻撃",
                 type: TecType.弓術, targetings: Targeting.ALL,
-                mul: 1, num: 1, hit: 0.8, ep: 1,
+                mul: 1, num: 1, hit: 0.85, ep: 1,
             });
         }
     };

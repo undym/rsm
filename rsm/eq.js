@@ -120,7 +120,7 @@ export class Eq {
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    phaseStart(unit) {
+    phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     beforeDoAtk(action, attacker, target, dmg) {

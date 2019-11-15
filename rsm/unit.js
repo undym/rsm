@@ -260,8 +260,8 @@ export class Unit {
     battleStart() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.battleStart(this); })); });
     }
-    phaseStart() {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseStart(this); })); });
+    phaseStart(pForce) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseStart(this, pForce); })); });
     }
     beforeDoAtk(action, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeDoAtk(action, this, target, dmg); })); });
@@ -330,8 +330,14 @@ export class Unit {
             set.value = 0;
         }
     }
+    /**valueが1未満ならemptyをセットする。 */
     setCondition(condition, value) {
         const set = this.conditions[condition.type.ordinal];
+        if (value < 1) {
+            set.condition = Condition.empty;
+            set.value = 0;
+            return;
+        }
         set.condition = condition;
         set.value = value | 0;
     }
@@ -356,13 +362,14 @@ export class Unit {
         const set = this.conditions[type.ordinal];
         return { condition: set.condition, value: set.value };
     }
+    /**1未満になるとemptyをセットする。 */
     addConditionValue(condition, value) {
         value = value | 0;
         if (condition instanceof Condition) {
             const set = this.conditions[condition.type.ordinal];
             if (set.condition === condition) {
                 set.value += value;
-                if (set.value <= 0) {
+                if (set.value < 1) {
                     set.condition = Condition.empty;
                 }
             }
@@ -371,7 +378,7 @@ export class Unit {
         if (condition instanceof ConditionType) {
             const set = this.conditions[condition.ordinal];
             set.value += value;
-            if (set.value <= 0) {
+            if (set.value < 1) {
                 set.condition = Condition.empty;
             }
             return;

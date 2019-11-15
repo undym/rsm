@@ -22,6 +22,7 @@ import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
 import { Targeting, Dmg } from "../force.js";
 import { Img } from "../graphics/graphics.js";
+import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
 import { CollectingSkill } from "../collectingskill.js";
@@ -546,6 +547,8 @@ class EventImg {
                 yield wait();
                 Sound.walk2.play();
                 Scene.load(TownScene.ins);
+                SaveData.save();
+                Sound.save.play();
             });
             this.createBtnLayout = () => ILayout.empty;
         }

@@ -214,7 +214,6 @@ Job.DEF_LVUP_EXP = 10;
                 learningTecs: () => [Tec.ヴァハ, Tec.エヴィン, Tec.ジョンD],
             });
         }
-        get maxLv() { return super.maxLv + 1; }
         setEnemyInner(e) {
             e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.殴る];
         }
@@ -244,7 +243,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.ユグドラシル];
         }
     };
     Job.毒使い = new class extends Job {

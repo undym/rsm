@@ -1,7 +1,7 @@
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Force, Dmg, Targeting, Action } from "./force.js";
+import { Force, Dmg, Targeting, Action, PhaseStartForce } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
 import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_練術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術, FX_ナーガ } from "./fx/fx.js";
@@ -188,7 +188,7 @@ export abstract class Tec implements Force{
     //--------------------------------------------------------------------------
     async equip(unit:Unit){}
     async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
@@ -962,7 +962,7 @@ export namespace Tec{
     export const                          射る:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"射る", info:"一体に弓術攻撃",
                               type:TecType.弓術, targetings:Targeting.SELECT,
-                              mul:1, num:1, hit:0.8,
+                              mul:1, num:1, hit:0.85,
         });}
     }
     // export const                          インドラ:ActiveTec = new class extends ActiveTec{
@@ -981,7 +981,7 @@ export namespace Tec{
     export const                          アスラの矢:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"アスラの矢", info:"全体に弓術攻撃",
                               type:TecType.弓術, targetings:Targeting.ALL,
-                              mul:1, num:1, hit:0.8, ep:1,
+                              mul:1, num:1, hit:0.85, ep:1,
         });}
     }
     /**忍者. */

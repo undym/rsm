@@ -922,10 +922,10 @@ export namespace Item{
         constructor(){super({uniqueName:"消耗品のメモ", info:"「ごく一部の消耗品はダンジョンに入る度に補充される。脱出ポッドなどがそれに該当する」と書かれている", 
                                 type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
     };
-    export const                         セーブのメモ:Item = new class extends Item{
-        constructor(){super({uniqueName:"セーブのメモ", info:"「このゲームに自動セーブの機能はないらしい」と書かれている", 
-                                type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
-    };
+    // export const                         セーブのメモ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"セーブのメモ", info:"「このゲームに自動セーブの機能はないらしい」と書かれている", 
+    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    // };
     export const                         夏のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"夏のメモ", info:"「夏はいつ終わるの？」と書かれている", 
                                 type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}

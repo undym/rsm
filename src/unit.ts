@@ -3,7 +3,7 @@ import { Util, PlayData } from "./util.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
-import { Dmg, Force, Action, Targeting } from "./force.js";
+import { Dmg, Force, Action, Targeting, PhaseStartForce } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -309,7 +309,7 @@ export abstract class Unit{
         await this.force(f=> f.equip(this));
     }
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
-    async phaseStart()                                      {await this.force(async f=> await f.phaseStart(this));}
+    async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
     async beforeDoAtk(action:Action, target:Unit, dmg:Dmg)  {await this.force(async f=> await f.beforeDoAtk(action, this, target, dmg));}
     async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
     async afterDoAtk(action:Action, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.afterDoAtk(action, this, target, dmg));}
@@ -366,9 +366,14 @@ export abstract class Unit{
             set.value = 0;
         }
     }
-
+    /**valueが1未満ならemptyをセットする。 */
     setCondition(condition:Condition, value:number){
         const set = this.conditions[condition.type.ordinal];
+        if(value < 1){
+            set.condition = Condition.empty;
+            set.value = 0;
+            return;
+        }
         set.condition = condition;
         set.value = value|0;
     }
@@ -394,7 +399,7 @@ export abstract class Unit{
         const set = this.conditions[type.ordinal];
         return {condition:set.condition, value:set.value};
     }
-
+    /**1未満になるとemptyをセットする。 */
     addConditionValue(condition:Condition|ConditionType, value:number){
         value = value|0;
 
@@ -402,7 +407,7 @@ export abstract class Unit{
             const set = this.conditions[condition.type.ordinal];
             if(set.condition === condition){
                 set.value += value;
-                if(set.value <= 0){
+                if(set.value < 1){
                     set.condition = Condition.empty;
                 }
             }
@@ -411,7 +416,7 @@ export abstract class Unit{
         if(condition instanceof ConditionType){
             const set = this.conditions[condition.ordinal];
             set.value += value;
-            if(set.value <= 0){
+            if(set.value < 1){
                 set.condition = Condition.empty;
             }
             return;

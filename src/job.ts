@@ -243,7 +243,6 @@ export namespace Job{
                                 growthPrms:()=>[[Prm.MAG, 1]],
                                 learningTecs:()=>[Tec.ヴァハ, Tec.エヴィン, Tec.ジョンD],
         });}
-        get maxLv(){return super.maxLv + 1;}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.殴る];
         }
@@ -269,7 +268,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.天籟, Tec.数珠, Tec.ユグドラシル],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.ユグドラシル];
         }
     };
     export const                         毒使い:Job = new class extends Job{

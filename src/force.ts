@@ -8,12 +8,17 @@ export class Force{
 
     async equip(unit:Unit){};
     async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async phaseEnd(unit:Unit){}
+}
+
+
+export class PhaseStartForce{
+    phaseSkip:boolean = false;
 }
 
 

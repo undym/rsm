@@ -530,6 +530,9 @@ export namespace DungeonEvent{
             Sound.walk2.play();
             
             Scene.load( TownScene.ins );
+            
+            SaveData.save();
+            Sound.save.play();
         };
         createBtnLayout = ()=> ILayout.empty;
     };

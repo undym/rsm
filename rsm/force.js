@@ -17,7 +17,7 @@ export class Force {
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    phaseStart(unit) {
+    phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     beforeDoAtk(action, attacker, target, dmg) {
@@ -34,6 +34,11 @@ export class Force {
     }
     phaseEnd(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
+    }
+}
+export class PhaseStartForce {
+    constructor() {
+        this.phaseSkip = false;
     }
 }
 export class Dmg {

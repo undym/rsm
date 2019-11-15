@@ -8,7 +8,7 @@ import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "../tec.js";
 import { Input } from "../undym/input.js";
 import { Btn } from "../widget/btn.js";
-import { Targeting, Action } from "../force.js";
+import { Targeting, Action, PhaseStartForce } from "../force.js";
 import { Player } from "../player.js";
 import { FX } from "../fx/fx.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -155,8 +155,9 @@ export class BattleScene extends Scene{
 
     private async phaseEnd(){
         if(Battle.turn > 0){
-            for(const u of Unit.all.filter(u=> u.exists && !u.dead)){
-                await u.phaseEnd();
+            const phaseUnit = Battle.getPhaseUnit();
+            if(phaseUnit.exists && !phaseUnit.dead){
+                await Battle.getPhaseUnit().phaseEnd();
             }
         }
         for(let u of Unit.all){
@@ -187,12 +188,20 @@ export class BattleScene extends Scene{
 
         Util.msg.set(`${attacker.name}の行動`, Color.ORANGE);
 
-        attacker.phaseStart();
+        const pForce = new PhaseStartForce();
+        attacker.phaseStart(pForce);
 
         for(const u of Unit.all){
             u.judgeDead();
         }
         if(attacker.dead){
+            await this.phaseEnd();
+            return;
+        }
+        
+        if(pForce.phaseSkip){
+            await wait();
+            Util.msg.set(`${attacker.name}は行動できない...`); await wait();
             await this.phaseEnd();
             return;
         }

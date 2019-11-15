@@ -1,4 +1,4 @@
-import { Force, Dmg, Action } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce } from "./force.js";
 import { Tec, TecType, ActiveTec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
@@ -79,7 +79,7 @@ export abstract class Condition implements Force{
     //--------------------------------------------------------------------------
     async equip(unit:Unit){}
     async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
@@ -222,13 +222,8 @@ export namespace Condition{
             }
         }
     };
-    //--------------------------------------------------------------------------
-    //
-    //BAD_LV2
-    //
-    //--------------------------------------------------------------------------
     export const             毒:Condition = new class extends Condition{
-        constructor(){super("毒", ConditionType.BAD_LV2);}
+        constructor(){super("毒", ConditionType.BAD_LV1);}
         async phaseEnd(unit:Unit){
             const value = unit.getConditionValue(this);
             if(value < unit.prm(Prm.DRK).total + 1){
@@ -248,6 +243,36 @@ export namespace Condition{
     };
     //--------------------------------------------------------------------------
     //
+    //BAD_LV2
+    //
+    //--------------------------------------------------------------------------
+    export const             眠:Condition = new class extends Condition{
+        constructor(){super("眠", ConditionType.BAD_LV2);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            pForce.phaseSkip = true;
+            Util.msg.set(`${unit.name}は眠っている...`); await wait();
+            
+            unit.addConditionValue(this, -1);
+        }
+
+        async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.銃術) && Math.random() < 0.5){
+                target.removeCondition(this);
+                Util.msg.set(`${target.name}は目を覚ました！`); await wait();
+            }
+        }
+    };
+    export const             石:Condition = new class extends Condition{
+        constructor(){super("石", ConditionType.BAD_LV2);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            pForce.phaseSkip = true;
+            Util.msg.set(`${unit.name}は動けない...`); await wait();
+            
+            unit.addConditionValue(this, -1);
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
     //BAD_LV3
     //
     //--------------------------------------------------------------------------
@@ -258,7 +283,7 @@ export namespace Condition{
 export class InvisibleCondition implements Force{
     async equip(unit:Unit){}
     async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}

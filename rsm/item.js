@@ -1055,12 +1055,10 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
-    Item.セーブのメモ = new class extends Item {
-        constructor() {
-            super({ uniqueName: "セーブのメモ", info: "「このゲームに自動セーブの機能はないらしい」と書かれている",
-                type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
-        }
-    };
+    // export const                         セーブのメモ:Item = new class extends Item{
+    //     constructor(){super({uniqueName:"セーブのメモ", info:"「このゲームに自動セーブの機能はないらしい」と書かれている", 
+    //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
+    // };
     Item.夏のメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "夏のメモ", info: "「夏はいつ終わるの？」と書かれている",
