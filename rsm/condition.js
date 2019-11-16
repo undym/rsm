@@ -264,7 +264,7 @@ Condition._valueOf = new Map();
     //
     //--------------------------------------------------------------------------
     Condition.眠 = new class extends Condition {
-        constructor() { super("眠", ConditionType.BAD_LV1); }
+        constructor() { super("眠", ConditionType.BAD_LV2); }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
                 pForce.phaseSkip = true;
@@ -275,10 +275,35 @@ Condition._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.銃術) && Math.random() < 0.5) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.過去, TecType.銃術) && Math.random() < 0.5) {
                     target.removeCondition(this);
                     Util.msg.set(`${target.name}は目を覚ました！`);
                     yield wait();
+                }
+            });
+        }
+    };
+    Condition.石 = new class extends Condition {
+        constructor() { super("石", ConditionType.BAD_LV2); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                pForce.phaseSkip = true;
+                Util.msg.set(`${unit.name}は動けない...`);
+                yield wait();
+                unit.addConditionValue(this, -1);
+            });
+        }
+    };
+    /**一定確率で行動不能になる。 */
+    Condition.鎖 = new class extends Condition {
+        constructor() { super("鎖", ConditionType.BAD_LV2); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (Math.random() < 0.5) {
+                    pForce.phaseSkip = true;
+                    Util.msg.set(`${unit.name}は鎖に縛られている...`);
+                    yield wait();
+                    unit.addConditionValue(this, -1);
                 }
             });
         }

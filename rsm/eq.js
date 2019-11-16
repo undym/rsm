@@ -322,17 +322,36 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         マーザン砲:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"マーザン砲", info:"銃術攻撃時稀に追加攻撃",
-    //                             pos:EqPos.武, lv:65});}
-    //     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any( TecType.銃術 ) && dmg.result.isHit && Math.random() < 0.5){
-    //             dmg.additinalAttacks.push((dmg,index)=>{
-    //                 return dmg.result.value / (index + 2);
-    //             });
-    //         }
-    //     }
-    // }
+    /**クラウンボトルEX. */
+    Eq.コスモガン = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "コスモガン", info: "銃術攻撃時稀に追加攻撃",
+                pos: EqPos.武, lv: 95 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃術) && dmg.result.isHit && Math.random() < 0.5) {
+                    dmg.additionalAttacks.push((dmg, i) => {
+                        return dmg.result.value / 2;
+                    });
+                }
+            });
+        }
+    };
+    /**クラウンボトル財宝. */
+    Eq.呪縛の弓矢 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "呪縛の弓矢", info: "弓術攻撃時、稀に相手を＜鎖＞化",
+                pos: EqPos.武, lv: 95 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.弓術) && dmg.result.isHit && Math.random() < 0.5) {
+                    Unit.setCondition(target, Condition.鎖, 1);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //盾

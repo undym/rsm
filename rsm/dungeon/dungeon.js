@@ -466,6 +466,41 @@ DungeonArea._valueOf = new Map();
             });
         }
     };
+    Dungeon.クラウンボトル = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "クラウンボトル",
+                rank: 3, enemyLv: 20, au: 300, btn: [DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
+                treasures: () => [Eq.呪縛の弓矢],
+                exItems: () => [Eq.コスモガン],
+                trendItems: () => [Item.血粉末, Item.うんち, Item.太陽の欠片],
+            });
+            this.isVisible = () => Dungeon.黒の廃村.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "無限の壺人";
+                e.prm(Prm.MAX_HP).base = 350;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "亡霊ガニュメート";
+                e.img = new Img("img/unit/unmei.png");
+                e.prm(Prm.MAX_HP).base = 350;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story.runMain11();
+                }
+            });
+        }
+    };
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
     //                            黒地域                                 //
@@ -545,7 +580,7 @@ DungeonArea._valueOf = new Map();
     Dungeon.黒遺跡 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "黒遺跡",
-                rank: 2, enemyLv: 18, au: 250, btn: [DungeonArea.黒地域, new Rect(0.75, 0.3, 0.3, 0.1)],
+                rank: 2, enemyLv: 18, au: 250, btn: [DungeonArea.黒地域, new Rect(0.55, 0.3, 0.3, 0.1)],
                 treasures: () => [Eq.ダークネスロード],
                 exItems: () => [Item.ヴァンパイアの血],
                 trendItems: () => [Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.桜],
@@ -583,7 +618,7 @@ DungeonArea._valueOf = new Map();
                 rank: 3, enemyLv: 19, au: 350, btn: [DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
                 treasures: () => [Eq.機工の指輪],
                 exItems: () => [Item.霊術戦士の血],
-                trendItems: () => [Item.エデン樹, Item.ロウ, Item.桐],
+                trendItems: () => [Item.ロウ, Item.桐],
             });
             this.isVisible = () => Dungeon.黒遺跡.dungeonClearCount > 0;
             this.setBossInner = () => {

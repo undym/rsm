@@ -256,7 +256,7 @@ export namespace Condition{
         }
 
         async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.銃術) && Math.random() < 0.5){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.練術, TecType.過去, TecType.銃術) && Math.random() < 0.5){
                 target.removeCondition(this);
                 Util.msg.set(`${target.name}は目を覚ました！`); await wait();
             }
@@ -269,6 +269,18 @@ export namespace Condition{
             Util.msg.set(`${unit.name}は動けない...`); await wait();
             
             unit.addConditionValue(this, -1);
+        }
+    };
+    /**一定確率で行動不能になる。 */
+    export const             鎖:Condition = new class extends Condition{
+        constructor(){super("鎖", ConditionType.BAD_LV2);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            if(Math.random() < 0.5){
+                pForce.phaseSkip = true;
+                Util.msg.set(`${unit.name}は鎖に縛られている...`); await wait();
+                
+                unit.addConditionValue(this, -1);
+            }
         }
     };
     //--------------------------------------------------------------------------
