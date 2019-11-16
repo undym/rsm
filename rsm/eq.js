@@ -12,6 +12,7 @@ import { ActiveTec, TecType, Tec } from "./tec.js";
 import { Condition } from "./condition.js";
 import { PlayData } from "./util.js";
 import { choice } from "./undym/random.js";
+import { wait } from "./undym/scene.js";
 export class EqPos {
     constructor(name) {
         this.toString = () => name;
@@ -348,6 +349,7 @@ EqEar._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.弓術) && dmg.result.isHit && Math.random() < 0.5) {
                     Unit.setCondition(target, Condition.鎖, 1);
+                    yield wait();
                 }
             });
         }

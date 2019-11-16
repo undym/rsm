@@ -597,12 +597,16 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
     class FXFont {
         static get def() { return this.font ? this.font : (this.font = new Font(60)); }
     }
+    /**既に状態が存在していた場合、上書きはされない。 */
     Unit.setCondition = (target, condition, value) => {
         value = value | 0;
         if (value <= 0) {
             return;
         }
         if (condition === Condition.empty) {
+            return;
+        }
+        if (target.getCondition(condition.type) !== Condition.empty) {
             return;
         }
         target.setCondition(condition, value);

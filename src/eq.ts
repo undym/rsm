@@ -325,7 +325,7 @@ export namespace Eq{
                                 pos:EqPos.武, lv:95});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any( TecType.弓術 ) && dmg.result.isHit && Math.random() < 0.5){
-                Unit.setCondition(target, Condition.鎖, 1);
+                Unit.setCondition(target, Condition.鎖, 1); await wait();
             }
         }
     }
