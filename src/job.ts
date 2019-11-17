@@ -57,20 +57,20 @@ export abstract class Job{
 
     static readonly DEF_LVUP_EXP = 10;
 
-    static rndJob(lv:number):Job{
-        for(let i = 0; i < 7; i++){
-            const job = choice( Job.values );
-            if(job.appearLv <= lv){
-                return job;
-            }
-        }
+    // static rndJob(lv:number):Job{
+    //     for(let i = 0; i < 7; i++){
+    //         const job = choice( Job.values );
+    //         if(job.appearLv <= lv){
+    //             return job;
+    //         }
+    //     }
 
-        return Job.訓練生;
-    }
+    //     return Job.訓練生;
+    // }
 
-    static rndSetEnemy(unit:EUnit, lv:number):void{
-        this.rndJob(lv).setEnemy(unit, lv);
-    }
+    // static rndSetEnemy(unit:EUnit, lv:number):void{
+    //     this.rndJob(lv).setEnemy(unit, lv);
+    // }
 
     get uniqueName():string {return this.args.uniqueName;}
     get info():string       {return this.args.info;}

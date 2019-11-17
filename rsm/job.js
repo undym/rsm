@@ -1,7 +1,7 @@
 import { EUnit, Prm } from "./unit.js";
 import { Tec } from "./tec.js";
 import { EqPos, Eq } from "./eq.js";
-import { choice, randomInt } from "./undym/random.js";
+import { randomInt } from "./undym/random.js";
 import { Img } from "./graphics/graphics.js";
 /*
 敵のLV毎のHP目安.
@@ -56,18 +56,18 @@ export class Job {
     }
     static get values() { return this._values; }
     static valueOf(uniqueName) { return this._valueOf.get(uniqueName); }
-    static rndJob(lv) {
-        for (let i = 0; i < 7; i++) {
-            const job = choice(Job.values);
-            if (job.appearLv <= lv) {
-                return job;
-            }
-        }
-        return Job.訓練生;
-    }
-    static rndSetEnemy(unit, lv) {
-        this.rndJob(lv).setEnemy(unit, lv);
-    }
+    // static rndJob(lv:number):Job{
+    //     for(let i = 0; i < 7; i++){
+    //         const job = choice( Job.values );
+    //         if(job.appearLv <= lv){
+    //             return job;
+    //         }
+    //     }
+    //     return Job.訓練生;
+    // }
+    // static rndSetEnemy(unit:EUnit, lv:number):void{
+    //     this.rndJob(lv).setEnemy(unit, lv);
+    // }
     get uniqueName() { return this.args.uniqueName; }
     get info() { return this.args.info; }
     get appearLv() { return this.args.appearLv; }
