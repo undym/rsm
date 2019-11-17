@@ -176,6 +176,24 @@ export namespace Condition{
             }
         }
     };
+    export const             吸収:Condition = new class extends Condition{
+        constructor(){super("吸収", ConditionType.GOOD_LV2);}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)){
+                const value = dmg.calc().value;
+                target.addInvisibleCondition(new class extends InvisibleCondition{
+                    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+                        Unit.healHP( target, value );
+                        target.removeInvisibleCondition(this);
+                    }
+                });
+
+                dmg.pow.add -= dmg.pow.base;
+
+                target.addConditionValue(this, -1);
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV3

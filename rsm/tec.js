@@ -1291,8 +1291,9 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                Unit.setCondition(target, Condition.癒, 10);
                 Sound.up.play();
+                Unit.setCondition(target, Condition.癒, 10);
+                yield wait();
             });
         }
     };
@@ -1315,7 +1316,9 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
                 Unit.setCondition(target, Condition.風, 2);
+                yield wait();
             });
         }
     };
@@ -1328,15 +1331,36 @@ ActiveTec._valueOf = new Map();
     //         Unit.setCondition( target, Condition.攻撃低下, 3 );
     //     }
     // }
-    // export const                          弱体液:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"弱体液", info:"一体を＜防↓3＞状態にする",
-    //                           type:TecType.状態, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:1, mp:2,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition( target, Condition.防御低下, 3 );
-    //     }
-    // }
+    Tec.弱体液 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "弱体液", info: "一体を＜防↓2＞状態にする",
+                type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                Unit.setCondition(target, Condition.防御低下, 2);
+                yield wait();
+            });
+        }
+    };
+    Tec.セル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "セル", info: "自分を＜吸収＞状態にする",
+                type: TecType.状態, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, mp: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                Unit.setCondition(target, Condition.吸収, 1);
+                yield wait();
+            });
+        }
+    };
     // export const                          スコープ:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"スコープ", info:"自分を＜狙4＞（命中上昇）状態にする",
     //                           type:TecType.状態, targetings:Targeting.SELF,
@@ -1356,7 +1380,9 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.sin.play();
                 Unit.setCondition(target, Condition.攻撃低下, 3);
+                yield wait();
             });
         }
     };
@@ -1515,6 +1541,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**天使. */
+    Tec.妖精の粉 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "妖精の粉", info: "味方全体のTP+1",
+                type: TecType.回復, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 3,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = 1;
+                Unit.healTP(target, value);
+                Sound.KAIFUKU.play();
+                Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright);
+                yield wait();
+            });
+        }
+    };
     // export const                          吸心:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"吸心", info:"一体からTPを2吸収",
     //                           type:TecType.回復, targetings:Targeting.SELECT,
@@ -1569,16 +1613,19 @@ ActiveTec._valueOf = new Map();
     //         Unit.healHP(unit, value);
     //     }
     // };
-    // export const                         MP自動回復:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"MP自動回復", info:"行動開始時MP+1%",
-    //                             type:TecType.回復,
-    //     });}
-    //     phaseStart(unit:Unit){
-    //         let value = unit.prm(Prm.MAX_MP).total * 0.01;
-    //         if(value < 1){value = 1;}
-    //         Unit.healMP(unit, value);
-    //     }
-    // };
+    /**妖精. */
+    Tec.MP自動回復 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "MP自動回復", info: "行動開始時MP+1",
+                type: TecType.回復,
+            });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healMP(unit, 1);
+            });
+        }
+    };
     Tec.TP自動回復 = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "TP自動回復", info: "行動開始時TP+1　HPMP-1",
@@ -1713,6 +1760,21 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.銃術, TecType.弓術)) {
                     dmg.hit.mul *= 0.9;
+                }
+            });
+        }
+    };
+    /**アメーバ. */
+    Tec.被膜 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "被膜", info: "魔法・神格・過去防御+20%",
+                type: TecType.その他,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
+                    dmg.def.mul *= 1.2;
                 }
             });
         }

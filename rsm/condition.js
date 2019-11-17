@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Dmg } from "./force.js";
 import { TecType, ActiveTec } from "./tec.js";
-import { Prm } from "./unit.js";
+import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
@@ -183,6 +183,26 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
                     dmg.hit.mul *= 0.5;
+                    target.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
+    Condition.吸収 = new class extends Condition {
+        constructor() { super("吸収", ConditionType.GOOD_LV2); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.練術, TecType.銃術)) {
+                    const value = dmg.calc().value;
+                    target.addInvisibleCondition(new class extends InvisibleCondition {
+                        afterBeAtk(action, attacker, target, dmg) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                Unit.healHP(target, value);
+                                target.removeInvisibleCondition(this);
+                            });
+                        }
+                    });
+                    dmg.pow.add -= dmg.pow.base;
                     target.addConditionValue(this, -1);
                 }
             });

@@ -57,20 +57,6 @@ export abstract class Job{
 
     static readonly DEF_LVUP_EXP = 10;
 
-    // static rndJob(lv:number):Job{
-    //     for(let i = 0; i < 7; i++){
-    //         const job = choice( Job.values );
-    //         if(job.appearLv <= lv){
-    //             return job;
-    //         }
-    //     }
-
-    //     return Job.訓練生;
-    // }
-
-    // static rndSetEnemy(unit:EUnit, lv:number):void{
-    //     this.rndJob(lv).setEnemy(unit, lv);
-    // }
 
     get uniqueName():string {return this.args.uniqueName;}
     get info():string       {return this.args.info;}
@@ -410,16 +396,43 @@ export namespace Job{
     //獣
     //
     //--------------------------------------------------
+    //TODO
     export const                         雷鳥:Job = new class extends Job{
         constructor(){super({uniqueName:"雷鳥", info:"",
                                 appearLv:75, img:new Img("img/unit/雷鳥.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 1,
-                                canJobChange:p=> false,//TODO
+                                canJobChange:p=> false,
                                 growthPrms:()=>[[Prm.ARR, 1]],
                                 learningTecs:()=>[],
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る];
+        }
+    };
+    //TODO
+    export const                         アメーバ:Job = new class extends Job{
+        constructor(){super({uniqueName:"アメーバ", info:"",
+                                appearLv:85, img:new Img("img/unit/アメーバ.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                canJobChange:p=> false,
+                                growthPrms:()=>[[Prm.MAX_MP, 1]],
+                                learningTecs:()=>[Tec.弱体液, Tec.セル, Tec.被膜],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
+        }
+    };
+    //TODO
+    export const                         妖精:Job = new class extends Job{
+        constructor(){super({uniqueName:"妖精", info:"",
+                                appearLv:95, img:new Img("img/unit/妖精.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                canJobChange:p=> false,
+                                growthPrms:()=>[[Prm.MAG, 1]],
+                                learningTecs:()=>[Tec.妖精の粉, Tec.MP自動回復],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.妖精の粉, Tec.妖精の粉, Tec.ヴァハ, Tec.殴る, Tec.MP自動回復];
         }
     };
 }
