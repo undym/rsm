@@ -43,6 +43,7 @@ export abstract class Dungeon{
     //-----------------------------------------------------------------
 
     get uniqueName():string{return this.args.uniqueName;}
+    get info():string{return this.args.info;}
     get rank():number{return this.args.rank;}
     /** クリア回数による補正をかけていないもの。*/
     get originalEnemyLv():number{return this.args.enemyLv;}
@@ -73,6 +74,7 @@ export abstract class Dungeon{
     protected constructor(
         private args:{
             uniqueName:string,
+            info:string,
             rank:number,
             enemyLv:number,
             au:number,
@@ -117,7 +119,7 @@ export abstract class Dungeon{
         if(Dungeon.now.dungeonClearCount > 0 && Math.random() < 0.001){return DungeonEvent.EX_BATTLE;}
         
         if(Math.random() < 0.15){
-            if(Dungeon.now.rank >= 2 && Math.random() < 0.05){
+            if(Dungeon.now.rank >= 2 && Math.random() < 0.04){
                 if(Dungeon.now.rank >= 6 && Math.random() < 0.3){return DungeonEvent.KEY_BOX_RANK6;}
                 if(Dungeon.now.rank >= 5 && Math.random() < 0.3){return DungeonEvent.KEY_BOX_RANK5;}
                 if(Dungeon.now.rank >= 4 && Math.random() < 0.3){return DungeonEvent.KEY_BOX_RANK4;}
@@ -152,8 +154,8 @@ export abstract class Dungeon{
         return num === 0 ? 1 : num;
     }
 
-    setEnemy(num:number = -1){
-        if(num === -1){
+    setEnemy(num:number = 0){
+        if(num === 0){
             num = this.rndEnemyNum();
         }
         for(let i = 0; i < num; i++){
@@ -251,7 +253,12 @@ export namespace DungeonArea{
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ]
-                            );
+                            );                          
+    export const 月 =       new DungeonArea("月", "img/area_月.jpg",
+        ()=>[
+            // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+        ]
+    );
 }
 
 export namespace Dungeon{
@@ -262,7 +269,7 @@ export namespace Dungeon{
     //                                                                   //
     ///////////////////////////////////////////////////////////////////////
     export const                         再構成トンネル:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"再構成トンネル",
+        constructor(){super({uniqueName:"再構成トンネル", info:"",
                                 rank:0, enemyLv:1, au:50, btn:[DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.安全靴],
                                 exItems:    ()=>[Eq.アカデミーバッヂ],
@@ -297,7 +304,7 @@ export namespace Dungeon{
         }
     };
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"見知らぬ海岸",
+        constructor(){super({uniqueName:"見知らぬ海岸", info:"",
                                 rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
@@ -332,7 +339,7 @@ export namespace Dungeon{
         }
     };
     export const                         はじまりの丘:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"はじまりの丘",
+        constructor(){super({uniqueName:"はじまりの丘", info:"",
                                 rank:1, enemyLv:4, au:100, btn:[DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.オールマント],
                                 exItems:    ()=>[Eq.ライダーベルト],
@@ -361,7 +368,7 @@ export namespace Dungeon{
         }
     };
     export const                         予感の街レ:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"予感の街・レ",
+        constructor(){super({uniqueName:"予感の街・レ", info:"",
                                 rank:0, enemyLv:9, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ミルテの棍],
                                 exItems:    ()=>[Eq.いばらの鎧],
@@ -389,7 +396,7 @@ export namespace Dungeon{
         }
     };
     export const                         水の都イス:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"水の都・イス",
+        constructor(){super({uniqueName:"水の都・イス", info:"",
                                 rank:2, enemyLv:14, au:60, btn:[DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.レティシアsガン],
                                 exItems:    ()=>[Eq.月代],
@@ -417,7 +424,7 @@ export namespace Dungeon{
         }
     };
     export const                         リテの門:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"リ・テの門",
+        constructor(){super({uniqueName:"リ・テの門", info:"",
                                 rank:2, enemyLv:16, au:200, btn:[DungeonArea.中央島, new Rect(0, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.忍者ソード],
                                 exItems:    ()=>[Eq.反精霊の盾],
@@ -445,7 +452,7 @@ export namespace Dungeon{
         }
     };
     export const                         クラウンボトル:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"クラウンボトル",
+        constructor(){super({uniqueName:"クラウンボトル", info:"",
                                 rank:3, enemyLv:20, au:300, btn:[DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.呪縛の弓矢],
                                 exItems:    ()=>[Eq.コスモガン],
@@ -472,6 +479,40 @@ export namespace Dungeon{
             }
         }
     };
+    export const                         トトの郊外:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"トトの郊外", info:"",
+                                rank:4, enemyLv:20, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.悪夢],
+                                exItems:    ()=>[Eq.猛者の鎧],
+                                trendItems: ()=>[],
+        });}
+        isVisible = ()=>Dungeon.クラウンボトル.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.機械士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "機械仕掛けA";
+            e.prm(Prm.MAX_HP).base = 500;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.格闘家.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影トレジャー";
+            e.img = new Img("img/unit/trager.png");
+            e.prm(Prm.MAX_HP).base = 500;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.runMain12();
+
+                DungeonArea.now = DungeonArea.月;
+                Unit.setPlayer(0, Player.一号);
+                Unit.setPlayer(1, Player.雪);
+                Player.一号.member = true;
+                Player.雪.member = true;
+            }
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
@@ -479,7 +520,7 @@ export namespace Dungeon{
     //                                                                   //
     ///////////////////////////////////////////////////////////////////////
     export const                         黒平原:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"黒平原",
+        constructor(){super({uniqueName:"黒平原", info:"地層+",
                                 rank:0, enemyLv:10, au:100, btn:[DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔性のマント],
                                 exItems:    ()=>[Eq.妖魔の手],
@@ -506,9 +547,14 @@ export namespace Dungeon{
                 await Story.runMain5();
             }
         }
+        rndEvent():DungeonEvent{
+            const res = super.rndEvent();
+            if(res === DungeonEvent.empty && Math.random() < 0.05){return DungeonEvent.STRATUM;}
+            return res;
+        }
     };
     export const                         黒い丘:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"黒い丘",
+        constructor(){super({uniqueName:"黒い丘", info:"地層+",
                                 rank:1, enemyLv:12, au:200, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉の手首飾り],
                                 exItems:    ()=>[Eq.無色の靴],
@@ -534,9 +580,14 @@ export namespace Dungeon{
                 await Story.runMain6();
             }
         }
+        rndEvent():DungeonEvent{
+            const res = super.rndEvent();
+            if(res === DungeonEvent.empty && Math.random() < 0.05){return DungeonEvent.STRATUM;}
+            return res;
+        }
     };
     export const                         黒遺跡:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"黒遺跡",
+        constructor(){super({uniqueName:"黒遺跡", info:"地層+",
                                 rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.55, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ダークネスロード],
                                 exItems:    ()=>[Item.ヴァンパイアの血],
@@ -562,9 +613,14 @@ export namespace Dungeon{
                 await Story.runMain9();
             }
         }
+        rndEvent():DungeonEvent{
+            const res = super.rndEvent();
+            if(res === DungeonEvent.empty && Math.random() < 0.05){return DungeonEvent.STRATUM;}
+            return res;
+        }
     };
     export const                         黒の廃村:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"黒の廃村",
+        constructor(){super({uniqueName:"黒の廃村", info:"",
                                 rank:3, enemyLv:19, au:350, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.機工の指輪],
                                 exItems:    ()=>[Item.霊術戦士の血],
@@ -588,6 +644,40 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story.runMain10();
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////////
+    //                                                                   //
+    //                               月                                  //
+    //                                                                   //
+    ///////////////////////////////////////////////////////////////////////
+    export const                         テント樹林:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"テント樹林", info:"",
+                                rank:0, enemyLv:0, au:150, btn:[DungeonArea.月, new Rect(0.35, 0.1, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.鎖のマント],
+                                exItems:    ()=>[Eq.アリランナイフ],
+                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+        });}
+        isVisible = ()=>Dungeon.トトの郊外.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.雷鳥.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "大雷鳥";
+            e.prm(Prm.MAX_HP).base = 250;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影ニュース";
+            e.img = new Img("img/unit/news.png");
+            e.prm(Prm.MAX_HP).base = 250;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story.runMain13();
             }
         }
     };

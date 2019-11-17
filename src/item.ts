@@ -1105,6 +1105,10 @@ export namespace Item{
         constructor(){super({uniqueName:"桜", info:"",
                                 type:ItemType.素材, rank:2, drop:ItemDrop.BOX | ItemDrop.TREE})}
     };
+    export const                         発砲ツル:Item = new class extends Item{
+        constructor(){super({uniqueName:"発砲ツル", info:"",
+                                type:ItemType.素材, rank:2, drop:ItemDrop.BOX | ItemDrop.TREE})}
+    };
     export const                         桐:Item = new class extends Item{
         constructor(){super({uniqueName:"桐", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.TREE})}
@@ -1128,6 +1132,10 @@ export namespace Item{
     export const                         翌檜:Item = new class extends Item{
         constructor(){super({uniqueName:"翌檜", info:"",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.BOX | ItemDrop.TREE})}
+    };
+    export const                         テント木:Item = new class extends Item{
+        constructor(){super({uniqueName:"テント木", info:"",
+                                type:ItemType.素材, rank:6, drop:ItemDrop.BOX | ItemDrop.TREE})}
     };
     //-----------------------------------------------------------------
     //

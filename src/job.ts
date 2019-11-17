@@ -331,6 +331,19 @@ export namespace Job{
             e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.殴る, Tec.殴る];
         }
     };
+    /**TODO. */
+    export const                         機械士:Job = new class extends Job{
+        constructor(){super({uniqueName:"機械士", info:"",
+                                appearLv:75, img:new Img("img/unit/霊術戦士.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> false,//霊術戦士の血を使っての転職
+                                growthPrms:()=>[[Prm.STR, 1], [Prm.DRK, 1]],
+                                learningTecs:()=>[],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+        }
+    };
     export const                         アーチャー:Job = new class extends Job{
         constructor(){super({uniqueName:"アーチャー", info:"",
                                 appearLv:25, img:new Img("img/unit/アーチャー.png"),
@@ -377,6 +390,36 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+        }
+    };
+    export const                         暗黒戦士:Job = new class extends Job{
+        constructor(){super({uniqueName:"暗黒戦士", info:"",
+                                appearLv:75, img:new Img("img/unit/霊術戦士.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                canJobChange:p=> false,//一号初期ジョブ
+                                growthPrms:()=>[[Prm.DRK, 2]],
+                                learningTecs:()=>[Tec.暗黒剣, Tec.衝動, Tec.宵闇, Tec.自爆],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.殴る];
+        }
+    };
+    
+    //--------------------------------------------------
+    //
+    //獣
+    //
+    //--------------------------------------------------
+    export const                         雷鳥:Job = new class extends Job{
+        constructor(){super({uniqueName:"雷鳥", info:"",
+                                appearLv:75, img:new Img("img/unit/雷鳥.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                canJobChange:p=> false,//TODO
+                                growthPrms:()=>[[Prm.ARR, 1]],
+                                learningTecs:()=>[],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る];
         }
     };
 }

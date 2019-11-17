@@ -1,5 +1,5 @@
 import { Force, Dmg, Action, PhaseStartForce } from "./force.js";
-import { Unit, Prm } from "./unit.js";
+import { Unit, Prm, PUnit } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
 import { ActiveTec, TecType, Tec } from "./tec.js";
@@ -9,6 +9,8 @@ import { Battle } from "./battle.js";
 import { choice } from "./undym/random.js";
 import { wait } from "./undym/scene.js";
 import { SaveData } from "./savedata.js";
+import { Player } from "./player.js";
+import { Sound } from "./sound.js";
 
 
 export class EqPos{
@@ -323,9 +325,21 @@ export namespace Eq{
     export const                         呪縛の弓矢:Eq = new class extends Eq{
         constructor(){super({uniqueName:"呪縛の弓矢", info:"弓術攻撃時、稀に相手を＜鎖＞化",
                                 pos:EqPos.武, lv:95});}
-        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any( TecType.弓術 ) && dmg.result.isHit && Math.random() < 0.5){
                 Unit.setCondition(target, Condition.鎖, 1); await wait();
+            }
+        }
+    }
+    /**テント樹林EX. */
+    export const                         アリランナイフ:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"アリランナイフ", info:"攻撃時、稀に相手を＜毒＞化",
+                                pos:EqPos.武, lv:95});}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && dmg.result.isHit && Math.random() < 0.8){
+                Sound.awa.play();
+                const value = attacker.prm(Prm.DRK).total + 1;
+                Unit.setCondition(target, Condition.毒, value); await wait();
             }
         }
     }
@@ -353,20 +367,6 @@ export namespace Eq{
             dmg.def.add += 200;
         }
     }
-    // export const                         鋼鉄板:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"鋼鉄板", info:"防御値+200",
-    //                             pos:EqPos.盾, lv:32});}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.def.add += 200;
-    //     }
-    // }
-    // export const                         チタン板:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"チタン板", info:"防御値+300",
-    //                             pos:EqPos.盾, lv:42});}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.def.add += 300;
-    //     }
-    // }
     //--------------------------------------------------------------------------
     //
     //体
@@ -420,56 +420,31 @@ export namespace Eq{
             dmg.pow.mul *= 1.1;
         }
     }
-    // export const                         布の服:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"布の服", info:"最大HP+40",
-    //                             pos:EqPos.体, lv:35});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 40;}
-    // }
-    // export const                         皮の服:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"皮の服", info:"最大HP+70",
-    //                             pos:EqPos.体, lv:55});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 70;}
-    // }
-    // export const                         木の鎧:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"木の鎧", info:"最大HP+100",
-    //                             pos:EqPos.体, lv:95});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 100;}
-    // }
-    // export const                         青銅の鎧 = new class extends Eq{
-    //     constructor(){super({uniqueName:"青銅の鎧", info:"最大HP+200",
-    //                             pos:EqPos.体, lv:125});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 200;}
-    // }
-    // export const                         鉄の鎧 = new class extends Eq{
-    //     constructor(){super({uniqueName:"鉄の鎧", info:"最大HP+300",
-    //                             pos:EqPos.体, lv:145});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 300;}
-    // }
-    // export const                         鋼鉄の鎧 = new class extends Eq{
-    //     constructor(){super({uniqueName:"鋼鉄の鎧", info:"最大HP+400",
-    //                             pos:EqPos.体, lv:160});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 400;}
-    // }
-    // export const                         銀の鎧 = new class extends Eq{
-    //     constructor(){super({uniqueName:"銀の鎧", info:"最大HP+500",
-    //                             pos:EqPos.体, lv:180});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 500;}
-    // }
-    // export const                         金の鎧 = new class extends Eq{
-    //     constructor(){super({uniqueName:"金の鎧", info:"最大HP+600",
-    //                             pos:EqPos.体, lv:200});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 600;}
-    // }
-    // export const                         防弾チョッキ:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"防弾チョッキ", info:"最大HP+50　被銃術・弓術攻撃-40%",
-    //                             pos:EqPos.体, lv:95});}
-    //     equip(unit:Unit){unit.prm(Prm.MAX_HP).eq += 50;}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.銃術, TecType.弓術)){
-    //             dmg.pow.mul *= 0.6;
-    //         }
-    //     }
-    // }
+    /**トトの郊外EX. */
+    export const                         猛者の鎧:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"猛者の鎧", info:"格闘攻撃+15%　被格闘攻撃+15%",
+                                pos:EqPos.体, lv:35});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.def.mul *= 1.15;
+            }
+        }
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.def.mul *= 1.15;
+            }
+        }
+    }
+    /**テント樹林財宝. */
+    export const                         鎖のマント:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"鎖のマント", info:"練術攻撃+20%",
+                                pos:EqPos.体, lv:15});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.練術)){
+                dmg.def.mul *= 1.20;
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //腰
@@ -486,20 +461,6 @@ export namespace Eq{
             dmg.pow.add += 10;
         }
     }
-    // export const                         オホーツクのひも:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"オホーツクのひも", info:"被攻撃-10%",
-    //                             pos:EqPos.腰, lv:15});}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         dmg.pow.mul *= 0.9;
-    //     }
-    // }
-    // export const                         魔ト:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"魔ト", info:"最大MP+30",
-    //                             pos:EqPos.腰, lv:10});}
-    //     equip(unit:Unit){
-    //         unit.prm(Prm.MAX_MP).eq += 30;   
-    //     }
-    // }
     //--------------------------------------------------------------------------
     //
     //手
@@ -522,63 +483,23 @@ export namespace Eq{
     /**黒い丘財宝. */
     export const                         魔ヶ玉の手首飾り:Eq = new class extends Eq{
         constructor(){super({uniqueName:"魔ヶ玉の手首飾り", info:"毎ターンMP+1",
-                                pos:EqPos.手, lv:65});}
+                                pos:EqPos.手, lv:55});}
         async phaseStart(unit:Unit){
-            unit.mp++;
+            Unit.healMP( unit, 1 );
         }
     }
-    // export const                         手甲:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"手甲", info:"全ステータス+20",
-    //                             pos:EqPos.手, lv:10});}
-    //     equip(unit:Unit){
-    //         const prms:Prm[] = [
-    //             Prm.STR, Prm.MAG,
-    //             Prm.LIG, Prm.DRK,
-    //             Prm.CHN, Prm.PST,
-    //             Prm.GUN, Prm.ARR,
-    //         ];
-    //         for(const p of prms){
-    //             unit.prm(p).eq += 20;
-    //         }
-    //     }
-    // }
-    // export const                         パウアハッハ:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"パウアハッハ", info:"魔法・暗黒・過去・弓術攻撃+20%",
-    //                             pos:EqPos.手, lv:12});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓術)){
-    //             dmg.pow.mul *= 1.2;
-    //         }
-    //     }
-    // }
-    // export const                         カンベレグ:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"カンベレグ", info:"格闘・神格・練術・銃術攻撃+20%",
-    //                             pos:EqPos.手, lv:12});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.練術, TecType.銃術)){
-    //             dmg.pow.mul *= 1.2;
-    //         }
-    //     }
-    // }
-    // export const                         ゴーレムの腕:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"ゴーレムの腕", info:"神格・過去攻撃+33%",
-    //                             pos:EqPos.手, lv:5});}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any( TecType.神格, TecType.過去 )){
-    //             dmg.pow.mul *= 1.33;
-    //         }
-    //     }
-    // }
-    // export const                         ニケ:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"ニケ", info:"最大MP+10 最大TP+5 光・闇+50",
-    //                             pos:EqPos.手, lv:45});}
-    //     equip(unit:Unit){
-    //         unit.prm(Prm.MAX_MP).eq += 10;
-    //         unit.prm(Prm.MAX_TP).eq += 5;
-    //         unit.prm(Prm.LIG).eq += 50;
-    //         unit.prm(Prm.DRK).eq += 50;
-    //     }
-    // }
+    /**雪の初期装備. */
+    export const                         ハルのカフス:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ハルのカフス", info:"毎ターンTP+1　雪以外が装備するとダメージ",
+                                pos:EqPos.手, lv:65});}
+        async phaseStart(unit:Unit){
+            Unit.healTP( unit, 1 );
+
+            if(unit instanceof PUnit && unit.player !== Player.雪){
+                unit.doDmg(new Dmg({absPow:unit.prm(Prm.MAX_HP).total * 0.1})); await wait();
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //指
@@ -649,10 +570,25 @@ export namespace Eq{
         }
     }
     export const                         無色の靴:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"無色の靴", info:"格闘攻撃x1.2",
+        constructor(){super({uniqueName:"無色の靴", info:"格闘攻撃+20%",
                                 pos:EqPos.脚, lv:15});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    }
+    /**トトの郊外財宝. */
+    export const                         悪夢:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"悪夢", info:"過去攻撃+20%　被過去攻撃+20%",
+                                pos:EqPos.脚, lv:0});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.過去)){
+                dmg.pow.mul *= 1.2;
+            }
+        }
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.過去)){
                 dmg.pow.mul *= 1.2;
             }
         }

@@ -110,4 +110,46 @@ export namespace Player{
             ];
         }
     };
+    export const             一号 = new class extends Player{
+        constructor(){super("一号");}
+        createInner(p:PUnit){
+            p.job = Job.暗黒戦士;
+            p.img = new Img("img/unit/一号.png");
+            p.prm(Prm.MAX_HP).base = 30;
+            p.prm(Prm.MAX_MP).base = 1;
+            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.STR).base = 2;
+            p.prm(Prm.DRK).base = 5;
+
+            p.tecs = [
+                Tec.殴る,
+                Tec.暗黒剣,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+        }
+    };
+    export const             雪 = new class extends Player{
+        constructor(){super("雪");}
+        createInner(p:PUnit){
+            p.job = Job.鎖使い;
+            p.img = new Img("img/unit/雪.png");
+            p.prm(Prm.MAX_HP).base = 20;
+            p.prm(Prm.MAX_MP).base = 1;
+            p.prm(Prm.MAX_TP).base = 2;
+            p.prm(Prm.STR).base = 1;
+            p.prm(Prm.CHN).base = 6;
+
+            p.tecs = [
+                Tec.殴る,
+                Tec.スネイク,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+
+            p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
+        }
+    };
 }

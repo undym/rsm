@@ -765,7 +765,7 @@ ActiveTec._valueOf = new Map();
                 yield _super.run.call(this, attacker, target);
                 Util.msg.set("＞反動");
                 const cdmg = new Dmg({
-                    absPow: target.prm(Prm.LIG).total + 1,
+                    absPow: target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
                     counter: true,
                 });
                 attacker.doDmg(cdmg);
@@ -787,18 +787,42 @@ ActiveTec._valueOf = new Map();
     //暗黒Passive
     //
     //--------------------------------------------------------------------------
-    // export const                         宵闇:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"宵闇", info:"暗黒攻撃x2　攻撃時HP-20%",
-    //                             type:TecType.暗黒,
-    //     });}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any( TecType.暗黒 )){
-    //             Util.msg.set("＞宵闇");
-    //             attacker.hp -= attacker.prm(Prm.MAX_HP).total * 0.2;
-    //             dmg.pow.mul *= 2;
-    //         }
-    //     }
-    // };
+    Tec.衝動 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "衝動", info: "防御値-10%　行動開始時、暗黒+5",
+                type: TecType.暗黒,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.def.mul *= 0.9;
+            });
+        }
+        phaseStart(u, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                u.prm(Prm.DRK).battle += 5;
+            });
+        }
+    };
+    Tec.宵闇 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "宵闇", info: "暗黒攻撃+100%　最大HP-50%",
+                type: TecType.暗黒,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.暗黒)) {
+                    dmg.pow.mul *= 2;
+                }
+            });
+        }
+        equip(u) {
+            return __awaiter(this, void 0, void 0, function* () {
+                u.prm(Prm.MAX_HP).eq -= u.prm(Prm.MAX_HP).base * 0.5;
+            });
+        }
+    };
     // export const                         天秤:PassiveTec = new class extends PassiveTec{
     //     constructor(){super({uniqueName:"天秤", info:"自分と相手の暗黒値に応じて与・被ダメージが増減　高い側に有利に働く",
     //                             type:TecType.暗黒,
@@ -830,7 +854,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "スネイク", info: "全体に練術攻撃",
                 type: TecType.練術, targetings: Targeting.ALL,
-                mul: 1, num: 1, hit: 0.85, tp: 1,
+                mul: 1, num: 1, hit: 0.8, tp: 1,
             });
         }
     };
@@ -1642,26 +1666,37 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          自爆:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"自爆", info:"敵全体に自分のHP分のダメージを与える　HP=0",
-    //                           type:TecType.その他, targetings:Targeting.ALL,
-    //                           mul:1, num:1, hit:1, ep:1,
-    //     });}
-    //     async use(attacker:Unit, targets:Unit[]){
-    //         const canUse = this.checkCost(attacker);
-    //         Util.msg.set(`${attacker.name}の体から光が溢れる...`); await wait();
-    //         super.use(attacker, targets);
-    //         if(canUse){
-    //             attacker.hp = 0;
-    //         }else{
-    //             Util.msg.set(`光に吸い寄せられた虫が体にいっぱいくっついた...`); await wait();
-    //         }
-    //     }
-    //     async run(attacker:Unit, target:Unit){
-    //         const dmg = new Dmg({absPow:attacker.hp});
-    //         target.doDmg(dmg); await wait();
-    //     }
-    // }
+    Tec.自爆 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "自爆", info: "敵全体に自分のHP分のダメージを与える　HP=0",
+                type: TecType.その他, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                const canUse = this.checkCost(attacker);
+                Util.msg.set(`${attacker.name}の体から光が溢れる...`);
+                yield wait();
+                _super.use.call(this, attacker, targets);
+                if (!canUse) {
+                    Util.msg.set(`光に吸い寄せられた虫が体にいっぱいくっついた...`);
+                    yield wait();
+                }
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const dmg = new Dmg({ absPow: attacker.hp });
+                attacker.hp = 0;
+                target.doDmg(dmg);
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Passive

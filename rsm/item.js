@@ -1317,6 +1317,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
+    Item.発砲ツル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "発砲ツル", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.TREE });
+        }
+    };
     Item.桐 = new class extends Item {
         constructor() {
             super({ uniqueName: "桐", info: "",
@@ -1351,6 +1357,12 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "翌檜", info: "",
                 type: ItemType.素材, rank: 5, drop: ItemDrop.BOX | ItemDrop.TREE });
+        }
+    };
+    Item.テント木 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "テント木", info: "",
+                type: ItemType.素材, rank: 6, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
     //-----------------------------------------------------------------

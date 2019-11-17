@@ -11,67 +11,6 @@ import { Graphics, Img, Font } from "./graphics/graphics.js";
 
 
 
-// export abstract class Story{
-
-//     protected bg:Img|undefined;
-//     protected face:Img|undefined;
-//     protected msg:string[]|undefined;
-//     protected reserveMsg:string|undefined;
-//     protected loadedMsg:number;
-//     protected msgPoint:Point;
-
-//     protected async abstract runInner():Promise<void>;
-
-//     async run():Promise<void>{
-//         const mainBounds = new Rect(0, 0, 1, 0.7);
-//         const faceBounds = new Rect(0, mainBounds.yh, 0.25, 1 - mainBounds.yh);
-//         const msgBounds = new Rect(faceBounds.xw, faceBounds.y, 1 - faceBounds.xw, faceBounds.h);
-//         this.msgPoint = msgBounds.upperLeft;
-//         this.loadedMsg = 0;
-
-//         Scene.now.add(Rect.FULL, ILayout.create({draw:bounds=>{
-//             if(this.bg){
-//                 // this.bg.draw
-//             }
-//             if(this.face){
-
-//             }
-//             if(this.msg){
-//                 const f = Font.def;
-//                 let p = msgBounds.upperLeft;
-//                 for(const s of this.msg){
-//                     f.draw(s, p, Color.WHITE);
-//                 }
-//             }
-//         }}));
-
-//         await this.runInner();
-
-//         this.bg = undefined;
-//         this.face = undefined;
-//         this.msg = undefined;
-//     }
-
-//     protected async set(face:Img, msg:string){
-//         Sound.moji.play();
-
-//         this.face = face;
-//         // this.msg = msg;
-
-//         await cwait();
-//     }
-
-//     protected async defMsg(msgs:string[]){
-//         for(const msg of msgs){
-//             Sound.moji.play();
-//             Util.msg.set(msg, Color.L_GRAY); await cwait();
-//         }
-//     }
-
-
-// }
-
-
 class S{
     bg:Img;
     face:Img;
@@ -87,6 +26,11 @@ class S{
         const nameBounds = new Rect(0, mainBounds.yh, 0.25, 0.05);
         const faceBounds = new Rect(0, nameBounds.yh, nameBounds.w, 1 - nameBounds.yh);
         const msgBounds = new Rect(nameBounds.xw, nameBounds.y, 1 - nameBounds.xw, nameBounds.h + faceBounds.h);
+        const msgBoundsInner = (()=>{
+            const marginW = msgBounds.w * 0.05;
+            const marginH = msgBounds.h * 0.05;
+            return new Rect(msgBounds.x + marginW, msgBounds.y + marginH, msgBounds.w - marginW * 2, msgBounds.h - marginH * 2 );
+        })();
 
         Scene.now.add(Rect.FULL, ILayout.create({draw:bounds=>{
             if(this._end){return;}
@@ -101,11 +45,11 @@ class S{
                 this.face.drawEx({dstRatio:faceBounds, keepRatio:true});
             }
 
-            Font.def.draw(this.name, nameBounds.top, Color.WHITE, "top");
+            Font.def.draw(this.name, nameBounds.center, Color.WHITE, "center");
 
             if(this.loaded < this.msg.length){
                 const newStr = this.msg.substring(this.loaded, this.loaded+1);
-                if(Font.def.measureRatioW(this.screenMsg[ this.screenMsg.length - 1] + newStr ) >= msgBounds.w){
+                if(Font.def.measureRatioW(this.screenMsg[ this.screenMsg.length - 1] + newStr ) >= msgBoundsInner.w){
                     this.screenMsg.push("");
                 }
 
@@ -113,7 +57,7 @@ class S{
                 this.loaded++;
             }
             this.screenMsg.forEach((s,i)=>{
-                Font.def.draw(s, new Point(msgBounds.x, msgBounds.y + Font.def.ratioH * i), Color.WHITE);
+                Font.def.draw(s, new Point(msgBoundsInner.x, msgBoundsInner.y + Font.def.ratioH * i), Color.WHITE);
             });
         }}));
     }
@@ -839,4 +783,192 @@ export namespace Story{
         Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第11話『おやすみ。エデンの園から来たluka』", Color.GRAY); Sound.moji.play(); await cwait();
     };
+    
+    export const runMain12 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+
+        const s = new S();
+
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",      "強い光が自分を照らすのを、閉じた瞼の下からも感じ取った。"],
+                [f_empty,  "",      "夢と現実の判別と、意識を正常に取り戻す作業に、全身への痛みが邪魔をした。"],
+                [f_empty,  "",      "打撲や切り傷などの痛みではない･･･火傷のような痛みだ。"],
+                [f_empty,  "",      "一号はそこで全てを思いだし、咄嗟に起きあがり辺りを見渡した。"],
+            ]
+        );
+
+        await s.set(
+            new Img("img/story/s_pic17.jpg"),
+            [
+                [f_empty,  "",      "すぐ隣に雪が倒れていた。"],
+                [f_empty,  "",      "同じように、雪の皮膚も火傷を負いかけていた。"],
+                [f_1, 　　 "一号",   "「くっ･･･なんだこの光は･･･」"],
+                [f_empty,  "",      "異常な光線を容赦無く降り注ぐ上空の太陽を見上げようとしたが、すぐに太陽を直視する事の危険性を理解しとどまった。"],
+                [f_1, 　　 "一号",   "「う･･･くそ･･･空気もか･･･」"],
+                [f_empty,  "",      "服の端を破り、即席でマスクを作った。"],
+                [f_empty,  "",      "雪の分も作ったが、これではあまりもちそうにもなかった。"],
+                [f_empty,  "",      "視界の端に巨大な黒い雲を発見した。"],
+                [f_empty,  "",      "雲かとおもったそれは、驚くほど長身な大木が密集した森だった。"],
+                [f_empty,  "",      "雪の意識がまだ覚醒していないのを確認すると、雪の体をひっぱって森の陰の中へと避難した。"],
+            ]
+        );
+
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",      "化け物のように伸びた大木林の影を頼りながら、周辺一帯を走り回ったが助けになるような物は一切見えなかった。"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic16.jpg"),
+            [
+                [f_empty,  "",      "森の中の空気が清浄であることにすぐに気づいた。"],
+                [f_empty,  "",      "あちこちに高く生えた大木は、てっぺんに巨大な葉を開き、自然のテントを形成していた。"],
+                [f_empty,  "",      "そのおかげで大木林の下はあの攻撃的な光から回避できた。"],
+                [f_empty,  "",      "それでも、木葉の間から漏れた光は、地上まで達するとすぐに草を焼き、灰を産んだ。"],
+                [f_empty,  "",      "再びその部分が影の領域に入ると、小さな微生物が一斉にその灰にたかった。"],
+                [f_empty,  "",      "微生物は植物が焼けたその灰から特殊な栄養分を吸収した。"],
+                [f_empty,  "",      "灰食虫が灰を完全に分解し終わる頃、さきほどまで白く灰になっていた円形領域には、すっかり黒い土が顔を出していた。"],
+                [f_empty,  "",      "そこに突如、見るからに気色の悪い軟体動物が、黒土の中心から土を割って頭を出現させた。"],
+                [f_empty,  "",      "灰食虫達は一瞬で放射状に拡散したが、一部分はその軟体動物によって食い殺された。"],
+                [f_empty,  "",      "突如、テント木達がざわめき出した。"],
+                [f_empty,  "",      "テント木の幹に纏わりついたツルが、急速に音を立てて花を開いたのだ。"],
+                [f_empty,  "",      "その音は人間の赤ん坊の泣き声を連想させるような高い奇妙な音だった。"],
+                [f_empty,  "",      "その音に反応して、テント木の合間を飛び交っていた雷鳥が瞬時に身を隠した。"],
+                [f_empty,  "",      "ツルの花は高速で向きを変え、地上の先ほどの円形領域を狙うと、銃砲の音と共に何かを発射した。"],
+                [f_empty,  "",      "ツルの花が発砲した何かは、灰食虫を食べ終わったばかりの円形ハゲミミズの頭部を打ちぬき、そのまま貫通して円形ハゲミミズが耕したばかりの黒土の裂け目に潜りこんだ。"],
+                [f_empty,  "",      "発砲ツルが発射したのは紛れもなく種子だった。"],
+                [f_empty,  "",      "発砲ツルの花びら内からでた火薬の臭いが林内に立ちこめる頃、身を隠していた雷鳥が再び姿を現し、円形ハゲミミズの死体を食いに地上へと降り立った。"],
+                [f_empty,  "",      "雷鳥はうまそうに食事をとりながら、その足で発砲ツルの種子が埋まった黒土を踏み、種子が飛び出ないよう地盤を固めた。"],
+                [f_empty,  "",      "恐ろしく成長の早い発砲ツルの種子は、雷鳥の糞と豊な黒土からたっぷりと栄養を吸収し、急速に芽を出し、双葉を開かせ、ついにはツルを伸ばし地面を這った。"],
+                [f_empty,  "",      "それを待っていたかのように、地中からわらわらと小さな動物達が顔を出してきた。"],
+                [f_empty,  "",      "爆発的な成長の過程で、発砲ツルは大気中の毒素を体内に取りこみ、その成分を元にして自然の火薬をつぼみの部分に形成しているのだ。"],
+                [f_empty,  "",      "そしてそれに伴い、毒素が取り除かれた清浄な大気を思う存分吸おうと、これまで地中で息を潜めていたこの小動物達が出現したのだった。"],
+                [f_empty,  "",      "その一連の生態連鎖は、たった３分間の間に行われた。"],
+                [f_empty,  "",      "それら全てを見ていた一号は、森の中の空気が安全である理由を理解した。"],
+                [f_1, 　　 "一号",   "「とりあえずは、なんとか持ちそうだな･･･」"],
+                [f_1, 　　 "一号",   "「･･･ここがエデンでない事だけは確かそうだ･･･」"],
+                [f_empty,  "",      "自分の足元に横たわり未だ意識を失ったままの雪の顔を見た。"],
+                [f_1, 　　 "一号",   "「･･･今なら殺せる･･･」"],
+                [f_1, 　　 "一号",   "「今だ･･･今、殺すんだ！」"],
+                [f_empty,  "",      "一号は雪を殺さなかった。"],
+                [f_empty,  "",      "それどころか、殺人光の下からこのテント林まで運び、御節介にもマスクまでつけてやった。"],
+                [f_empty,  "",      "ここから抜け出すには雪の力が必要である事を一号の理性は理解していた。"],
+                [f_empty,  "",      "ここから抜け出さぬ事には、雪は殺せても、シキやジスマを殺せなくなってしまう･･･"],
+                [f_empty,  "",      "･･･そう自分に言い聞かせた。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第12話『我を守りたもう、大自然よ』", Color.GRAY); Sound.moji.play(); await cwait();
+    };
+
+    export const runMain13 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+        const f_yuki = new Img("img/face/p_yuki2.jpg");
+        const f_memo = new Img("img/face/p_sol.jpg");
+
+        const s = new S();
+
+        await s.set(
+            new Img("img/story/s_pic16a.jpg"),
+            [
+                [f_empty,  "",      "すぐに太陽が落ち夜が迫った。"],
+                [f_empty,  "",      "完全な闇が訪れる前に、一号は力づくで雪を起した。"],
+                [f_empty,  "",      "雪を拘束するためのツルなら、豊富に調達できていた。"],
+                [f_empty,  "",      "雪は目を覚ますと、案の定わめきちらしたが、そのせいで大きく息をしたため、毒素も一緒に吸い込み咳き込んだ。"],
+                [f_empty,  "",      "ここでは嫌でも助け合わないと、シキやlukaの元へ辿り着く前に死んでしまうだろう、と、一号は雪に諭した。"],
+                [f_yuki,   "雪",    "「むなくそ悪いぜ･･･」"],
+                [f_yuki,   "雪",    "「ゴホッ･･･ゴホッ･･･、ちっ･･･、分かったからもうこのツルを解けよ」"],
+                [f_1,      "一号",  "「･･･いいだろう･･･だが、足だけだ。まだおまえを信じきっちゃいない･･･」"],
+                [f_yuki,   "雪",    "「フン･･･」"],
+                [f_empty,  "",      "一号は警戒しながらも雪の足の自由を拘束するツルをゆっくりとほどいてやった。"],
+                [f_empty,  "",      "途端、雪は一号の懐に体当たりをかませた。"],
+            ]
+        );
+
+        await s.set(
+            new Img("img/story/s_pic20.jpg"),
+            [
+                [f_empty,  "",      "倒れた一号の上に馬乗りになり両手首を押さえ付けた。"],
+                [f_empty,  "",      "毒素にやられ弱り切っていた先ほどからは想像も出来ないほどの俊敏な動きだった。"],
+                [f_yuki,   "雪",    "「あーーーまいんだよ･･･！一号ぉぉぉ」"],
+                [f_yuki,   "雪",    "「おまえみたいな出来そこないが、人間様を操れるとでも思ったかー？フケケッ」"],
+                [f_empty,  "",      "ガサッと周囲から物音が聞こえた。"],
+                [f_yuki,   "雪",    "「･･･なんだ･･･！？･･･」"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic16a.jpg"),
+            [
+                [f_empty,  "",      "辺りはもう既にかなり暗くなっていた。"],
+                [f_empty,  "",      "何か小さな物が動く影が見えた。"],
+                [f_empty,  "",      "雪が闇に目を凝らしていると、闇影からゾロゾロと現れたのは十数名の白い小人達だった。"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic21.jpg"),
+            [
+                [f_empty,  "",      "身長は１メートル程、体は白く長い体毛に完全に覆われており、毛むくじゃらの頭部からキョロッとした真っ黒い目玉が２つこちらを見ていた。"],
+                [f_yuki,   "雪",    "「な･･･なんだこいつら･･･」"],
+                [f_empty,  "",      "雪が口を開くと、小人達は一斉に「喋った！喋った！喋った！喋った！喋った！喋った！喋った！」と連呼した。"],
+                [f_empty,  "",      "一号は、放心状態の雪を体の上から払いのけ、すぐさま顔面を２、３度蹴って気を失わせた。"],
+                [f_empty,  "",      "小人達は驚いて、全員が「ギャアギャア」と叫んだ。"],
+                
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic16a.jpg"),
+            [
+                [f_empty,  "",      "一号と雪は、小人達に数時間連れられ、彼等の集落へ辿り着いた。"],
+                [f_empty,  "",      "彼等は光を持っていた。"],
+                [f_empty,  "",      "発光する木の根のような物が集落中に張り巡らされていた。"],
+                [f_empty,  "",      "後でそれはテント木の根であることがわかった。"],
+                [f_empty,  "",      "テント木は昼間の内、強力な光をあの巨大な屋根のような頭部で吸収し、幹を伝わせ、膨大な光エネルギーを根に蓄えているのだ。"],
+                [f_1,      "一号",  "「女の子を見かけなかったか？俺達のような体の女の子だ」"],
+                [f_memo,   "小人",  "「･･･女の子だ、･･･女の子だ、･･･女の子だ、･･･女の子だ」"],
+                [f_1,      "一号",  "「真似じゃない、質問してるんだ」"],
+                [f_memo,   "小人",  "「真似じゃない、真似じゃない、真似じゃない、真似じゃない」"],
+                [f_yuki,   "雪",    "「ハハハハ･･･無駄だぜ、一号」"],
+                [f_empty,  "",      "小人達の知能は低かった。"],
+                [f_empty,  "",      "集落の文明度から見ても、IQは９０程度、人間の９歳ほどの知能しかないと見えた。"],
+                [f_empty,  "",      "全身を覆う白毛は、真昼の攻撃光から身を守る防護服の役目を果たしているようだ。"],
+                [f_empty,  "",      "白毛の豊富さのせいで、幼児体型のようにふっくらして見えるが、毛の下の部分は全くの人類の縮小版である。"],
+                [f_empty,  "",      "言葉の節々に現れる古い口調から考えても、彼等が元々は人類であった可能性が高いと、雪は一号に言った。"],
+                [f_1,      "一号",  "「退化したのか？･･･」"],
+                [f_1,      "一号",  "「地球人はまだ健在のはずだろ？」"],
+                [f_yuki,   "雪",    "「ああ、しかし帝国と交易があったのは地球塔だけだ」"],
+                [f_yuki,   "雪",    "「それ以外の地域は、こちらの調べでも生命体は皆無とされてたが･･･」"],
+                [f_yuki,   "雪",    "「未知の地域で、生命の独自の進化があったと考えられなくもない」"],
+                [f_yuki,   "雪",    "「知能の衰えは、長い時間の中での近親交配による偏血のためだろう」"],
+                [f_empty,  "",      "夜が深まり、小人達は一号達のいる目の前で生殖行為を始め出した。"],
+                [f_empty,  "",      "彼等に性のダブーという習慣はないようだ。"],
+                [f_empty,  "",      "彼等に対する興味は尽きなかったが、数億光年を移動してきた二人にそれを疲労が許さなかった。"],
+                [f_empty,  "",      "二人は深い眠りについた。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第13話『小人の国』", Color.GRAY); Sound.moji.play(); await cwait();
+    };
 }
+/*
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+        const f_siki  = new Img("img/face/p_siki.jpg");
+        const f_yuki = new Img("img/face/p_yuki2.jpg");
+        const f_luka   = new Img("img/face/p_luka.jpg");
+        const f_memo = new Img("img/face/p_sol.jpg");
+ */
