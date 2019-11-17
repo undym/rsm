@@ -299,7 +299,7 @@ export namespace Job{
                                 lvupExp:Job.DEF_LVUP_EXP,
                                 canJobChange:p=> p.isMasteredJob( Job.訓練生 ),
                                 growthPrms:()=>[[Prm.PST, 1]],
-                                learningTecs:()=>[Tec.念力, Tec.念, Tec.光の護封剣],
+                                learningTecs:()=>[Tec.念力, Tec.念, Tec.SORRYCSTEF],
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.殴る, Tec.殴る, Tec.光の護封剣];

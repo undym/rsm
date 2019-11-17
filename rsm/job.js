@@ -283,7 +283,7 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP,
                 canJobChange: p => p.isMasteredJob(Job.訓練生),
                 growthPrms: () => [[Prm.PST, 1]],
-                learningTecs: () => [Tec.念力, Tec.念, Tec.光の護封剣],
+                learningTecs: () => [Tec.念力, Tec.念, Tec.SORRYCSTEF],
             });
         }
         setEnemyInner(e) {

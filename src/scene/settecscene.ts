@@ -9,7 +9,7 @@ import { Place } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
-import { TecType, Tec, ActiveTec } from "../tec.js";
+import { TecType, Tec, ActiveTec, TecSort } from "../tec.js";
 import { FX_Str } from "../fx/fx.js";
 import { Sound } from "../sound.js";
 
@@ -53,7 +53,7 @@ export class SetTecScene extends Scene{
                                         Sound.system.play();
                                         (this.resetList = keepScroll=>{
                                             this.list.clear(keepScroll);
-                                            for(let type of TecType.values()){
+                                            for(let type of TecSort.values){
                                                 const tecs = type.tecs;
                                                 this.setList( this.target, `${type}`, tecs );
                                             }
@@ -61,7 +61,7 @@ export class SetTecScene extends Scene{
                                     },
                                 });
 
-                                for(const type of TecType.values()){
+                                for(const type of TecSort.values){
                                     typeList.add({
                                         center:()=>type.toString(),
                                         push:elm=>{

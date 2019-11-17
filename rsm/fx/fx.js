@@ -314,7 +314,7 @@ export const FX_暗黒 = (center) => {
     });
 };
 FXTest.add(FX_暗黒.name, () => FX_暗黒(FXTest.target));
-export const FX_練術 = (attacker, target) => {
+export const FX_鎖術 = (attacker, target) => {
     FX.add((count) => {
         const over = 20;
         const color = { r: 0, g: 0, b: 0, a: 1 };
@@ -361,7 +361,7 @@ export const FX_練術 = (attacker, target) => {
         return count < over;
     });
 };
-FXTest.add(FX_練術.name, () => FX_練術(FXTest.attacker, FXTest.target));
+FXTest.add(FX_鎖術.name, () => FX_鎖術(FXTest.attacker, FXTest.target));
 export const FX_過去 = (target) => {
     FX.add((count) => {
         const over = 20;

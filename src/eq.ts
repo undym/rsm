@@ -437,10 +437,10 @@ export namespace Eq{
     }
     /**テント樹林財宝. */
     export const                         鎖のマント:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"鎖のマント", info:"練術攻撃+20%",
+        constructor(){super({uniqueName:"鎖のマント", info:"鎖術攻撃+20%",
                                 pos:EqPos.体, lv:15});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.練術)){
+            if(action instanceof ActiveTec && action.type.any(TecType.鎖術)){
                 dmg.def.mul *= 1.20;
             }
         }

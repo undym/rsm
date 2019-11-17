@@ -654,12 +654,12 @@ export namespace Unit{
         static get def(){return this.font ? this.font : (this.font = new Font(60));}
     }
 
-    /**既に状態が存在していた場合、上書きはされない。 */
-    export const setCondition = (target:Unit, condition:Condition, value:number)=>{
+    /***/
+    export const setCondition = (target:Unit, condition:Condition, value:number, overwrite = false)=>{
         value = value|0;
         if(value <= 0){return;}
         if(condition === Condition.empty){return;}
-        if(target.getCondition(condition.type) !== Condition.empty){return;}
+        if(!overwrite && target.getCondition(condition.type) !== Condition.empty){return;}
 
         target.setCondition(condition, value);
         FX_Str(FXFont.def, `<${condition}>`, target.imgBounds.center, Color.WHITE);

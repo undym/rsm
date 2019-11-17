@@ -509,12 +509,12 @@ EqEar._valueOf = new Map();
     /**テント樹林財宝. */
     Eq.鎖のマント = new class extends Eq {
         constructor() {
-            super({ uniqueName: "鎖のマント", info: "練術攻撃+20%",
+            super({ uniqueName: "鎖のマント", info: "鎖術攻撃+20%",
                 pos: EqPos.体, lv: 15 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.練術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.鎖術)) {
                     dmg.def.mul *= 1.20;
                 }
             });
