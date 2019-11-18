@@ -445,6 +445,14 @@ export namespace Eq{
             }
         }
     }
+    /**聖なる洞窟EX. */
+    export const                         ルナローブ:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ルナローブ", info:"行動開始時TP+1",
+                                pos:EqPos.体, lv:25});}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            Unit.healTP(unit, 1);
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //腰
@@ -459,6 +467,26 @@ export namespace Eq{
                                 pos:EqPos.腰, lv:35});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             dmg.pow.add += 10;
+        }
+    }
+    export const                         チェーンベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"チェーンベルト", info:"攻撃時極稀に相手を＜鎖＞化",
+                                pos:EqPos.腰, lv:300});}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(Math.random() < 0.1){
+                Util.msg.set("＞チェーンベルト");
+                Unit.setCondition( target, Condition.鎖, 1 );
+            }
+        }
+    }
+    export const                         アンパストベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"アンパストベルト", info:"過去攻撃を稀に無効化",
+                                pos:EqPos.腰, lv:300});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.33){
+                Util.msg.set("＞アンパストベルト");
+                dmg.pow.base = 0;
+            }
         }
     }
     //--------------------------------------------------------------------------
@@ -525,6 +553,15 @@ export namespace Eq{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.銃術)){
                 dmg.pow.mul *= 1.2;
+            }
+        }
+    }
+    export const                         アメーバリング:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"アメーバリング", info:"被魔法・神格・過去攻撃-20%",
+                                pos:EqPos.指, lv:40});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)){
+                dmg.pow.mul *= 0.8;
             }
         }
     }

@@ -302,7 +302,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.念力, Tec.念, Tec.SORRYCSTEF],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.殴る, Tec.殴る, Tec.光の護封剣];
+            e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.殴る, Tec.殴る, Tec.光の護封剣, Tec.SORRYCSTEF];
         }
     };
     export const                         カウボーイ:Job = new class extends Job{
@@ -433,6 +433,20 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.妖精の粉, Tec.妖精の粉, Tec.ヴァハ, Tec.殴る, Tec.MP自動回復];
+        }
+    };
+    //TODO
+    export const                         ドラゴン:Job = new class extends Job{
+        constructor(){super({uniqueName:"ドラゴン", info:"",
+                                appearLv:95, img:new Img("img/unit/ドラゴン.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                canJobChange:p=> false,
+                                growthPrms:()=>[[Prm.MAX_HP, 2]],
+                                learningTecs:()=>[Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
+            e.prm(Prm.MAX_HP).base *= 2;
         }
     };
 }

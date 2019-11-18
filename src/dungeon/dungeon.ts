@@ -13,7 +13,8 @@ import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
 import { Img } from "../graphics/graphics.js";
-import { Story } from "../story.js";
+import { Story1 } from "../story/story1.js";
+import { Story0 } from "../story/story0.js";
 
 
 export class DungeonArea{
@@ -319,7 +320,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain1();
+                await Story0.runMain1();
             }
             if(Item.脱出ポッド.totalGetCount === 0){
                 Item.脱出ポッド.add(1); await wait();
@@ -355,7 +356,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain2();
+                await Story0.runMain2();
             }
             if(Item.動かない映写機.totalGetCount === 0){
                 Item.動かない映写機.add(1); await wait();
@@ -388,7 +389,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain3();
+                await Story0.runMain3();
             }
         }
     };
@@ -416,7 +417,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain4();
+                await Story0.runMain4();
             }
         }
     };
@@ -445,7 +446,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain7();
+                await Story0.runMain7();
             }
         }
     };
@@ -473,7 +474,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain8();
+                await Story0.runMain8();
             }
         }
     };
@@ -501,7 +502,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain11();
+                await Story1.runMain11();
             }
         }
     };
@@ -529,7 +530,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain12();
+                await Story1.runMain12();
 
                 DungeonArea.now = DungeonArea.月;
                 Unit.setPlayer(0, Player.一号);
@@ -571,7 +572,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain5();
+                await Story0.runMain5();
             }
         }
     };
@@ -600,7 +601,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain6();
+                await Story0.runMain6();
             }
         }
     };
@@ -629,7 +630,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain9();
+                await Story0.runMain9();
             }
         }
     };
@@ -658,7 +659,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain10();
+                await Story1.runMain10();
             }
         }
     };
@@ -693,12 +694,86 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                await Story.runMain13();
+                await Story1.runMain13();
             }
         }
         rndJob():Job{
-            if(Math.random() < 0.5){
-                return choice([ Job.雷鳥 ]);
+            if(Math.random() < 0.3){
+                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
+            }
+            return super.rndJob();
+        }
+    };
+    export const                         小人集落周辺:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"小人集落周辺", info:"木+",
+                                rank:1, enemyLv:3, au:200, btn:[DungeonArea.月, new Rect(0.45, 0.2, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.チェーンベルト],
+                                exItems:    ()=>[Eq.アメーバリング],
+                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                                trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
+        });}
+        isVisible = ()=>Dungeon.テント樹林.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.アメーバ.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "スライム";
+            e.prm(Prm.MAX_HP).base = 300;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影パンドラ";
+            e.img = new Img("img/unit/pandora.png");
+            e.prm(Prm.MAX_HP).base = 300;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story1.runMain14();
+            }
+        }
+        rndJob():Job{
+            if(Math.random() < 0.3){
+                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
+            }
+            return super.rndJob();
+        }
+    };
+    export const                         聖なる洞窟:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"聖なる洞窟", info:"",
+                                rank:2, enemyLv:7, au:250, btn:[DungeonArea.月, new Rect(0.40, 0.45, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.アンパストベルト],
+                                exItems:    ()=>[Eq.ルナローブ],
+                                trendItems: ()=>[Item.粘土, Item.石, Item.銅, Item.銀, Item.金],
+        });}
+        isVisible = ()=>Dungeon.小人集落周辺.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.妖精.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "聖なる妖精";
+            e.prm(Prm.MAX_HP).base = 450;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影オルガ";
+            e.img = new Img("img/unit/orga.png");
+            e.prm(Prm.MAX_HP).base = 600;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story1.runMain15();
+
+                Unit.setPlayer(0, Player.一号);
+                Unit.setPlayer(1, Player.雪);
+                Player.一号.member = true;
+                Player.雪.member = true;
+            }
+        }
+        rndJob():Job{
+            if(Math.random() < 0.3){
+                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
             }
             return super.rndJob();
         }

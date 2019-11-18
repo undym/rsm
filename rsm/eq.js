@@ -11,7 +11,7 @@ import { Unit, Prm, PUnit } from "./unit.js";
 import { Num } from "./mix.js";
 import { ActiveTec, TecType, Tec } from "./tec.js";
 import { Condition } from "./condition.js";
-import { PlayData } from "./util.js";
+import { Util, PlayData } from "./util.js";
 import { choice } from "./undym/random.js";
 import { wait } from "./undym/scene.js";
 import { Player } from "./player.js";
@@ -520,6 +520,18 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**聖なる洞窟EX. */
+    Eq.ルナローブ = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ルナローブ", info: "行動開始時TP+1",
+                pos: EqPos.体, lv: 25 });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healTP(unit, 1);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //腰
@@ -539,6 +551,34 @@ EqEar._valueOf = new Map();
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 dmg.pow.add += 10;
+            });
+        }
+    };
+    Eq.チェーンベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "チェーンベルト", info: "攻撃時極稀に相手を＜鎖＞化",
+                pos: EqPos.腰, lv: 300 });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (Math.random() < 0.1) {
+                    Util.msg.set("＞チェーンベルト");
+                    Unit.setCondition(target, Condition.鎖, 1);
+                }
+            });
+        }
+    };
+    Eq.アンパストベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アンパストベルト", info: "過去攻撃を稀に無効化",
+                pos: EqPos.腰, lv: 300 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.33) {
+                    Util.msg.set("＞アンパストベルト");
+                    dmg.pow.base = 0;
+                }
             });
         }
     };
@@ -633,6 +673,19 @@ EqEar._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.銃術)) {
                     dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    Eq.アメーバリング = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アメーバリング", info: "被魔法・神格・過去攻撃-20%",
+                pos: EqPos.指, lv: 40 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
+                    dmg.pow.mul *= 0.8;
                 }
             });
         }

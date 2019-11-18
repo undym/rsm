@@ -17,7 +17,8 @@ import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
 import { Img } from "../graphics/graphics.js";
-import { Story } from "../story.js";
+import { Story1 } from "../story/story1.js";
+import { Story0 } from "../story/story0.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns) {
         this.uniqueName = uniqueName;
@@ -299,7 +300,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain1();
+                    yield Story0.runMain1();
                 }
                 if (Item.脱出ポッド.totalGetCount === 0) {
                     Item.脱出ポッド.add(1);
@@ -344,7 +345,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain2();
+                    yield Story0.runMain2();
                 }
                 if (Item.動かない映写機.totalGetCount === 0) {
                     Item.動かない映写機.add(1);
@@ -385,7 +386,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain3();
+                    yield Story0.runMain3();
                 }
             });
         }
@@ -420,7 +421,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain4();
+                    yield Story0.runMain4();
                 }
             });
         }
@@ -456,7 +457,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain7();
+                    yield Story0.runMain7();
                 }
             });
         }
@@ -491,7 +492,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain8();
+                    yield Story0.runMain8();
                 }
             });
         }
@@ -526,7 +527,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain11();
+                    yield Story1.runMain11();
                 }
             });
         }
@@ -561,7 +562,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain12();
+                    yield Story1.runMain12();
                     DungeonArea.now = DungeonArea.月;
                     Unit.setPlayer(0, Player.一号);
                     Unit.setPlayer(1, Player.雪);
@@ -608,7 +609,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain5();
+                    yield Story0.runMain5();
                 }
             });
         }
@@ -644,7 +645,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain6();
+                    yield Story0.runMain6();
                 }
             });
         }
@@ -680,7 +681,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain9();
+                    yield Story0.runMain9();
                 }
             });
         }
@@ -716,7 +717,7 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain10();
+                    yield Story1.runMain10();
                 }
             });
         }
@@ -757,13 +758,100 @@ Dungeon.auNow = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    yield Story.runMain13();
+                    yield Story1.runMain13();
                 }
             });
         }
         rndJob() {
-            if (Math.random() < 0.5) {
-                return choice([Job.雷鳥]);
+            if (Math.random() < 0.3) {
+                return choice([Job.雷鳥, Job.アメーバ, Job.妖精]);
+            }
+            return super.rndJob();
+        }
+    };
+    Dungeon.小人集落周辺 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "小人集落周辺", info: "木+",
+                rank: 1, enemyLv: 3, au: 200, btn: [DungeonArea.月, new Rect(0.45, 0.2, 0.3, 0.1)],
+                treasures: () => [Eq.チェーンベルト],
+                exItems: () => [Eq.アメーバリング],
+                trendItems: () => [Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                trendEvents: () => [[DungeonEvent.TREE, 0.05]],
+            });
+            this.isVisible = () => Dungeon.テント樹林.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.アメーバ.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "スライム";
+                e.prm(Prm.MAX_HP).base = 300;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影パンドラ";
+                e.img = new Img("img/unit/pandora.png");
+                e.prm(Prm.MAX_HP).base = 300;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story1.runMain14();
+                }
+            });
+        }
+        rndJob() {
+            if (Math.random() < 0.3) {
+                return choice([Job.雷鳥, Job.アメーバ, Job.妖精]);
+            }
+            return super.rndJob();
+        }
+    };
+    Dungeon.聖なる洞窟 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "聖なる洞窟", info: "",
+                rank: 2, enemyLv: 7, au: 250, btn: [DungeonArea.月, new Rect(0.40, 0.45, 0.3, 0.1)],
+                treasures: () => [Eq.アンパストベルト],
+                exItems: () => [Eq.ルナローブ],
+                trendItems: () => [Item.粘土, Item.石, Item.銅, Item.銀, Item.金],
+            });
+            this.isVisible = () => Dungeon.小人集落周辺.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.妖精.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "聖なる妖精";
+                e.prm(Prm.MAX_HP).base = 450;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影オルガ";
+                e.img = new Img("img/unit/orga.png");
+                e.prm(Prm.MAX_HP).base = 600;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story1.runMain15();
+                    Unit.setPlayer(0, Player.一号);
+                    Unit.setPlayer(1, Player.雪);
+                    Player.一号.member = true;
+                    Player.雪.member = true;
+                }
+            });
+        }
+        rndJob() {
+            if (Math.random() < 0.3) {
+                return choice([Job.雷鳥, Job.アメーバ, Job.妖精]);
             }
             return super.rndJob();
         }

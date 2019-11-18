@@ -127,4 +127,22 @@ Player._valueOf = new Map();
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
     };
+    Player.ベガ = new class extends Player {
+        constructor() { super("ベガ"); }
+        createInner(p) {
+            p.job = Job.鎖使い;
+            p.img = new Img("img/unit/雪.png");
+            p.prm(Prm.MAX_HP).base = 70;
+            p.prm(Prm.MAX_MP).base = 0;
+            p.prm(Prm.MAX_TP).base = 3;
+            p.prm(Prm.STR).base = 5;
+            p.tecs = [
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+        }
+    };
 })(Player || (Player = {}));

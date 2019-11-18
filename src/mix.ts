@@ -207,6 +207,16 @@ export namespace Mix{
         materials:()=>[[Item.うんち, 1]],
         isVisible:()=>ルインドアースLv11.count > 0,
     });
+    const           ルインドアースLv13:Mix = new Mix({
+        uniqueName:"ルインドアースLv13", limit:1, info:"",
+        materials:()=>[[Item.たんぽぽ, 10]],
+        isVisible:()=>ルインドアースLv12.count > 0,
+    });
+    const           ルインドアースLv14:Mix = new Mix({
+        uniqueName:"ルインドアースLv14", limit:1, info:"",
+        materials:()=>[[Item.銅板, 5], [Item.発砲ツル, 5]],
+        isVisible:()=>ルインドアースLv13.count > 0,
+    });
 
 
 

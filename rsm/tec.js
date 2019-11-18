@@ -435,6 +435,33 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ドラゴン. */
+    Tec.龍撃 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "龍撃", info: "一体に格闘攻撃　相手の防御値を半減して計算",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 1,
+            });
+        }
+        runInner(attacker, target, dmg) {
+            const _super = Object.create(null, {
+                runInner: { get: () => super.runInner }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.def.mul *= 0.5;
+                yield _super.runInner.call(this, attacker, target, dmg);
+            });
+        }
+    };
+    /**ドラゴン. */
+    Tec.ドラゴンテイル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ドラゴンテイル", info: "敵全体に格闘攻撃",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, tp: 4,
+            });
+        }
+    };
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"人狼剣", info:"一体に自分の力値分のダメージを与える",
     //                           type:TecType.格闘, targetings:Targeting.SELECT,
@@ -1725,6 +1752,19 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ドラゴン. */
+    Tec.自然治癒 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "自然治癒", info: "行動開始時HP+5%",
+                sort: TecSort.回復, type: TecType.回復,
+            });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Active
@@ -1771,6 +1811,21 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 const dmg = new Dmg({ absPow: attacker.hp });
                 attacker.hp = 0;
+                target.doDmg(dmg);
+                yield wait();
+            });
+        }
+    };
+    Tec.ドラゴンブレス = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ドラゴンブレス", info: "敵全体に[最大HP-現在HP]のダメージを与える",
+                sort: TecSort.その他, type: TecType.その他, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const dmg = new Dmg({ absPow: attacker.prm(Prm.MAX_HP).total - attacker.hp });
                 target.doDmg(dmg);
                 yield wait();
             });

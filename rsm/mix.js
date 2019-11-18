@@ -173,6 +173,16 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.うんち, 1]],
         isVisible: () => ルインドアースLv11.count > 0,
     });
+    const ルインドアースLv13 = new Mix({
+        uniqueName: "ルインドアースLv13", limit: 1, info: "",
+        materials: () => [[Item.たんぽぽ, 10]],
+        isVisible: () => ルインドアースLv12.count > 0,
+    });
+    const ルインドアースLv14 = new Mix({
+        uniqueName: "ルインドアースLv14", limit: 1, info: "",
+        materials: () => [[Item.銅板, 5], [Item.発砲ツル, 5]],
+        isVisible: () => ルインドアースLv13.count > 0,
+    });
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
         materials: () => [[Item.ヒノキ, 1], [Item.草, 5]],

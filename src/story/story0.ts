@@ -1,97 +1,18 @@
-import { Util, Place } from "./util.js";
-import { cwait, Scene } from "./undym/scene.js";
-import { Color, Rect, Point } from "./undym/type.js";
-import { Sound } from "./sound.js";
-import { ILayout } from "./undym/layout.js";
-import { BattleScene } from "./scene/battlescene.js";
-import { randomFloat } from "./undym/random.js";
-import { Graphics, Img, Font } from "./graphics/graphics.js";
+import { Util } from "../util.js";
+import { Color } from "../undym/type.js";
+import { Sound } from "../sound.js";
+import { cwait } from "../undym/scene.js";
+import { Img } from "../graphics/graphics.js";
+import { Story } from "./story.js";
 
 
-
-
-
-class S{
-    bg:Img;
-    face:Img;
-    _end:boolean;
-    name:string = "";
-
-    loaded:number;
-    msg:string;
-    screenMsg:string[];
-
-    constructor(){
-        const mainBounds = new Rect(0, 0, 1, 0.8);
-        const nameBounds = new Rect(0, mainBounds.yh, 0.25, 0.05);
-        const faceBounds = new Rect(0, nameBounds.yh, nameBounds.w, 1 - nameBounds.yh);
-        const msgBounds = new Rect(nameBounds.xw, nameBounds.y, 1 - nameBounds.xw, nameBounds.h + faceBounds.h);
-        const msgBoundsInner = (()=>{
-            const marginW = msgBounds.w * 0.05;
-            const marginH = msgBounds.h * 0.05;
-            return new Rect(msgBounds.x + marginW, msgBounds.y + marginH, msgBounds.w - marginW * 2, msgBounds.h - marginH * 2 );
-        })();
-
-        Scene.now.add(Rect.FULL, ILayout.create({draw:bounds=>{
-            if(this._end){return;}
-
-            Graphics.fillRect(bounds, Color.BLACK);
-
-            if(this.bg){
-                this.bg.drawEx({dstRatio:mainBounds, keepRatio:true});
-            }
-
-            if(this.face){
-                this.face.drawEx({dstRatio:faceBounds, keepRatio:true});
-            }
-
-            Font.def.draw(this.name, nameBounds.center, Color.WHITE, "center");
-
-            if(this.loaded < this.msg.length){
-                const newStr = this.msg.substring(this.loaded, this.loaded+1);
-                if(Font.def.measureRatioW(this.screenMsg[ this.screenMsg.length - 1] + newStr ) >= msgBoundsInner.w){
-                    this.screenMsg.push("");
-                }
-
-                this.screenMsg[ this.screenMsg.length - 1 ] += newStr;
-                this.loaded++;
-            }
-            this.screenMsg.forEach((s,i)=>{
-                Font.def.draw(s, new Point(msgBoundsInner.x, msgBoundsInner.y + Font.def.ratioH * i), Color.WHITE);
-            });
-        }}));
-    }
-
-
-    async set(bg:Img, sets:[Img, string, string][]){
-        this.bg = bg;
-
-        for(const set of sets){
-            this.face = set[0];
-            this.name = set[1];
-            this.msg = set[2];
-            this.loaded = 0;
-            this.screenMsg = [""];
-
-            Sound.moji.play();
-            await cwait();
-        }
-    }
-
-    end(){
-        this._end = true;
-    }
-}
-
-
-
-export namespace Story{
+export namespace Story0{
     export const runMain1 = async()=>{
         const f_siki  = new Img("img/face/p_siki.jpg");
         const f_ranzo = new Img("img/face/p_sirakawa.jpg");
         const f_yuki = new Img("img/face/p_yuki2.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic0.jpg"),
@@ -133,7 +54,7 @@ export namespace Story{
     export const runMain2 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic1.jpg"),
@@ -171,7 +92,7 @@ export namespace Story{
         const f_pea    = new Img("img/face/p_pea.jpg");
         const f_ruin   = new Img("img/face/p_ruin.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic2.jpg"),
@@ -216,7 +137,7 @@ export namespace Story{
         const f_pea    = new Img("img/face/p_pea.jpg");
         const f_ruin   = new Img("img/face/p_ruin.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic4.jpg"),
@@ -265,7 +186,7 @@ export namespace Story{
         const f_luka   = new Img("img/face/p_luka.jpg");
         const f_1      = new Img("img/face/p_1.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic6.jpg"),
@@ -340,7 +261,7 @@ export namespace Story{
         const f_luka   = new Img("img/face/p_luka.jpg");
         const f_1      = new Img("img/face/p_1.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic6.jpg"),
@@ -386,7 +307,7 @@ export namespace Story{
     export const runMain7 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic9.jpg"),
@@ -426,7 +347,7 @@ export namespace Story{
         const f_siki  = new Img("img/face/p_siki.jpg");
         const f_ranzo = new Img("img/face/p_sirakawa.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             new Img("img/story/s_pic10.jpg"),
@@ -510,7 +431,7 @@ export namespace Story{
         const f_luka   = new Img("img/face/p_luka.jpg");
         const f_1      = new Img("img/face/p_1.jpg");
 
-        const s = new S();
+        const s = new Story();
 
         await s.set(
             Img.empty,
@@ -589,386 +510,4 @@ export namespace Story{
         Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第9話『宇宙を跨ぐ時の河』", Color.GRAY); Sound.moji.play(); await cwait();
     };
-    
-    export const runMain10 = async()=>{
-        const f_empty  = new Img("img/face/p_rs.jpg");
-        const f_siki  = new Img("img/face/p_siki.jpg");
-        const f_luka   = new Img("img/face/p_luka.jpg");
-        const f_pea    = new Img("img/face/p_pea.jpg");
-        const f_ruin   = new Img("img/face/p_ruin.jpg");
-
-        const s = new S();
-
-
-        await s.set(
-            new Img("img/story/s_pic5.jpg"),
-            [
-                [f_empty,  "",      "夜、僕達は塔内部にある高速エレベーターを作動させた。"],
-                [f_empty,  "",      "･･･長い間、地球人達の間では塔上層への侵入は禁じられていた。"],
-                [f_empty,  "",      "それは、地球人達の記憶の奥底にある、塔への畏怖の念がそうさせていたのだ。"],
-                [f_empty,  "",      "僕達数十名の地球人を乗せた高速エレベーターは尚も加速し、たった数分で地球と宇宙の境目の距離に達した。"],
-            ]
-        );
-        
-        await s.set(
-            new Img("img/story/s_pic9.jpg"),
-            [
-                [f_empty,  "",      "塔の全長は成層圏にまで及び、その頂上に帝国軍の宇宙船は碇を下ろし停泊していた。"],
-                [f_empty,  "",      "･･･頂上に辿り付いた僕達は、深層より運び上げた古代の武器を、宇宙船の侵入口に向けて設置した。"],
-                [f_empty,  "",      "その武器がどのような攻撃を放つものなのかは、まだ誰も分からなかった。"],
-                [f_empty,  "",      "試用することで、この武器の存在が帝国軍にばれてしまうことを恐れたのだ。"],
-                [f_empty,  "",      "確かにまだ使えるはずだという祈りのような確信にすがり、僕達は武器の引きがねを引いた。"],
-                [f_empty,  "",      "武器の後方から何か透明な力場が噴出され、あっという間に僕達を包んだ。"],
-                [f_empty,  "",      "それに驚く間もなく、次の瞬間、武器の先端がカッと閃光を放った。"],
-            ]
-        );
-        
-        await s.set(
-            new Img("img/story/s_pic14.jpg"),
-            [
-                [f_pea,    "ピアー", "な、なんじゃこれ･･･"],
-                [f_empty,  "",      "その言葉を聞いて、閉じた目をゆっくりと開いた。"],
-                [f_empty,  "",      "前方が、真っ白からじょじょに景色を取り戻すと、そこに先ほどまで存在した宇宙船の侵入口などは無く･･･"],
-                [f_empty,  "",      "･･･遠く地球の青い成層圏がどこまでも続いているだけだった。"],
-                [f_empty,  "",      "すぐに視界を拡張させると、四方へ飛び散った巨大な宇宙船の欠片が、物凄い速さで地球の重力に引かれ、赤く燃えながら落下してゆく様が見えた。"],
-                [f_empty,  "",      "凄まじいほどの衝撃波と埃が飛び交っていたが、僕達を包む不思議な力場が、それらを全てはじき返していた。"],
-                [f_empty,  "",      "僕達は、今自分たちが作動させた古代の機械をまじまじと見つめ、そして恐怖した。"],
-                [f_pea,    "ピアー", "「こ、こんなもんが･･･、こんな恐ろしいもんがあったんか･･･"],
-                [f_empty,  "",      "後方のエレベーター口が開いた。"],
-                [f_empty,  "",      "中から、数十名の帝国軍の兵士達が一斉に飛び出してきた。"],
-                [f_empty,  "",      "塔の下層で警備についていた残りの兵士達だ。"],
-                [f_empty,  "",      "急いで、古代武器を兵士達の方向へ向けようとしたが、力場が邪魔をして皆、素早く動けない。"],
-                [f_empty,  "",      "兵士達がこちらに向かって発砲してきたが、それら全てを力場が受け止めてくれた。"],
-                [f_pea,    "ピアー", "まずいぞ、このままじゃ力場が無くなった途端、おしめえじゃん！」"],
-                [f_ruin,   "ルイン", "「もう一度撃とう！」"],
-                [f_pea,    "ピアー", "「で、でも、こっちは力場がまだ邪魔してる！」"],
-                [f_pea,    "ピアー", "「それに、あのエレベーターまで壊してしもたら下に戻れんかもしれん！」"],
-                [f_ruin,   "ルイン", "「このままでも死ぬよ･･･！それこそ自殺行為だ！」"],
-                [f_pea,    "ピアー", "「じ、自殺行為･･･！！」"],
-                [f_pea,    "ピアー", "「･･･よ、よ、よし！！撃とう！！撃てええええ！！！」"],
-                [f_empty,  "",      "僕は古代武器の引きがねを思いきり引いた。"],
-            ]
-        );
-
-        await s.set(
-            new Img("img/story/s_pic_white.png"),
-            [
-                [f_empty,  "",      "再び砲口が閃光に包まれたかと思うと、その白光は、直上より轟音と共に降り注いだより強く大きい光によって掻き消された。"],
-                [f_ruin,   "ルイン", "「うわあっ」"],
-                [f_empty,  "",      "突然出現した第二の光は、古代武器が放ったエネルギー波と衝突し、そして力場によって周辺一帯に一度に拡散した。"],
-                [f_pea,    "ピアー", "「ど、どうなったんじゃ･･･さっきまで青かった大気の層が真っ白になってもうたぞ！！」"],
-                [f_empty,  "",      "古代武器のエネルギーと真上からの光が、力場によって御互いを打消しあったせいか、帝国軍の兵士もエレベーター口も健在していた。"],
-                [f_ruin,   "ルイン", "「力場が無くなってる･･･どうしよう！ピアー！」"],
-                [f_pea,    "ピアー", "「なんだあれ･･･」"],
-                [f_empty,  "",      "帝国軍の兵士達が急にどよめき始めた。"],
-                [f_empty,  "",      "彼等の視線の先を辿ると、今まで確かにそこには居なかったはずの二人の人間が倒れていた。"],
-                [f_ruin,   "ルイン", "「人が倒れてる･･･」"],
-                [f_empty,  "",      "兵士達の数人が慌てるようにしてそこへ駆け寄った。"],
-            ]
-        );
-
-        await s.set(
-            new Img("img/story/s_pic15.jpg"),
-            [
-                [f_luka,   "luka",  "「来るな！！」"],
-                [f_empty,  "",      "兵士達の動きがピタリと止まった。"],
-                [f_empty,  "",      "その娘は、起き上がると同時に、倒れていたもう一人の体を抱えると、その者の頭に拳銃を突き付けたのだ。"],
-                [f_siki,   "シキ",  "「ううぅ･･･」"],
-                [f_luka,   "luka",  "「一歩でも動けば、こいつを殺す」"],
-                [f_empty,  "",      "見るとその娘の額から血が流れていた。"],
-                [f_empty,  "",      "娘も今の衝撃で傷を負ったのだ。"],
-                [f_ruin,   "ルイン", "「そこの入り口から下へ降りれる！」"],
-                [f_pea,    "ピアー", "「えっ！」"],
-                [f_empty,  "",      "娘が僕達の方を目の端で見た。"],
-                [f_ruin,   "ルイン", "「あの子は味方だよ。帝国軍の奴等に刃向かってる･･･！」"],
-                [f_ruin,   "ルイン", "「もう一人が何者かは分からないけど･･･、あの子につけば兵士達の動きを止めたまま逃げられるよ」"],
-                [f_empty,  "",      "ピアーや他の地球人達もすぐに僕の意見に賛同した。"],
-                [f_empty,  "",      "娘と僕達は、もう一人の何者かと古代武器を抱えてエレベーターの中に走りこんだ。"],
-            ]
-        );
-        await s.set(
-            Img.empty,
-            [
-                [f_empty,  "",      "エレベーター口が閉じると同時に、僕達は物凄い速さで地上へ落下した。"],
-            ]
-        );
-
-        s.end();
-        
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第10話『重なり始める歯車』", Color.GRAY); Sound.moji.play(); await cwait();
-    };
-    
-    export const runMain11 = async()=>{
-        const f_empty  = new Img("img/face/p_rs.jpg");
-        const f_siki  = new Img("img/face/p_siki.jpg");
-        const f_luka   = new Img("img/face/p_luka.jpg");
-        const f_pea    = new Img("img/face/p_pea.jpg");
-        const f_ruin   = new Img("img/face/p_ruin.jpg");
-
-        const s = new S();
-
-
-        await s.set(
-            Img.empty,
-            [
-                [f_empty,  "",      "僕達は、lukaと名乗る彼女と共に、人質を抱えたまま塔の下層域に立てこもった。"],
-            ]
-        );
-        
-        await s.set(
-            new Img("img/story/s_pic4.jpg"),
-            [
-                [f_luka,   "luka",  "「ここは･･･どこなの･･･」"],
-                [f_pea,    "ピアー", "「塔の下層部分じゃ」"],
-                [f_pea,    "ピアー", "「地上からの入り口は、ここと反対側だけ」"],
-                [f_pea,    "ピアー", "「その人質さんがおる限りひとまず安全じゃろ」"],
-                [f_luka,   "luka",  "「塔･･･？･･･エデンの遺跡の近くなの？」"],
-                [f_pea,    "ピアー", "「エデン･･･？なんじゃそら」"],
-                [f_empty,  "",      "手足を拘束され、地べたに転がっている人質が、苦しそうに口を開いた。"],
-                [f_siki,   "シキ",   "「ここはエデンではない･･･」"],
-                [f_siki,   "シキ",   "「地球だ･･･」"],
-                [f_luka,   "luka",  "「地球！？･･･さっきまでエデンの遺跡にいたはずよ！」"],
-                [f_siki,   "シキ",   "「おまえも見ただろう、あの光の道を･･･我々はワームホールを開いたのだ」"],
-                [f_luka,   "luka",  "「ワームホール･･･？！･･･」"],
-                [f_luka,   "luka",  "「一号は？･･･一号はどこへいったの！？」"],
-                [f_empty,  "",      "シキは目線を例の古代武器の方へ向けた。"],
-                [f_siki,   "シキ",   "「･･･地球人がぶっ放したその武器･･･、そいつのエネルギー波のせいだな･･･」"],
-                [f_empty,  "",      "シキは古代武器の表面に記された『lucifers』という社名ロゴを見て、呆れたように小さく笑った。"],
-                [f_siki,   "シキ",   "「ワームホールが開く出口で、高出力のエネルギーが同時に展開されれば、時空が歪みもする」"],
-                [f_siki,   "シキ",   "「一号は我々より先に到着していたかもしれないし･･･後かもしれない･･･」"],
-                [f_siki,   "シキ",   "「それも１時間前かもしれないし･･･５万年後かもしれない･･･」"],
-                [f_luka,   "luka",  "「そんな！！」"],
-                [f_siki,   "シキ",   "「おそらく･･･雪も一号と一緒か･･･」"],
-                [f_empty,  "",      "僕達は、彼女達の会話を遠いおとぎばなしでも聞くかのように顔をぽかんとさせていた。"],
-                [f_luka,   "luka",  "「一号を探すにも･･･この状況じゃ外へ出れないわ･･･」"],
-                [f_luka,   "luka",  "「外の兵士･･･、帝国軍ね。あんた達帝国はこの地球で何をするつもりなの･･･」"],
-                [f_siki,   "シキ",   "「もうじき大きな宇宙規模の戦争が始まる･･･」"],
-                [f_siki,   "シキ",   "「それもこの世とあの世の戦いだ」"],
-                [f_luka,   "luka",  "「あの世？」"],
-                [f_siki,   "シキ",   "「そうだ。･･･信じられないかもしれないが、今帝国は冥界と戦争状態にある」"],
-                [f_siki,   "シキ",   "「冥界はこの世と次元の壁を挟んだ別宇宙に存在する･･･」"],
-                [f_siki,   "シキ",   "「次元の壁を越え、冥界に太刀打つ術がこの地球にあるのだ」"],
-                [f_luka,   "luka",  "「そんな子供騙しみたいな話･･･」"],
-                [f_siki,   "シキ",   "「ふ･･･信じようが信じまいが好きにするがいい」"],
-                [f_luka,   "luka",  "「･･･馬鹿げてるわ･･･」"],
-            ]
-        );
-
-        await s.set(
-            Img.empty,
-            [
-                [f_empty,  "",      "地上では夜が明け、朝を迎えていた。"],
-                [f_empty,  "",      "皆疲れ果ててはいたが、半分の者が見張りに、半分の者が眠りについた。"],
-                [f_empty,  "",      "遠いエデンという星から来たlukaは、寝床につく前に僕に言った。"],
-                [f_luka,   "luka",  "「今日は助かったよ･･･ありがとう･･･」"],
-                [f_ruin,   "ルイン", "「僕達も君が現れてくれたおかげで命拾いしたんだ」"],
-                [f_luka,   "luka",  "「あなた･･･、どこか他の人達とは違うわ･･･？･･･地球人じゃないの？」"],
-                [f_ruin,   "ルイン", "「うん･･･。僕も１０年前にこの星に辿り付いたんだ」"],
-                [f_ruin,   "ルイン", "「この話も馬鹿げてると言うかもしれないけど、仮想的に創られた宇宙があって･･･その宇宙にある地球から来たんだ･･･"],
-                [f_empty,  "",      "lukaは少しだけ驚いて、そして微笑んだ。"],
-                [f_luka,   "luka",  "「ホント･･･、馬鹿げてる」"],
-                [f_luka,   "luka",  "「おやすみなさい、もう１つの地球から来たルイン」"],
-                [f_ruin,   "ルイン", "「･･･おやすみ。エデンの園から来たluka」"],
-            ]
-        );
-        
-
-        s.end();
-        
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第11話『おやすみ。エデンの園から来たluka』", Color.GRAY); Sound.moji.play(); await cwait();
-    };
-    
-    export const runMain12 = async()=>{
-        const f_empty  = new Img("img/face/p_rs.jpg");
-        const f_1      = new Img("img/face/p_1.jpg");
-
-        const s = new S();
-
-        await s.set(
-            Img.empty,
-            [
-                [f_empty,  "",      "強い光が自分を照らすのを、閉じた瞼の下からも感じ取った。"],
-                [f_empty,  "",      "夢と現実の判別と、意識を正常に取り戻す作業に、全身への痛みが邪魔をした。"],
-                [f_empty,  "",      "打撲や切り傷などの痛みではない･･･火傷のような痛みだ。"],
-                [f_empty,  "",      "一号はそこで全てを思いだし、咄嗟に起きあがり辺りを見渡した。"],
-            ]
-        );
-
-        await s.set(
-            new Img("img/story/s_pic17.jpg"),
-            [
-                [f_empty,  "",      "すぐ隣に雪が倒れていた。"],
-                [f_empty,  "",      "同じように、雪の皮膚も火傷を負いかけていた。"],
-                [f_1, 　　 "一号",   "「くっ･･･なんだこの光は･･･」"],
-                [f_empty,  "",      "異常な光線を容赦無く降り注ぐ上空の太陽を見上げようとしたが、すぐに太陽を直視する事の危険性を理解しとどまった。"],
-                [f_1, 　　 "一号",   "「う･･･くそ･･･空気もか･･･」"],
-                [f_empty,  "",      "服の端を破り、即席でマスクを作った。"],
-                [f_empty,  "",      "雪の分も作ったが、これではあまりもちそうにもなかった。"],
-                [f_empty,  "",      "視界の端に巨大な黒い雲を発見した。"],
-                [f_empty,  "",      "雲かとおもったそれは、驚くほど長身な大木が密集した森だった。"],
-                [f_empty,  "",      "雪の意識がまだ覚醒していないのを確認すると、雪の体をひっぱって森の陰の中へと避難した。"],
-            ]
-        );
-
-        await s.set(
-            Img.empty,
-            [
-                [f_empty,  "",      "化け物のように伸びた大木林の影を頼りながら、周辺一帯を走り回ったが助けになるような物は一切見えなかった。"],
-            ]
-        );
-        await s.set(
-            new Img("img/story/s_pic16.jpg"),
-            [
-                [f_empty,  "",      "森の中の空気が清浄であることにすぐに気づいた。"],
-                [f_empty,  "",      "あちこちに高く生えた大木は、てっぺんに巨大な葉を開き、自然のテントを形成していた。"],
-                [f_empty,  "",      "そのおかげで大木林の下はあの攻撃的な光から回避できた。"],
-                [f_empty,  "",      "それでも、木葉の間から漏れた光は、地上まで達するとすぐに草を焼き、灰を産んだ。"],
-                [f_empty,  "",      "再びその部分が影の領域に入ると、小さな微生物が一斉にその灰にたかった。"],
-                [f_empty,  "",      "微生物は植物が焼けたその灰から特殊な栄養分を吸収した。"],
-                [f_empty,  "",      "灰食虫が灰を完全に分解し終わる頃、さきほどまで白く灰になっていた円形領域には、すっかり黒い土が顔を出していた。"],
-                [f_empty,  "",      "そこに突如、見るからに気色の悪い軟体動物が、黒土の中心から土を割って頭を出現させた。"],
-                [f_empty,  "",      "灰食虫達は一瞬で放射状に拡散したが、一部分はその軟体動物によって食い殺された。"],
-                [f_empty,  "",      "突如、テント木達がざわめき出した。"],
-                [f_empty,  "",      "テント木の幹に纏わりついたツルが、急速に音を立てて花を開いたのだ。"],
-                [f_empty,  "",      "その音は人間の赤ん坊の泣き声を連想させるような高い奇妙な音だった。"],
-                [f_empty,  "",      "その音に反応して、テント木の合間を飛び交っていた雷鳥が瞬時に身を隠した。"],
-                [f_empty,  "",      "ツルの花は高速で向きを変え、地上の先ほどの円形領域を狙うと、銃砲の音と共に何かを発射した。"],
-                [f_empty,  "",      "ツルの花が発砲した何かは、灰食虫を食べ終わったばかりの円形ハゲミミズの頭部を打ちぬき、そのまま貫通して円形ハゲミミズが耕したばかりの黒土の裂け目に潜りこんだ。"],
-                [f_empty,  "",      "発砲ツルが発射したのは紛れもなく種子だった。"],
-                [f_empty,  "",      "発砲ツルの花びら内からでた火薬の臭いが林内に立ちこめる頃、身を隠していた雷鳥が再び姿を現し、円形ハゲミミズの死体を食いに地上へと降り立った。"],
-                [f_empty,  "",      "雷鳥はうまそうに食事をとりながら、その足で発砲ツルの種子が埋まった黒土を踏み、種子が飛び出ないよう地盤を固めた。"],
-                [f_empty,  "",      "恐ろしく成長の早い発砲ツルの種子は、雷鳥の糞と豊な黒土からたっぷりと栄養を吸収し、急速に芽を出し、双葉を開かせ、ついにはツルを伸ばし地面を這った。"],
-                [f_empty,  "",      "それを待っていたかのように、地中からわらわらと小さな動物達が顔を出してきた。"],
-                [f_empty,  "",      "爆発的な成長の過程で、発砲ツルは大気中の毒素を体内に取りこみ、その成分を元にして自然の火薬をつぼみの部分に形成しているのだ。"],
-                [f_empty,  "",      "そしてそれに伴い、毒素が取り除かれた清浄な大気を思う存分吸おうと、これまで地中で息を潜めていたこの小動物達が出現したのだった。"],
-                [f_empty,  "",      "その一連の生態連鎖は、たった３分間の間に行われた。"],
-                [f_empty,  "",      "それら全てを見ていた一号は、森の中の空気が安全である理由を理解した。"],
-                [f_1, 　　 "一号",   "「とりあえずは、なんとか持ちそうだな･･･」"],
-                [f_1, 　　 "一号",   "「･･･ここがエデンでない事だけは確かそうだ･･･」"],
-                [f_empty,  "",      "自分の足元に横たわり未だ意識を失ったままの雪の顔を見た。"],
-                [f_1, 　　 "一号",   "「･･･今なら殺せる･･･」"],
-                [f_1, 　　 "一号",   "「今だ･･･今、殺すんだ！」"],
-                [f_empty,  "",      "一号は雪を殺さなかった。"],
-                [f_empty,  "",      "それどころか、殺人光の下からこのテント林まで運び、御節介にもマスクまでつけてやった。"],
-                [f_empty,  "",      "ここから抜け出すには雪の力が必要である事を一号の理性は理解していた。"],
-                [f_empty,  "",      "ここから抜け出さぬ事には、雪は殺せても、シキやジスマを殺せなくなってしまう･･･"],
-                [f_empty,  "",      "･･･そう自分に言い聞かせた。"],
-            ]
-        );
-
-        s.end();
-        
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第12話『我を守りたもう、大自然よ』", Color.GRAY); Sound.moji.play(); await cwait();
-    };
-
-    export const runMain13 = async()=>{
-        const f_empty  = new Img("img/face/p_rs.jpg");
-        const f_1      = new Img("img/face/p_1.jpg");
-        const f_yuki = new Img("img/face/p_yuki2.jpg");
-        const f_memo = new Img("img/face/p_sol.jpg");
-
-        const s = new S();
-
-        await s.set(
-            new Img("img/story/s_pic16a.jpg"),
-            [
-                [f_empty,  "",      "すぐに太陽が落ち夜が迫った。"],
-                [f_empty,  "",      "完全な闇が訪れる前に、一号は力づくで雪を起した。"],
-                [f_empty,  "",      "雪を拘束するためのツルなら、豊富に調達できていた。"],
-                [f_empty,  "",      "雪は目を覚ますと、案の定わめきちらしたが、そのせいで大きく息をしたため、毒素も一緒に吸い込み咳き込んだ。"],
-                [f_empty,  "",      "ここでは嫌でも助け合わないと、シキやlukaの元へ辿り着く前に死んでしまうだろう、と、一号は雪に諭した。"],
-                [f_yuki,   "雪",    "「むなくそ悪いぜ･･･」"],
-                [f_yuki,   "雪",    "「ゴホッ･･･ゴホッ･･･、ちっ･･･、分かったからもうこのツルを解けよ」"],
-                [f_1,      "一号",  "「･･･いいだろう･･･だが、足だけだ。まだおまえを信じきっちゃいない･･･」"],
-                [f_yuki,   "雪",    "「フン･･･」"],
-                [f_empty,  "",      "一号は警戒しながらも雪の足の自由を拘束するツルをゆっくりとほどいてやった。"],
-                [f_empty,  "",      "途端、雪は一号の懐に体当たりをかませた。"],
-            ]
-        );
-
-        await s.set(
-            new Img("img/story/s_pic20.jpg"),
-            [
-                [f_empty,  "",      "倒れた一号の上に馬乗りになり両手首を押さえ付けた。"],
-                [f_empty,  "",      "毒素にやられ弱り切っていた先ほどからは想像も出来ないほどの俊敏な動きだった。"],
-                [f_yuki,   "雪",    "「あーーーまいんだよ･･･！一号ぉぉぉ」"],
-                [f_yuki,   "雪",    "「おまえみたいな出来そこないが、人間様を操れるとでも思ったかー？フケケッ」"],
-                [f_empty,  "",      "ガサッと周囲から物音が聞こえた。"],
-                [f_yuki,   "雪",    "「･･･なんだ･･･！？･･･」"],
-            ]
-        );
-        await s.set(
-            new Img("img/story/s_pic16a.jpg"),
-            [
-                [f_empty,  "",      "辺りはもう既にかなり暗くなっていた。"],
-                [f_empty,  "",      "何か小さな物が動く影が見えた。"],
-                [f_empty,  "",      "雪が闇に目を凝らしていると、闇影からゾロゾロと現れたのは十数名の白い小人達だった。"],
-            ]
-        );
-        await s.set(
-            new Img("img/story/s_pic21.jpg"),
-            [
-                [f_empty,  "",      "身長は１メートル程、体は白く長い体毛に完全に覆われており、毛むくじゃらの頭部からキョロッとした真っ黒い目玉が２つこちらを見ていた。"],
-                [f_yuki,   "雪",    "「な･･･なんだこいつら･･･」"],
-                [f_empty,  "",      "雪が口を開くと、小人達は一斉に「喋った！喋った！喋った！喋った！喋った！喋った！喋った！」と連呼した。"],
-                [f_empty,  "",      "一号は、放心状態の雪を体の上から払いのけ、すぐさま顔面を２、３度蹴って気を失わせた。"],
-                [f_empty,  "",      "小人達は驚いて、全員が「ギャアギャア」と叫んだ。"],
-                
-            ]
-        );
-        await s.set(
-            new Img("img/story/s_pic16a.jpg"),
-            [
-                [f_empty,  "",      "一号と雪は、小人達に数時間連れられ、彼等の集落へ辿り着いた。"],
-                [f_empty,  "",      "彼等は光を持っていた。"],
-                [f_empty,  "",      "発光する木の根のような物が集落中に張り巡らされていた。"],
-                [f_empty,  "",      "後でそれはテント木の根であることがわかった。"],
-                [f_empty,  "",      "テント木は昼間の内、強力な光をあの巨大な屋根のような頭部で吸収し、幹を伝わせ、膨大な光エネルギーを根に蓄えているのだ。"],
-                [f_1,      "一号",  "「女の子を見かけなかったか？俺達のような体の女の子だ」"],
-                [f_memo,   "小人",  "「･･･女の子だ、･･･女の子だ、･･･女の子だ、･･･女の子だ」"],
-                [f_1,      "一号",  "「真似じゃない、質問してるんだ」"],
-                [f_memo,   "小人",  "「真似じゃない、真似じゃない、真似じゃない、真似じゃない」"],
-                [f_yuki,   "雪",    "「ハハハハ･･･無駄だぜ、一号」"],
-                [f_empty,  "",      "小人達の知能は低かった。"],
-                [f_empty,  "",      "集落の文明度から見ても、IQは９０程度、人間の９歳ほどの知能しかないと見えた。"],
-                [f_empty,  "",      "全身を覆う白毛は、真昼の攻撃光から身を守る防護服の役目を果たしているようだ。"],
-                [f_empty,  "",      "白毛の豊富さのせいで、幼児体型のようにふっくらして見えるが、毛の下の部分は全くの人類の縮小版である。"],
-                [f_empty,  "",      "言葉の節々に現れる古い口調から考えても、彼等が元々は人類であった可能性が高いと、雪は一号に言った。"],
-                [f_1,      "一号",  "「退化したのか？･･･」"],
-                [f_1,      "一号",  "「地球人はまだ健在のはずだろ？」"],
-                [f_yuki,   "雪",    "「ああ、しかし帝国と交易があったのは地球塔だけだ」"],
-                [f_yuki,   "雪",    "「それ以外の地域は、こちらの調べでも生命体は皆無とされてたが･･･」"],
-                [f_yuki,   "雪",    "「未知の地域で、生命の独自の進化があったと考えられなくもない」"],
-                [f_yuki,   "雪",    "「知能の衰えは、長い時間の中での近親交配による偏血のためだろう」"],
-                [f_empty,  "",      "夜が深まり、小人達は一号達のいる目の前で生殖行為を始め出した。"],
-                [f_empty,  "",      "彼等に性のダブーという習慣はないようだ。"],
-                [f_empty,  "",      "彼等に対する興味は尽きなかったが、数億光年を移動してきた二人にそれを疲労が許さなかった。"],
-                [f_empty,  "",      "二人は深い眠りについた。"],
-            ]
-        );
-
-        s.end();
-        
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第13話『小人の国』", Color.GRAY); Sound.moji.play(); await cwait();
-    };
 }
-/*
-        const f_empty  = new Img("img/face/p_rs.jpg");
-        const f_1      = new Img("img/face/p_1.jpg");
-        const f_siki  = new Img("img/face/p_siki.jpg");
-        const f_yuki = new Img("img/face/p_yuki2.jpg");
-        const f_luka   = new Img("img/face/p_luka.jpg");
-        const f_memo = new Img("img/face/p_sol.jpg");
- */

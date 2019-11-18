@@ -473,6 +473,24 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
     }
+    /**ドラゴン. */
+    export const                          龍撃:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"龍撃", info:"一体に格闘攻撃　相手の防御値を半減して計算",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:1,
+        });}
+        async runInner(attacker:Unit, target:Unit, dmg:Dmg){
+            dmg.def.mul *= 0.5;
+            await super.runInner(attacker, target, dmg);
+        }
+    }
+    /**ドラゴン. */
+    export const                          ドラゴンテイル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ドラゴンテイル", info:"敵全体に格闘攻撃",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, tp:4,
+        });}
+    }
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"人狼剣", info:"一体に自分の力値分のダメージを与える",
     //                           type:TecType.格闘, targetings:Targeting.SELECT,
@@ -1552,6 +1570,15 @@ export namespace Tec{
             }
         }
     };
+    /**ドラゴン. */
+    export const                         自然治癒:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"自然治癒", info:"行動開始時HP+5%",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        async phaseStart(unit:Unit){
+            Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Active
@@ -1585,6 +1612,16 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             const dmg = new Dmg({absPow:attacker.hp});
             attacker.hp = 0;
+            target.doDmg(dmg); await wait();
+        }
+    }
+    export const                          ドラゴンブレス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ドラゴンブレス", info:"敵全体に[最大HP-現在HP]のダメージを与える",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, ep:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            const dmg = new Dmg({absPow:attacker.prm(Prm.MAX_HP).total - attacker.hp});
             target.doDmg(dmg); await wait();
         }
     }
