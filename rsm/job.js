@@ -115,7 +115,7 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP,
                 canJobChange: p => true,
                 growthPrms: () => [[Prm.MAX_HP, 1]],
-                learningTecs: () => [Tec.タックル, Tec.HP自動回復],
+                learningTecs: () => [Tec.タックル, Tec.HP自動回復, Tec.大いなる動き],
             });
         }
         setEnemyInner(e) {
@@ -133,7 +133,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風, Tec.大いなる動き];
         }
     };
     Job.シーフ = new class extends Job {
@@ -157,11 +157,11 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP * 2,
                 canJobChange: p => p.isMasteredJob(Job.訓練生二年生),
                 growthPrms: () => [[Prm.STR, 1]],
-                learningTecs: () => [Tec.格闘攻撃UP, Tec.格闘防御UP],
+                learningTecs: () => [Tec.格闘攻撃UP, Tec.格闘防御UP, Tec.防御, Tec.印, Tec.涅槃寂静],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP, Tec.防御, Tec.涅槃寂静];
         }
     };
     Job.剣士 = new class extends Job {
@@ -171,11 +171,11 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP,
                 canJobChange: p => p.isMasteredJob(Job.訓練生),
                 growthPrms: () => [[Prm.STR, 1]],
-                learningTecs: () => [Tec.斬る, Tec.大いなる動き],
+                learningTecs: () => [Tec.斬る, Tec.閻魔の笏],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.大いなる動き];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る];
         }
     };
     Job.忍者 = new class extends Job {
@@ -203,7 +203,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.殴る, Tec.ジョンD];
         }
     };
     Job.ウィザード = new class extends Job {
@@ -227,7 +227,7 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP,
                 canJobChange: p => p.isMasteredJob(Job.訓練生),
                 growthPrms: () => [[Prm.LIG, 1]],
-                learningTecs: () => [Tec.天籟, Tec.数珠, Tec.ユグドラシル],
+                learningTecs: () => [Tec.MP自動回復, Tec.天籟, Tec.数珠, Tec.ユグドラシル],
             });
         }
         setEnemyInner(e) {
@@ -241,7 +241,7 @@ Job.DEF_LVUP_EXP = 10;
                 lvupExp: Job.DEF_LVUP_EXP,
                 canJobChange: p => p.isMasteredJob(Job.訓練生),
                 growthPrms: () => [[Prm.DRK, 1]],
-                learningTecs: () => [Tec.ポイズンバタフライ, Tec.恵まれし者],
+                learningTecs: () => [Tec.ポイズンバタフライ, Tec.セル, Tec.恵まれし者],
             });
         }
         setEnemyInner(e) {

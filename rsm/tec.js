@@ -426,12 +426,31 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    /**剣士. */
+    /**訓練生. */
     Tec.大いなる動き = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "大いなる動き", info: "敵全体に格闘攻撃",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+    };
+    /**剣士. */
+    Tec.閻魔の笏 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "閻魔の笏", info: "一体に格闘攻撃5回　反撃有",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 5, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                Util.msg.set("＞反撃");
+                yield Tec.格闘カウンター.run(target, attacker);
             });
         }
     };
@@ -460,6 +479,21 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, tp: 4,
             });
+        }
+    };
+    /**格闘家. */
+    Tec.涅槃寂静 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "涅槃寂静", info: "一体に[力+現在HP]分のダメージの格闘攻撃",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = 0;
+            dmg.abs.base = attacker.prm(Prm.STR).total + attacker.hp;
+            return dmg;
         }
     };
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
@@ -1313,6 +1347,29 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**格闘家. */
+    Tec.防御 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "防御", info: "自分を＜盾＞（一部攻撃軽減）化",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let value = 1;
+                if (attacker.prm(Prm.LIG).total >= 25) {
+                    value++;
+                }
+                if (attacker.prm(Prm.LIG).total >= 50) {
+                    value++;
+                }
+                Sound.up.play();
+                Unit.setCondition(target, Condition.盾, value);
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1652,6 +1709,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**格闘家. */
+    Tec.印 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "印", info: "自分のHP+10%",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, mp: 2,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = (target.prm(Prm.MAX_HP).total * 0.1 + 1) | 0;
+                Unit.healHP(target, value);
+                Sound.KAIFUKU.play();
+                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                yield wait();
+            });
+        }
+    };
     // export const                          吸心:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"吸心", info:"一体からTPを2吸収",
     //                           type:TecType.回復, targetings:Targeting.SELECT,
@@ -1706,7 +1781,7 @@ ActiveTec._valueOf = new Map();
     //         Unit.healHP(unit, value);
     //     }
     // };
-    /**妖精. */
+    /**天使・妖精. */
     Tec.MP自動回復 = new class extends PassiveTec {
         constructor() {
             super({ uniqueName: "MP自動回復", info: "行動開始時MP+1",
