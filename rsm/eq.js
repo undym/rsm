@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Dmg } from "./force.js";
+import { Force, Dmg } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num } from "./mix.js";
 import { ActiveTec, TecType, Tec } from "./tec.js";
@@ -40,13 +40,14 @@ EqPos.腰 = new EqPos("腰");
 EqPos.手 = new EqPos("手");
 EqPos.指 = new EqPos("指");
 EqPos.脚 = new EqPos("脚");
-export class Eq {
+export class Eq extends Force {
     //--------------------------------------------------------------------------
     //
     //
     //
     //--------------------------------------------------------------------------
     constructor(args) {
+        super();
         this.args = args;
         this.num = 0;
         this.totalGetCount = 0;
@@ -113,35 +114,6 @@ export class Eq {
     /**敵が装備し始めるレベル. */
     get appearLv() { return this.args.lv; }
     toString() { return this.args.uniqueName; }
-    //--------------------------------------------------------------------------
-    //
-    //
-    //
-    //--------------------------------------------------------------------------
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    battleStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseStart(unit, pForce) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseEnd(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
     add(v) {
         Num.add(this, v);
         PlayData.gotAnyEq = true;
@@ -150,13 +122,14 @@ export class Eq {
 Eq.NO_APPEAR_LV = -1;
 Eq._values = [];
 Eq._valueOf = new Map();
-export class EqEar {
+export class EqEar extends Force {
     //--------------------------------------------------------------------------
     //
     //
     //
     //--------------------------------------------------------------------------
     constructor(args) {
+        super();
         this.args = args;
         this.num = 0;
         this.totalGetCount = 0;
@@ -173,35 +146,6 @@ export class EqEar {
     /**敵が装備し始めるレベル. */
     get appearLv() { return this.args.lv; }
     toString() { return this.args.uniqueName; }
-    //--------------------------------------------------------------------------
-    //
-    //
-    //
-    //--------------------------------------------------------------------------
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    battleStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseEnd(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
     add(v) {
         Num.add(this, v);
         PlayData.gotAnyEq = true;

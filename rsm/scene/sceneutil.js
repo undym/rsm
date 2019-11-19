@@ -319,7 +319,7 @@ export class DrawUnits extends InnerLayout {
     static get ins() { return this._ins ? this._ins : (this._ins = new DrawUnits()); }
     constructor() {
         super();
-        const haka = new Img("img/unit/墓.png");
+        const haka = new Img("img/unit/haka.png");
         super.add(ILayout.create({ draw: bounds => {
                 Unit.all
                     .filter(u => u.exists)

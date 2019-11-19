@@ -94,8 +94,10 @@ export class JobChangeScene extends Scene{
 
         let choosedJob:Job;
 
-        Job.values
-            .filter(job=> job.canJobChange(this.target) || this.target.getJobLv(job) > 0)
+
+        // Job.values
+        //     .filter(job=> job.canJobChange(this.target) || this.target.getJobLv(job) > 0)
+        this.target.player.calcJobChangeList()
             .forEach(job=>{
                 const color:()=>Color = ()=>{
                     if(this.target.isMasteredJob(job)){return Color.ORANGE;}

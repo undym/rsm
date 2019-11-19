@@ -200,38 +200,20 @@ export namespace TecType{
 }
 
 
-export abstract class Tec implements Force{
+export class Tec extends Force{
     private static _empty:Tec;
     static get empty():Tec{
-        return this._empty ? this._empty : (this._empty = new class extends Tec{
-            get uniqueName(){return "empty";}
-            get info(){return "";}
-            get sortType(){return TecSort.格闘;}
-            get type(){return TecType.格闘;}
-
-            constructor(){
-                super();
-            }
-        });
+        return this._empty ? this._empty : (this._empty = new Tec("empty", "", TecSort.格闘, TecType.格闘));
     }
-
-    abstract uniqueName:string;
-    abstract info:string;
-    abstract sortType:TecSort;
-    abstract type:TecType;
-    //--------------------------------------------------------------------------
-    //
-    //Force
-    //
-    //--------------------------------------------------------------------------
-    async equip(unit:Unit){}
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async phaseEnd(unit:Unit){}
+    
+    constructor(
+        readonly uniqueName:string, 
+        readonly info:string, 
+        readonly sortType:TecSort, 
+        readonly type:TecType
+    ){
+        super();
+    }
 }
 
 
@@ -244,10 +226,6 @@ export abstract class PassiveTec extends Tec{
         return this._valueOf.get(uniqueName);
     }
     
-    get uniqueName():string{return this.args.uniqueName;}
-    get info():string      {return this.args.info;}
-    get sortType():TecSort {return this.args.sort;}
-    get type():TecType     {return this.args.type;}
 
     protected constructor(
         private args:{
@@ -257,7 +235,7 @@ export abstract class PassiveTec extends Tec{
             type:TecType,
         }
     ){
-        super();
+        super(args.uniqueName, args.info, args.sort, args.type);
 
         PassiveTec._values.push(this);
         if(PassiveTec._valueOf.has(this.uniqueName)){
@@ -284,12 +262,6 @@ export abstract class ActiveTec extends Tec implements Action{
     //
     //
     //--------------------------------------------------------------------------
-    get uniqueName():string{return this.args.uniqueName;}
-    get info():string {return this.args.info;}
-
-    get sortType():TecSort{return this.args.sort;}
-    get type():TecType{return this.args.type;}
-
     get mpCost():number{return this.args.mp ? this.args.mp : 0;}
     get tpCost():number{return this.args.tp ? this.args.tp : 0;}
     get epCost():number{return this.args.ep ? this.args.ep : 0};
@@ -330,7 +302,7 @@ export abstract class ActiveTec extends Tec implements Action{
             ep?:number,
             item?:()=>[Item,number][],
     }){
-        super();
+        super(args.uniqueName, args.info, args.sort, args.type);
 
         ActiveTec._values.push(this);
         if(ActiveTec._valueOf.has(this.uniqueName)) {console.log(`!!ActiveTec already has uniqueName "${this.uniqueName}".`);}
@@ -516,6 +488,23 @@ export namespace Tec{
             return dmg;
         }
     }
+    /**カリストコウモリ. */
+    export const                          ひっかく:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ひっかく", info:"一体に格闘攻撃　確率で相手を＜毒＞化　反撃有",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+
+            if(Math.random() < 0.7){
+                await Tec.ポイズンバタフライ.run(attacker, target);
+            }
+
+            Util.msg.set("＞反撃");
+            await Tec.格闘カウンター.run( target, attacker );
+        }
+    }
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"人狼剣", info:"一体に自分の力値分のダメージを与える",
     //                           type:TecType.格闘, targetings:Targeting.SELECT,
@@ -594,6 +583,24 @@ export namespace Tec{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
                 dmg.pow.mul *= 0.8;
+            }
+        }
+    };
+    /**格闘家. */
+    export const                         空中浮遊:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"空中浮遊", info:"被格闘攻撃-50%　被銃術・弓術攻撃命中+50%",
+                                sort:TecSort.格闘, type:TecType.格闘,
+        });}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec){
+                if(action.type.any(TecType.格闘)){
+                    dmg.pow.mul *= 0.5;
+                    return;
+                }
+                if(action.type.any(TecType.銃術, TecType.弓術)){
+                    dmg.hit.mul *= 1.5;
+                    return;
+                }
             }
         }
     };
@@ -688,6 +695,19 @@ export namespace Tec{
             return dmg;
         }
     }
+    export const                          ファイアボール:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ファイアボール", info:"一体とその両脇に魔法攻撃",
+                              sort:TecSort.魔法, type:TecType.魔法, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1.2, mp:8,
+        });}
+        async run(attacker:Unit, target:Unit){
+            super.run( attacker, target );
+
+            for(const u of target.getAdjacentUnits()){
+                super.run( attacker, u );
+            }
+        }
+    }
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
     //                           type:TecType.魔法, targetings:Targeting.SELECT,
@@ -696,7 +716,7 @@ export namespace Tec{
     // }
     /**無習得技. */
     export const                          魔法カウンター:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"魔法カウンター", info:"！カウンター技用",
+        constructor(){super({ uniqueName:"魔法カウンター", info:"！カウンター・連携用",
                               sort:TecSort.魔法, type:TecType.魔法, targetings:Targeting.SELECT,
                               mul:0.5, num:1, hit:1,
         });}
@@ -719,6 +739,18 @@ export namespace Tec{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type === TecType.魔法){
                 dmg.pow.mul *= 1.2;
+            }
+        }
+    };
+    /**ウィザード. */
+    export const                         魔道連携:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"魔道連携", info:"味方の魔法攻撃時、連携攻撃",
+                                sort:TecSort.魔法, type:TecType.魔法,
+        });}
+        async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.counter){
+                Util.msg.set(`${me.name}の連携攻撃`); await wait();
+                await Tec.魔法カウンター.run(me, target);
             }
         }
     };
@@ -1216,6 +1248,16 @@ export namespace Tec{
             Unit.setCondition(target, Condition.癒, 10); await wait();
         }
     }
+    export const                          光合成:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"光合成", info:"一体を<治10>(毎ターン強回復)状態にする",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:6,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            Unit.setCondition(target, Condition.治, 10); await wait();
+        }
+    }
     export const                          セル:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"セル", info:"自分を＜吸収＞状態にする",
                             　sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELF,
@@ -1432,6 +1474,17 @@ export namespace Tec{
             Sound.KAIFUKU.play();
             this.effect( attacker, target, new Dmg() );
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+        }
+    }
+    /**ノーム. */
+    export const                          良き占い:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"良き占い", info:"味方全体を光依存で回復",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:6,
+        });}
+        async run(attacker:Unit, target:Unit){
+            
+            Tec.数珠.run(attacker, target);
         }
     }
     // export const                          ひんやりゼリー:ActiveTec = new class extends ActiveTec{

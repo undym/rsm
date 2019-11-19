@@ -2,9 +2,12 @@ import { Unit, Prm } from "./unit.js";
 import { choice } from "./undym/random.js";
 
 
+export interface IForce{
+    force:Force;
+}
 export class Force{
-    // private static _empty:Force;
-    // static get empty():Force{return this._empty ? this._empty : (this._empty = new Force());}
+    private static _emptya:Force;
+    static get empty():Force{return this._emptya ? this._emptya : (this._emptya = new Force());}
 
     async equip(unit:Unit){};
     async battleStart(unit:Unit){}
@@ -13,6 +16,7 @@ export class Force{
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async phaseEnd(unit:Unit){}
 }
 

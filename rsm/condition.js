@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Dmg } from "./force.js";
+import { Force, Dmg } from "./force.js";
 import { TecType, ActiveTec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
@@ -50,8 +50,9 @@ ConditionType.GOOD_LV3 = new ConditionType("GOOD_LV3");
 ConditionType.BAD_LV1 = new ConditionType("BAD_LV1");
 ConditionType.BAD_LV2 = new ConditionType("BAD_LV2");
 ConditionType.BAD_LV3 = new ConditionType("BAD_LV3");
-export class Condition {
+export class Condition extends Force {
     constructor(uniqueName, type) {
+        super();
         this.uniqueName = uniqueName;
         this.type = type;
         Condition._values.push(this);
@@ -62,35 +63,6 @@ export class Condition {
         return this._valueOf.get(uniqueName);
     }
     toString() { return `${this.uniqueName}`; }
-    //--------------------------------------------------------------------------
-    //
-    //Force
-    //
-    //--------------------------------------------------------------------------
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    battleStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseStart(unit, pForce) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseEnd(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
 }
 Condition._values = [];
 Condition._valueOf = new Map();
@@ -217,11 +189,18 @@ Condition._valueOf = new Map();
         constructor() { super("癒", ConditionType.GOOD_LV3); }
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                let value = (unit.prm(Prm.LIG).total + unit.prm(Prm.LV).total);
-                const lim = unit.prm(Prm.MAX_HP).total * 0.1;
-                if (value > lim) {
-                    value = lim;
-                }
+                const value = unit.prm(Prm.MAX_HP).total * 0.1;
+                Util.msg.set("＞癒", Color.CYAN.bright);
+                unit.hp += value;
+                unit.addConditionValue(this, -1);
+            });
+        }
+    };
+    Condition.治 = new class extends Condition {
+        constructor() { super("治", ConditionType.GOOD_LV3); }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = unit.prm(Prm.MAX_HP).total * 0.2;
                 Util.msg.set("＞癒", Color.CYAN.bright);
                 unit.hp += value;
                 unit.addConditionValue(this, -1);
@@ -334,29 +313,5 @@ Condition._valueOf = new Map();
     //
     //--------------------------------------------------------------------------
 })(Condition || (Condition = {}));
-export class InvisibleCondition {
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    battleStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseStart(unit, pForce) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseEnd(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
+export class InvisibleCondition extends Force {
 }

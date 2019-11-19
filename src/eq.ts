@@ -48,7 +48,7 @@ export class EqPos{
 }
 
 
-export abstract class Eq implements Force, Num{
+export abstract class Eq extends Force implements Num{
     static readonly NO_APPEAR_LV = -1;
 
     private static _values:Eq[] = [];
@@ -120,26 +120,14 @@ export abstract class Eq implements Force, Num{
             lv:number,
         }
     ){
-
+        super();
         Eq._values.push(this);
         Eq._valueOf.set( args.uniqueName, this );
     }
 
 
     toString(){return this.args.uniqueName;}
-    //--------------------------------------------------------------------------
-    //
-    //
-    //
-    //--------------------------------------------------------------------------
-    async equip(unit:Unit){}
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async phaseEnd(unit:Unit){}
+    
 
     add(v:number){
         Num.add(this, v);
@@ -154,7 +142,7 @@ export abstract class Eq implements Force, Num{
 }
 
 
-export class EqEar implements Force, Num{
+export class EqEar extends Force implements Num{
     private static _values:EqEar[] = [];
     static get values():EqEar[]{return this._values;}
 
@@ -184,25 +172,13 @@ export class EqEar implements Force, Num{
             lv:number,
         }
     ){
+        super();
         EqEar._values.push(this);
         EqEar._valueOf.set( args.uniqueName, this );
     }
     
     toString(){return this.args.uniqueName;}
-    //--------------------------------------------------------------------------
-    //
-    //
-    //
-    //--------------------------------------------------------------------------
-    async equip(unit:Unit){}
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async phaseEnd(unit:Unit){}
-
+    
     add(v:number){
         Num.add(this, v);
 

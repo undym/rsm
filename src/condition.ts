@@ -54,7 +54,7 @@ export class ConditionType{
 }
 
 
-export abstract class Condition implements Force{
+export abstract class Condition extends Force{
     private static _values:Condition[] = [];
     static get values():ReadonlyArray<Condition>{return this._values;}
 
@@ -67,24 +67,13 @@ export abstract class Condition implements Force{
         public readonly uniqueName:string,
         public readonly type:ConditionType
     ){
+        super();
         Condition._values.push(this);
         Condition._valueOf.set( this.uniqueName, this );
     }
 
     toString():string{return `${this.uniqueName}`;}
-    //--------------------------------------------------------------------------
-    //
-    //Force
-    //
-    //--------------------------------------------------------------------------
-    async equip(unit:Unit){}
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async phaseEnd(unit:Unit){}
+    
 }
 
 
@@ -203,9 +192,19 @@ export namespace Condition{
         constructor(){super("癒", ConditionType.GOOD_LV3);}
         
         async phaseStart(unit:Unit){
-            let value = (unit.prm(Prm.LIG).total + unit.prm(Prm.LV).total);
-            const lim = unit.prm(Prm.MAX_HP).total * 0.1;
-            if(value > lim){value = lim;}
+            const value = unit.prm(Prm.MAX_HP).total * 0.1;
+
+            Util.msg.set("＞癒", Color.CYAN.bright);
+            unit.hp += value;
+            
+            unit.addConditionValue(this, -1);
+        }
+    };
+    export const             治:Condition = new class extends Condition{
+        constructor(){super("治", ConditionType.GOOD_LV3);}
+        
+        async phaseStart(unit:Unit){
+            const value = unit.prm(Prm.MAX_HP).total * 0.2;
 
             Util.msg.set("＞癒", Color.CYAN.bright);
             unit.hp += value;
@@ -310,13 +309,5 @@ export namespace Condition{
 
 
 
-export class InvisibleCondition implements Force{
-    async equip(unit:Unit){}
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async phaseEnd(unit:Unit){}
+export class InvisibleCondition extends Force{
 }

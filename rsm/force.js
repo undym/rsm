@@ -8,8 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { choice } from "./undym/random.js";
 export class Force {
-    // private static _empty:Force;
-    // static get empty():Force{return this._empty ? this._empty : (this._empty = new Force());}
+    static get empty() { return this._emptya ? this._emptya : (this._emptya = new Force()); }
     equip(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
@@ -30,6 +29,9 @@ export class Force {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     afterBeAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    memberAfterDoAtk(me, action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     phaseEnd(unit) {

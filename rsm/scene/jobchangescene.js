@@ -10,7 +10,6 @@ import { Graphics, Font } from "../graphics/graphics.js";
 import { List } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
 import { FX_Str } from "../fx/fx.js";
-import { Job } from "../job.js";
 import { Sound } from "../sound.js";
 export class JobChangeScene extends Scene {
     constructor() {
@@ -66,8 +65,9 @@ export class JobChangeScene extends Scene {
             groundColor: () => Color.D_GRAY,
         });
         let choosedJob;
-        Job.values
-            .filter(job => job.canJobChange(this.target) || this.target.getJobLv(job) > 0)
+        // Job.values
+        //     .filter(job=> job.canJobChange(this.target) || this.target.getJobLv(job) > 0)
+        this.target.player.calcJobChangeList()
             .forEach(job => {
             const color = () => {
                 if (this.target.isMasteredJob(job)) {

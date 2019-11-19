@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Dmg, Targeting } from "./force.js";
+import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
 import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術, FX_ナーガ } from "./fx/fx.js";
@@ -186,51 +186,21 @@ TecType._values = [];
         sound() { }
     };
 })(TecType || (TecType = {}));
-export class Tec {
+export class Tec extends Force {
+    constructor(uniqueName, info, sortType, type) {
+        super();
+        this.uniqueName = uniqueName;
+        this.info = info;
+        this.sortType = sortType;
+        this.type = type;
+    }
     static get empty() {
-        return this._empty ? this._empty : (this._empty = new class extends Tec {
-            get uniqueName() { return "empty"; }
-            get info() { return ""; }
-            get sortType() { return TecSort.格闘; }
-            get type() { return TecType.格闘; }
-            constructor() {
-                super();
-            }
-        });
-    }
-    //--------------------------------------------------------------------------
-    //
-    //Force
-    //
-    //--------------------------------------------------------------------------
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    battleStart(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseStart(unit, pForce) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    beforeBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    afterBeAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
-    phaseEnd(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
+        return this._empty ? this._empty : (this._empty = new Tec("empty", "", TecSort.格闘, TecType.格闘));
     }
 }
 export class PassiveTec extends Tec {
     constructor(args) {
-        super();
+        super(args.uniqueName, args.info, args.sort, args.type);
         this.args = args;
         PassiveTec._values.push(this);
         if (PassiveTec._valueOf.has(this.uniqueName)) {
@@ -244,10 +214,6 @@ export class PassiveTec extends Tec {
     static valueOf(uniqueName) {
         return this._valueOf.get(uniqueName);
     }
-    get uniqueName() { return this.args.uniqueName; }
-    get info() { return this.args.info; }
-    get sortType() { return this.args.sort; }
-    get type() { return this.args.type; }
     toString() { return `-${this.uniqueName}-`; }
 }
 PassiveTec._values = [];
@@ -259,7 +225,7 @@ export class ActiveTec extends Tec {
     //
     //--------------------------------------------------------------------------
     constructor(args) {
-        super();
+        super(args.uniqueName, args.info, args.sort, args.type);
         this.args = args;
         ActiveTec._values.push(this);
         if (ActiveTec._valueOf.has(this.uniqueName)) {
@@ -276,10 +242,6 @@ export class ActiveTec extends Tec {
     //
     //
     //--------------------------------------------------------------------------
-    get uniqueName() { return this.args.uniqueName; }
-    get info() { return this.args.info; }
-    get sortType() { return this.args.sort; }
-    get type() { return this.args.type; }
     get mpCost() { return this.args.mp ? this.args.mp : 0; }
     get tpCost() { return this.args.tp ? this.args.tp : 0; }
     get epCost() { return this.args.ep ? this.args.ep : 0; }
@@ -496,6 +458,28 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    /**カリストコウモリ. */
+    Tec.ひっかく = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ひっかく", info: "一体に格闘攻撃　確率で相手を＜毒＞化　反撃有",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                if (Math.random() < 0.7) {
+                    yield Tec.ポイズンバタフライ.run(attacker, target);
+                }
+                Util.msg.set("＞反撃");
+                yield Tec.格闘カウンター.run(target, attacker);
+            });
+        }
+    };
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"人狼剣", info:"一体に自分の力値分のダメージを与える",
     //                           type:TecType.格闘, targetings:Targeting.SELECT,
@@ -582,6 +566,28 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
                     dmg.pow.mul *= 0.8;
+                }
+            });
+        }
+    };
+    /**格闘家. */
+    Tec.空中浮遊 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "空中浮遊", info: "被格闘攻撃-50%　被銃術・弓術攻撃命中+50%",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec) {
+                    if (action.type.any(TecType.格闘)) {
+                        dmg.pow.mul *= 0.5;
+                        return;
+                    }
+                    if (action.type.any(TecType.銃術, TecType.弓術)) {
+                        dmg.hit.mul *= 1.5;
+                        return;
+                    }
                 }
             });
         }
@@ -700,6 +706,25 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    Tec.ファイアボール = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ファイアボール", info: "一体とその両脇に魔法攻撃",
+                sort: TecSort.魔法, type: TecType.魔法, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1.2, mp: 8,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                _super.run.call(this, attacker, target);
+                for (const u of target.getAdjacentUnits()) {
+                    _super.run.call(this, attacker, u);
+                }
+            });
+        }
+    };
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
     //                           type:TecType.魔法, targetings:Targeting.SELECT,
@@ -709,7 +734,7 @@ ActiveTec._valueOf = new Map();
     /**無習得技. */
     Tec.魔法カウンター = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "魔法カウンター", info: "！カウンター技用",
+            super({ uniqueName: "魔法カウンター", info: "！カウンター・連携用",
                 sort: TecSort.魔法, type: TecType.魔法, targetings: Targeting.SELECT,
                 mul: 0.5, num: 1, hit: 1,
             });
@@ -736,6 +761,23 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type === TecType.魔法) {
                     dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    /**ウィザード. */
+    Tec.魔道連携 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "魔道連携", info: "味方の魔法攻撃時、連携攻撃",
+                sort: TecSort.魔法, type: TecType.魔法,
+            });
+        }
+        memberAfterDoAtk(me, action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.counter) {
+                    Util.msg.set(`${me.name}の連携攻撃`);
+                    yield wait();
+                    yield Tec.魔法カウンター.run(me, target);
                 }
             });
         }
@@ -1316,6 +1358,21 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    Tec.光合成 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "光合成", info: "一体を<治10>(毎ターン強回復)状態にする",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 6,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                Unit.setCondition(target, Condition.治, 10);
+                yield wait();
+            });
+        }
+    };
     Tec.セル = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "セル", info: "自分を＜吸収＞状態にする",
@@ -1598,6 +1655,20 @@ ActiveTec._valueOf = new Map();
                 this.effect(attacker, target, new Dmg());
                 Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
                 yield wait();
+            });
+        }
+    };
+    /**ノーム. */
+    Tec.良き占い = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "良き占い", info: "味方全体を光依存で回復",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 6,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Tec.数珠.run(attacker, target);
             });
         }
     };

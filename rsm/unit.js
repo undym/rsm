@@ -69,6 +69,7 @@ Prm.EXP = new Prm("Exp");
 Prm.BP = new Prm("BP");
 Prm.EP = new Prm("EP");
 Prm.MAX_EP = new Prm("最大EP");
+Prm.SP = new Prm("SP");
 export class Unit {
     //---------------------------------------------------------
     //
@@ -177,6 +178,15 @@ export class Unit {
         this.prm(Prm.EP).base = value | 0;
         this.fixPrm(Prm.EP, Prm.MAX_EP);
     }
+    get sp() { return this.prm(Prm.SP).base; }
+    set sp(value) {
+        if (value >= 1) {
+            this.prm(Prm.SP).base = 1;
+        }
+        else {
+            this.prm(Prm.SP).base = 0;
+        }
+    }
     get exp() { return this.prm(Prm.EXP).base; }
     set exp(value) { this.prm(Prm.EXP).base = value | 0; }
     get bp() { return this.prm(Prm.BP).base; }
@@ -274,6 +284,9 @@ export class Unit {
     }
     afterBeAtk(action, attacker, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterBeAtk(action, attacker, this, dmg); })); });
+    }
+    memberAfterDoAtk(action, attacker, target, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.memberAfterDoAtk(this, action, attacker, target, dmg); })); });
     }
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseEnd(this); })); });
@@ -415,8 +428,8 @@ export class Unit {
     //
     //
     //---------------------------------------------------------
-    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。!existsは含めない。deadは含める.*/
-    getParty(withHimSelf = true) {
+    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。デフォルトでは含めない。!existsは含めない。deadは含める.*/
+    getParty(withHimSelf = false) {
         const searchMember = (units) => {
             let res = [];
             for (const u of units) {
@@ -435,6 +448,31 @@ export class Unit {
         }
         if (this instanceof EUnit) {
             return searchMember(Unit.enemies);
+        }
+        return [];
+    }
+    /**このユニットが隣接しているユニット。 */
+    getAdjacentUnits(top = true, bottom = true) {
+        const search = (units) => {
+            for (let i = 0; i < units.length; i++) {
+                if (units[i] === this) {
+                    const res = [];
+                    if (i > 0) {
+                        res.push(units[i - 1]);
+                    }
+                    if (i < units.length - 1) {
+                        res.push(units[i + 1]);
+                    }
+                    return res;
+                }
+            }
+            return [];
+        };
+        if (this instanceof PUnit) {
+            return search(Unit.players);
+        }
+        if (this instanceof EUnit) {
+            return search(Unit.enemies);
         }
         return [];
     }
@@ -486,7 +524,7 @@ export class PUnit extends Unit {
     getNextLvExp() {
         const lv = this.prm(Prm.LV).base;
         const grade = (lv / 100 + 1) | 0;
-        return (lv * grade * 5) | 0;
+        return (lv * grade * 50) | 0;
     }
     //---------------------------------------------------------
     //

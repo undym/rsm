@@ -41,17 +41,17 @@ export class DungeonArea{
 }
 
 export namespace DungeonArea{
-    export const 中央島 =    new DungeonArea("中央島", "img/area_中央島.jpg",
+    export const 中央島 =    new DungeonArea("中央島", "img/map1.jpg",
                                 ()=>[
                                     [DungeonArea.黒地域, new Rect(0.7, 0.4, 0.3, 0.1), ()=>Dungeon.黒平原.isVisible()],
                                 ]
                             );
-    export const 黒地域 =    new DungeonArea("黒地域", "img/area_黒地域.jpg",
+    export const 黒地域 =    new DungeonArea("黒地域", "img/map2.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ]
                             );                          
-    export const 月 =       new DungeonArea("月", "img/area_月.jpg",
+    export const 月 =       new DungeonArea("月", "img/map4.jpg",
         ()=>[
             // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
         ]
@@ -141,6 +141,7 @@ export abstract class Dungeon{
             exItems:()=>Num[],
             trendItems:()=>Item[],
             trendEvents?:()=>([DungeonEvent,number][]),
+            beast?:boolean,//獣ジョブが出るか
         }
     ){
 
@@ -203,9 +204,12 @@ export abstract class Dungeon{
 
     rndJob():Job{
         const lv = this.enemyLv;
-        for(let i = 0; i < 7; i++){
+        for(let i = 0; i < 10; i++){
             const tmp = choice( Job.values );
-            if(tmp.appearLv <= lv){return tmp;}
+            if(tmp.appearLv <= lv){
+                if(tmp.beast && !this.args.beast){continue;}
+                return tmp;
+            }
         }
         return Job.訓練生;
     }
@@ -533,10 +537,11 @@ export namespace Dungeon{
                 await Story1.runMain12();
 
                 DungeonArea.now = DungeonArea.月;
-                Unit.setPlayer(0, Player.一号);
-                Unit.setPlayer(1, Player.雪);
-                Player.一号.member = true;
-                Player.雪.member = true;
+                for(let i = 0; i < Unit.players.length; i++){
+                    Unit.setPlayer(i, Player.empty);
+                }
+                Player.一号.join();
+                Player.雪.join();
             }
         }
     };
@@ -671,11 +676,12 @@ export namespace Dungeon{
     ///////////////////////////////////////////////////////////////////////
     export const                         テント樹林:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"テント樹林", info:"木+",
-                                rank:0, enemyLv:0, au:150, btn:[DungeonArea.月, new Rect(0.35, 0.1, 0.3, 0.1)],
+                                rank:0, enemyLv:0, au:100, btn:[DungeonArea.月, new Rect(0.35, 0.1, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.鎖のマント],
                                 exItems:    ()=>[Eq.アリランナイフ],
                                 trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
+                                beast:true,
         });}
         isVisible = ()=>Dungeon.トトの郊外.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -697,20 +703,15 @@ export namespace Dungeon{
                 await Story1.runMain13();
             }
         }
-        rndJob():Job{
-            if(Math.random() < 0.3){
-                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
-            }
-            return super.rndJob();
-        }
     };
     export const                         小人集落周辺:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"小人集落周辺", info:"木+",
-                                rank:1, enemyLv:3, au:200, btn:[DungeonArea.月, new Rect(0.45, 0.2, 0.3, 0.1)],
+                                rank:1, enemyLv:3, au:150, btn:[DungeonArea.月, new Rect(0.45, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.チェーンベルト],
                                 exItems:    ()=>[Eq.アメーバリング],
                                 trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
+                                beast:true,
         });}
         isVisible = ()=>Dungeon.テント樹林.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -732,19 +733,14 @@ export namespace Dungeon{
                 await Story1.runMain14();
             }
         }
-        rndJob():Job{
-            if(Math.random() < 0.3){
-                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
-            }
-            return super.rndJob();
-        }
     };
     export const                         聖なる洞窟:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"聖なる洞窟", info:"",
-                                rank:2, enemyLv:7, au:250, btn:[DungeonArea.月, new Rect(0.40, 0.45, 0.3, 0.1)],
+                                rank:2, enemyLv:7, au:200, btn:[DungeonArea.月, new Rect(0.40, 0.45, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.アンパストベルト],
                                 exItems:    ()=>[Eq.ルナローブ],
                                 trendItems: ()=>[Item.粘土, Item.石, Item.銅, Item.銀, Item.金],
+                                beast:true,
         });}
         isVisible = ()=>Dungeon.小人集落周辺.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -765,18 +761,38 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story1.runMain15();
 
-                Unit.setPlayer(0, Player.一号);
-                Unit.setPlayer(1, Player.雪);
-                Player.一号.member = true;
-                Player.雪.member = true;
+                Player.ベガ.join();
             }
-        }
-        rndJob():Job{
-            if(Math.random() < 0.3){
-                return choice([ Job.雷鳥, Job.アメーバ, Job.妖精 ]);
-            }
-            return super.rndJob();
         }
     };
+    // export const                         月狼の森:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"月狼の森", info:"",
+    //                             rank:3, enemyLv:10, au:250, btn:[DungeonArea.月, new Rect(0.70, 0.6, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[],
+                                // trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+    //                             beast:true,
+    //     });}
+    //     isVisible = ()=>Dungeon.聖なる洞窟.dungeonClearCount > 0;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.鬼火.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "ビッグファイヤー";
+    //         e.prm(Prm.MAX_HP).base = 650;
+    //     };
+    //     setExInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "霊体オルガ";
+    //         e.img = new Img("img/unit/orga.png");
+    //         e.prm(Prm.MAX_HP).base = 800;
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //         if(this.dungeonClearCount === 1){
+    //             await Story1.runMain16();
+    //         }
+    //     }
+    // };
 }
 

@@ -66,6 +66,7 @@ export class Prm{
 
     static readonly EP      = new Prm("EP");
     static readonly MAX_EP  = new Prm("最大EP");
+    static readonly SP      = new Prm("SP");
 
 
 
@@ -232,6 +233,11 @@ export abstract class Unit{
         this.prm(Prm.EP).base = value|0;
         this.fixPrm(Prm.EP, Prm.MAX_EP);
     }
+    get sp():number      {return this.prm(Prm.SP).base;}
+    set sp(value:number) {
+        if(value >= 1) {this.prm(Prm.SP).base = 1;}
+        else           {this.prm(Prm.SP).base = 0;}
+    }
     get exp():number     {return this.prm(Prm.EXP).base;}
     set exp(value:number){this.prm(Prm.EXP).base = value|0;}
 
@@ -314,6 +320,7 @@ export abstract class Unit{
     async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
     async afterDoAtk(action:Action, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.afterDoAtk(action, this, target, dmg));}
     async afterBeAtk(action:Action, attacker:Unit, dmg:Dmg) {await this.force(async f=> await f.afterBeAtk(action, attacker, this, dmg));}
+    async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
     async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
 
     protected async force(forceDlgt:(f:Force)=>void){
@@ -453,8 +460,8 @@ export abstract class Unit{
     //
     //
     //---------------------------------------------------------
-    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。!existsは含めない。deadは含める.*/
-    getParty(withHimSelf = true):ReadonlyArray<Unit>{
+    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。デフォルトでは含めない。!existsは含めない。deadは含める.*/
+    getParty(withHimSelf = false):Unit[]{
         const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
             let res:Unit[] = [];
             for(const u of units){
@@ -470,6 +477,27 @@ export abstract class Unit{
         }
         if(this instanceof EUnit){
             return searchMember( Unit.enemies );
+        }
+        return [];
+    }
+    /**このユニットが隣接しているユニット。 */
+    getAdjacentUnits(top = true, bottom = true):Unit[]{
+        const search = (units:ReadonlyArray<Unit>):Unit[]=>{
+            for(let i = 0; i < units.length; i++){
+                if(units[i] === this){
+                    const res:Unit[] = [];
+                    if(i > 0)                {res.push(units[i-1]);}
+                    if(i < units.length - 1) {res.push(units[i+1]);}
+                    return res;
+                }
+            }
+            return [];
+        }
+        if(this instanceof PUnit){
+            return search(Unit.players);
+        }
+        if(this instanceof EUnit){
+            return search(Unit.enemies);
         }
         return [];
     }
@@ -526,7 +554,7 @@ export class PUnit extends Unit{
     getNextLvExp():number{
         const lv = this.prm(Prm.LV).base;
         const grade = (lv/100+1)|0;
-        return (lv * grade * 5)|0;
+        return (lv * grade * 50)|0;
     }
     //---------------------------------------------------------
     //

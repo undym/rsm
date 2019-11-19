@@ -1075,6 +1075,18 @@ Item.DEF_NUM_LIMIT = 9999;
     //     constructor(){super({uniqueName:"セーブのメモ", info:"「このゲームに自動セーブの機能はないらしい」と書かれている", 
     //                             type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
     // };
+    Item.EPのメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "EPのメモ", info: "「EPはダンジョンに侵入する時に回復する。なので、EPを消費する技は基本的に一度の侵入で一回しか使えない」と書かれている",
+                type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.SPのメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "SPのメモ", info: "「SPは戦闘開始時に回復する。なので、SPを消費する技は基本的に一度の戦闘で一回しか使えない」と書かれている",
+                type: ItemType.メモ, rank: 2, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
     Item.夏のメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "夏のメモ", info: "「夏はいつ終わるの？」と書かれている",

@@ -730,15 +730,6 @@ export namespace Story1{
                 [f_pea,    "ピアー", "「･････････、そうじゃの･････････」"],
                 [f_empty,  "",      "帝国軍は、シキと雪、そして数名の兵士を残し、地球から去った。"],
                 [f_empty,  "",      "ルイン達は、キューブを再起動させるため、地球塔を昇り出した。"],
-
-
-                [f_empty,  "",      ""],
-                [f_pea,    "ピアー", ""],
-                [f_luka,   "luka",  ""],
-                [f_siki,   "シキ",  ""],
-                [f_ruin,   "ルイン", ""],
-                [f_yuki,   "雪",    ""],
-                [f_1,      "一号",  ""],
             ]
         );
 
@@ -749,6 +740,101 @@ export namespace Story1{
         Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第18話『ルインの願い』", Color.GRAY); Sound.moji.play(); await cwait();
     };
+    /**
+     * luka加入。
+     * 本来一号と雪は加入したままだが、外れるようにするべきか。
+     */
+    export const runMain19 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_pea    = new Img("img/face/p_pea.jpg");
+        const f_yuki = new Img("img/face/p_yuki2.jpg");
+        const f_luka2   = new Img("img/face/p_luka2.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+        const f_vega = new Img("img/face/p_vega.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic5.jpg"),
+            [
+                [f_empty,  "",      "地球塔１階から乗る事の出来る高速エレベータは、最上階直通の１本のみだった。"],
+                [f_empty,  "",      "そのエレベータでは、ブレインキューブのある中枢室へたどり着く事はできない。"],
+                [f_empty,  "",      "キューブのある中枢室は、6666階にあるとシキは言った。"],
+            ]
+        );
+
+        await s.set(
+            new Img("img/story/s_pic22.jpg"),
+            [
+                [f_empty,  "",      "ルイン達は、自分達の足で、膨大な距離の階段を登り切らなくてはならなかった。"],
+                [f_empty,  "",      "階段途中では、様々な空洞や障害物や、塔内部に住まう異質な生物などが行く手を阻んだ。"],
+                [f_empty,  "",      "地球塔２００階部分に辿りついた時点で、一日目が終わった。"],
+                [f_empty,  "",      "･･･皆、疲労困憊し、冷たいドルバン鉱の床の上に倒れこんだ。"],
+                [f_empty,  "",      "皆の意識が眠りに溶け始めようとしたその時、２００階の巨大な空洞内にアーク銃の電撃音が２発鳴り響いた。"],
+                [f_pea,    "ピアー", "「どなんした！！！」"],
+                [f_empty,  "",      "左脇腹がごっそり削られた一号が、lukaの上にかぶさるように倒れていた。"],
+                [f_empty,  "",      "脇腹の周囲にはまだ発光するアーク塵が舞っていた。"],
+                [f_empty,  "",      "アーク銃を持っていたのは雪だった。"],
+                [f_pea,    "ピアー", "「･･･お･･････おまえ、何しとんじゃ！！おい！！！！！」"],
+                [f_yuki,   "雪",    "「ち･･･違う･･･」"],
+                [f_empty,  "",      "唖然としていたlukaが、正気を取り戻し一号の体をゆっくりと床に寝かせた。"],
+                [f_luka2,  "luka",  "「い･･･一号ぉぉ！！！･･･」"],
+                [f_empty,  "",      "一号の大きな穴があいた左脇腹を見て、もはや助けようがない事を嫌がおうにも認めざるを得ない。"],
+                [f_luka2,  "luka",  "「ご、ごめんなさい･･･ごめんなさい一号･･･！！！」"],
+                [f_empty,  "",      "lukaは、嗚咽しながら目からボロボロと涙を落とした。"],
+                [f_yuki,   "雪",    "「はぁ･･･はぁ･･･、何が大きな使命だ･･･おまえのあの言葉はでまかせだったのかよ！」"],
+                [f_pea,    "ピアー", "「おい！！！！！おまえ！！！！」"],
+                [f_empty,  "",      "ピアーが雪に掴みかかった。"],
+                [f_luka2,  "luka",  "「違うのよっ、ピアー･･･！！」"],
+                [f_luka2,  "luka",  "「私が･･･私が･･･いけないのよ･･･」"],
+                [f_empty,  "",      "･･････皆が寝静まろうとしていた時、lukaはアーク銃で雪を殺そうとしたのだった。"],
+                [f_empty,  "",      "眠りに陥りかけてはいたものの、特殊な戦闘訓練を積んだ雪が、lukaの襲撃に気づくのは容易かった。"],
+                [f_empty,  "",      "lukaが発砲したアークビームを寸前で交わすと、体当たりでlukaを床に倒れさせた。"],
+                [f_empty,  "",      "雪は、転がり落ちたアーク銃をすぐさま拾い上げ、起きあがろうとするlukaに向けて引き金を引いた。"],
+                [f_empty,  "",      "アークの光が暗い空洞内を赤く照らした。"],
+                [f_empty,  "",      "アークビームは、咄嗟にlukaの前に飛び出た一号の脇腹を焼き消した。"],
+                [f_luka2,  "luka",  "「･･･ごめんなさい･･･一号･･･ごめんなさい･･･」"],
+                [f_1,      "一号",  "「いいんだ･･･luka･･･」"],
+                [f_1,      "一号",  "「君の母親を殺したやつだ･･･、報復は当然だ･･･」"],
+                [f_1,      "一号",  "「その憎しみはこの先も無くならないだろう･･･」"],
+                [f_1,      "一号",  "「許してやれなんて言わない･･････」"],
+                [f_1,      "一号",  "「･･･でも･･･、これで･･･ひとまず復讐は中断でいいだろう･･･？」"],
+                [f_empty,  "",      "lukaは、泣きながら首を横にふった。"],
+                [f_empty,  "",      "否定ではなく、一号が苦しみながら絶え絶えに話す姿への悲愴故だった。"],
+                [f_1,      "一号",  "「･･･オレも･･･雪を･･･恨んでた･･･」"],
+                [f_1,      "一号",  "「でも･･･やっとできた･･･仲間なんだ･･･」"],
+                [f_1,      "一号",  "「lukaも･･･雪も･･･、それからみんな･･･誰一人として失いたくはないんだ･･･」"],
+                [f_luka2,  "luka",  "「でも、一号が死んじゃうじゃない！！」"],
+                [f_empty,  "",      "一号は苦痛に耐えながらも、ニヤっと笑った。"],
+                [f_luka2,  "luka",  "「何がおかしいの？」"],
+                [f_yuki,   "雪",    "「フン･･･そいつは、それくらいじゃ死にゃぁしないんだよ･･･」"],
+                [f_empty,  "",      "lukaの後で、下を俯き、雪が言った。"],
+                [f_luka2,  "luka",  "「本当･･･なの？！」"],
+                [f_1,      "一号",  "「本当だよ･･････、でも再生に時間がかかる･･･」"],
+                [f_luka2,  "luka",  "「どれくらい？」"],
+                [f_1,      "一号",  "「標準時間で１ヶ月くらいだ･･･」"],
+                [f_1,      "一号",  "「中枢室で会おう･･････それまでお別れだ」"],
+                [f_1,      "一号",  "「オレをここに置いていくんだ･･･」"],
+                [f_luka2,  "luka",  "「私も残るわ･･･！！」"],
+                [f_empty,  "",      "ドサっという音がlukaの背から聞こえた。"],
+                [f_empty,  "",      "雪が口から血を吐き、倒れたのだった。"],
+                [f_1,      "一号",  "「ほらな･･････、人数が足りない。オレには雪が一緒だ。lukaはルイン達と行くんだ」"],
+                [f_luka2,  "luka",  "「ど、どういうこと？！」"],
+                [f_vega,   "ベガ",  "「その雪と言う男は、やがてその男ではなくなるのだ･･･」"],
+                [f_empty,  "",      "暗闇の中から赤い目だけを光らせる龍が静かに言った。"],
+                [f_vega,   "ベガ",  "「その男は、変異細胞におかされている･･･。メタモルフォーゼが終わるまで動けまい･･･」"],
+                [f_luka2,  "luka",  "「で･･･でも･･･」"],
+                [f_empty,  "",      "･･････僕達は、一号と雪の二人を残し･･･更なる高みへと昇り出した。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第19話『消せない記憶、立ち止まれない時間』", Color.GRAY); Sound.moji.play(); await cwait();
+    };
 }
 
 
@@ -758,12 +844,13 @@ export namespace Story1{
         const f_siki  = new Img("img/face/p_siki.jpg");
         const f_yuki = new Img("img/face/p_yuki2.jpg");
         const f_luka   = new Img("img/face/p_luka.jpg");
+        const f_luka2   = new Img("img/face/p_luka2.jpg");
         const f_memo = new Img("img/face/p_sol.jpg");
         const f_vega = new Img("img/face/p_vega.jpg");
         const f_pea    = new Img("img/face/p_pea.jpg");
         const f_ruin   = new Img("img/face/p_ruin.jpg");
 
-    export const runMain18 = async()=>{
+    export const runMain19 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();
