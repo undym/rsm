@@ -50,8 +50,6 @@ export class Mix {
     static valueOf(uniqueName) {
         return this._valueOf.get(uniqueName);
     }
-    // readonly materials:{object:Num, num:number}[] = [];
-    // readonly result:{object:Num, num:number}|undefined;
     get materials() {
         let res = [];
         for (const m of this.args.materials()) {
@@ -302,11 +300,6 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     //     materials:()=>[[Item.草, 5], [Item.枝, 1]],
     //     isVisible:()=>草の服.count > 0,
     // });
-    // const           五輪の書:Mix = new Mix({
-    //     uniqueName:"五輪の書", limit:Mix.LIMIT_INF,
-    //     result:()=>[Item.五輪の書, 1],
-    //     materials:()=>[[Item.クリスタル, 1], [Item.イズミジュエリー, 3], [Item.紙, 10]],
-    // });
     // const           天地創造の書:Mix = new Mix({
     //     uniqueName:"天地創造の書", limit:Mix.LIMIT_INF,
     //     result:()=>[Item.天地創造の書, 1],
@@ -317,6 +310,12 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         result: () => [Item.兵法指南の書, 1],
         materials: () => [[Item.ファーストキス, 3], [Item.杉材, 10], [Item.ヒノキ材, 10], [Item.針金, 6],],
         isVisible: () => ルインドアースLv9.count > 0,
+    });
+    const 五輪の書 = new Mix({
+        uniqueName: "五輪の書", limit: Mix.LIMIT_INF,
+        result: () => [Item.五輪の書, 1],
+        materials: () => [[Item.クリスタル, 3], [Item.イズミジュエリー, 1], [Item.杉材, 10]],
+        isVisible: () => ルインドアースLv12.count > 0,
     });
     const 杉材 = new Mix({
         uniqueName: "杉材", limit: Mix.LIMIT_INF,

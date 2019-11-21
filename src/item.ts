@@ -926,8 +926,8 @@ export namespace Item{
     };
     export const                         兵法指南の書:Item = 
                     createAddTecNumBook("兵法指南の書", 6);
-    // export const                         五輪の書:Item = 
-    //                 createAddTecNumBook("五輪の書", 7);
+    export const                         五輪の書:Item = 
+                    createAddTecNumBook("五輪の書", 7);
     // export const                         天地創造の書:Item = 
     //                 createAddTecNumBook("天地創造の書", 8);
     //-----------------------------------------------------------------
@@ -1216,8 +1216,16 @@ export namespace Item{
         constructor(){super({uniqueName:"錫", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
+    export const                         クリスタル:Item = new class extends Item{
+        constructor(){super({uniqueName:"クリスタル", info:"",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
     export const                         金:Item = new class extends Item{
         constructor(){super({uniqueName:"金", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         イズミジュエリー:Item = new class extends Item{
+        constructor(){super({uniqueName:"イズミジュエリー", info:"",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
     export const                         良い土:Item = new class extends Item{

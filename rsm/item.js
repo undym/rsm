@@ -1054,8 +1054,7 @@ Item.DEF_NUM_LIMIT = 9999;
         };
     };
     Item.兵法指南の書 = createAddTecNumBook("兵法指南の書", 6);
-    // export const                         五輪の書:Item = 
-    //                 createAddTecNumBook("五輪の書", 7);
+    Item.五輪の書 = createAddTecNumBook("五輪の書", 7);
     // export const                         天地創造の書:Item = 
     //                 createAddTecNumBook("天地創造の書", 8);
     //-----------------------------------------------------------------
@@ -1469,9 +1468,21 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.クリスタル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "クリスタル", info: "",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.金 = new class extends Item {
         constructor() {
             super({ uniqueName: "金", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.イズミジュエリー = new class extends Item {
+        constructor() {
+            super({ uniqueName: "イズミジュエリー", info: "",
                 type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
