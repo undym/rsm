@@ -1001,34 +1001,32 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
-    Item.ヴァンパイアの血 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ヴァンパイアの血", info: "ヴァンパイアに転職できるようになる",
-                type: ItemType.ドーピング, rank: 6, drop: ItemDrop.NO,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    if (target instanceof PUnit) {
-                        Sound.exp.play();
-                        target.setJobLv(Job.ヴァンパイア, 1);
-                    }
-                }),
-            });
-        }
-        canUse(user, targets) {
-            for (const t of targets) {
-                if (!(t instanceof PUnit && t.getJobLv(Job.ヴァンパイア) === 0)) {
-                    return false;
-                }
+    const createBlood = (uniqueName, jobName, job) => {
+        return new class extends Item {
+            constructor() {
+                super({ uniqueName: uniqueName, info: jobName + "に転職できるようになる",
+                    type: ItemType.ドーピング, rank: 6, drop: ItemDrop.NO,
+                    use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                        if (target instanceof PUnit) {
+                            Sound.exp.play();
+                            target.setJobLv(job(), 1);
+                        }
+                    }),
+                });
             }
-            return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
-        }
+            canUse(user, targets) {
+                for (const t of targets) {
+                    if (!(t instanceof PUnit && t.getJobLv(job()) === 0)) {
+                        return false;
+                    }
+                }
+                return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+            }
+        };
     };
-    Item.霊術戦士の血 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "霊術戦士の血", info: "未実装",
-                type: ItemType.ドーピング, rank: 7, drop: ItemDrop.NO,
-            });
-        }
-    };
+    Item.ヴァンパイアの血 = createBlood("ヴァンパイアの血", "ヴァンパイア", () => Job.ヴァンパイア);
+    Item.霊術戦士の血 = createBlood("霊術戦士の血", "霊術戦士", () => Job.霊術戦士);
+    Item.ホークマンの血 = createBlood("ホークマンの血", "ホークマン", () => Job.ホークマン);
     //-----------------------------------------------------------------
     //
     //書

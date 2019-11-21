@@ -2,13 +2,7 @@ import { Unit, Prm } from "./unit.js";
 import { choice } from "./undym/random.js";
 
 
-export interface IForce{
-    force:Force;
-}
 export class Force{
-    private static _emptya:Force;
-    static get empty():Force{return this._emptya ? this._emptya : (this._emptya = new Force());}
-
     async equip(unit:Unit){};
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}

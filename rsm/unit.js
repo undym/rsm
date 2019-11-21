@@ -100,7 +100,7 @@ export class Unit {
         for (let type of ConditionType.values) {
             this.conditions.push({ condition: Condition.empty, value: 0 });
         }
-        for (const pos of EqPos.values()) {
+        for (const pos of EqPos.values) {
             this.equips.push(Eq.getDef(pos));
         }
         for (let i = 0; i < Unit.EAR_NUM; i++) {
@@ -409,6 +409,7 @@ export class Unit {
     addInvisibleCondition(iCondition) {
         this.invisibleConditions.push(iCondition);
     }
+    getInvisibleConditions() { return this.invisibleConditions; }
     //---------------------------------------------------------
     //
     //Eq
@@ -504,7 +505,10 @@ export class PUnit extends Unit {
     addExp(exp) {
         return __awaiter(this, void 0, void 0, function* () {
             this.prm(Prm.EXP).base += exp;
-            if (this.prm(Prm.EXP).base >= this.getNextLvExp()) {
+            if (this.prm(Prm.EXP).base >= this.getNextLvExp()
+                && this.prm(Prm.LV).base < 99
+                //&& (this.prm(Prm.LV).base < 99 && Mix.上限突破99.count === 0)
+                && this.prm(Prm.LV).base < 999) {
                 this.prm(Prm.LV).base++;
                 this.prm(Prm.EXP).base = 0;
                 Sound.lvup.play();
@@ -524,7 +528,7 @@ export class PUnit extends Unit {
     getNextLvExp() {
         const lv = this.prm(Prm.LV).base;
         const grade = (lv / 100 + 1) | 0;
-        return (lv * grade * 50) | 0;
+        return (lv * grade * 5) | 0;
     }
     //---------------------------------------------------------
     //

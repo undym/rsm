@@ -33,6 +33,7 @@ import { Mix } from "../mix.js";
 import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
 import { Sound } from "../sound.js";
+import { MemberChangeScene } from "./memberchangescene.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -53,6 +54,7 @@ export class TownScene extends Scene {
                 .add(() => `[${d()}]`)
                 .add(() => `Rank:${d().rank}`)
                 .add(() => `Lv:${d().enemyLv}`)
+                .add(() => d().info)
                 .add(() => `攻略回数:${d().dungeonClearCount}`, () => d().dungeonClearCount > 0 ? Color.WHITE : Color.GRAY)
                 .add(() => `鍵:${d().treasureKey}`)
                 .add(() => `Extra:`)
@@ -229,6 +231,14 @@ class TownBtn {
                 push: elm => {
                     Sound.system.play();
                     Scene.load(new MeisouScene());
+                },
+            });
+        }
+        if (Dungeon.魔鳥の岩壁.dungeonClearCount > 0 || Debug.debugMode) {
+            l.add({
+                center: () => "パーティ",
+                push: elm => {
+                    Scene.load(new MemberChangeScene());
                 },
             });
         }

@@ -875,28 +875,33 @@ export namespace Item{
                                 type:ItemType.ドーピング, rank:1, drop:ItemDrop.BOX,
         })}
     };
-    export const                         ヴァンパイアの血:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァンパイアの血", info:"ヴァンパイアに転職できるようになる",
-                                type:ItemType.ドーピング, rank:6, drop:ItemDrop.NO,
-                                use:async(user,target)=>{
-                                    if(target instanceof PUnit){
-                                        Sound.exp.play();
-                                        target.setJobLv(Job.ヴァンパイア, 1);
-                                    }
-                                },
-        })}
-        canUse(user:Unit, targets:Unit[]){
-            for(const t of targets){
-                if(!(t instanceof PUnit && t.getJobLv(Job.ヴァンパイア) === 0)){return false;}
+
+
+    const createBlood = (uniqueName:string, jobName:string, job:()=>Job)=>{
+        return new class extends Item{
+            constructor(){super({uniqueName:uniqueName, info:jobName+"に転職できるようになる",
+                                    type:ItemType.ドーピング, rank:6, drop:ItemDrop.NO,
+                                    use:async(user,target)=>{
+                                        if(target instanceof PUnit){
+                                            Sound.exp.play();
+                                            target.setJobLv(job(), 1);
+                                        }
+                                    },
+            })}
+            canUse(user:Unit, targets:Unit[]){
+                for(const t of targets){
+                    if(!(t instanceof PUnit && t.getJobLv(job()) === 0)){return false;}
+                }
+                return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
             }
-            return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
-        }
+        };
     };
-    export const                         霊術戦士の血:Item = new class extends Item{
-        constructor(){super({uniqueName:"霊術戦士の血", info:"未実装",
-                                type:ItemType.ドーピング, rank:7, drop:ItemDrop.NO,
-        })}
-    };
+    export const ヴァンパイアの血 = createBlood(
+                "ヴァンパイアの血", "ヴァンパイア", ()=>Job.ヴァンパイア);
+    export const 霊術戦士の血 = createBlood(
+                "霊術戦士の血", "霊術戦士", ()=>Job.霊術戦士);
+    export const ホークマンの血 = createBlood(
+                "ホークマンの血", "ホークマン", ()=>Job.ホークマン);
     //-----------------------------------------------------------------
     //
     //書

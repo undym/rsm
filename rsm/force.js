@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { choice } from "./undym/random.js";
 export class Force {
-    static get empty() { return this._emptya ? this._emptya : (this._emptya = new Force()); }
     equip(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }

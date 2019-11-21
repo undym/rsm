@@ -320,7 +320,7 @@ export class Labels extends ILayout{
         return this;
     }
 
-    addLayout(l:ILayout, ratioH:()=>number):this{
+    addLayout(l:ILayout, ratioH?:()=>number):this{
         this.elms.push({
             ctrl:bounds=>{
                 l.ctrl(bounds);
@@ -328,7 +328,7 @@ export class Labels extends ILayout{
             draw:bounds=>{
                 l.draw(bounds);
             },
-            h:()=>ratioH(),
+            h:()=>ratioH ? ratioH() : this.font.ratioH,
 
         });
         return this;

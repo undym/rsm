@@ -154,7 +154,7 @@ export class EqScene extends Scene{
                         (this.resetList = (keepScroll)=>{
                             this.list.clear(keepScroll);
                             this.setEarList();
-                            for(const pos of EqPos.values()){
+                            for(const pos of EqPos.values){
                                 this.setList( pos );
                             }
                         })(false);
@@ -171,7 +171,7 @@ export class EqScene extends Scene{
                     }
                 });
             
-                for(let pos of EqPos.values()){
+                for(let pos of EqPos.values){
                     typeList.add({
                         center:()=>`${pos}`,
                         push:elm=>{

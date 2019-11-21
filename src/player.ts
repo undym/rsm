@@ -238,82 +238,9 @@ const setBeastJobChangeList = (map:Map<Job,true>, u:PUnit)=>{
     }
 
     add(Job.アメーバ, [Job.ドラゴン]);
+        add(Job.鬼火, [Job.アメーバ]);
     add(Job.ノーム, [Job.ドラゴン]);
+        add(Job.妖精, [Job.ノーム]);
+    add(Job.カリストコウモリ, [Job.ドラゴン]);
+        add(Job.雷鳥, [Job.カリストコウモリ]);
 };
-// //--------------------------------------------------
-// //
-// //獣
-// //
-// //--------------------------------------------------
-// //TODO
-// export const                         雷鳥:Job = new class extends Job{
-//     constructor(){super({uniqueName:"雷鳥", info:"",
-//                             appearLv:0, img:new Img("img/unit/雷鳥.png"),
-//                             lvupExp:Job.DEF_LVUP_EXP * 1,
-//                             canJobChange:p=> false,
-//                             growthPrms:()=>[[Prm.ARR, 1]],
-//                             learningTecs:()=>[],
-//                             beast:true,
-//     });}
-//     setEnemyInner(e:EUnit){
-//         e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る];
-//     }
-// };
-// //TODO
-// export const                         アメーバ:Job = new class extends Job{
-//     constructor(){super({uniqueName:"アメーバ", info:"",
-//                             appearLv:8, img:new Img("img/unit/アメーバ.png"),
-//                             lvupExp:Job.DEF_LVUP_EXP * 1,
-//                             canJobChange:p=> false,
-//                             growthPrms:()=>[[Prm.MAX_MP, 1]],
-//                             learningTecs:()=>[Tec.弱体液, Tec.セル, Tec.被膜],
-//                             beast:true,
-//     });}
-//     setEnemyInner(e:EUnit){
-//         e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
-//     }
-// };
-// //TODO
-// export const                         妖精:Job = new class extends Job{
-//     constructor(){super({uniqueName:"妖精", info:"",
-//                             appearLv:0, img:new Img("img/unit/妖精.png"),
-//                             lvupExp:Job.DEF_LVUP_EXP * 1,
-//                             canJobChange:p=> false,
-//                             growthPrms:()=>[[Prm.MAG, 1]],
-//                             learningTecs:()=>[Tec.妖精の粉, Tec.MP自動回復],
-//                             beast:true,
-//     });}
-//     setEnemyInner(e:EUnit){
-//         e.tecs = [Tec.妖精の粉, Tec.妖精の粉, Tec.ヴァハ, Tec.殴る, Tec.MP自動回復];
-//     }
-// };
-// //TODO
-// export const                         ドラゴン:Job = new class extends Job{
-//     constructor(){super({uniqueName:"ドラゴン", info:"",
-//                             appearLv:95, img:new Img("img/unit/ドラゴン.png"),
-//                             lvupExp:Job.DEF_LVUP_EXP * 1,
-//                             canJobChange:p=> false,
-//                             growthPrms:()=>[[Prm.MAX_HP, 2]],
-//                             learningTecs:()=>[Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
-//                             beast:true,
-//     });}
-//     setEnemyInner(e:EUnit){
-//         e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
-//         e.prm(Prm.MAX_HP).base *= 2;
-//     }
-// };
-// //TODO
-// export const                         鬼火:Job = new class extends Job{
-//     constructor(){super({uniqueName:"鬼火", info:"",
-//                             appearLv:10, img:new Img("img/unit/鬼火.png"),
-//                             lvupExp:Job.DEF_LVUP_EXP * 1,
-//                             canJobChange:p=> false,
-//                             growthPrms:()=>[[Prm.MAG, 1]],
-//                             learningTecs:()=>[Tec.ファイアボール, Tec.魔法攻撃UP, Tec.自爆],
-//                             beast:true,
-//     });}
-//     setEnemyInner(e:EUnit){
-//         e.tecs = [Tec.ファイアボール, Tec.ファイアボール, Tec.殴る, Tec.殴る, Tec.殴る];
-//     }
-// };
-// }

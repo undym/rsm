@@ -389,7 +389,7 @@ export const FX_過去 = (target) => {
     });
 };
 FXTest.add(FX_過去.name, () => FX_過去(FXTest.target));
-export const FX_銃術 = (attacker, target) => {
+export const FX_銃 = (attacker, target) => {
     let particles = [];
     for (let i = 0; i < 20; i++) {
         const vecBase = 0.08;
@@ -450,8 +450,8 @@ export const FX_銃術 = (attacker, target) => {
         return count < over;
     });
 };
-FXTest.add(FX_銃術.name, () => FX_銃術(FXTest.attacker, FXTest.target));
-export const FX_弓術 = (attacker, target) => {
+FXTest.add(FX_銃.name, () => FX_銃(FXTest.attacker, FXTest.target));
+export const FX_弓 = (attacker, target) => {
     const rnd = target.x - attacker.x;
     const x = attacker.x + rnd * Math.random();
     const center = new Point(x, 0);
@@ -463,7 +463,7 @@ export const FX_弓術 = (attacker, target) => {
         return count < over;
     });
 };
-FXTest.add(FX_弓術.name, () => FX_弓術(FXTest.attacker, FXTest.target));
+FXTest.add(FX_弓.name, () => FX_弓(FXTest.attacker, FXTest.target));
 export const FX_回復 = (target) => {
     const addStar = (x, y) => {
         let w = Graphics.dotW * 12;

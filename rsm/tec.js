@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃術, FX_回復, FX_吸収, FX_弓術, FX_ナーガ } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ } from "./fx/fx.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
@@ -40,8 +40,8 @@ TecSort.神格 = new TecSort("神格");
 TecSort.暗黒 = new TecSort("暗黒");
 TecSort.鎖術 = new TecSort("鎖術");
 TecSort.過去 = new TecSort("過去");
-TecSort.銃術 = new TecSort("銃術");
-TecSort.弓術 = new TecSort("弓術");
+TecSort.銃 = new TecSort("銃");
+TecSort.弓 = new TecSort("弓");
 TecSort.強化 = new TecSort("強化");
 TecSort.弱体 = new TecSort("弱体");
 TecSort.回復 = new TecSort("回復");
@@ -80,6 +80,17 @@ TecType._values = [];
         createDmg(attacker, target) {
             return new Dmg({
                 pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total * 0.3,
+                def: target.prm(Prm.MAG).total,
+            });
+        }
+        effect(attacker, target, dmg) { FX_格闘(target.imgBounds.center); }
+        sound() { Sound.PUNCH.play(); }
+    };
+    TecType.槍 = new class extends TecType {
+        constructor() { super("槍"); }
+        createDmg(attacker, target) {
+            return new Dmg({
+                pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.ARR).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.MAG).total,
             });
         }
@@ -141,26 +152,37 @@ TecType._values = [];
         effect(attacker, target, dmg) { FX_過去(target.imgBounds.center); }
         sound() { Sound.kako.play(); }
     };
-    TecType.銃術 = new class extends TecType {
-        constructor() { super("銃術"); }
+    TecType.銃 = new class extends TecType {
+        constructor() { super("銃"); }
         createDmg(attacker, target) {
             return new Dmg({
                 pow: attacker.prm(Prm.GUN).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.ARR).total,
             });
         }
-        effect(attacker, target, dmg) { FX_銃術(attacker.imgBounds.center, target.imgBounds.center); }
+        effect(attacker, target, dmg) { FX_銃(attacker.imgBounds.center, target.imgBounds.center); }
         sound() { Sound.gun.play(); }
     };
-    TecType.弓術 = new class extends TecType {
-        constructor() { super("弓術"); }
+    TecType.機械 = new class extends TecType {
+        constructor() { super("機械"); }
+        createDmg(attacker, target) {
+            return new Dmg({
+                pow: attacker.prm(Prm.GUN).total * 0.5 + attacker.prm(Prm.LV).total * 1,
+                def: target.prm(Prm.ARR).total,
+            });
+        }
+        effect(attacker, target, dmg) { FX_銃(attacker.imgBounds.center, target.imgBounds.center); }
+        sound() { Sound.gun.play(); }
+    };
+    TecType.弓 = new class extends TecType {
+        constructor() { super("弓"); }
         createDmg(attacker, target) {
             return new Dmg({
                 pow: attacker.prm(Prm.ARR).total * 2 + attacker.prm(Prm.LV).total * 0.2,
                 def: target.prm(Prm.GUN).total,
             });
         }
-        effect(attacker, target, dmg) { FX_弓術(attacker.imgBounds.center, target.imgBounds.center); }
+        effect(attacker, target, dmg) { FX_弓(attacker.imgBounds.center, target.imgBounds.center); }
         sound() { Sound.ya.play(); }
     };
     TecType.状態 = new class extends TecType {
@@ -570,10 +592,27 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    /**格闘家. */
+    /**剣士. */
+    Tec.パワーファクト = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "パワーファクト", info: "行動開始時力+1%",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let value = (unit.prm(Prm.STR).base + unit.prm(Prm.STR).eq) * 0.01;
+                if (value < 1) {
+                    value = 1;
+                }
+                unit.prm(Prm.STR).battle += value;
+            });
+        }
+    };
+    /**ホークマン. */
     Tec.空中浮遊 = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "空中浮遊", info: "被格闘攻撃-50%　被銃術・弓術攻撃命中+50%",
+            super({ uniqueName: "空中浮遊", info: "被格闘攻撃-50%　被銃・弓攻撃命中+50%",
                 sort: TecSort.格闘, type: TecType.格闘,
             });
         }
@@ -584,7 +623,7 @@ ActiveTec._valueOf = new Map();
                         dmg.pow.mul *= 0.5;
                         return;
                     }
-                    if (action.type.any(TecType.銃術, TecType.弓術)) {
+                    if (action.type.any(TecType.銃, TecType.弓)) {
                         dmg.hit.mul *= 1.5;
                         return;
                     }
@@ -639,15 +678,29 @@ ActiveTec._valueOf = new Map();
     // };
     Tec.我慢 = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "我慢", info: "被格闘・神格・鎖術・銃術攻撃-20%",
+            super({ uniqueName: "我慢", info: "被格闘・神格・鎖術・銃攻撃-20%",
                 sort: TecSort.格闘, type: TecType.格闘,
             });
         }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
                     dmg.pow.mul *= 0.80;
                 }
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //槍Active
+    //
+    //--------------------------------------------------------------------------
+    /**ホークマン. */
+    Tec.槍 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "槍", info: "一体に槍攻撃",
+                sort: TecSort.格闘, type: TecType.槍, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 2,
             });
         }
     };
@@ -783,11 +836,11 @@ ActiveTec._valueOf = new Map();
         }
     };
     // export const                         保湿クリーム:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"保湿クリーム", info:"被魔法・暗黒・過去・弓術攻撃-20%",
+    //     constructor(){super({uniqueName:"保湿クリーム", info:"被魔法・暗黒・過去・弓攻撃-20%",
     //                             type:TecType.魔法,
     //     });}
     //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓術)){
+    //         if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)){
     //             dmg.pow.mul *= 0.80;
     //         }
     //     }
@@ -800,7 +853,7 @@ ActiveTec._valueOf = new Map();
     /**天使. */
     Tec.天籟 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "天籟", info: "一体に神格攻撃　自分を＜雲＞（魔法・暗黒・過去・弓術軽減）化",
+            super({ uniqueName: "天籟", info: "一体に神格攻撃　自分を＜雲＞（魔法・暗黒・過去・弓軽減）化",
                 sort: TecSort.神格, type: TecType.神格, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, mp: 1,
             });
@@ -1080,95 +1133,100 @@ ActiveTec._valueOf = new Map();
     // };
     //--------------------------------------------------------------------------
     //
-    //銃術Active
+    //銃Active
     //
     //--------------------------------------------------------------------------
     /**ガンマン. */
     Tec.撃つ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "撃つ", info: "ランダムに銃術攻撃1～2回",
-                sort: TecSort.銃術, type: TecType.銃術, targetings: Targeting.RANDOM,
+            super({ uniqueName: "撃つ", info: "ランダムに銃攻撃1～2回",
+                sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
                 mul: 1, num: 1, hit: 0.8,
             });
         }
         rndAttackNum() { return randomInt(1, 2, "[]"); }
     };
-    // export const                          二丁拳銃:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"二丁拳銃", info:"一体に銃術攻撃2回",
-    //                           type:TecType.銃術, targetings:Targeting.RANDOM,
-    //                           mul:1, num:2, hit:0.8, tp:1,
-    //     });}
-    // }
     /**ガンマン. */
     Tec.乱射 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "乱射", info: "ランダムに3～6回銃攻撃",
-                sort: TecSort.銃術, type: TecType.銃術, targetings: Targeting.RANDOM,
+                sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
                 mul: 1, num: 4, hit: 0.8, ep: 1,
             });
         }
         rndAttackNum() { return randomInt(3, 6, "[]"); }
     };
-    // export const                          ショットガン:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"ショットガン", info:"ランダムに銃術攻撃4回x0.7",
-    //                           type:TecType.銃術, targetings:Targeting.RANDOM,
-    //                           mul:0.7, num:4, hit:0.8, tp:4,
-    //                           item:()=>[[Item.散弾, 1]],
-    //     });}
-    // }
     //--------------------------------------------------------------------------
     //
-    //銃術Passive
+    //銃Passive
     //
     //--------------------------------------------------------------------------
-    // export const                         テーブルシールド:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"テーブルシールド", info:"被銃・弓攻撃-30%",
-    //                             type:TecType.銃術,
-    //     });}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.銃術, TecType.弓術)){
-    //             dmg.pow.mul *= 0.7;
-    //         }
-    //     }
-    // };
-    // export const                         魔弾:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"魔弾", info:"銃術攻撃に現在MP値を加算　毎ターンMP-10",
-    //                             type:TecType.銃術,
-    //     });}
-    //     beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type.any(TecType.銃術)){
-    //             dmg.pow.add += attacker.mp;
-    //         }
-    //     }
-    //     phaseEnd(unit:Unit){
-    //         unit.mp -= 10;
-    //     }
-    // };
-    // export const                         カイゼルの目:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"カイゼルの目", info:"銃・弓攻撃時稀にクリティカル",
-    //                             type:TecType.銃術,
-    //     });}
-    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(
-    //             action instanceof ActiveTec 
-    //             && (action.type.any(TecType.銃術, TecType.弓術))
-    //             && Math.random() < 0.25
-    //         ){
-    //             Util.msg.set("＞カイゼルの目");
-    //             dmg.pow.mul *= 1.5;
-    //         }
-    //     }
-    // };
     //--------------------------------------------------------------------------
     //
-    //弓術Active
+    //機械Active
+    //
+    //--------------------------------------------------------------------------
+    Tec.レーザー = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "レーザー", info: "一体とその両脇に機械攻撃",
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                _super.run.call(this, attacker, target);
+                for (const u of target.getAdjacentUnits()) {
+                    _super.run.call(this, attacker, u);
+                }
+            });
+        }
+    };
+    Tec.メガトン = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "メガトン", info: "一体に力x2を加えて機械攻撃",
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 3,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.STR).total;
+            dmg.abs.base += attacker.prm(Prm.STR).total;
+            return dmg;
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //機械Passive
+    //
+    //--------------------------------------------------------------------------
+    /**機械士. */
+    Tec.機械仕掛け = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "機械仕掛け", info: "毎ターン銃+1%",
+                sort: TecSort.銃, type: TecType.機械,
+            });
+        }
+        phaseEnd(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.prm(Prm.GUN).battle += unit.prm(Prm.GUN).base * 0.01 + 1;
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //弓Active
     //
     //--------------------------------------------------------------------------
     /**アーチャー. */
     Tec.射る = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "射る", info: "一体に弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.SELECT,
+            super({ uniqueName: "射る", info: "一体に弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 0.85,
             });
         }
@@ -1176,8 +1234,8 @@ ActiveTec._valueOf = new Map();
     /**アーチャー. */
     Tec.アスラの矢 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "アスラの矢", info: "全体に弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.ALL,
+            super({ uniqueName: "アスラの矢", info: "全体に弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 0.85, ep: 1,
             });
         }
@@ -1185,8 +1243,8 @@ ActiveTec._valueOf = new Map();
     /**忍者. */
     Tec.手裏剣 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "手裏剣", info: "ランダムに2～3回弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.RANDOM,
+            super({ uniqueName: "手裏剣", info: "ランダムに2～3回弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.RANDOM,
                 mul: 1, num: 1, hit: 0.8, tp: 2,
             });
         }
@@ -1195,8 +1253,8 @@ ActiveTec._valueOf = new Map();
     /**クピド. */
     Tec.ヤクシャ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ヤクシャ", info: "一体に2回弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.RANDOM,
+            super({ uniqueName: "ヤクシャ", info: "一体に2回弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.RANDOM,
                 mul: 1, num: 2, hit: 0.8, tp: 1, item: () => [[Item.夜叉の矢, 2]],
             });
         }
@@ -1204,8 +1262,8 @@ ActiveTec._valueOf = new Map();
     /**クピド. */
     Tec.ナーガ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ナーガ", info: "次の行動時、敵全体に弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.ALL,
+            super({ uniqueName: "ナーガ", info: "次の行動時、敵全体に弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 0.8, tp: 2, item: () => [[Item.降雨の矢, 4]],
             });
         }
@@ -1219,6 +1277,10 @@ ActiveTec._valueOf = new Map();
                 if (canUse) {
                     const tec = this;
                     attacker.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = Tec.ナーガ.uniqueName;
+                        }
                         phaseStart(u) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 Util.msg.set("空から矢が降り注ぐ！");
@@ -1248,8 +1310,8 @@ ActiveTec._valueOf = new Map();
     /**クピド. */
     Tec.ガルダ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ガルダ", info: "一体に弓術攻撃x2",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.SELECT,
+            super({ uniqueName: "ガルダ", info: "一体に弓攻撃x2",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
                 mul: 2, num: 1, hit: 0.8, tp: 1, item: () => [[Item.金翅鳥の矢, 1]],
             });
         }
@@ -1257,8 +1319,8 @@ ActiveTec._valueOf = new Map();
     /**クピド. */
     Tec.キンナラ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "キンナラ", info: "次の行動時、ランダムに6回弓術攻撃",
-                sort: TecSort.弓術, type: TecType.弓術, targetings: Targeting.RANDOM,
+            super({ uniqueName: "キンナラ", info: "次の行動時、ランダムに6回弓攻撃",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.RANDOM,
                 mul: 1, num: 6, hit: 0.8, tp: 2, item: () => [[Item.歌舞の矢, 6]],
             });
         }
@@ -1272,6 +1334,10 @@ ActiveTec._valueOf = new Map();
                 if (canUse) {
                     const tec = this;
                     attacker.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = Tec.キンナラ.uniqueName;
+                        }
                         phaseStart(u) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 Util.msg.set("空から矢が降り注ぐ！");
@@ -1299,14 +1365,14 @@ ActiveTec._valueOf = new Map();
         }
     };
     // export const                          ヤクシャ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"ヤクシャ", info:"一体に弓術攻撃2回　夜叉の矢",
-    //                           type:TecType.弓術, targetings:Targeting.SELECT,
+    //     constructor(){super({ uniqueName:"ヤクシャ", info:"一体に弓攻撃2回　夜叉の矢",
+    //                           type:TecType.弓, targetings:Targeting.SELECT,
     //                           mul:1, num:2, hit:0.9, tp:2, item:()=>[[Item.夜叉の矢, 1]],
     //     });}
     // }
     // export const                          フェニックスアロー:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"フェニックスアロー", info:"一体に弓術攻撃　攻撃後光依存で回復",
-    //                           type:TecType.弓術, targetings:Targeting.SELECT,
+    //     constructor(){super({ uniqueName:"フェニックスアロー", info:"一体に弓攻撃　攻撃後光依存で回復",
+    //                           type:TecType.弓, targetings:Targeting.SELECT,
     //                           mul:1, num:1, hit:0.9, mp:3, tp:2,
     //     });}
     //     async runInner(attacker:Unit, target:Unit, dmg:Dmg){
@@ -1321,12 +1387,31 @@ ActiveTec._valueOf = new Map();
     // }
     //--------------------------------------------------------------------------
     //
+    //弓Passive
+    //
+    //--------------------------------------------------------------------------
+    Tec.一点集中 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "一点集中", info: "弓攻撃+20%",
+                sort: TecSort.弓, type: TecType.弓,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
+                    dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
     //強化Active
     //
     //--------------------------------------------------------------------------
     Tec.練気 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "練気", info: "自分を＜練＞（格闘・神格・鎖術・銃術攻撃UP）化",
+            super({ uniqueName: "練気", info: "自分を＜練＞（格闘・神格・鎖術・銃攻撃UP）化",
                 sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELF,
                 mul: 1, num: 1, hit: 1,
             });
@@ -1427,6 +1512,37 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**鎖使い. */
+    Tec.アンドロメダ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "アンドロメダ", info: "味方全員の防御値+20%　重ねがけ不可",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (!target.getInvisibleConditions().find(inv => inv.uniqueName === Tec.アンドロメダ.uniqueName)) {
+                    target.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = Tec.アンドロメダ.uniqueName;
+                        }
+                        beforeBeAtk(action, attacker, target, dmg) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                if (action instanceof ActiveTec) {
+                                    dmg.def.mul *= 1.2;
+                                }
+                            });
+                        }
+                    });
+                    Sound.seikou.play();
+                    Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright);
+                    yield wait();
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1451,13 +1567,13 @@ ActiveTec._valueOf = new Map();
     /**シーフ. */
     Tec.回避UP = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "回避UP", info: "格闘・銃術・弓術攻撃回避UP",
+            super({ uniqueName: "回避UP", info: "格闘・銃・弓攻撃回避UP",
                 sort: TecSort.強化, type: TecType.その他,
             });
         }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.銃術, TecType.弓術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.銃, TecType.弓)) {
                     dmg.hit.mul *= 0.9;
                 }
             });
@@ -1532,23 +1648,17 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    /**鎖使い. */
-    Tec.凍てつく波動 = new class extends ActiveTec {
-        constructor() {
-            super({ uniqueName: "凍てつく波動", info: "敵味方全体の状態を解除",
-                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
-                mul: 1, num: 1, hit: 1, ep: 1,
-            });
-        }
-        run(attacker, target) {
-            return __awaiter(this, void 0, void 0, function* () {
-                target.clearConditions();
-                Sound.seikou.play();
-                Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright);
-                yield wait();
-            });
-        }
-    };
+    // export const                          凍てつく波動:ActiveTec = new class extends ActiveTec{
+    //     constructor(){super({ uniqueName:"凍てつく波動", info:"敵味方全体の状態を解除",
+    //                           sort:TecSort.弱体, type:TecType.状態, targetings:Targeting.ALL | Targeting.WITH_FRIEND,
+    //                           mul:1, num:1, hit:1, ep:1,
+    //     });}
+    //     async run(attacker:Unit, target:Unit){
+    //         target.clearConditions();
+    //         Sound.seikou.play();
+    //         Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright); await wait();
+    //     }
+    // }
     // export const                          やる気0:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"やる気0", info:"一体を＜攻↓3＞状態にする",
     //                           type:TecType.状態, targetings:Targeting.SELECT,
@@ -1610,6 +1720,22 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.sin.play();
                 Unit.setCondition(target, Condition.眠, 1);
+                yield wait();
+            });
+        }
+    };
+    /**ホークマン. */
+    Tec.煙幕 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "煙幕", info: "敵全体を＜命中↓5＞化",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, mp: 3,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                Unit.setCondition(target, Condition.命中低下, 5);
                 yield wait();
             });
         }
@@ -1735,7 +1861,7 @@ ActiveTec._valueOf = new Map();
     /**忍者. */
     Tec.ジライヤ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ジライヤ", info: "自分のHPMPTP回復　ステータスx1.2　＜風3＞化",
+            super({ uniqueName: "ジライヤ", info: "自分のHPMPTP回復　ステータス+30%　＜風3＞化",
                 sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
@@ -1750,7 +1876,10 @@ ActiveTec._valueOf = new Map();
                 Util.msg.set("全回復！");
                 yield wait();
                 for (const prm of [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR]) {
-                    target.prm(prm).battle += target.prm(prm).total * 0.2;
+                    const battleValueMax = (target.prm(prm).base + target.prm(prm).eq) * 0.3;
+                    if (target.prm(prm).battle < battleValueMax) {
+                        target.prm(prm).battle = battleValueMax;
+                    }
                 }
                 Sound.up.play();
                 Util.msg.set("ステータス増加！！");

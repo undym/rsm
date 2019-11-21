@@ -196,7 +196,7 @@ const stragePlayer = (save, p) => {
             }
         });
     }
-    for (const pos of EqPos.values()) {
+    for (const pos of EqPos.values) {
         ioStr(save, `${name}_eq_${pos}`, u.getEq(pos).uniqueName, load => {
             const eq = Eq.valueOf(load);
             if (eq) {

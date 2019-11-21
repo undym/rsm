@@ -474,7 +474,7 @@ export const FX_過去 = (target:{x:number, y:number})=>{
 FXTest.add(FX_過去.name, () => FX_過去( FXTest.target ));
 
 
-export const FX_銃術 = (attacker:{x:number, y:number}, target:{x:number, y:number}) => {
+export const FX_銃 = (attacker:{x:number, y:number}, target:{x:number, y:number}) => {
     let particles:{
         x:number,
         y:number,
@@ -545,11 +545,11 @@ export const FX_銃術 = (attacker:{x:number, y:number}, target:{x:number, y:num
         return count < over;
     });
 };
-FXTest.add(FX_銃術.name, () => FX_銃術(FXTest.attacker, FXTest.target));
+FXTest.add(FX_銃.name, () => FX_銃(FXTest.attacker, FXTest.target));
 
 
 
-export const FX_弓術 = (attacker:Point, target:Point)=>{
+export const FX_弓 = (attacker:Point, target:Point)=>{
     const rnd = target.x - attacker.x;
     const x = attacker.x + rnd * Math.random();
     const center = new Point(x, 0);
@@ -562,7 +562,7 @@ export const FX_弓術 = (attacker:Point, target:Point)=>{
         return count < over;
     });
 };
-FXTest.add(FX_弓術.name, () => FX_弓術( FXTest.attacker, FXTest.target ));
+FXTest.add(FX_弓.name, () => FX_弓( FXTest.attacker, FXTest.target ));
 
 
 export const FX_回復 = (target:Point)=>{

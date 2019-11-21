@@ -219,7 +219,7 @@ const stragePlayer = (save:boolean, p:Player)=>{
         })
     }
 
-    for(const pos of EqPos.values()){
+    for(const pos of EqPos.values){
         ioStr(save, `${name}_eq_${pos}`, u.getEq(pos).uniqueName, load=>{
             const eq = Eq.valueOf(load);
             if(eq){u.setEq(pos, eq);}

@@ -39,14 +39,18 @@ export class DungeonArea {
 }
 DungeonArea._valueOf = new Map();
 (function (DungeonArea) {
-    DungeonArea.中央島 = new DungeonArea("中央島", "img/area_中央島.jpg", () => [
+    DungeonArea.中央島 = new DungeonArea("中央島", "img/map1.jpg", () => [
         [DungeonArea.黒地域, new Rect(0.7, 0.4, 0.3, 0.1), () => Dungeon.黒平原.isVisible()],
+        [DungeonArea.古マーザン, new Rect(0.0, 0.25, 0.3, 0.1), () => Dungeon.古マーザン森.isVisible()],
     ]);
-    DungeonArea.黒地域 = new DungeonArea("黒地域", "img/area_黒地域.jpg", () => [
+    DungeonArea.黒地域 = new DungeonArea("黒地域", "img/map2.jpg", () => [
         [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), () => true],
     ]);
-    DungeonArea.月 = new DungeonArea("月", "img/area_月.jpg", () => [
+    DungeonArea.月 = new DungeonArea("月", "img/map4.jpg", () => [
     // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+    ]);
+    DungeonArea.古マーザン = new DungeonArea("古マーザン", "img/map3.jpg", () => [
+        [DungeonArea.中央島, new Rect(0.7, 0.25, 0.3, 0.1), () => Dungeon.古マーザン森.isVisible()],
     ]);
 })(DungeonArea || (DungeonArea = {}));
 export class Dungeon {
@@ -541,7 +545,7 @@ Dungeon.auNow = 0;
                 rank: 4, enemyLv: 20, au: 70, btn: [DungeonArea.中央島, new Rect(0.7, 0.9, 0.3, 0.1)],
                 treasures: () => [Eq.悪夢],
                 exItems: () => [Eq.猛者の鎧],
-                trendItems: () => [],
+                trendItems: () => [Item.肉, Item.錫, Item.高野槙, Item.桜],
             });
             this.isVisible = () => Dungeon.クラウンボトル.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -842,33 +846,118 @@ Dungeon.auNow = 0;
             });
         }
     };
-    // export const                         月狼の森:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"月狼の森", info:"",
-    //                             rank:3, enemyLv:10, au:250, btn:[DungeonArea.月, new Rect(0.70, 0.6, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
-    // trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
-    //                             beast:true,
-    //     });}
-    //     isVisible = ()=>Dungeon.聖なる洞窟.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.鬼火.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "ビッグファイヤー";
-    //         e.prm(Prm.MAX_HP).base = 650;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "霊体オルガ";
-    //         e.img = new Img("img/unit/orga.png");
-    //         e.prm(Prm.MAX_HP).base = 800;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story1.runMain16();
-    //         }
-    //     }
-    // };
+    Dungeon.月狼の森 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "月狼の森", info: "",
+                rank: 3, enemyLv: 10, au: 250, btn: [DungeonArea.月, new Rect(0.70, 0.6, 0.3, 0.1)],
+                treasures: () => [Eq.魔法使いのミトン],
+                exItems: () => [Eq.弓弓弓弓],
+                trendItems: () => [Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                beast: true,
+            });
+            this.isVisible = () => Dungeon.聖なる洞窟.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.鬼火.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "ビッグファイヤー";
+                e.prm(Prm.MAX_HP).base = 650;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "霊体オルガ";
+                e.img = new Img("img/unit/orga.png");
+                e.prm(Prm.MAX_HP).base = 800;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story1.runMain16();
+                    DungeonArea.now = DungeonArea.中央島;
+                }
+            });
+        }
+    };
+    ///////////////////////////////////////////////////////////////////////
+    //                                                                   //
+    //                        古マーザン                                  //
+    //                                                                   //
+    ///////////////////////////////////////////////////////////////////////
+    Dungeon.古マーザン森 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "古マーザン森", info: "",
+                rank: 2, enemyLv: 11, au: 300, btn: [DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
+                treasures: () => [Eq.魔ヶ玉],
+                exItems: () => [Eq.水晶の指輪],
+                trendItems: () => [],
+            });
+            this.isVisible = () => Dungeon.月狼の森.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.天使.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "朱雀";
+                e.prm(Prm.MAX_HP).base = 700;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.天使.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影キキツキ";
+                e.img = new Img("img/unit/trager.png");
+                e.prm(Prm.MAX_HP).base = 700;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story1.runMain17();
+                }
+            });
+        }
+    };
+    Dungeon.魔鳥の岩壁 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "魔鳥の岩壁", info: "",
+                rank: 4, enemyLv: 13, au: 400, btn: [DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                treasures: () => [Eq.水晶の手首飾り],
+                exItems: () => [Item.ホークマンの血],
+                trendItems: () => [],
+            });
+            this.isVisible = () => Dungeon.古マーザン森.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "鳥人";
+                e.prm(Prm.MAX_HP).base = 750;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "魔鳥ぱと";
+                e.img = new Img("img/unit/trager.png");
+                e.prm(Prm.MAX_HP).base = 800;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story1.runMain18();
+                    Util.msg.set("パーティーメンバーの入れ替えができるようになった！");
+                    yield cwait();
+                }
+            });
+        }
+    };
 })(Dungeon || (Dungeon = {}));

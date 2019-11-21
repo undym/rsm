@@ -75,7 +75,7 @@ export class Job {
     setEnemy(e, lv) {
         for (const prm of Prm.values()) {
             const set = e.prm(prm);
-            set.base = 4 * Math.random() + lv * Math.random() / 4;
+            set.base = 4 * Math.random() + lv * Math.random();
             set.battle = 0;
             set.eq = 0;
         }
@@ -93,7 +93,7 @@ export class Job {
         e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.tp = 0;
         e.ep = 0;
-        for (const pos of EqPos.values()) {
+        for (const pos of EqPos.values) {
             e.setEq(pos, Eq.rnd(pos, lv));
         }
         e.clearConditions();
@@ -166,11 +166,11 @@ Job.DEF_LVUP_EXP = 10;
                 appearLv: 7, img: new Img("img/unit/unit3.png"),
                 lvupExp: Job.DEF_LVUP_EXP,
                 growthPrms: () => [[Prm.STR, 1]],
-                learningTecs: () => [Tec.斬る, Tec.閻魔の笏],
+                learningTecs: () => [Tec.斬る, Tec.パワーファクト, Tec.閻魔の笏],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.パワーファクト];
         }
     };
     Job.忍者 = new class extends Job {
@@ -244,11 +244,11 @@ Job.DEF_LVUP_EXP = 10;
                 appearLv: 52, img: new Img("img/unit/unit7.png"),
                 lvupExp: Job.DEF_LVUP_EXP,
                 growthPrms: () => [[Prm.CHN, 1]],
-                learningTecs: () => [Tec.スネイク, Tec.凍てつく波動],
+                learningTecs: () => [Tec.スネイク, Tec.アンドロメダ],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.殴る, Tec.凍てつく波動];
+            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.殴る, Tec.アンドロメダ];
         }
     };
     Job.スネイカー = new class extends Job {
@@ -296,12 +296,12 @@ Job.DEF_LVUP_EXP = 10;
             super({ uniqueName: "機械士", info: "",
                 appearLv: 75, img: new Img("img/unit/unit12.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
-                growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
-                learningTecs: () => [],
+                growthPrms: () => [[Prm.GUN, 1]],
+                learningTecs: () => [Tec.機械仕掛け, Tec.レーザー, Tec.メガトン],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+            e.tecs = [Tec.撃つ, Tec.レーザー, Tec.レーザー, Tec.殴る, Tec.撃つ, Tec.撃つ, Tec.メガトン, Tec.機械仕掛け];
         }
     };
     Job.アーチャー = new class extends Job {
@@ -310,7 +310,7 @@ Job.DEF_LVUP_EXP = 10;
                 appearLv: 25, img: new Img("img/unit/unit9.png"),
                 lvupExp: Job.DEF_LVUP_EXP,
                 growthPrms: () => [[Prm.ARR, 1]],
-                learningTecs: () => [Tec.射る, Tec.アスラの矢],
+                learningTecs: () => [Tec.射る, Tec.一点集中, Tec.アスラの矢],
             });
         }
         setEnemyInner(e) {
@@ -367,6 +367,19 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.射る, Tec.暗黒剣, Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.殴る];
+        }
+    };
+    Job.ホークマン = new class extends Job {
+        constructor() {
+            super({ uniqueName: "ホークマン", info: "",
+                appearLv: 75, img: new Img("img/unit/unit15.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
+                learningTecs: () => [Tec.空中浮遊, Tec.槍, Tec.煙幕],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
         }
     };
     //--------------------------------------------------

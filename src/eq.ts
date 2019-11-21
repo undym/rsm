@@ -15,7 +15,7 @@ import { Sound } from "./sound.js";
 
 export class EqPos{
     private static _values:EqPos[] = [];
-    static values(){return this._values;}
+    static get values():ReadonlyArray<EqPos>{return this._values;}
 
     private static ordinalNow = 0;
 
@@ -64,7 +64,7 @@ export abstract class Eq extends Force implements Num{
         if(!this._posValues){
             this._posValues = new Map<EqPos,Eq[]>();
 
-            for(let p of EqPos.values()){
+            for(let p of EqPos.values){
                 this._posValues.set(p, []);
             }
 
@@ -268,7 +268,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"レティシア'sガン", info:"銃攻撃時、稀に相手を＜防↓＞化",
                                 pos:EqPos.武, lv:5});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.銃術) && Math.random() < 0.7){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃) && Math.random() < 0.7){
                 Unit.setCondition( target, Condition.防御低下, 1 );
             }
         }
@@ -287,10 +287,10 @@ export namespace Eq{
     }
     /**クラウンボトルEX. */
     export const                         コスモガン:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"コスモガン", info:"銃術攻撃時稀に追加攻撃",
+        constructor(){super({uniqueName:"コスモガン", info:"銃攻撃時稀に追加攻撃",
                                 pos:EqPos.武, lv:95});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any( TecType.銃術 ) && dmg.result.isHit && Math.random() < 0.5){
+            if(action instanceof ActiveTec && action.type.any( TecType.銃 ) && dmg.result.isHit && Math.random() < 0.5){
                 dmg.additionalAttacks.push((dmg,i)=>{
                     return dmg.result.value / 2;
                 });
@@ -299,10 +299,10 @@ export namespace Eq{
     }
     /**クラウンボトル財宝. */
     export const                         呪縛の弓矢:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓術攻撃時、稀に相手を＜鎖＞化",
+        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓攻撃時、稀に相手を＜鎖＞化",
                                 pos:EqPos.武, lv:95});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any( TecType.弓術 ) && dmg.result.isHit && Math.random() < 0.5){
+            if(action instanceof ActiveTec && action.type.any( TecType.弓 ) && dmg.result.isHit && Math.random() < 0.5){
                 Unit.setCondition(target, Condition.鎖, 1); await wait();
             }
         }
@@ -429,6 +429,16 @@ export namespace Eq{
             Unit.healTP(unit, 1);
         }
     }
+    /**月狼の森. */
+    export const                         弓弓弓弓:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"弓弓弓弓", info:"弓攻撃命中率+20%",
+                                pos:EqPos.体, lv:85});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.弓)){
+                dmg.hit.mul *= 1.2;
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //腰
@@ -504,6 +514,27 @@ export namespace Eq{
             }
         }
     }
+    /**月狼の森. */
+    export const                         魔法使いのミトン:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"魔法使いのミトン", info:"魔法・過去攻撃+10",
+                                pos:EqPos.手, lv:70});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去)){
+                dmg.abs.add += 10;
+            }
+        }
+    }
+    /**魔鳥の岩壁財宝. */
+    export const                         水晶の手首飾り:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"水晶の手首飾り", info:"最大HP+50　行動開始時HP+1%",
+                                pos:EqPos.手, lv:99});}
+        async equip(unit:Unit){
+            unit.prm(Prm.MAX_HP).eq += 50;
+        }
+        async phaseStart(unit:Unit){
+            Unit.healHP(unit, unit.prm(Prm.HP).total * 0.01 + 1 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //指
@@ -524,10 +555,10 @@ export namespace Eq{
         }
     }
     export const                         機工の指輪:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"機工の指輪", info:"銃術攻撃+20%",
+        constructor(){super({uniqueName:"機工の指輪", info:"銃攻撃+20%",
                                 pos:EqPos.指, lv:1});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.銃術)){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃)){
                 dmg.pow.mul *= 1.2;
             }
         }
@@ -541,13 +572,22 @@ export namespace Eq{
             }
         }
     }
-    // export const                         魔ヶ玉の指輪:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"魔ヶ玉の指輪", info:"行動開始時MP+10%",
-    //                             pos:EqPos.指, lv:20});}
-    //     phaseStart(unit:Unit){
-    //         Unit.healMP(unit, unit.prm(Prm.MAX_MP).total * 0.1 + 1);
-    //     }
-    // }
+    /**古マーザン森財宝. */
+    export const                         魔ヶ玉:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"魔ヶ玉", info:"行動開始時MP+1",
+                                pos:EqPos.指, lv:98});}
+        async phaseStart(unit:Unit){
+            Unit.healMP(unit, 1 );
+        }
+    }
+    /**古マーザン森EX. */
+    export const                         水晶の指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"水晶の指輪", info:"行動開始時HP+5%",
+                                pos:EqPos.指, lv:97});}
+        async phaseStart(unit:Unit){
+            Unit.healHP(unit, unit.prm(Prm.HP).total * 0.05 + 1 );
+        }
+    }
     // export const                         瑠璃:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"瑠璃", info:"戦闘開始時TP+10%",
     //                             pos:EqPos.指, lv:50});}

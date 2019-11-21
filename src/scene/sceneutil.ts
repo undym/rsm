@@ -337,7 +337,7 @@ export class DrawUnitDetail extends InnerLayout{
                                     }}))
                                 )
                             }
-                            for(let pos of EqPos.values()){
+                            for(let pos of EqPos.values){
                                 y.add(new Layout()
                                     .add(ILayout.create({draw:(bounds)=>{
                                         if(!infoIsEar && pos === infoPos){

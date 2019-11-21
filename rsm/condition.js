@@ -127,7 +127,7 @@ Condition._valueOf = new Map();
         constructor() { super("盾", ConditionType.GOOD_LV2); }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
                     Util.msg.set("＞盾");
                     yield wait();
                     dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -140,7 +140,7 @@ Condition._valueOf = new Map();
         constructor() { super("雲", ConditionType.GOOD_LV2); }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)) {
                     Util.msg.set("＞雲");
                     yield wait();
                     dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -164,9 +164,13 @@ Condition._valueOf = new Map();
         constructor() { super("吸収", ConditionType.GOOD_LV2); }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃術)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
                     const value = dmg.calc().value;
                     target.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = "吸収";
+                        }
                         afterBeAtk(action, attacker, target, dmg) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 Unit.healHP(target, value);
@@ -214,26 +218,45 @@ Condition._valueOf = new Map();
     //--------------------------------------------------------------------------
     Condition.攻撃低下 = new class extends Condition {
         constructor() { super("攻↓", ConditionType.BAD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.addConditionValue(this, -1);
+            });
+        }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
                     Util.msg.set("＞攻↓");
                     yield wait();
                     dmg.pow.mul *= 0.5;
-                    attacker.addConditionValue(this, -1);
                 }
             });
         }
     };
     Condition.防御低下 = new class extends Condition {
         constructor() { super("防↓", ConditionType.BAD_LV1); }
-        beforeBeoAtk(action, attacker, target, dmg) {
+        beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
                     Util.msg.set("＞防↓");
                     yield wait();
                     dmg.def.mul *= 0.5;
                     target.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
+    Condition.命中低下 = new class extends Condition {
+        constructor() { super("命中↓", ConditionType.BAD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.addConditionValue(this, -1);
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec) {
+                    dmg.hit.mul *= 0.8;
                 }
             });
         }
@@ -274,7 +297,7 @@ Condition._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.鎖術, TecType.過去, TecType.銃術) && Math.random() < 0.5) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.鎖術, TecType.過去, TecType.銃) && Math.random() < 0.5) {
                     target.removeCondition(this);
                     Util.msg.set(`${target.name}は目を覚ました！`);
                     yield wait();

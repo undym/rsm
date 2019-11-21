@@ -134,7 +134,7 @@ export namespace Condition{
     export const             盾:Condition = new class extends Condition{
         constructor(){super("盾", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃術)){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 
                 Util.msg.set("＞盾"); await wait();
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -146,7 +146,7 @@ export namespace Condition{
     export const             雲:Condition = new class extends Condition{
         constructor(){super("雲", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓術)){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)){
                 
                 Util.msg.set("＞雲"); await wait();
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -168,9 +168,10 @@ export namespace Condition{
     export const             吸収:Condition = new class extends Condition{
         constructor(){super("吸収", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃術)){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 const value = dmg.calc().value;
                 target.addInvisibleCondition(new class extends InvisibleCondition{
+                    readonly uniqueName = "吸収";
                     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
                         Unit.healHP( target, value );
                         target.removeInvisibleCondition(this);
@@ -219,23 +220,35 @@ export namespace Condition{
     //--------------------------------------------------------------------------
     export const             攻撃低下:Condition = new class extends Condition{
         constructor(){super("攻↓", ConditionType.BAD_LV1);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            unit.addConditionValue(this, -1);
+        }
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec){
                 Util.msg.set("＞攻↓"); await wait();
                 dmg.pow.mul *= 0.5;
-
-                attacker.addConditionValue(this, -1);
             }
         }
     };
     export const             防御低下:Condition = new class extends Condition{
         constructor(){super("防↓", ConditionType.BAD_LV1);}
-        async beforeBeoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec){
                 Util.msg.set("＞防↓"); await wait();
                 dmg.def.mul *= 0.5;
 
                 target.addConditionValue(this, -1);
+            }
+        }
+    };
+    export const             命中低下:Condition = new class extends Condition{
+        constructor(){super("命中↓", ConditionType.BAD_LV1);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            unit.addConditionValue(this, -1);
+        }
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec){
+                dmg.hit.mul *= 0.8;
             }
         }
     };
@@ -273,7 +286,7 @@ export namespace Condition{
         }
 
         async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.鎖術, TecType.過去, TecType.銃術) && Math.random() < 0.5){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.鎖術, TecType.過去, TecType.銃) && Math.random() < 0.5){
                 target.removeCondition(this);
                 Util.msg.set(`${target.name}は目を覚ました！`); await wait();
             }
@@ -309,5 +322,6 @@ export namespace Condition{
 
 
 
-export class InvisibleCondition extends Force{
+export abstract class InvisibleCondition extends Force{
+    abstract readonly uniqueName:string;
 }
