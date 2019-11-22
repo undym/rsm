@@ -12,7 +12,7 @@ import { Dungeon } from "./dungeon.js";
 import { Scene, cwait, wait } from "../undym/scene.js";
 import { TownScene } from "../scene/townscene.js";
 import { Item, ItemDrop } from "../item.js";
-import { ILayout, VariableLayout, FlowLayout } from "../undym/layout.js";
+import { ILayout, FlowLayout } from "../undym/layout.js";
 import { Color } from "../undym/type.js";
 import { Unit, Prm } from "../unit.js";
 import { FX_Advance, FX_Return } from "../fx/fx.js";
@@ -69,7 +69,6 @@ class EventImg {
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, new Btn("開ける", () => __awaiter(this, void 0, void 0, function* () {
                 Sound.TRAGER.play();
-                Util.msg.set("開けた");
                 yield DungeonEvent.OPEN_BOX.happen();
             })));
         }
@@ -263,7 +262,7 @@ class EventImg {
             super();
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 Dungeon.now.treasureKey++;
-                Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
+                Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.rainbow);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }
@@ -343,10 +342,6 @@ class EventImg {
                 Util.msg.set("木だ");
             };
             this.createBtnLayout = () => createDefLayout()
-                .set(ReturnBtn.index, new Btn("斬る", () => __awaiter(this, void 0, void 0, function* () {
-                Sound.KEN.play();
-                yield DungeonEvent.TREE_GET.happen();
-            })))
                 .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
                 Sound.PUNCH.play();
                 Util.msg.set("いてっ！", Color.RED);
@@ -357,10 +352,13 @@ class EventImg {
                     }
                     const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 10 });
                     yield p.doDmg(dmg);
-                    yield wait();
                     yield p.judgeDead();
                 }
-            })).dontMove());
+            })).dontMove())
+                .set(ReturnBtn.index, new Btn("斬る", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.KEN.play();
+                yield DungeonEvent.TREE_GET.happen();
+            })));
         }
     };
     DungeonEvent.TREE_GET = new class extends DungeonEvent {
@@ -396,67 +394,67 @@ class EventImg {
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }
     };
+    DungeonEvent.FOSSIL = new class extends DungeonEvent {
+        constructor() {
+            super();
+            this.createImg = () => new Img("img/stratum.png");
+            this.happenInner = () => { Util.msg.set("何かありそうだ..."); };
+            this.createBtnLayout = () => createDefLayout()
+                .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
+                Sound.PUNCH.play();
+                Util.msg.set("つまづいた！", Color.RED);
+                yield wait();
+                for (let p of Unit.players) {
+                    if (!p.exists || p.dead) {
+                        continue;
+                    }
+                    const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 10 });
+                    yield p.doDmg(dmg);
+                    yield p.judgeDead();
+                }
+            })).dontMove())
+                .set(ReturnBtn.index, (() => {
+                if (Item.つるはし.remainingUseNum > 0) {
+                    return new Btn("発掘", () => __awaiter(this, void 0, void 0, function* () {
+                        Item.つるはし.remainingUseNum--;
+                        let rank = Dungeon.now.rank / 2;
+                        yield openBox(ItemDrop.FOSSIL, rank, CollectingSkill.発掘);
+                        DungeonEvent.empty.happen();
+                    }));
+                }
+                else {
+                    return ReturnBtn.ins;
+                }
+            })());
+        }
+    };
     DungeonEvent.LAKE = new class extends DungeonEvent {
         constructor() {
             super();
-            this.汲む = false;
-            this.釣る = false;
             // createImg = ()=> new Img("img/tree.png");
             this.happenInner = () => {
                 Util.msg.set("湖だ");
-                this.汲む = true;
-                // if(ItemType.竿.values.some(item=> item.num > 0)){
-                //     this.釣る = true;
-                // }
             };
             this.createBtnLayout = () => createDefLayout()
                 .set(ReturnBtn.index, (() => {
                 const drink = () => __awaiter(this, void 0, void 0, function* () {
                     yield openBox(ItemDrop.LAKE, Dungeon.now.rank / 2, CollectingSkill.水汲);
                 });
-                const fishingBtn = new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
-                    // this.釣る = false;
-                    // this.汲む = false;
-                    // let doneAnyFishing = false;
-                    // const fishing = async(baseRank:number)=>{
-                    //     const itemRank = Item.fluctuateRank( baseRank );
-                    //     let item = Item.rndItem( ItemDrop.FISHING, itemRank );
-                    //     item.add(1); await wait();
-                    //     doneAnyFishing = true;
-                    // };
-                    // const checkAndBreakRod = async(prob:number, rod:Item)=>{
-                    //     if(Math.random() < prob){
-                    //         rod.add(-1);
-                    //         Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright); await wait();
-                    //     }
-                    // };
-                    // if(Item.ボロい釣竿.num > 0){
-                    //     fishing( Dungeon.now.rank / 2 );
-                    //     checkAndBreakRod(0.05, Item.ボロい釣竿);
-                    // }
-                    // if(Item.マーザン竿.num > 0){
-                    //     fishing( Dungeon.now.rank / 2 + 0.5 );
-                    //     checkAndBreakRod(0.05, Item.マーザン竿);
-                    // }
-                    // if(!doneAnyFishing){
-                    //     Util.msg.set("釣り竿をもっていなかった...");
-                    // }
-                    // await drink();
-                }));
-                const drinkBtn = new Btn("汲む", () => __awaiter(this, void 0, void 0, function* () {
-                    this.汲む = false;
-                    yield drink();
-                }));
-                // return new VariableLayout(()=>this.汲む ? drinkBtn : ReturnBtn.ins);
-                return new VariableLayout(() => {
-                    if (this.釣る) {
-                        return fishingBtn;
-                    }
-                    if (this.汲む) {
-                        return drinkBtn;
-                    }
-                    return ReturnBtn.ins;
-                });
+                if (Item.釣り竿.remainingUseNum > 0) {
+                    return new Btn("釣る", () => __awaiter(this, void 0, void 0, function* () {
+                        Item.釣り竿.remainingUseNum--;
+                        let rank = Dungeon.now.rank / 2;
+                        yield openBox(ItemDrop.LAKE, rank, CollectingSkill.釣り);
+                        yield drink();
+                        DungeonEvent.empty.happen();
+                    }));
+                }
+                else {
+                    return new Btn("汲む", () => __awaiter(this, void 0, void 0, function* () {
+                        yield drink();
+                        DungeonEvent.empty.happen();
+                    }));
+                }
             })());
         }
     };
@@ -663,7 +661,9 @@ const openBox = (dropType, rank, collectingSkill) => __awaiter(this, void 0, voi
         const itemRank = Item.fluctuateRank(baseRank);
         let item = Item.rndItem(dropType, itemRank);
         let addNum = 1;
-        yield wait();
+        if (i !== 0) {
+            yield wait();
+        }
         item.add(addNum);
         Sound.ITEM_GET.play();
         if (collectingSkill) {

@@ -42,4 +42,6 @@ export namespace CollectingSkill{
     export const 伐採 = new CollectingSkill("伐採");
     export const 地層 = new CollectingSkill("地層");
     export const 水汲 = new CollectingSkill("水汲");
+    export const 釣り = new CollectingSkill("釣り");
+    export const 発掘 = new CollectingSkill("発掘");
 }

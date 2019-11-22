@@ -77,7 +77,6 @@ export namespace DungeonEvent{
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, new Btn("開ける", async()=>{
                                     Sound.TRAGER.play();
-                                    Util.msg.set("開けた");
                                     await DungeonEvent.OPEN_BOX.happen();
                                 }))
                                 ;
@@ -258,7 +257,7 @@ export namespace DungeonEvent{
         constructor(){super();}
         happenInner = async()=>{
             Dungeon.now.treasureKey++;
-            Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
+            Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.rainbow);
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
@@ -334,10 +333,6 @@ export namespace DungeonEvent{
             Util.msg.set("木だ");
         };
         createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("斬る", async()=>{
-                                    Sound.KEN.play();
-                                    await DungeonEvent.TREE_GET.happen();
-                                }))
                                 .set(AdvanceBtn.index, new Btn("進む", async()=>{
                                     Sound.PUNCH.play();
                                     Util.msg.set("いてっ！", Color.RED); await wait();
@@ -346,10 +341,14 @@ export namespace DungeonEvent{
                                         if(!p.exists || p.dead){continue;}
 
                                         const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
-                                        await p.doDmg(dmg); await wait();
+                                        await p.doDmg(dmg);
                                         await p.judgeDead();
                                     }
                                 }).dontMove())
+                                .set(ReturnBtn.index, new Btn("斬る", async()=>{
+                                    Sound.KEN.play();
+                                    await DungeonEvent.TREE_GET.happen();
+                                }))
                                 ;
     };
     export const TREE_GET:DungeonEvent = new class extends DungeonEvent{
@@ -380,73 +379,70 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
+    export const FOSSIL:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super();}
+        createImg = ()=> new Img("img/stratum.png");
+        happenInner = ()=>{Util.msg.set("何かありそうだ...");};
+        createBtnLayout = ()=> createDefLayout()
+                                .set(AdvanceBtn.index, new Btn("進む", async()=>{
+                                    Sound.PUNCH.play();
+                                    Util.msg.set("つまづいた！", Color.RED); await wait();
+
+                                    for(let p of Unit.players){
+                                        if(!p.exists || p.dead){continue;}
+
+                                        const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
+                                        await p.doDmg(dmg);
+                                        await p.judgeDead();
+                                    }
+                                }).dontMove())
+                                .set(ReturnBtn.index, (()=>{
+                                    if(Item.つるはし.remainingUseNum > 0){
+                                        return new Btn("発掘", async()=>{
+                                            Item.つるはし.remainingUseNum--;
+                                            
+                                            let rank = Dungeon.now.rank / 2;
+                                            await openBox( ItemDrop.FOSSIL, rank, CollectingSkill.発掘 );
+
+                                            DungeonEvent.empty.happen();
+                                        });
+                                    }else{
+                                        return ReturnBtn.ins;
+                                    }
+                                })())
+                                ;
+    };
     export const LAKE:DungeonEvent = new class extends DungeonEvent{
-        private 汲む = false;
-        private 釣る = false;
         constructor(){super();}
         // createImg = ()=> new Img("img/tree.png");
         happenInner = ()=>{
             Util.msg.set("湖だ");
-            this.汲む = true;
-
-            // if(ItemType.竿.values.some(item=> item.num > 0)){
-            //     this.釣る = true;
-            // }
         };
         createBtnLayout = ()=> createDefLayout()
                                 .set(ReturnBtn.index, (()=>{
                                     const drink = async()=>{
                                         await openBox( ItemDrop.LAKE, Dungeon.now.rank / 2, CollectingSkill.水汲 );
                                     };
-                                    const fishingBtn = new Btn("釣る", async()=>{
-                                        // this.釣る = false;
-                                        // this.汲む = false;
-                                        // let doneAnyFishing = false;
-                                        
-                                        // const fishing = async(baseRank:number)=>{
-                                        //     const itemRank = Item.fluctuateRank( baseRank );
-                                        //     let item = Item.rndItem( ItemDrop.FISHING, itemRank );
-                                        //     item.add(1); await wait();
 
-                                        //     doneAnyFishing = true;
-                                        // };
-                                        // const checkAndBreakRod = async(prob:number, rod:Item)=>{
-                                        //     if(Math.random() < prob){
-                                        //         rod.add(-1);
-                                        //         Util.msg.set(`[${rod}]が壊れてしまった！(残り${rod.num})`, Color.RED.bright); await wait();
-                                        //     }
-                                        // };
-                                        
-                                        // if(Item.ボロい釣竿.num > 0){
-                                        //     fishing( Dungeon.now.rank / 2 );
-                                        //     checkAndBreakRod(0.05, Item.ボロい釣竿);
-                                        // }
-                                        // if(Item.マーザン竿.num > 0){
-                                        //     fishing( Dungeon.now.rank / 2 + 0.5 );
-                                        //     checkAndBreakRod(0.05, Item.マーザン竿);
-                                        // }
+                                    if(Item.釣り竿.remainingUseNum > 0){
+                                        return new Btn("釣る", async()=>{
+                                            Item.釣り竿.remainingUseNum--;
 
-                                        // if(!doneAnyFishing){
-                                        //     Util.msg.set("釣り竿をもっていなかった...");
-                                        // }
-                                        
-                                        // await drink();
-                                    });
-                                    const drinkBtn = new Btn("汲む", async()=>{
-                                        this.汲む = false;
+                                            let rank = Dungeon.now.rank / 2;
+                                            await openBox( ItemDrop.LAKE, rank, CollectingSkill.釣り );
+                                            
+                                            await drink();
 
-                                        await drink();
-                                    });
-                                    // return new VariableLayout(()=>this.汲む ? drinkBtn : ReturnBtn.ins);
-                                    return new VariableLayout(()=>{
-                                        if(this.釣る){return fishingBtn;}
-                                        if(this.汲む){return drinkBtn;}
-                                        return ReturnBtn.ins;
-                                    })
+                                            DungeonEvent.empty.happen();
+                                        }); 
+                                    }else{
+                                        return new Btn("汲む", async()=>{
+                                            await drink();
+
+                                            DungeonEvent.empty.happen();
+                                        });
+                                    }
                                 })())
-                                // .set(5, (()=>{
-                                //     return new VariableLayout(()=>this.釣る ? btn : ILayout.empty);
-                                // })())
                                 ;
     };
     export const BATTLE:DungeonEvent = new class extends DungeonEvent{
@@ -668,7 +664,7 @@ const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:Collecting
         let item = Item.rndItem( dropType, itemRank );
         let addNum = 1;
         
-        await wait();
+        if(i !== 0){await wait();}
         item.add( addNum ); Sound.ITEM_GET.play();
 
         if(collectingSkill){

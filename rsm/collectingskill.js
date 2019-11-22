@@ -44,4 +44,6 @@ CollectingSkill._values = [];
     CollectingSkill.伐採 = new CollectingSkill("伐採");
     CollectingSkill.地層 = new CollectingSkill("地層");
     CollectingSkill.水汲 = new CollectingSkill("水汲");
+    CollectingSkill.釣り = new CollectingSkill("釣り");
+    CollectingSkill.発掘 = new CollectingSkill("発掘");
 })(CollectingSkill || (CollectingSkill = {}));

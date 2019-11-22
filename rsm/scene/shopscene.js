@@ -21,6 +21,7 @@ import { Player } from "../player.js";
 import { Item } from "../item.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { Sound } from "../sound.js";
+import { CollectingSkill } from "../collectingskill.js";
 class TecMaster {
     static check(tec) {
         return this.map.get(tec) ? true : false;
@@ -41,7 +42,7 @@ export class ShopScene extends Scene {
         super();
         this.list = new List();
         TecMaster.setCandidates([
-            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣,
+            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー,
         ]);
         if (!ShopScene.completedInitGoods) {
             ShopScene.completedInitGoods = true;
@@ -223,7 +224,9 @@ const initGoods = () => {
     createItemGoods({ item: Item.金翅鳥の矢, num: 1, price: () => (Item.金翅鳥の矢.num + 1) * 1000, isVisible: () => TecMaster.check(Tec.ガルダ) });
     createItemGoods({ item: Item.歌舞の矢, num: 6, price: () => (Item.歌舞の矢.num + 6) * 1000, isVisible: () => TecMaster.check(Tec.キンナラ) });
     createItemGoods({ item: Item.手裏剣, num: 2, price: () => (Item.手裏剣.num + 2) * 1000, isVisible: () => TecMaster.check(Tec.手裏剣) });
-    // createItemGoods(Item.散弾,       ()=>(Item.散弾.num+1) * 500,    ()=>ショットガンmaster);
+    createItemGoods({ item: Item.バッテリー, num: 1, price: () => (Item.バッテリー.num + 1) * 1000, isVisible: () => TecMaster.check(Tec.レーザー) });
+    createItemGoods({ item: Item.釣り竿, num: 1, price: () => (Item.釣り竿.num + 1) * 10000, isVisible: () => CollectingSkill.水汲.lv >= 10 });
+    createItemGoods({ item: Item.つるはし, num: 1, price: () => (Item.つるはし.num + 1) * 10000, isVisible: () => CollectingSkill.地層.lv >= 10 });
     // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);
     // createItemGoods(Item.マーザン竿, ()=>700, ()=>Dungeon.マーザン森.dungeonClearCount > 10);
     // createEarGoods(EqEar.おにく,               ()=>100   ,()=>Dungeon.リテの門.dungeonClearCount > 0 && EqEar.おにく.totalGetCount < 2);

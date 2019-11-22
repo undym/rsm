@@ -1087,7 +1087,7 @@ export namespace Tec{
     export const                          レーザー:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"レーザー", info:"一体とその両脇に機械攻撃",
                     　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
-                              mul:1, num:1, hit:1, tp:1,
+                              mul:1, num:1, hit:1, tp:1, item:()=>[[Item.バッテリー, 1]],
         });}
         async run(attacker:Unit, target:Unit){
             super.run( attacker, target );

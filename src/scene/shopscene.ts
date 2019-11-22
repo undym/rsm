@@ -18,6 +18,8 @@ import { Dungeon } from "../dungeon/dungeon.js";
 import { Job } from "../job.js";
 import { PartySkill } from "../partyskill.js";
 import { Sound } from "../sound.js";
+import { Mix } from "../mix.js";
+import { CollectingSkill } from "../collectingskill.js";
 
 
 class TecMaster{
@@ -48,7 +50,7 @@ export class ShopScene extends Scene{
         super();
 
         TecMaster.setCandidates([
-            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣,
+            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー,
         ]);
 
         if(!ShopScene.completedInitGoods){
@@ -283,12 +285,15 @@ const initGoods = ()=>{
     createItemGoods({item:Item.赤い水,          price:()=>50,  isVisible:()=>true});
     createItemGoods({item:Item.サンタクララ薬,   price:()=>100, isVisible:()=>true});
 
-    createItemGoods({item:Item.夜叉の矢,   num:2,  price:()=>(Item.夜叉の矢.num+2) * 1000, isVisible:()=>TecMaster.check(Tec.ヤクシャ)});
-    createItemGoods({item:Item.降雨の矢,   num:4,  price:()=>(Item.降雨の矢.num+4) * 1000, isVisible:()=>TecMaster.check(Tec.ナーガ)});
+    createItemGoods({item:Item.夜叉の矢,   num:2,  price:()=>(Item.夜叉の矢.num+2)   * 1000, isVisible:()=>TecMaster.check(Tec.ヤクシャ)});
+    createItemGoods({item:Item.降雨の矢,   num:4,  price:()=>(Item.降雨の矢.num+4)   * 1000, isVisible:()=>TecMaster.check(Tec.ナーガ)});
     createItemGoods({item:Item.金翅鳥の矢, num:1,  price:()=>(Item.金翅鳥の矢.num+1) * 1000, isVisible:()=>TecMaster.check(Tec.ガルダ)});
-    createItemGoods({item:Item.歌舞の矢,   num:6,  price:()=>(Item.歌舞の矢.num+6) * 1000, isVisible:()=>TecMaster.check(Tec.キンナラ)});
-    createItemGoods({item:Item.手裏剣,     num:2,  price:()=>(Item.手裏剣.num+2) * 1000, isVisible:()=>TecMaster.check(Tec.手裏剣)});
-    // createItemGoods(Item.散弾,       ()=>(Item.散弾.num+1) * 500,    ()=>ショットガンmaster);
+    createItemGoods({item:Item.歌舞の矢,   num:6,  price:()=>(Item.歌舞の矢.num+6)   * 1000, isVisible:()=>TecMaster.check(Tec.キンナラ)});
+    createItemGoods({item:Item.手裏剣,     num:2,  price:()=>(Item.手裏剣.num+2)     * 1000, isVisible:()=>TecMaster.check(Tec.手裏剣)});
+    createItemGoods({item:Item.バッテリー, num:1,  price:()=>(Item.バッテリー.num+1)  * 1000, isVisible:()=>TecMaster.check(Tec.レーザー)});
+    
+    createItemGoods({item:Item.釣り竿,     num:1,  price:()=>(Item.釣り竿.num+1)  * 10000, isVisible:()=>CollectingSkill.水汲.lv >= 10});
+    createItemGoods({item:Item.つるはし,   num:1,  price:()=>(Item.つるはし.num+1) * 10000, isVisible:()=>CollectingSkill.地層.lv >= 10});
     
     // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);
     // createItemGoods(Item.マーザン竿, ()=>700, ()=>Dungeon.マーザン森.dungeonClearCount > 10);
