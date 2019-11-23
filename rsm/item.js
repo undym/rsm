@@ -417,59 +417,66 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.シェイクスピア分子1 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+1", info: "全員のHP+50",
+            super({ uniqueName: "シェイクスピア分子1", info: "全員のHP+50",
                 type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 50); }),
             });
         }
+        toString() { return "シェイクスピア分子+1"; }
     };
     Item.シェイクスピア分子2 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+2", info: "全員のHP+100",
+            super({ uniqueName: "シェイクスピア分子2", info: "全員のHP+100",
                 type: ItemType.HP回復, rank: 4, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 100); }),
             });
         }
+        toString() { return "シェイクスピア分子+2"; }
     };
     Item.シェイクスピア分子3 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+3", info: "全員のHP+130",
+            super({ uniqueName: "シェイクスピア分子3", info: "全員のHP+130",
                 type: ItemType.HP回復, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 130); }),
             });
         }
+        toString() { return "シェイクスピア分子+3"; }
     };
     Item.シェイクスピア分子4 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+4", info: "全員のHP+150",
+            super({ uniqueName: "シェイクスピア分子4", info: "全員のHP+150",
                 type: ItemType.HP回復, rank: 6, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 150); }),
             });
         }
+        toString() { return "シェイクスピア分子+4"; }
     };
     Item.シェイクスピア分子5 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+5", info: "全員のHP+200",
+            super({ uniqueName: "シェイクスピア分子5", info: "全員のHP+200",
                 type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 200); }),
             });
         }
+        toString() { return "シェイクスピア分子+5"; }
     };
     Item.シェイクスピア分子6 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+6", info: "全員のHP+300",
+            super({ uniqueName: "シェイクスピア分子6", info: "全員のHP+300",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 300); }),
             });
         }
+        toString() { return "シェイクスピア分子+6"; }
     };
     Item.シェイクスピア分子7 = new class extends Item {
         constructor() {
-            super({ uniqueName: "シェイクスピア分子+7", info: "全員のHP+500",
+            super({ uniqueName: "シェイクスピア分子7", info: "全員のHP+500",
                 type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 500); }),
             });
         }
+        toString() { return "シェイクスピア分子+7"; }
     };
     Item.じすたま = new class extends Item {
         constructor() {
@@ -663,7 +670,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.侍プリッツ迅速 = new class extends Item {
         constructor() {
-            super({ uniqueName: "侍プリッツ・迅速", info: "10AU進む",
+            super({ uniqueName: "侍プリッツ迅速", info: "10AU進む",
                 type: ItemType.ダンジョン, rank: 3, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 10;
@@ -674,10 +681,11 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
+        toString() { return "侍プリッツ・迅速"; }
     };
     Item.侍プリッツ神速一歩手前 = new class extends Item {
         constructor() {
-            super({ uniqueName: "侍プリッツ・神速一歩手前", info: "20AU進む",
+            super({ uniqueName: "侍プリッツ神速一歩手前", info: "20AU進む",
                 type: ItemType.ダンジョン, rank: 5, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 20;
@@ -688,10 +696,11 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
+        toString() { return "侍プリッツ・神速一歩手前"; }
     };
     Item.侍プリッツ神速 = new class extends Item {
         constructor() {
-            super({ uniqueName: "侍プリッツ・神速", info: "30AU進む",
+            super({ uniqueName: "侍プリッツ神速", info: "30AU進む",
                 type: ItemType.ダンジョン, rank: 7, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 30;
@@ -702,6 +711,7 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
+        toString() { return "侍プリッツ・神速"; }
     };
     Item.釣り竿 = new class extends Item {
         constructor() {
@@ -1180,9 +1190,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.エレタクレヨン = new class extends Item {
         constructor() {
-            super({ uniqueName: "エレ・タ・クレヨン", info: "おえかきしようね",
+            super({ uniqueName: "エレタクレヨン", info: "おえかきしようね",
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
         }
+        toString() { return "エレ・タ・クレヨン"; }
     };
     Item.ファーストキス = new class extends Item {
         constructor() {
@@ -1198,9 +1209,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.エレタの絵の具 = new class extends Item {
         constructor() {
-            super({ uniqueName: "エレ・タの絵の具", info: "ぬりぬりしようね",
+            super({ uniqueName: "エレタの絵の具", info: "ぬりぬりしようね",
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
         }
+        toString() { return "エレ・タの絵の具"; }
     };
     Item.うんち = new class extends Item {
         constructor() {
@@ -1917,9 +1929,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.MMMMM = new class extends Item {
         constructor() {
-            super({ uniqueName: "ＭＭＭＭＭ", info: "ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
+            super({ uniqueName: "MMMMM", info: "ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
                 type: ItemType.素材, rank: 6, drop: ItemDrop.FISHING });
         }
+        toString() { return "ＭＭＭＭＭ"; }
     };
     Item.ペガサス = new class extends Item {
         constructor() {
@@ -1953,9 +1966,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.テルウィング = new class extends Item {
         constructor() {
-            super({ uniqueName: "テル・ウィング", info: "非常に高度な人口翼だが、ピクピクと動いている。食べるとお腹+32",
+            super({ uniqueName: "テルウィング", info: "非常に高度な人口翼だが、ピクピクと動いている。食べるとお腹+32",
                 type: ItemType.素材, rank: 11, drop: ItemDrop.FISHING });
         }
+        toString() { return "テル・ウィング"; }
     };
     Item.モナト = new class extends Item {
         constructor() {

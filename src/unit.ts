@@ -40,7 +40,7 @@ class PrmSet{
 
 export class Prm{
     private static _values:Prm[] = [];
-    static values():ReadonlyArray<Prm>{return this._values;}
+    static get values():ReadonlyArray<Prm>{return this._values;}
 
     private static ordinalNow:number = 0;
 
@@ -171,7 +171,7 @@ export abstract class Unit{
 
         this.img = Img.empty;
 
-        for(const prm of Prm.values()){
+        for(const prm of Prm.values){
             this.prmSets.push(new PrmSet());
         }
 
@@ -309,7 +309,7 @@ export abstract class Unit{
     //
     //---------------------------------------------------------
     async equip(){
-        for(const prm of Prm.values()){
+        for(const prm of Prm.values){
             this.prm(prm).eq = 0;
         }
         await this.force(f=> f.equip(this));

@@ -265,8 +265,9 @@ export namespace Eq{
         }
     }
     export const                         レティシアsガン:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"レティシア'sガン", info:"銃攻撃時、稀に相手を＜防↓＞化",
+        constructor(){super({uniqueName:"レティシアsガン", info:"銃攻撃時、稀に相手を＜防↓＞化",
                                 pos:EqPos.武, lv:5});}
+        toString(){return "レティシア'sガン";}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.銃) && Math.random() < 0.7){
                 Unit.setCondition( target, Condition.防御低下, 1 );

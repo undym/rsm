@@ -408,46 +408,53 @@ export namespace Item{
         })}
     };
     export const                         シェイクスピア分子1:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+1", info:"全員のHP+50",
+        constructor(){super({uniqueName:"シェイクスピア分子1", info:"全員のHP+50",
                                 type:ItemType.HP回復, rank:3, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 50),
         })}
+        toString(){return "シェイクスピア分子+1";}
     };
     export const                         シェイクスピア分子2:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+2", info:"全員のHP+100",
+        constructor(){super({uniqueName:"シェイクスピア分子2", info:"全員のHP+100",
                                 type:ItemType.HP回復, rank:4, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 100),
         })}
+        toString(){return "シェイクスピア分子+2";}
     };
     export const                         シェイクスピア分子3:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+3", info:"全員のHP+130",
+        constructor(){super({uniqueName:"シェイクスピア分子3", info:"全員のHP+130",
                                 type:ItemType.HP回復, rank:5, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 130),
         })}
+        toString(){return "シェイクスピア分子+3";}
     };
     export const                         シェイクスピア分子4:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+4", info:"全員のHP+150",
+        constructor(){super({uniqueName:"シェイクスピア分子4", info:"全員のHP+150",
                                 type:ItemType.HP回復, rank:6, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 150),
         })}
+        toString(){return "シェイクスピア分子+4";}
     };
     export const                         シェイクスピア分子5:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+5", info:"全員のHP+200",
+        constructor(){super({uniqueName:"シェイクスピア分子5", info:"全員のHP+200",
                                 type:ItemType.HP回復, rank:7, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 200),
         })}
+        toString(){return "シェイクスピア分子+5";}
     };
     export const                         シェイクスピア分子6:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+6", info:"全員のHP+300",
+        constructor(){super({uniqueName:"シェイクスピア分子6", info:"全員のHP+300",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 300),
         })}
+        toString(){return "シェイクスピア分子+6";}
     };
     export const                         シェイクスピア分子7:Item = new class extends Item{
-        constructor(){super({uniqueName:"シェイクスピア分子+7", info:"全員のHP+500",
+        constructor(){super({uniqueName:"シェイクスピア分子7", info:"全員のHP+500",
                                 type:ItemType.HP回復, rank:9, drop:ItemDrop.BOX, targetings:Targeting.FRIEND_ONLY | Targeting.ALL,
                                 use:async(user,target)=>await itemHealHP(target, 500),
         })}
+        toString(){return "シェイクスピア分子+7";}
     };
     export const                         じすたま:Item = new class extends Item{
         constructor(){super({uniqueName:"じすたま", info:"",
@@ -604,7 +611,7 @@ export namespace Item{
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
     };
     export const                         侍プリッツ迅速:Item = new class extends Item{
-        constructor(){super({uniqueName:"侍プリッツ・迅速", info:"10AU進む",
+        constructor(){super({uniqueName:"侍プリッツ迅速", info:"10AU進む",
                                 type:ItemType.ダンジョン, rank:3, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     Dungeon.auNow += 10;
@@ -612,9 +619,10 @@ export namespace Item{
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+        toString(){return "侍プリッツ・迅速";}
     };
     export const                         侍プリッツ神速一歩手前:Item = new class extends Item{
-        constructor(){super({uniqueName:"侍プリッツ・神速一歩手前", info:"20AU進む",
+        constructor(){super({uniqueName:"侍プリッツ神速一歩手前", info:"20AU進む",
                                 type:ItemType.ダンジョン, rank:5, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     Dungeon.auNow += 20;
@@ -622,9 +630,10 @@ export namespace Item{
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+        toString(){return "侍プリッツ・神速一歩手前";}
     };
     export const                         侍プリッツ神速:Item = new class extends Item{
-        constructor(){super({uniqueName:"侍プリッツ・神速", info:"30AU進む",
+        constructor(){super({uniqueName:"侍プリッツ神速", info:"30AU進む",
                                 type:ItemType.ダンジョン, rank:7, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     Dungeon.auNow += 30;
@@ -632,6 +641,7 @@ export namespace Item{
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+        toString(){return "侍プリッツ・神速";}
     };
     export const                         釣り竿:Item = new class extends Item{
         constructor(){super({uniqueName:"釣り竿", info:"ダンジョン内の湖で釣りができるようになる",
@@ -1018,8 +1028,9 @@ export namespace Item{
                                 type:ItemType.素材, rank:1, drop:ItemDrop.BOX})}
     };
     export const                         エレタクレヨン:Item = new class extends Item{
-        constructor(){super({uniqueName:"エレ・タ・クレヨン", info:"おえかきしようね",
+        constructor(){super({uniqueName:"エレタクレヨン", info:"おえかきしようね",
                                 type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+        toString(){return "エレ・タ・クレヨン";}
     };
     export const                         ファーストキス:Item = new class extends Item{
         constructor(){super({uniqueName:"ファーストキス", info:"",
@@ -1030,8 +1041,9 @@ export namespace Item{
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
     };
     export const                         エレタの絵の具:Item = new class extends Item{
-        constructor(){super({uniqueName:"エレ・タの絵の具", info:"ぬりぬりしようね",
+        constructor(){super({uniqueName:"エレタの絵の具", info:"ぬりぬりしようね",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
+        toString(){return "エレ・タの絵の具";}
     };
     export const                         うんち:Item = new class extends Item{
         constructor(){super({uniqueName:"うんち", info:"",
@@ -1522,8 +1534,9 @@ export namespace Item{
                                 type:ItemType.素材, rank:6, drop:ItemDrop.FISHING})}
     };
     export const                         MMMMM:Item = new class extends Item{
-        constructor(){super({uniqueName:"ＭＭＭＭＭ", info:"ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
+        constructor(){super({uniqueName:"MMMMM", info:"ＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭＭ",
                                 type:ItemType.素材, rank:6, drop:ItemDrop.FISHING})}
+        toString(){return "ＭＭＭＭＭ";}
     };
     export const                         ペガサス:Item = new class extends Item{
         constructor(){super({uniqueName:"ペガサス", info:"YUKI",
@@ -1546,8 +1559,9 @@ export namespace Item{
                                 type:ItemType.素材, rank:10, drop:ItemDrop.FISHING})}
     };
     export const                         テルウィング:Item = new class extends Item{
-        constructor(){super({uniqueName:"テル・ウィング", info:"非常に高度な人口翼だが、ピクピクと動いている。食べるとお腹+32",
+        constructor(){super({uniqueName:"テルウィング", info:"非常に高度な人口翼だが、ピクピクと動いている。食べるとお腹+32",
                                 type:ItemType.素材, rank:11, drop:ItemDrop.FISHING})}
+        toString(){return "テル・ウィング";}
     };
     export const                         モナト:Item = new class extends Item{
         constructor(){super({uniqueName:"モナト", info:"？？？？",

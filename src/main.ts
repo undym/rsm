@@ -66,8 +66,6 @@ window.onload = ()=>{
     init();
     
 
-
-
     setTitle();
 
 

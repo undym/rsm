@@ -219,7 +219,8 @@ export namespace Condition{
     //
     //--------------------------------------------------------------------------
     export const             攻撃低下:Condition = new class extends Condition{
-        constructor(){super("攻↓", ConditionType.BAD_LV1);}
+        constructor(){super("攻撃低下", ConditionType.BAD_LV1);}
+        toString(){return "攻↓";}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
             unit.addConditionValue(this, -1);
         }
@@ -231,7 +232,8 @@ export namespace Condition{
         }
     };
     export const             防御低下:Condition = new class extends Condition{
-        constructor(){super("防↓", ConditionType.BAD_LV1);}
+        constructor(){super("防御低下", ConditionType.BAD_LV1);}
+        toString(){return "防↓";}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec){
                 Util.msg.set("＞防↓"); await wait();
@@ -242,7 +244,8 @@ export namespace Condition{
         }
     };
     export const             命中低下:Condition = new class extends Condition{
-        constructor(){super("命中↓", ConditionType.BAD_LV1);}
+        constructor(){super("命中低下", ConditionType.BAD_LV1);}
+        toString(){return "命中↓";}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
             unit.addConditionValue(this, -1);
         }

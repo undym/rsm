@@ -139,7 +139,7 @@ export class BattleScene extends Scene{
                 for(const u of Unit.all){
                     u.tp = 0;
                     u.sp = 1;
-                    for(const prm of Prm.values()){
+                    for(const prm of Prm.values){
                         u.prm(prm).battle = 0;
                     }
                 }
@@ -435,7 +435,7 @@ const finish = async()=>{
     }
 
     for(const u of Unit.all){
-        for(const prm of Prm.values()){
+        for(const prm of Prm.values){
             u.prm(prm).battle = 0;
         }
 

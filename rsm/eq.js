@@ -243,9 +243,10 @@ EqEar._valueOf = new Map();
     };
     Eq.レティシアsガン = new class extends Eq {
         constructor() {
-            super({ uniqueName: "レティシア'sガン", info: "銃攻撃時、稀に相手を＜防↓＞化",
+            super({ uniqueName: "レティシアsガン", info: "銃攻撃時、稀に相手を＜防↓＞化",
                 pos: EqPos.武, lv: 5 });
         }
+        toString() { return "レティシア'sガン"; }
         afterDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.銃) && Math.random() < 0.7) {

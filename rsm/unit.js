@@ -46,7 +46,7 @@ export class Prm {
         this.ordinal = Prm.ordinalNow++;
         Prm._values.push(this);
     }
-    static values() { return this._values; }
+    static get values() { return this._values; }
 }
 Prm._values = [];
 Prm.ordinalNow = 0;
@@ -92,7 +92,7 @@ export class Unit {
         this.boxBounds = Rect.ZERO;
         this.imgBounds = Rect.ZERO;
         this.img = Img.empty;
-        for (const prm of Prm.values()) {
+        for (const prm of Prm.values) {
             this.prmSets.push(new PrmSet());
         }
         this.prm(Prm.MAX_EP).base = Unit.DEF_MAX_EP;
@@ -261,7 +261,7 @@ export class Unit {
     //---------------------------------------------------------
     equip() {
         return __awaiter(this, void 0, void 0, function* () {
-            for (const prm of Prm.values()) {
+            for (const prm of Prm.values) {
                 this.prm(prm).eq = 0;
             }
             yield this.force(f => f.equip(this));

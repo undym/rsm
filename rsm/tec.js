@@ -987,11 +987,12 @@ ActiveTec._valueOf = new Map();
     };
     Tec.VAMPIRE_VLOODY_STAR = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "VAMPIRE VLOODY STAR", info: "敵全体からHPを吸収　暗黒依存",
+            super({ uniqueName: "VAMPIRE_VLOODY_STAR", info: "敵全体からHPを吸収　暗黒依存",
                 sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
                 mul: 0.5, num: 1, hit: 1.1, ep: 1,
             });
         }
+        toString() { return "VAMPIRE VLOODY STAR"; }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield Tec.吸血.run(attacker, target);
@@ -1711,11 +1712,12 @@ ActiveTec._valueOf = new Map();
     /**ダウザー. */
     Tec.SORRYCSTEF = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "SORRY, C･STEF", info: "敵全体を＜眠1＞状態にする",
+            super({ uniqueName: "SORRYCSTEF", info: "敵全体を＜眠1＞状態にする",
                 sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
+        toString() { return "SORRY, C･STEF"; }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.sin.play();

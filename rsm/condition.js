@@ -217,7 +217,8 @@ Condition._valueOf = new Map();
     //
     //--------------------------------------------------------------------------
     Condition.攻撃低下 = new class extends Condition {
-        constructor() { super("攻↓", ConditionType.BAD_LV1); }
+        constructor() { super("攻撃低下", ConditionType.BAD_LV1); }
+        toString() { return "攻↓"; }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
                 unit.addConditionValue(this, -1);
@@ -234,7 +235,8 @@ Condition._valueOf = new Map();
         }
     };
     Condition.防御低下 = new class extends Condition {
-        constructor() { super("防↓", ConditionType.BAD_LV1); }
+        constructor() { super("防御低下", ConditionType.BAD_LV1); }
+        toString() { return "防↓"; }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
@@ -247,7 +249,8 @@ Condition._valueOf = new Map();
         }
     };
     Condition.命中低下 = new class extends Condition {
-        constructor() { super("命中↓", ConditionType.BAD_LV1); }
+        constructor() { super("命中低下", ConditionType.BAD_LV1); }
+        toString() { return "命中↓"; }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
                 unit.addConditionValue(this, -1);

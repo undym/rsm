@@ -101,7 +101,7 @@ export abstract class Job{
     
     setEnemy(e:EUnit, lv:number){
 
-        for(const prm of Prm.values()){
+        for(const prm of Prm.values){
             const set = e.prm(prm);
             set.base = 4 * Math.random() + lv * Math.random();
             set.battle = 0;
