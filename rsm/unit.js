@@ -248,6 +248,16 @@ export class Unit {
             this.dead = true;
             Util.msg.set(`${this.name}は死んだ`, Color.RED);
             yield wait();
+            for (const u of Unit.all.filter(u => u.exists && !u.dead && u !== this)) {
+                yield u.whenAnyoneDead(this);
+            }
+            if (!this.dead) {
+                return;
+            }
+            yield this.whenDead();
+            if (!this.dead) {
+                return;
+            }
             for (const set of this.conditions) {
                 set.condition = Condition.empty;
                 set.value = 0;
@@ -287,6 +297,12 @@ export class Unit {
     }
     memberAfterDoAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.memberAfterDoAtk(this, action, attacker, target, dmg); })); });
+    }
+    whenDead() {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenDead(this); })); });
+    }
+    whenAnyoneDead(deadUnit) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenAnyoneDead(deadUnit, this); })); });
     }
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseEnd(this); })); });

@@ -374,7 +374,7 @@ Job.DEF_LVUP_EXP = 10;
             super({ uniqueName: "ホークマン", info: "",
                 appearLv: 75, img: new Img("img/unit/unit15.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
-                growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
+                growthPrms: () => [[Prm.STR, 1], [Prm.ARR, 1]],
                 learningTecs: () => [Tec.空中浮遊, Tec.槍, Tec.煙幕],
             });
         }
@@ -382,6 +382,30 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
         }
     };
+    Job.テンプルナイト = new class extends Job {
+        constructor() {
+            super({ uniqueName: "テンプルナイト", info: "防御に厚く、聖剣をふるう",
+                appearLv: 85, img: new Img("img/unit/unit17.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.STR, 1], [Prm.LIG, 1]],
+                learningTecs: () => [Tec.かばう, Tec.聖なる守護, Tec.聖剣, Tec.光の護封剣],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+        }
+    };
+    // export const                         サマナー:Job = new class extends Job{
+    //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
+    //                             appearLv:125, img:new Img("img/unit/unit18.png"),
+    //                             lvupExp:Job.DEF_LVUP_EXP * 3,
+    //                             growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.MAX_TP, 1]],
+    //                             learningTecs:()=>[],
+    //     });}
+    //     setEnemyInner(e:EUnit){
+    //         e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+    //     }
+    // };
     //--------------------------------------------------
     //
     //獣

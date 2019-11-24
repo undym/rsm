@@ -60,7 +60,7 @@ window.onload = ()=>{
     const texture = new Texture({canvas:canvas});
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
-
+    
     setInput();
 
     init();

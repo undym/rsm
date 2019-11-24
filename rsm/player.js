@@ -49,6 +49,7 @@ export class Player {
 }
 Player._values = [];
 Player._valueOf = new Map();
+//セーブデータの互換性のため、プレイヤーの定義の順番をかえてはいけない。
 (function (Player) {
     Player.empty = new class extends Player {
         constructor() { super("empty"); }
@@ -80,7 +81,6 @@ Player._valueOf = new Map();
         constructor() { super("ピアー"); }
         createInner(p) {
             p.job = Job.魔法使い;
-            p.setJobLv(Job.魔法使い, 1);
             p.img = new Img("img/unit/p_pea.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 4;
@@ -95,7 +95,10 @@ Player._valueOf = new Map();
                 Tec.empty,
             ];
         }
-        setJobChangeList(map) { setDefJobChangeList(map, this.ins); }
+        setJobChangeList(map) {
+            map.set(Job.魔法使い, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     Player.一号 = new class extends Player {
         constructor() { super("一号"); }
@@ -115,7 +118,10 @@ Player._valueOf = new Map();
                 Tec.empty,
             ];
         }
-        setJobChangeList(map) { setDefJobChangeList(map, this.ins); }
+        setJobChangeList(map) {
+            map.set(Job.暗黒戦士, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     Player.雪 = new class extends Player {
         constructor() { super("雪"); }
@@ -136,7 +142,10 @@ Player._valueOf = new Map();
             ];
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
-        setJobChangeList(map) { setDefJobChangeList(map, this.ins); }
+        setJobChangeList(map) {
+            map.set(Job.鎖使い, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     Player.ベガ = new class extends Player {
         constructor() { super("ベガ"); }
@@ -179,6 +188,7 @@ const setDefJobChangeList = (map, u) => {
     add(Job.魔法使い, [Job.訓練生]);
     add(Job.ウィザード, [Job.魔法使い]);
     add(Job.天使, [Job.訓練生]);
+    add(Job.テンプルナイト, [Job.天使, Job.訓練生二年生]);
     add(Job.毒使い, [Job.訓練生]);
     add(Job.鎖使い, [Job.訓練生]);
     add(Job.スネイカー, [Job.鎖使い]);

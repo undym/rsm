@@ -298,6 +298,16 @@ export abstract class Unit{
         this.dead = true;
         Util.msg.set(`${this.name}は死んだ`, Color.RED); await wait();
 
+        for(const u of Unit.all.filter(u=> u.exists && !u.dead && u !== this)){
+            await u.whenAnyoneDead(this);
+        }
+        if(!this.dead){return;}
+
+        await this.whenDead();
+        if(!this.dead){return;}
+
+
+
         for(const set of this.conditions){
             set.condition = Condition.empty;
             set.value = 0;
@@ -321,6 +331,8 @@ export abstract class Unit{
     async afterDoAtk(action:Action, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.afterDoAtk(action, this, target, dmg));}
     async afterBeAtk(action:Action, attacker:Unit, dmg:Dmg) {await this.force(async f=> await f.afterBeAtk(action, attacker, this, dmg));}
     async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
+    async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
+    async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(deadUnit, this))}
     async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
 
     protected async force(forceDlgt:(f:Force)=>void){

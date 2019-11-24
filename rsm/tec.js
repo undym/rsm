@@ -207,6 +207,12 @@ TecType._values = [];
         effect(attacker, target, dmg) { }
         sound() { }
     };
+    TecType.ペット = new class extends TecType {
+        constructor() { super("ペット"); }
+        createDmg(attacker, target) { return new Dmg({ pow: attacker.prm(Prm.LV).total }); }
+        effect(attacker, target, dmg) { }
+        sound() { }
+    };
 })(TecType || (TecType = {}));
 export class Tec extends Force {
     constructor(uniqueName, info, sortType, type) {
@@ -500,6 +506,20 @@ ActiveTec._valueOf = new Map();
                 Util.msg.set("＞反撃");
                 yield Tec.格闘カウンター.run(target, attacker);
             });
+        }
+    };
+    /**テンプルナイト. */
+    Tec.聖剣 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "聖剣", info: "一体に光値を加算して格闘攻撃",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 2, tp: 1,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.abs.base += attacker.prm(Prm.LIG).total;
+            return dmg;
         }
     };
     // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
@@ -1513,6 +1533,20 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**テンプルナイト. */
+    Tec.聖なる守護 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "聖なる守護", info: "味方全体を＜盾＞化",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 4,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Tec.防御.run(attacker, target);
+            });
+        }
+    };
     /**鎖使い. */
     Tec.アンドロメダ = new class extends ActiveTec {
         constructor() {
@@ -1595,6 +1629,26 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**テンプルナイト. */
+    Tec.かばう = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "かばう", info: "味方の死亡時、自分のHPの半分を分け与えて死を回避する（最大HPの半分以上のHPが必要）",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        whenAnyoneDead(deadUnit, me) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (deadUnit.dead && deadUnit.isFriend(me) && me.hp >= me.prm(Prm.MAX_HP).total / 2) {
+                    deadUnit.dead = false;
+                    deadUnit.hp = 0;
+                    Unit.healHP(deadUnit, me.hp / 2);
+                    me.hp /= 2;
+                    Util.msg.set(`${me.name}は${deadUnit.name}をかばった！`);
+                    yield wait();
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //弱体Active
@@ -1660,15 +1714,6 @@ ActiveTec._valueOf = new Map();
     //         Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright); await wait();
     //     }
     // }
-    // export const                          やる気0:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"やる気0", info:"一体を＜攻↓3＞状態にする",
-    //                           type:TecType.状態, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:1, mp:2,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition( target, Condition.攻撃低下, 3 );
-    //     }
-    // }
     Tec.弱体液 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "弱体液", info: "一体を＜防↓2＞状態にする",
@@ -1684,21 +1729,12 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          スコープ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"スコープ", info:"自分を＜狙4＞（命中上昇）状態にする",
-    //                           type:TecType.状態, targetings:Targeting.SELF,
-    //                           mul:1, num:1, hit:1, mp:1, tp:1,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition( target, Condition.狙, 4 );
-    //     }
-    // }
-    /**未設定. */
+    /**テンプルナイト. */
     Tec.光の護封剣 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "光の護封剣", info: "敵全体を＜攻↓3＞状態にする",
                 sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
-                mul: 1, num: 1, hit: 1, ep: 1,
+                mul: 1, num: 1, hit: 1, mp: 9,
             });
         }
         run(attacker, target) {
@@ -1742,25 +1778,6 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    // export const                          生類憐みの令:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"生類憐みの令", info:"敵味方全体を＜攻↓＞化",
-    //                           type:TecType.状態, targetings:Targeting.ALL | Targeting.WITH_FRIEND,
-    //                           mul:1, num:1, hit:1, mp:4, tp:4,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Unit.setCondition(target, Condition.攻撃低下, 1);
-    //     }
-    // }
-    // export const                         準備運動:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"準備運動", info:"戦闘開始時<練>化",
-    //                             type:TecType.状態,
-    //     });}
-    //     battleStart(unit:Unit){
-    //         if(!unit.existsCondition(Condition.練.type)){
-    //             Unit.setCondition(unit, Condition.練, 1);
-    //         }
-    //     }
-    // };
     //--------------------------------------------------------------------------
     //
     //回復Active
@@ -2115,7 +2132,25 @@ ActiveTec._valueOf = new Map();
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     //
-    //
+    //ペットActive
     //
     //--------------------------------------------------------------------------
+    /**未習得技. */
+    Tec.キュア = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "キュア", info: "一体のHP回復",
+                sort: TecSort.回復, type: TecType.ペット, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 4,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const result = this.createDmg(attacker, target).calc();
+                Unit.healHP(target, result.value);
+                Sound.KAIFUKU.play();
+                Util.msg.set(`${target.name}のHPが${result.value}回復した`, Color.GREEN.bright);
+                yield wait();
+            });
+        }
+    };
 })(Tec || (Tec = {}));

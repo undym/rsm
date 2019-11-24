@@ -33,6 +33,17 @@ export class Force {
     memberAfterDoAtk(me, action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
+    whenDead(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    /**
+     * 自分以外の死亡時.
+     * 他のキャラクターのwhenAnyoneDeadによって死亡が回避された場合でも、残りの全ての生存キャラクター分呼ばれるので、
+     * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
+     * */
+    whenAnyoneDead(deadUnit, me) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     phaseEnd(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }

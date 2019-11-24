@@ -55,6 +55,7 @@ export abstract class Player{
         res.tecs.filter(tec=> tec !== Tec.empty)
                 .forEach(tec=> res.setMasteredTec(tec, true));
 
+
         return res;
     }
     /**プレイヤーの加入処理。 */
@@ -72,6 +73,7 @@ export abstract class Player{
 }
 
 
+//セーブデータの互換性のため、プレイヤーの定義の順番をかえてはいけない。
 export namespace Player{
     export const             empty = new class extends Player{
         constructor(){super("empty");}
@@ -104,7 +106,6 @@ export namespace Player{
         constructor(){super("ピアー");}
         createInner(p:PUnit){
             p.job = Job.魔法使い;
-            p.setJobLv(Job.魔法使い, 1);
             p.img = new Img("img/unit/p_pea.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 4;
@@ -120,7 +121,10 @@ export namespace Player{
                 Tec.empty,
             ];
         }
-        setJobChangeList(map:Map<Job,true>){setDefJobChangeList(map, this.ins);}
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.魔法使い, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     export const             一号 = new class extends Player{
         constructor(){super("一号");}
@@ -141,7 +145,10 @@ export namespace Player{
                 Tec.empty,
             ];
         }
-        setJobChangeList(map:Map<Job,true>){setDefJobChangeList(map, this.ins);}
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.暗黒戦士, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     export const             雪 = new class extends Player{
         constructor(){super("雪");}
@@ -164,7 +171,10 @@ export namespace Player{
 
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
-        setJobChangeList(map:Map<Job,true>){setDefJobChangeList(map, this.ins);}
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.鎖使い, true);
+            setDefJobChangeList(map, this.ins);
+        }
     };
     export const             ベガ = new class extends Player{
         constructor(){super("ベガ");}
@@ -215,6 +225,7 @@ const setDefJobChangeList = (map:Map<Job,true>, u:PUnit):void=>{
     add(Job.魔法使い, [Job.訓練生]);
         add(Job.ウィザード, [Job.魔法使い]);
     add(Job.天使, [Job.訓練生]);
+        add(Job.テンプルナイト, [Job.天使, Job.訓練生二年生]);
     add(Job.毒使い, [Job.訓練生]);
     add(Job.鎖使い, [Job.訓練生]);
         add(Job.スネイカー, [Job.鎖使い]);

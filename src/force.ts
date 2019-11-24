@@ -11,6 +11,13 @@ export class Force{
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async whenDead(unit:Unit){}
+    /**
+     * 自分以外の死亡時.
+     * 他のキャラクターのwhenAnyoneDeadによって死亡が回避された場合でも、残りの全ての生存キャラクター分呼ばれるので、
+     * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
+     * */
+    async whenAnyoneDead(deadUnit:Unit, me:Unit){}
     async phaseEnd(unit:Unit){}
 }
 
