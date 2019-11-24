@@ -41,7 +41,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 23, 0);
+Version.NOW = new Version(0, 24, 0);
 Version.updateInfo = [
     "(0.20.15)バグ修正",
     "(0.21.0)もろもろ追加",
@@ -49,6 +49,7 @@ Version.updateInfo = [
     "(0.22.0)ストーリーの表示変更",
     "(0.22.1)ストーリーの表示調整",
     "(0.23.0)いろいろ",
+    "(0.24.0)セーブデータの仕様変更",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -67,16 +68,30 @@ export class SaveData {
         this.io(/*save*/ true, json);
         window.localStorage.setItem(this.data, JSON.stringify(json));
         Util.msg.set("セーブしました", Color.CYAN.bright);
-        console.log(json);
     }
-    /**全セーブデータ読み込み。 */
-    static load() {
-        const jsonStr = window.localStorage.getItem("data");
-        if (jsonStr) {
-            console.log(jsonStr);
-            const json = JSON.parse(jsonStr);
-            this.io(/*save*/ false, json);
+    /**jsonStr指定でインポート. */
+    static load(jsonStr) {
+        if (!jsonStr) {
+            const str = window.localStorage.getItem("data");
+            if (str) {
+                jsonStr = str;
+            }
         }
+        if (jsonStr) {
+            try {
+                const json = JSON.parse(jsonStr);
+                this.io(/*save*/ false, json);
+            }
+            catch (e) {
+                Util.msg.set("セーブデータのパース失敗");
+            }
+        }
+    }
+    /** */
+    static export() {
+        let json = {};
+        this.io(/*save*/ true, json);
+        return JSON.stringify(json);
     }
     static io(save, json) {
         storageVersion(save, ioObject(save, json, "Version"));
@@ -126,8 +141,8 @@ const ioBool = (save, json, key, value, loadAction) => {
     }
     else {
         const load = json[key];
-        if (load == "true" || load == "false") {
-            if (load == "true") {
+        if (load !== undefined) {
+            if (load) {
                 loadAction(true);
             }
             else {
@@ -162,15 +177,7 @@ const storageItem = (save, json) => {
         ioInt(save, obj, "num", item.num, load => item.num = load);
         ioInt(save, obj, "totalGetCount", item.totalGetCount, load => item.totalGetCount = load);
         ioInt(save, obj, "num", item.remainingUseNum, load => item.remainingUseNum = load);
-        //ioJSON(save, )
     }
-    // const name = `${storageItem.name}_${item.uniqueName}`;
-    // ioInt(save, `${name}_num`,         item.num,         load=> item.num = load);
-    // ioInt(save, `${name}_totalGetCount`, item.totalGetCount, load=> item.totalGetCount = load);
-    // ioInt(save, `${name}_remainingUseNum`,     item.remainingUseNum,     load=> item.remainingUseNum = load);
-    // for(const item of Item.values){
-    //     // ioInt2(save, json, `${item.uniqueName})
-    // }
 };
 const storageEq = (save, json) => {
     for (const eq of Eq.values) {
@@ -178,9 +185,6 @@ const storageEq = (save, json) => {
         ioInt(save, obj, "num", eq.num, load => eq.num = load);
         ioInt(save, obj, "totalGetCount", eq.totalGetCount, load => eq.totalGetCount = load);
     }
-    // const name = `${storageEq.name}_${eq.uniqueName}`;
-    // ioInt(save, `${name}_num`,         eq.num,         load=> eq.num = load);
-    // ioInt(save, `${name}_totalGetCount`, eq.totalGetCount, load=> eq.totalGetCount = load);
 };
 const storageEqEar = (save, json) => {
     for (const ear of EqEar.values) {
@@ -188,9 +192,6 @@ const storageEqEar = (save, json) => {
         ioInt(save, obj, "num", ear.num, load => ear.num = load);
         ioInt(save, obj, "totalGetCount", ear.totalGetCount, load => ear.totalGetCount = load);
     }
-    // const name = `${storageEqEar.name}_${ear.uniqueName}`;
-    // ioInt(save, `${name}_num`,         ear.num,         load=> ear.num = load);
-    // ioInt(save, `${name}_totalGetCount`, ear.totalGetCount, load=> ear.totalGetCount = load);
 };
 const storageDungeon = (save, json) => {
     for (const d of Dungeon.values) {
@@ -199,10 +200,6 @@ const storageDungeon = (save, json) => {
         ioInt(save, obj, "dungeonClearCount", d.dungeonClearCount, load => d.dungeonClearCount = load);
         ioInt(save, obj, "exKillCount", d.exKillCount, load => d.exKillCount = load);
     }
-    // const name = `${storageDungeon.name}_${d.uniqueName}`;
-    // ioInt(save, `${name}_treasureKey`,      d.treasureKey,load=> d.treasureKey = load);
-    // ioInt(save, `${name}_dungeonClearCount`,d.dungeonClearCount,load=> d.dungeonClearCount = load);
-    // ioInt(save, `${name}_exKillCount`,      d.exKillCount,      load=> d.exKillCount = load);
 };
 const storagePlayer = (save, json) => {
     for (const p of Player.values) {
@@ -306,108 +303,14 @@ const storagePlayer = (save, json) => {
             }
         }
     }
-    // const name = `${storagePlayer.name}_${p.uniqueName}`;
-    // ioBool(save, `${name}_player_member`, p.member, load=> p.member = load);
-    // const u = p.ins;
-    // ioBool(save, `${name}_exists`, u.exists, load=> u.exists = load);
-    // ioBool(save, `${name}_dead`, u.dead, load=> u.dead = load);
-    // for(const prm of Prm.values()){
-    //     ioInt(save, `${name}_prm_${prm}_base`,   u.prm(prm).base|0,   load=> u.prm(prm).base = load);
-    //     ioInt(save, `${name}_prm_${prm}_eq`,     u.prm(prm).eq|0,     load=> u.prm(prm).eq = load);
-    //     ioInt(save, `${name}_prm_${prm}_battle`, u.prm(prm).battle|0, load=> u.prm(prm).battle = load);
-    // }
-    // for(let i = 0; i < Unit.EAR_NUM; i++){
-    //     ioStr(save, `${name}_eqear_${i}`, u.getEqEar(i).uniqueName, load=>{
-    //         const ear = EqEar.valueOf(load);
-    //         if(ear){u.setEqEar(i, ear);}
-    //     })
-    // }
-    // for(const pos of EqPos.values){
-    //     ioStr(save, `${name}_eq_${pos}`, u.getEq(pos).uniqueName, load=>{
-    //         const eq = Eq.valueOf(load);
-    //         if(eq){u.setEq(pos, eq);}
-    //     })
-    // }
-    // ioStr(save, `${name}_job`, u.job.uniqueName, load=>{
-    //     const job = Job.valueOf(load);
-    //     if(job){
-    //         u.job = job;
-    //     }
-    // });
-    // for(const job of Job.values){
-    //     ioInt(save, `${name}_jobLv_${job.uniqueName}`, u.getJobLv(job), load=>{
-    //         u.setJobLv(job, load);
-    //     });
-    //     ioInt(save, `${name}_jobExp_${job.uniqueName}`, u.getJobExp(job), load=>{
-    //         u.setJobExp(job, load);
-    //     });
-    // }
-    // let tecsLen = u.tecs.length;
-    // ioInt(save, `${name}_tecs_length`, u.tecs.length, load=> tecsLen = load);
-    // u.tecs.length = tecsLen;
-    // for(let i = 0; i < u.tecs.length; i++){
-    //     if(!u.tecs[i]){
-    //         u.tecs[i] = Tec.empty;
-    //     }
-    // }
-    // for(let i = 0; i < tecsLen; i++){
-    //     const isPassiveKey = `${name}_tec_${i}_isPassive`;
-    //     let isPassive:boolean = u.tecs[i] instanceof PassiveTec;
-    //     ioBool(save, isPassiveKey, isPassive, load=> isPassive = load);
-    //     const key = `${name}_tec_${i}`;
-    //     const value = u.tecs[i].uniqueName;
-    //     ioStr(save, key, value, load=>{
-    //         if(isPassive){
-    //             const loadTec = PassiveTec.valueOf(load);
-    //             if(loadTec){u.tecs[i] = loadTec;}
-    //         }else{
-    //             const loadTec = ActiveTec.valueOf(load);
-    //             if(loadTec){u.tecs[i] = loadTec;}
-    //         }
-    //     });
-    // }
-    // for(const tec of PassiveTec.values){
-    //     ioBool(save, `${name}_masteredPassiveTec_${tec.uniqueName}`, u.isMasteredTec(tec), load=>{
-    //         u.setMasteredTec(tec, load);
-    //     });
-    // }
-    // for(const tec of ActiveTec.values){
-    //     ioBool(save, `${name}_masteredActiveTec_${tec.uniqueName}`, u.isMasteredTec(tec), load=>{
-    //         u.setMasteredTec(tec, load);
-    //     });
-    // }
-    // {//condition
-    //     let savedConditions:{condition:Condition, value:number}[] = [];
-    //     for(const type of ConditionType.values){
-    //         const set = u.getConditionSet(type);
-    //         const loadSet = {condition:Condition.empty, value:0};
-    //         ioStr(save, `${name}_condition_${type.uniqueName}_condition`, set.condition.uniqueName, load=>{
-    //             const condition = Condition.valueOf(load);
-    //             if(condition){
-    //                 loadSet.condition = condition;
-    //             }
-    //         });
-    //         ioInt(save, `${name}_condition_${type.uniqueName}_value`, set.value, load=> loadSet.value = load);
-    //         savedConditions.push(loadSet);
-    //     }
-    //     if(!save){
-    //         for(let set of savedConditions){
-    //             u.setCondition( set.condition, set.value );
-    //         }
-    //     }
-    // }
 };
 const storageMix = (save, json) => {
     for (const mix of Mix.values) {
         ioInt(save, json, `${mix.uniqueName}_count`, mix.count, load => mix.count = load);
     }
-    // const name = `${storageMix.name}_${mix.uniqueName}`;
-    // ioInt(save, `${name}_count`, mix.count, load=> mix.count = load);
 };
 const storagePlayData = (save, json) => {
     ioInt(save, json, "yen", PlayData.yen, load => PlayData.yen = load);
-    const name = `${storagePlayData.name}`;
-    // ioInt(save, `${name}_yen`, PlayData.yen, load=> PlayData.yen = load);
     ioBool(save, json, "gotAnyEq", PlayData.gotAnyEq, load => PlayData.gotAnyEq = load);
     ioStr(save, json, "`dungeonNow", Dungeon.now.uniqueName, load => {
         const dungeon = Dungeon.valueOf(load);

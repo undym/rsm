@@ -66,10 +66,35 @@ const setOptionBtn = () => {
             Sound.save.play();
         },
     });
+    // list.add({
+    //     center:()=>"EXPORT",
+    //     push:elm=>{
+    //         const textarea = document.createElement('textarea') as HTMLTextAreaElement;
+    //         textarea.value = SaveData.export();
+    //         textarea.selectionStart = 0;
+    //         textarea.selectionEnd = textarea.value.length;
+    //         const s = textarea.style;
+    //         s.position = 'fixed';
+    //         s.left = '-100%';
+    //         document.body.appendChild(textarea);
+    //         textarea.focus();
+    //         const result = document.execCommand('copy');
+    //         textarea.blur();
+    //         document.body.removeChild(textarea);
+    //         // true なら実行できている falseなら失敗か対応していないか
+    //         if(result){
+    //             Util.msg.set("クリップボードにコピーしました");
+    //         }else{
+    //             Util.msg.set("失敗");
+    //         }
+    //     },
+    // });
+    // list.add({
+    //     center:()=>"INPORT",
+    //     push:async elm=>{
+    //     },
+    // });
     if (Debug.debugMode) {
-        // l.addFromLast(new Btn("Debug", ()=>{
-        //     setDebugBtn(l);
-        // }));
         list.add({
             center: () => "Debug",
             push: elm => {
