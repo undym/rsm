@@ -27,8 +27,8 @@ export class Story{
         const faceBounds = new Rect(0, nameBounds.yh, nameBounds.w, 1 - nameBounds.yh);
         const msgBounds = new Rect(nameBounds.xw, nameBounds.y, 1 - nameBounds.xw, nameBounds.h + faceBounds.h);
         const msgBoundsInner = (()=>{
-            const marginW = msgBounds.w * 0.05;
-            const marginH = msgBounds.h * 0.05;
+            const marginW = msgBounds.w * 0.02;
+            const marginH = msgBounds.h * 0.02;
             return new Rect(msgBounds.x + marginW, msgBounds.y + marginH, msgBounds.w - marginW * 2, msgBounds.h - marginH * 2 );
         })();
 
