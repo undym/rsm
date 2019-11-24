@@ -66,7 +66,7 @@ Player._valueOf = new Map();
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
-            p.prm(Prm.STR).base = 2;
+            p.prm(Prm.STR).base = 3;
             p.tecs = [
                 Tec.殴る,
                 Tec.empty,

@@ -16,7 +16,7 @@ import { Sound } from "./sound.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,24,1);
+    static readonly NOW = new Version(0,24,2);
     static readonly updateInfo =    [
                                         "(0.20.15)バグ修正",
                                         "(0.21.0)もろもろ追加",
@@ -26,6 +26,7 @@ export class Version{
                                         "(0.23.0)いろいろ",
                                         "(0.24.0)セーブデータの仕様変更",
                                         "(0.24.1)セーブデータがおかしかった",
+                                        "(0.24.2)セーブデータの仕様変更",
                                     ];
 
     private values:number[];
@@ -215,12 +216,12 @@ const storageVersion = (save:boolean, json:any)=>{
 //     return Number.parseInt( str.substring(4 * index, 4 * (index+1)), 16 );
 // }
 
-class Hex16Limit{
-    private static values:number[] = [16];
+class Radix36Limit{
+    private static values:number[] = [36];
     static get(digit:number):number{
         if(digit-1 >= this.values.length){
             for(let i = this.values.length; i < digit; i++){
-                this.values.push( this.values[i-1] * 16 );
+                this.values.push( this.values[i-1] * 36 );
             }
         }
 
@@ -228,18 +229,18 @@ class Hex16Limit{
     }
 }
 /**
- * 指定の桁数の16進数に変換して文字列にまとめたものを返す。 
- * to16hex( 4, [0, 10, 1] );//"0000000a0001"
+ * 指定の桁数の36進数に変換して文字列にまとめたものを返す。 
+ * to36Radix( 4, [0, 10, 1] );//"0000000a0001"
  * */
-const to16hex = (digit:number, values:number[]):string=>{
+const to36Radix = (digit:number, values:number[]):string=>{
     let res = "";
-    const limit = Hex16Limit.get(digit);
+    const limit = Radix36Limit.get(digit);
     
     for(let i = 0; i < values.length; i++){
         if(values[i] > limit){
             values[i] = limit;
         }
-        let s = values[i].toString(16);
+        let s = values[i].toString(36);
         for(let i = s.length; i < digit; i++){
             s = "0"+s;
         };
@@ -250,13 +251,13 @@ const to16hex = (digit:number, values:number[]):string=>{
     return res;
 };
 
-const parse16hex = (digit:number, str:string, index:number):number=>{
-    return Number.parseInt( str.substring(digit * index, digit * (index+1)), 16 );
+const parse36Radix = (digit:number, str:string, index:number):number=>{
+    return Number.parseInt( str.substring(digit * index, digit * (index+1)), 36 );
 };
 
 const storageItem = (save:boolean, json:any)=>{
     for(const item of Item.values){
-        const value =   to16hex(
+        const value =   to36Radix(
                             /*digit*/4,
                             [
                                 item.num,
@@ -265,9 +266,9 @@ const storageItem = (save:boolean, json:any)=>{
                             ]
                         );
         ioStr(save, json, item.uniqueName, value, load=>{
-            item.num                = parse16hex(/*digit*/4, load, /*index*/0);
-            item.totalGetCount      = parse16hex(/*digit*/4, load, /*index*/1);
-            item.remainingUseNum    = parse16hex(/*digit*/4, load, /*index*/2);
+            item.num                = parse36Radix(/*digit*/4, load, /*index*/0);
+            item.totalGetCount      = parse36Radix(/*digit*/4, load, /*index*/1);
+            item.remainingUseNum    = parse36Radix(/*digit*/4, load, /*index*/2);
         });
     }
 };
@@ -275,7 +276,7 @@ const storageItem = (save:boolean, json:any)=>{
 
 const storageEq = (save:boolean, json:any)=>{
     for(const eq of Eq.values){
-        const value =   to16hex(
+        const value =   to36Radix(
                             /*digit*/4,
                             [
                                 eq.num,
@@ -283,8 +284,8 @@ const storageEq = (save:boolean, json:any)=>{
                             ]
                         );
         ioStr(save, json, eq.uniqueName, value, load=>{
-            eq.num                = parse16hex(/*digit*/4, load, /*index*/0);
-            eq.totalGetCount      = parse16hex(/*digit*/4, load, /*index*/1);
+            eq.num                = parse36Radix(/*digit*/4, load, /*index*/0);
+            eq.totalGetCount      = parse36Radix(/*digit*/4, load, /*index*/1);
         });
     }
 }
@@ -404,30 +405,31 @@ const storagePlayer = (save:boolean, json:any)=>{
         const digit = 1;
         for(const tec of ActiveTec.values){
             const values:number[] = Player.values.map(p=> p.ins.isMasteredTec(tec) ? 1 : 0);
-            const value = to16hex(digit, values);
+            const value = to36Radix(digit, values);
             ioStr(save, activeTecObj, tec.uniqueName, value, load=>{
                 Player.values.forEach((p,index)=>{
-                    if(index * digit > load.length){return;}
+                    if(index * digit >= load.length){return;}
                     
-                    if(parse16hex(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
-                    else                                      {p.ins.setMasteredTec(tec, false);}
+                    if(parse36Radix(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
+                    else                                        {p.ins.setMasteredTec(tec, false);}
                 });
             });
         }
     }
 
+    
     {
         const passiveTecObj = ioObject(save, json, "PassiveTec");
         const digit = 1;
         for(const tec of PassiveTec.values){
             const values:number[] = Player.values.map(p=> p.ins.isMasteredTec(tec) ? 1 : 0);
-            const value = to16hex(digit, values);
+            const value = to36Radix(digit, values);
             ioStr(save, passiveTecObj, tec.uniqueName, value, load=>{
                 Player.values.forEach((p,index)=>{
-                    if(index * digit > load.length){return;}
+                    if(index * digit >= load.length){return;}
                     
-                    if(parse16hex(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
-                    else                                      {p.ins.setMasteredTec(tec, false);}
+                    if(parse36Radix(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
+                    else                                        {p.ins.setMasteredTec(tec, false);}
                 });
             });
         }
@@ -439,23 +441,23 @@ const storagePlayer = (save:boolean, json:any)=>{
             const jobObj = ioObject(save, jobParentObj, `${job.uniqueName}`);
             {
                 const lvs:number[]  = Player.values.map(p=> p.ins.getJobLv(job));
-                const value:string = to16hex(digit, lvs);
+                const value:string = to36Radix(digit, lvs);
                 ioStr(save, jobObj, "lv", value, load=>{
                     Player.values.forEach((p,index)=>{
-                        if(index * digit > load.length){return;}
+                        if(index * digit >= load.length){return;}
     
-                        p.ins.setJobLv( job, parse16hex(digit, load, index) );
+                        p.ins.setJobLv( job, parse36Radix(digit, load, index) );
                     });
                 });
             }
             {
                 const exps:number[] = Player.values.map(p=> p.ins.getJobExp(job));
-                const value:string = to16hex(digit, exps);
+                const value:string = to36Radix(digit, exps);
                 ioStr(save, jobObj, "exp", value, load=>{
                     Player.values.forEach((p,index)=>{
-                        if(index * digit > load.length){return;}
+                        if(index * digit >= load.length){return;}
     
-                        p.ins.setJobExp( job, parse16hex(digit, load, index) );
+                        p.ins.setJobExp( job, parse36Radix(digit, load, index) );
                     });
                 });
             }
