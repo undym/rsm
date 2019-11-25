@@ -41,13 +41,13 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 24, 4);
+Version.NOW = new Version(0, 24, 5);
 Version.updateInfo = [
-    "(0.24.0)セーブデータの仕様変更",
     "(0.24.1)セーブデータがおかしかった",
     "(0.24.2)セーブデータの仕様変更",
     "(0.24.3)セーブデータ関連",
-    "(0.24.3)セーブデータ関連",
+    "(0.24.4)セーブデータ関連",
+    "(0.24.5)攻撃のバグ修正",
 ];
 let saveDataVersion;
 export class SaveData {
