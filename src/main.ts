@@ -64,8 +64,6 @@ window.onload = ()=>{
     setInput();
 
     init();
-    
-    SaveData.delete();
 
     // setTitle();
 
@@ -208,50 +206,50 @@ const setInput = ()=>{
 
 const title = ()=>{
     
-    class TitleStr{
-        private strings:string[] = [];
-        private measureRatioW:number = 0;
-        private count = 0;
-        readonly bounds:Rect;
+    // class TitleStr{
+    //     private strings:string[] = [];
+    //     private measureRatioW:number = 0;
+    //     private count = 0;
+    //     readonly bounds:Rect;
 
-        constructor(private font:Font, readonly str:string, readonly center:Point, private push:()=>void){
-            for(let i = 0; i < str.length; i++){
-                this.strings.push( str.substring(i, i+1) );
-            }
-            this.measureRatioW = font.measureRatioW(str);
-            this.bounds = new Rect(center.x - this.measureRatioW / 2, center.y - font.ratioH / 2, this.measureRatioW, font.ratioH);
-        }
+    //     constructor(private font:Font, readonly str:string, readonly center:Point, private push:()=>void){
+    //         for(let i = 0; i < str.length; i++){
+    //             this.strings.push( str.substring(i, i+1) );
+    //         }
+    //         this.measureRatioW = font.measureRatioW(str);
+    //         this.bounds = new Rect(center.x - this.measureRatioW / 2, center.y - font.ratioH / 2, this.measureRatioW, font.ratioH);
+    //     }
 
-        draw(){
-            this.count++;
-            let x = this.bounds.x;
-            const y = this.bounds.y;
-            const w1 = this.measureRatioW / this.str.length;
-            const shake = Graphics.dotW * 3;
-            for(let i = 0; i < this.strings.length; i++){
-                // for(let i2 = 0; i2 < 3; i2++){
-                    const _x = x + randomFloat( -shake, shake );
-                    const _y = y + randomFloat( -shake, shake );
-                    this.font.draw( this.strings[i], new Point(x, y), Color.WHITE.wave(Color.CYAN, this.count * 0.3 + i * 0.7));
-                // }
-                x += w1;
-            }
-        }
-    }
+    //     draw(){
+    //         this.count++;
+    //         let x = this.bounds.x;
+    //         const y = this.bounds.y;
+    //         const w1 = this.measureRatioW / this.str.length;
+    //         const shake = Graphics.dotW * 3;
+    //         for(let i = 0; i < this.strings.length; i++){
+    //             // for(let i2 = 0; i2 < 3; i2++){
+    //                 const _x = x + randomFloat( -shake, shake );
+    //                 const _y = y + randomFloat( -shake, shake );
+    //                 this.font.draw( this.strings[i], new Point(x, y), Color.WHITE.wave(Color.CYAN, this.count * 0.3 + i * 0.7));
+    //             // }
+    //             x += w1;
+    //         }
+    //     }
+    // }
 
     const img = new Img("img/title.png", {lazyLoad:false,});
-    const updateMsgs:string[] = [`Version(${Version.NOW})test`];
+    const updateMsgs:string[] = [`Version(${Version.NOW})`];
     for(const s of Version.updateInfo){
         updateMsgs.push(s);
     }
 
-    const font = new Font( Graphics.pixelH * 0.08, Font.ITALIC );
-    const newGameStr = new TitleStr( font, "NEW GAME", new Point(0.5, 0.3), ()=>{
+    // const font = new Font( Graphics.pixelH * 0.08, Font.ITALIC );
+    // const newGameStr = new TitleStr( font, "NEW GAME", new Point(0.5, 0.3), ()=>{
 
-    });
-    const continueStr = new TitleStr( font, "CONTINUE", new Point(0.5, 0.7), ()=>{
+    // });
+    // const continueStr = new TitleStr( font, "CONTINUE", new Point(0.5, 0.7), ()=>{
 
-    });
+    // });
 
     // const rigingStar = new TitleStr( font, "RigingStar", ()=>{
 
@@ -276,12 +274,14 @@ const title = ()=>{
         };
 
         if(SaveData.exists()){
+            console.log("exists");
             const loadSuccess = continueGame();
             if(!loadSuccess){
                 Util.msg.set("不正なセーブデータ");
                 runNewGame();
             }
         }else{
+            console.log("!exists");
             runNewGame();
         }
     
@@ -307,9 +307,6 @@ const title = ()=>{
         updateMsgs.forEach((s,i)=>{
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
-
-        // newGameStr.draw();
-        // rigingStar.draw(new Point(rsW / 2, 1 - font.ratioH / 2));
         
 
         Input.update();
