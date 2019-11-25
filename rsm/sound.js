@@ -95,6 +95,8 @@ Sound.MAX_VOLUME = 10;
     Sound.lvup = new Sound("sound/lvup.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
+    /**財宝・ダンジョンクリア時のアイテム. */
+    Sound.rare = new Sound("sound/rare.mp3");
     Sound.save = new Sound("sound/save.mp3");
     /**凍てつく波動. */
     Sound.seikou = new Sound("sound/seikou.mp3");

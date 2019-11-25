@@ -284,11 +284,13 @@ export class BattleScene extends Scene {
                             if (item.targetings & Targeting.SELECT) {
                                 Util.msg.set(`[${item}]のターゲットを選択してください`);
                                 this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
+                                    list.freeze(true);
                                     yield item.use(user, targets);
                                     yield this.phaseEnd();
                                 }));
                             }
                             else {
+                                list.freeze(true);
                                 let targets = Targeting.filter(item.targetings, user, Unit.all, /*num*/ 1);
                                 yield item.use(user, targets);
                                 yield this.phaseEnd();

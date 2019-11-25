@@ -246,6 +246,7 @@ export namespace DungeonEvent{
         happenInner = async()=>{
             const treasure:Num|undefined = Dungeon.now.rndTreasure();
             if(treasure){
+                Sound.rare.play();
                 await treasure.add(1);
             }else{
                 Util.msg.set("空だった！");
@@ -257,6 +258,7 @@ export namespace DungeonEvent{
         constructor(){super();}
         happenInner = async()=>{
             Dungeon.now.treasureKey++;
+            Sound.rare.play();
             Util.msg.set(`[${Dungeon.now}の財宝の鍵]を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;

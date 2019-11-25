@@ -107,6 +107,8 @@ export namespace Sound{
     export const lvup       = new Sound("sound/lvup.mp3");
     /**格闘攻撃. */
     export const PUNCH      = new Sound("sound/PUNCH.mp3");
+    /**財宝・ダンジョンクリア時のアイテム. */
+    export const rare       = new Sound("sound/rare.mp3");
     export const save       = new Sound("sound/save.mp3");
     /**凍てつく波動. */
     export const seikou     = new Sound("sound/seikou.mp3");

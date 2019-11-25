@@ -248,6 +248,7 @@ class EventImg {
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 const treasure = Dungeon.now.rndTreasure();
                 if (treasure) {
+                    Sound.rare.play();
                     yield treasure.add(1);
                 }
                 else {
@@ -262,6 +263,7 @@ class EventImg {
             super();
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 Dungeon.now.treasureKey++;
+                Sound.rare.play();
                 Util.msg.set(`[${Dungeon.now}の財宝の鍵]を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;

@@ -15,6 +15,7 @@ import { choice } from "../undym/random.js";
 import { Img } from "../graphics/graphics.js";
 import { Story1 } from "../story/story1.js";
 import { Story0 } from "../story/story0.js";
+import { Sound } from "../sound.js";
 
 
 export class DungeonArea{
@@ -282,6 +283,7 @@ export abstract class Dungeon{
     async dungeonClearEvent(){
         if(this.dungeonClearCount <= 100 && this.dungeonClearCount % 10 === 0){
             Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`); await cwait();
+            Sound.rare.play();
             const value = (this.dungeonClearCount / 10)|0;
             Item.ささやかな贈り物.add(value);       await wait();
         }
@@ -334,7 +336,9 @@ export namespace Dungeon{
                 await Story0.runMain1();
             }
             if(Item.脱出ポッド.totalGetCount === 0){
+                Sound.rare.play();
                 Item.脱出ポッド.add(1); await wait();
+                Sound.bpup.play();
                 Util.msg.set("[お店]が出現した", Color.PINK.bright); await cwait();
             }
         }
@@ -370,6 +374,7 @@ export namespace Dungeon{
                 await Story0.runMain2();
             }
             if(Item.動かない映写機.totalGetCount === 0){
+                Sound.rare.play();
                 Item.動かない映写機.add(1); await wait();
             }
         }
@@ -405,12 +410,13 @@ export namespace Dungeon{
         }
     };
     export const                         予感の街レ:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"予感の街・レ", info:"",
+        constructor(){super({uniqueName:"予感の街レ", info:"",
                                 rank:0, enemyLv:9, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ミルテの棍],
                                 exItems:    ()=>[Eq.いばらの鎧],
                                 trendItems: ()=>[Item.粘土, Item.土, Item.ガラス],
         });}
+        toString(){return "予感の街・レ";}
         isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
@@ -433,13 +439,14 @@ export namespace Dungeon{
         }
     };
     export const                         水の都イス:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"水の都・イス", info:"湖+",
+        constructor(){super({uniqueName:"水の都イス", info:"湖+",
                                 rank:2, enemyLv:14, au:60, btn:[DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.レティシアsガン],
                                 exItems:    ()=>[Eq.月代],
                                 trendItems: ()=>[Item.水, Item.イズミミズ, Item.ジェリーの粘液, Item.精霊の涙],
                                 trendEvents:()=>[[DungeonEvent.LAKE, 0.05]],
         });}
+        toString(){return "水の都・イス";}
         isVisible = ()=>Dungeon.黒い丘.dungeonClearCount > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
@@ -462,12 +469,13 @@ export namespace Dungeon{
         }
     };
     export const                         リテの門:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"リ・テの門", info:"",
+        constructor(){super({uniqueName:"リテの門", info:"",
                                 rank:2, enemyLv:16, au:200, btn:[DungeonArea.中央島, new Rect(0, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.忍者ソード],
                                 exItems:    ()=>[Eq.反精霊の盾],
                                 trendItems: ()=>[Item.ファーストキス, Item.エレタクレヨン],
         });}
+        toString(){return "リ・テの門";}
         isVisible = ()=>Dungeon.水の都イス.dungeonClearCount > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
@@ -863,6 +871,7 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story1.runMain18();
 
+                Sound.lvup.play();
                 Util.msg.set("パーティーメンバーの入れ替えができるようになった！"); await cwait();
             }
         }

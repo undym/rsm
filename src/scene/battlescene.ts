@@ -311,12 +311,14 @@ export class BattleScene extends Scene{
                             Util.msg.set(`[${item}]のターゲットを選択してください`);
     
                             this.setChooseTargetBtn(attacker, async(targets)=>{
+                                list.freeze(true);
                                 await item.use( user, targets );
                                 await this.phaseEnd();
                             });
                         }else{
+                            list.freeze(true);
+
                             let targets = Targeting.filter( item.targetings, user, Unit.all, /*num*/1 );
-                            
                             await item.use( user, targets );
                             await this.phaseEnd();
                         }
@@ -327,7 +329,7 @@ export class BattleScene extends Scene{
                 }));
             },
         });
-        
+
         list.setScroll( attacker.tecListScroll, "center" );
 
         btnSpace.clear();
