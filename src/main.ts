@@ -240,7 +240,7 @@ const title = ()=>{
     }
 
     const img = new Img("img/title.png", {lazyLoad:false,});
-    const updateMsgs:string[] = [`Version(${Version.NOW})`];
+    const updateMsgs:string[] = [`Version(${Version.NOW})test`];
     for(const s of Version.updateInfo){
         updateMsgs.push(s);
     }

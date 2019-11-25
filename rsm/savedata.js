@@ -69,10 +69,7 @@ export class SaveData {
     /**jsonStr指定でインポート. */
     static load(jsonStr) {
         if (!jsonStr) {
-            const str = window.localStorage.getItem(this.data);
-            if (str) {
-                jsonStr = str;
-            }
+            jsonStr = window.localStorage.getItem(this.data);
         }
         if (jsonStr) {
             try {
