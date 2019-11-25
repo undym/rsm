@@ -15,7 +15,7 @@ import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { XLayout, ILayout, Label } from "./undym/layout.js";
 import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
-import { randomInt } from "./undym/random.js";
+import { randomInt, randomFloat } from "./undym/random.js";
 import { Sound } from "./sound.js";
 
 
@@ -60,15 +60,16 @@ window.onload = ()=>{
     const texture = new Texture({canvas:canvas});
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
-    
+
     setInput();
 
     init();
     
+    SaveData.delete();
 
-    setTitle();
+    // setTitle();
 
-
+    title();
 };
 
 const ctrl = async()=>{
@@ -120,7 +121,7 @@ const newGame = ()=>{
 const continueGame = ()=>{
     Util.msg.set("CONTINUE");
     
-    SaveData.load();
+    return SaveData.load();
 }
 
 const setInput = ()=>{
@@ -142,37 +143,125 @@ const setInput = ()=>{
 };
 
 
-const setTitle = ()=>{
-    Graphics.fillRect(Rect.FULL, Color.BLACK);
-    const img = new Img("img/title.png", {
-        lazyLoad:false,
-        onload:img=>{
-            const h = 1;
-            const w = img.pixelW / img.pixelH;
-            img.draw(new Rect(
-                0.5 - w / 2,
-                0.5 - h / 2,
-                w,
-                h
-            ));
+// const setTitle = ()=>{
+//     Graphics.fillRect(Rect.FULL, Color.BLACK);
+//     const img = new Img("img/title.png", {
+//         lazyLoad:false,
+//         onload:img=>{
+//             // const h = 1;
+//             // const w = img.pixelW / img.pixelH;
+//             // img.draw(new Rect(
+//             //     0.5 - w / 2,
+//             //     0.5 - h / 2,
+//             //     w,
+//             //     h
+//             // ));
+//             img.drawEx({
+//                 dstRatio:Rect.FULL,
+//                 keepRatio:true,
+//             });
             
-            const msg:string[] = [];
-            msg.push(`Version(${Version.NOW})`);
-            for(const s of Version.updateInfo){
-                msg.push(s);
-            }
+//             const msg:string[] = [`Version(${Version.NOW})`];
+//             for(const s of Version.updateInfo){
+//                 msg.push(s);
+//             }
+//             msg.push("test");
 
-            msg.forEach((s,i)=>{
-                Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
-            });
-        },
-    });
+//             msg.forEach((s,i)=>{
+//                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
+//             });
+//         },
+//     });
     
 
-    let done = false;
-    const listener:(this:Document, ev:TouchEvent)=>any = ev=>{
-        if(done){return;}
-        done = true;
+//     let done = false;
+//     const listener:(this:Document, ev:TouchEvent|MouseEvent)=>any = ev=>{
+//         if(done){return;}
+//         done = true;
+
+//         Sound.init();
+
+//         for(const sound of Sound.values){
+//             sound.load();
+//         }
+
+
+//         if(SaveData.exists()){
+//             continueGame();
+//             ctrl();
+//         }else{
+//             newGame();
+//             Scene.load( TownScene.ins );
+//             ctrl();
+//         }
+    
+//         setInterval( draw, 1000 / 30 );
+
+
+//         Graphics.getRenderTarget().canvas.removeEventListener("touchend", listener);
+//         Graphics.getRenderTarget().canvas.removeEventListener("click", listener);
+//     };
+//     Graphics.getRenderTarget().canvas.addEventListener("touchend", listener);
+//     Graphics.getRenderTarget().canvas.addEventListener("click", listener);
+// };
+
+
+const title = ()=>{
+    
+    class TitleStr{
+        private strings:string[] = [];
+        private measureRatioW:number = 0;
+        private count = 0;
+        readonly bounds:Rect;
+
+        constructor(private font:Font, readonly str:string, readonly center:Point, private push:()=>void){
+            for(let i = 0; i < str.length; i++){
+                this.strings.push( str.substring(i, i+1) );
+            }
+            this.measureRatioW = font.measureRatioW(str);
+            this.bounds = new Rect(center.x - this.measureRatioW / 2, center.y - font.ratioH / 2, this.measureRatioW, font.ratioH);
+        }
+
+        draw(){
+            this.count++;
+            let x = this.bounds.x;
+            const y = this.bounds.y;
+            const w1 = this.measureRatioW / this.str.length;
+            const shake = Graphics.dotW * 3;
+            for(let i = 0; i < this.strings.length; i++){
+                // for(let i2 = 0; i2 < 3; i2++){
+                    const _x = x + randomFloat( -shake, shake );
+                    const _y = y + randomFloat( -shake, shake );
+                    this.font.draw( this.strings[i], new Point(x, y), Color.WHITE.wave(Color.CYAN, this.count * 0.3 + i * 0.7));
+                // }
+                x += w1;
+            }
+        }
+    }
+
+    const img = new Img("img/title.png", {lazyLoad:false,});
+    const updateMsgs:string[] = [`Version(${Version.NOW})`];
+    for(const s of Version.updateInfo){
+        updateMsgs.push(s);
+    }
+
+    const font = new Font( Graphics.pixelH * 0.08, Font.ITALIC );
+    const newGameStr = new TitleStr( font, "NEW GAME", new Point(0.5, 0.3), ()=>{
+
+    });
+    const continueStr = new TitleStr( font, "CONTINUE", new Point(0.5, 0.7), ()=>{
+
+    });
+
+    // const rigingStar = new TitleStr( font, "RigingStar", ()=>{
+
+    // });
+    // const rsW = font.measureRatioW( rigingStar.str );
+    
+    let gameStarted = false;
+    const listener:(this:Document, ev:TouchEvent|MouseEvent)=>any = ev=>{
+        if(gameStarted){return;}
+        gameStarted = true;
 
         Sound.init();
 
@@ -180,15 +269,23 @@ const setTitle = ()=>{
             sound.load();
         }
 
-        if(SaveData.exists()){
-            continueGame();
-            ctrl();
-        }else{
+
+        const runNewGame = ()=>{
             newGame();
             Scene.load( TownScene.ins );
-            ctrl();
+        };
+
+        if(SaveData.exists()){
+            const loadSuccess = continueGame();
+            if(!loadSuccess){
+                Util.msg.set("不正なセーブデータ");
+                runNewGame();
+            }
+        }else{
+            runNewGame();
         }
     
+        ctrl();
         setInterval( draw, 1000 / 30 );
 
 
@@ -197,4 +294,29 @@ const setTitle = ()=>{
     };
     Graphics.getRenderTarget().canvas.addEventListener("touchend", listener);
     Graphics.getRenderTarget().canvas.addEventListener("click", listener);
+
+    const loop = ()=>{
+        if(gameStarted){return;}
+
+        Graphics.fillRect(Rect.FULL, Color.BLACK);
+        img.drawEx({
+            dstRatio:Rect.FULL,
+            keepRatio:true,
+        });
+        
+        updateMsgs.forEach((s,i)=>{
+            Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
+        });
+
+        // newGameStr.draw();
+        // rigingStar.draw(new Point(rsW / 2, 1 - font.ratioH / 2));
+        
+
+        Input.update();
+        setTimeout(loop, 1000 / 60);
+    };
+    loop();
+
+    
 };
+

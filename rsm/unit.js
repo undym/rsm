@@ -638,7 +638,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         Tec.何もしない.use(attacker, [attacker]);
         return;
     }
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 10; i++) {
         let tec = choice(activeTecs);
         if (tec.checkCost(attacker)) {
             let targets = Targeting.filter(tec.targetings, attacker, targetCandidates, tec.rndAttackNum());

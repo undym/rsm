@@ -257,7 +257,7 @@ export namespace DungeonEvent{
         constructor(){super();}
         happenInner = async()=>{
             Dungeon.now.treasureKey++;
-            Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.rainbow);
+            Util.msg.set(`[${Dungeon.now}の財宝の鍵]を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };

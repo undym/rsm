@@ -658,7 +658,7 @@ export class EUnit extends Unit{
             return;
         }
 
-        for(let i = 0; i < 7; i++){
+        for(let i = 0; i < 10; i++){
             let tec = choice( activeTecs );
             if(tec.checkCost(attacker)){
                 let targets = Targeting.filter( tec.targetings, attacker, targetCandidates, tec.rndAttackNum() );

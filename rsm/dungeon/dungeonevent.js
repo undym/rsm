@@ -262,7 +262,7 @@ class EventImg {
             super();
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 Dungeon.now.treasureKey++;
-                Util.msg.set(`${Dungeon.now}の財宝の鍵を手に入れた(${Dungeon.now.treasureKey})`, Color.rainbow);
+                Util.msg.set(`[${Dungeon.now}の財宝の鍵]を手に入れた(${Dungeon.now.treasureKey})`, Color.GREEN.bright);
             });
             this.createBtnLayout = DungeonEvent.empty.createBtnLayout;
         }

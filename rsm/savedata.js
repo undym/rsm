@@ -41,17 +41,13 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 24, 2);
+Version.NOW = new Version(0, 24, 3);
 Version.updateInfo = [
-    "(0.20.15)バグ修正",
-    "(0.21.0)もろもろ追加",
-    "(0.21.1)微調整",
-    "(0.22.0)ストーリーの表示変更",
-    "(0.22.1)ストーリーの表示調整",
     "(0.23.0)いろいろ",
     "(0.24.0)セーブデータの仕様変更",
     "(0.24.1)セーブデータがおかしかった",
     "(0.24.2)セーブデータの仕様変更",
+    "(0.24.3)セーブデータ関連",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -82,11 +78,14 @@ export class SaveData {
             try {
                 const json = JSON.parse(jsonStr);
                 this.io(/*save*/ false, json);
+                return true;
             }
             catch (e) {
                 Util.msg.set("セーブデータのパース失敗");
+                return false;
             }
         }
+        return false;
     }
     /** */
     static export() {
