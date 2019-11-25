@@ -112,10 +112,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第10話『重なり始める歯車』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第10話『重なり始める歯車』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain11 = async()=>{
@@ -195,10 +195,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第11話『おやすみ。エデンの園から来たluka』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第11話『おやすみ。エデンの園から来たluka』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain12 = async()=>{
@@ -281,10 +281,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第12話『我を守りたもう、大自然よ』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第12話『我を守りたもう、大自然よ』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 
     export const runMain13 = async()=>{
@@ -375,10 +375,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第13話『小人の国』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第13話『小人の国』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 
     export const runMain14 = async()=>{
@@ -443,10 +443,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第14話『人類の最期』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第14話『人類の最期』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain15 = async()=>{
@@ -518,10 +518,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第15話『懐かしき太陽は未だそこにありけり』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第15話『懐かしき太陽は未だそこにありけり』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain16 = async()=>{
@@ -567,10 +567,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第16話『変わりゆく者』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第16話『変わりゆく者』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain17 = async()=>{
@@ -639,10 +639,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第17話『和解』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第17話『和解』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain18 = async()=>{
@@ -735,10 +735,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第18話『ルインの願い』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第18話『ルインの願い』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     /**
      * luka加入。
@@ -830,10 +830,10 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第19話『消せない記憶、立ち止まれない時間』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第19話『消せない記憶、立ち止まれない時間』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }
 
@@ -864,9 +864,9 @@ export namespace Story1{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第n話『』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第n話『』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
  */

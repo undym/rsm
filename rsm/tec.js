@@ -1439,13 +1439,22 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = target.getConditionValue(Condition.練) + 1;
-                if (value > 4) {
-                    return;
+                if (!target.existsCondition(Condition.練)) {
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, 1);
+                    yield wait();
                 }
-                Sound.up.play();
-                Unit.setCondition(target, Condition.練, value);
-                yield wait();
+                else if (target.getConditionValue(Condition.練) > 0) {
+                    let limit = target.prm(Prm.LV).total / 50 + 1;
+                    if (limit > 4) {
+                        limit = 4;
+                    }
+                    let value = target.getConditionValue(Condition.練) + 1;
+                    value = value <= limit ? value : limit;
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, value, true);
+                    yield wait();
+                }
             });
         }
     };

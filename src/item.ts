@@ -256,6 +256,17 @@ export class Item implements Action, Num{
 
 
 export namespace Item{
+    const itemRevive = async(target:Unit, hp:number)=>{
+        if(!target.dead){return;}
+        
+        target.dead = false;
+        target.hp = 0;
+        Unit.healHP(target, hp);
+        Sound.KAIFUKU.play();
+        if(SceneType.now === SceneType.BATTLE){
+            Util.msg.set(`${target.name}は生き返った`); await wait();
+        }
+    }
     const itemHealHP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healHP(target, value);
@@ -283,14 +294,7 @@ export namespace Item{
         constructor(){super({uniqueName:"サンタクララ薬", info:"一体をHP1で蘇生",
                                 type:ItemType.蘇生, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    if(target.dead){
-                                        target.dead = false;
-                                        target.hp = 0;
-                                        Unit.healHP(target, 1);
-                                        if(SceneType.now === SceneType.BATTLE){
-                                            Util.msg.set(`${target.name}は生き返った`); await wait();
-                                        }
-                                    }
+                                    itemRevive( target, 1 );
                                 }
         })}
     };
@@ -1545,6 +1549,10 @@ export namespace Item{
     export const                         ドラゴン:Item = new class extends Item{
         constructor(){super({uniqueName:"ドラゴン", info:"VEGA",
                                 type:ItemType.素材, rank:7, drop:ItemDrop.FISHING})}
+    };
+    export const                         重子力艦ソラ:Item = new class extends Item{
+        constructor(){super({uniqueName:"重子力艦ソラ", info:"",
+                                type:ItemType.素材, rank:8, drop:ItemDrop.FISHING})}
     };
     export const                         ウェポン:Item = new class extends Item{
         constructor(){super({uniqueName:"ウェポン", info:"",

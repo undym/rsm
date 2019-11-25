@@ -45,10 +45,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第1話『父と子と母の遺志』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第1話『父と子と母の遺志』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 
     export const runMain2 = async()=>{
@@ -81,10 +81,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第2話『温もりは思い出の向こう』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第2話『温もりは思い出の向こう』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain3 = async()=>{
@@ -126,10 +126,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第3話『最悪条件下においても』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第3話『最悪条件下においても』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain4 = async()=>{
@@ -173,10 +173,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第4話『地球に捨てられた人々』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第4話『地球に捨てられた人々』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
 
@@ -241,19 +241,16 @@ export namespace Story0{
                 [f_empty,"", 　　"「おまえの母親は幸運の女神のような女だったよ」"],
                 [f_empty,"", 　　"「どんな困難な盗みも、あいつが微笑めば成功すると信じられたんだ」"],
                 [f_empty,"", 　　"「おまえは宇宙一ラッキーな女が産んだ子だ」"],
-                [f_empty,"", 　　"「だから、おまえには女神が憑いている「"],
-
-
-                [f_empty,"", 　　""],
+                [f_empty,"", 　　"「だから、おまえには女神が憑いている」"],
             ]
         );
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第5話『奇跡の子luka』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第5話『奇跡の子luka』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 
     export const runMain6 = async()=>{
@@ -298,10 +295,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第6話『名も無き孤児』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第6話『名も無き孤児』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain7 = async()=>{
@@ -336,10 +333,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第7話『招かれざる帰省者』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第7話『招かれざる帰省者』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 
     
@@ -418,10 +415,10 @@ export namespace Story0{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第8話『紡がれし時の糸』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第8話『紡がれし時の糸』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain9 = async()=>{
@@ -505,9 +502,9 @@ export namespace Story0{
         );
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第9話『宇宙を跨ぐ時の河』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第9話『宇宙を跨ぐ時の河』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }

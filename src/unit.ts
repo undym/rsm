@@ -5,13 +5,14 @@ import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
 import { Dmg, Force, Action, Targeting, PhaseStartForce } from "./force.js";
 import { Job } from "./job.js";
-import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str } from "./fx/fx.js";
+import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font, Img } from "./graphics/graphics.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
+import { Pet } from "./pet.js";
 
 
 
@@ -160,6 +161,7 @@ export abstract class Unit{
 
     job:Job;
 
+    pet:Pet|undefined;
     //---------------------------------------------------------
     //
     //
@@ -177,7 +179,6 @@ export abstract class Unit{
 
         this.prm(Prm.MAX_EP).base = Unit.DEF_MAX_EP;
 
-        this.job = Job.訓練生;
         
         for(let type of ConditionType.values){
             this.conditions.push( {condition:Condition.empty, value:0} );
@@ -190,6 +191,8 @@ export abstract class Unit{
         for(let i = 0; i < Unit.EAR_NUM; i++){
             this.eqEars.push( EqEar.getDef() );
         }
+        
+        this.job = Job.訓練生;
     }
 
 
@@ -554,6 +557,7 @@ export class PUnit extends Unit{
             this.prm(Prm.EXP).base = 0;
 
             Sound.lvup.play();
+            FX_LVUP(this.imgCenter);
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
             const growHP = this.prm(Prm.LV).base / 50 + 1;

@@ -634,3 +634,54 @@ export const FX_ナーガ = (attacker:Point, target:Point)=>{
     });
 };
 FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
+
+
+export const FX_LVUP = (center:Point)=>{
+    const PI2 = Math.PI * 2;
+    const rnd = ()=>{
+        const v = Graphics.dotW * 4;
+        return -v + v * 2 * Math.random()
+    };
+    const rndColor = ()=>new Color(0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5);
+
+    const loop = 24;
+    for(let i = 0; i < 24; i++){
+        const rad = PI2 * i / (loop-1);
+        let x = center.x;
+        let y = center.y;
+        let vx = Math.cos(rad) * Graphics.dotW * 10;
+        let vy = Math.sin(rad) * Graphics.dotH * 10;
+        
+        FX.add(count=>{
+            const over = 36;
+            x += vx;
+            y += vy;
+            vx *= 0.9;
+            vy *= 0.9;
+
+            Graphics.fillOval(new Point(x + rnd(), y + rnd()), 0.01, rndColor());
+            Graphics.fillOval(new Point(x,y), 0.01, Color.WHITE);
+
+            if(count >= over){
+                const over2 = 8;
+                const _vx = (x - center.x) / over2;
+                const _vy = (y - center.y) / over2;
+                FX.add(count2=>{
+                    const v = count2 - i % (loop / 4);
+                    if(v < 0){
+                        Graphics.fillOval(new Point(x + rnd(), y + rnd()), 0.01, rndColor());
+                        Graphics.fillOval(new Point(x,y), 0.01, Color.WHITE);
+                        return true;
+                    }else{
+                        const _x = x - _vx * v;
+                        const _y = y - _vy * v;
+                        Graphics.fillOval(new Point(_x,_y), 0.01, Color.WHITE);
+                        return v < over2;
+                    }
+                });
+            }
+            return count < over;
+        });
+    }
+};
+FXTest.add(FX_LVUP.name, () => FX_LVUP( FXTest.attacker ));

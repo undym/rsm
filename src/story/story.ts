@@ -23,7 +23,7 @@ export class Story{
 
     constructor(){
         const mainBounds = new Rect(0, 0, 1, 0.8);
-        const nameBounds = new Rect(0, mainBounds.yh, 0.25, 0.05);
+        const nameBounds = new Rect(0, mainBounds.yh, 0.20, 0.05);
         const faceBounds = new Rect(0, nameBounds.yh, nameBounds.w, 1 - nameBounds.yh);
         const msgBounds = new Rect(nameBounds.xw, nameBounds.y, 1 - nameBounds.xw, nameBounds.h + faceBounds.h);
         const msgBoundsInner = (()=>{

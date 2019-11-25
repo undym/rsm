@@ -38,7 +38,6 @@ export class Dmg{
     }
     private static calcDmgElm(elm:{base:number, add:number, mul:number}){
         let res = (elm.base + elm.add) * elm.mul;
-        res = res;
         return res > 0 ? res : 0;
     }
     /**攻撃力。*/

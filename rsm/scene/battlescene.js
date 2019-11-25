@@ -226,6 +226,7 @@ export class BattleScene extends Scene {
                                 yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
                                     if (!targets[0].dead
                                         || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
+                                        list.freeze(true);
                                         Util.msg.set(`＞${targets[0].name}を選択`);
                                         yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
                                         yield this.phaseEnd();
@@ -235,6 +236,7 @@ export class BattleScene extends Scene {
                                 return;
                             }
                             else {
+                                list.freeze(true);
                                 let targets = [];
                                 targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
                                 yield tec.use(attacker, targets);

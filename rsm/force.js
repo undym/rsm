@@ -96,7 +96,6 @@ export class Dmg {
     }
     static calcDmgElm(elm) {
         let res = (elm.base + elm.add) * elm.mul;
-        res = res;
         return res > 0 ? res : 0;
     }
     clear() {

@@ -73,11 +73,11 @@ export namespace Story2{
         );
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         //TODO
-        Util.msg.set("第20話『画策』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第20話『画策』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     
     export const runMain21 = async()=>{
@@ -147,10 +147,10 @@ export namespace Story2{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第21話『神の声』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第21話『神の声』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }
 /*
@@ -179,9 +179,9 @@ export namespace Story2{
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第n話『』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第n話『』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
  */

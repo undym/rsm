@@ -24,6 +24,7 @@ export class List extends ILayout {
         this.radioBtnMode = false;
         this.radioBtnModeOffGroundColor = () => Color.BLACK;
         this.radioBtnModeOnGroundColor = () => Color.D_CYAN;
+        this.freezing = false;
         this.aPageElmNum = aPageElmNum | 0;
         this.elmPanel = new YLayout();
         this.panel = new RatioLayout()
@@ -32,6 +33,10 @@ export class List extends ILayout {
     init(run) {
         run(this);
         return this;
+    }
+    /**タッチ操作を受け付けなくする。 */
+    freeze(b) {
+        this.freezing = b;
     }
     /**
      * this.aPageElmNum = this.elms.length;
@@ -149,6 +154,9 @@ export class List extends ILayout {
     }
     ctrlInner(bounds) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.freezing) {
+                return;
+            }
             const contains = bounds.contains(Input.point);
             if (Input.holding === 0) {
                 this.hold = false;

@@ -250,16 +250,18 @@ export class BattleScene extends Scene{
                                        !targets[0].dead 
                                     || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
                                 ){
+                                    list.freeze(true);
                                     Util.msg.set(`＞${targets[0].name}を選択`);
                                     await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
                                     await this.phaseEnd();
                                 }
                             });
-    
+                            
                             await wait(1);
             
                             return;
                         }else{
+                            list.freeze(true);
                             let targets:Unit[] = [];
                             targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
                             await tec.use(attacker, targets);
@@ -325,7 +327,7 @@ export class BattleScene extends Scene{
                 }));
             },
         });
-
+        
         list.setScroll( attacker.tecListScroll, "center" );
 
         btnSpace.clear();

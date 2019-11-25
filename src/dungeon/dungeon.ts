@@ -309,7 +309,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:1, au:50, btn:[DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.安全靴],
                                 exItems:    ()=>[Eq.アカデミーバッヂ],
-                                trendItems: ()=>[Item.石, Item.杉, Item.ヒノキ],
+                                trendItems: ()=>[Item.石, Item.杉, Item.ヒノキ, Item.竹, Item.草],
         });}
         isVisible = ()=>true;
         setBossInner = ()=>{
@@ -344,7 +344,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
-                                trendItems: ()=>[Item.草, Item.水],
+                                trendItems: ()=>[Item.草, Item.水, Item.竹],
         });}
         isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
         setBossInner = ()=>{

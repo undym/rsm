@@ -66,17 +66,17 @@ export var Story2;
             [f_empty, "", "シキがルイン達のいる方向へ歩き出すと、オランピアとド・ラ・ギャレットの二人はすうっと闇の中へと消えた。"],
         ]);
         s.end();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
         //TODO
-        Util.msg.set("第20話『画策』", Color.GRAY);
+        Util.msg.set("第20話『画策』", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
     });
@@ -137,16 +137,16 @@ export var Story2;
             [f_empty, "", "･･･ペルセポネと共に。"],
         ]);
         s.end();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
-        Util.msg.set(".", Color.GRAY);
+        Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
-        Util.msg.set("第21話『神の声』", Color.GRAY);
+        Util.msg.set("第21話『神の声』", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
     });
@@ -177,9 +177,9 @@ export var Story2;
 
         s.end();
         
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第n話『』", Color.GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第n話『』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
  */ 

@@ -254,8 +254,6 @@ const title = () => {
         updateMsgs.forEach((s, i) => {
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
-        // newGameStr.draw();
-        // rigingStar.draw(new Point(rsW / 2, 1 - font.ratioH / 2));
         Input.update();
         setTimeout(loop, 1000 / 60);
     };

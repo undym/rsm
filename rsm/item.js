@@ -216,6 +216,19 @@ Item._consumableValues = [];
 Item._dropTypeValues = new Map();
 Item.DEF_NUM_LIMIT = 9999;
 (function (Item) {
+    const itemRevive = (target, hp) => __awaiter(this, void 0, void 0, function* () {
+        if (!target.dead) {
+            return;
+        }
+        target.dead = false;
+        target.hp = 0;
+        Unit.healHP(target, hp);
+        Sound.KAIFUKU.play();
+        if (SceneType.now === SceneType.BATTLE) {
+            Util.msg.set(`${target.name}は生き返った`);
+            yield wait();
+        }
+    });
     const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healHP(target, value);
@@ -253,15 +266,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "サンタクララ薬", info: "一体をHP1で蘇生",
                 type: ItemType.蘇生, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    if (target.dead) {
-                        target.dead = false;
-                        target.hp = 0;
-                        Unit.healHP(target, 1);
-                        if (SceneType.now === SceneType.BATTLE) {
-                            Util.msg.set(`${target.name}は生き返った`);
-                            yield wait();
-                        }
-                    }
+                    itemRevive(target, 1);
                 })
             });
         }
@@ -1944,6 +1949,12 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ドラゴン", info: "VEGA",
                 type: ItemType.素材, rank: 7, drop: ItemDrop.FISHING });
+        }
+    };
+    Item.重子力艦ソラ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "重子力艦ソラ", info: "",
+                type: ItemType.素材, rank: 8, drop: ItemDrop.FISHING });
         }
     };
     Item.ウェポン = new class extends Item {

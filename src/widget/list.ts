@@ -23,6 +23,7 @@ export class List extends ILayout{
     private radioBtnMode:boolean = false;
     private radioBtnModeOffGroundColor:()=>Color = ()=>Color.BLACK;
     private radioBtnModeOnGroundColor:()=>Color = ()=>Color.D_CYAN;
+    private freezing = false;
 
     constructor(aPageElmNum:number = 12){
         super();
@@ -39,6 +40,11 @@ export class List extends ILayout{
     init(run:(list:List)=>void):this{
         run(this);
         return this;
+    }
+
+    /**タッチ操作を受け付けなくする。 */
+    freeze(b:boolean){
+        this.freezing = b;
     }
     /** 
      * this.aPageElmNum = this.elms.length;
@@ -175,6 +181,8 @@ export class List extends ILayout{
 
 
     async ctrlInner(bounds:Rect){
+        if(this.freezing){return;}
+        
         const contains = bounds.contains( Input.point );
 
         if(Input.holding === 0){
