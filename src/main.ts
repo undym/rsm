@@ -8,7 +8,9 @@ import { FX, FXTest } from "./fx/fx.js";
 import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color, Point } from "./undym/type.js";
-import { Graphics, Texture, Font, Img } from "./graphics/graphics.js";
+import { Graphics, Font } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
+import { Texture } from "./graphics/texture.js";
 import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
@@ -57,7 +59,7 @@ window.onload = ()=>{
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
-    const texture = new Texture({canvas:canvas});
+    const texture = new Texture(canvas);
     Graphics.setRenderTarget(texture);
     Input.init(canvas, rotate);
 
@@ -274,14 +276,12 @@ const title = ()=>{
         };
 
         if(SaveData.exists()){
-            console.log("exists");
             const loadSuccess = continueGame();
             if(!loadSuccess){
                 Util.msg.set("不正なセーブデータ");
                 runNewGame();
             }
         }else{
-            console.log("!exists");
             runNewGame();
         }
     

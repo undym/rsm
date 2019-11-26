@@ -19,7 +19,8 @@ import { Unit, Prm } from "../unit.js";
 import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
 import { Targeting } from "../force.js";
-import { Font, Graphics, Texture } from "../graphics/graphics.js";
+import { Font, Graphics } from "../graphics/graphics.js";
+import { Texture } from "../graphics/texture.js";
 import { Item } from "../item.js";
 import { SetTecScene } from "./settecscene.js";
 import { MixScene } from "./mixscene.js";
@@ -34,6 +35,7 @@ import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
 import { Sound } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
+import { Pet } from "../pet.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -106,6 +108,9 @@ export class TownScene extends Scene {
         })()));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
+        super.add(Rect.FULL, ILayout.create({ draw: bounds => {
+                Pet.ネーレイス.img.draw(new Rect(0.3, 0.3, 0.3, 0.3));
+            } }));
         //----------------------------------------------------
         SceneType.TOWN.set();
         TownBtn.reset();
@@ -280,7 +285,7 @@ TownBtn.dungeonListScroll = 0;
 const FX_DungeonName = (name, bounds) => {
     const fontSize = 60;
     const font = new Font(fontSize, Font.ITALIC);
-    const tex = new Texture({ pixelSize: { w: font.measurePixelW(name), h: fontSize } });
+    const tex = Texture.createFromPixel(font.measurePixelW(name), fontSize);
     tex.setRenderTarget(() => {
         font.draw(name, Point.ZERO, Color.WHITE);
     });

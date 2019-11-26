@@ -9,7 +9,8 @@ import { Unit, Prm, PUnit, EUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
 import { ConditionType } from "../condition.js";
 import { EqPos, Eq } from "../eq.js";
-import { Font, Graphics, Img } from "../graphics/graphics.js";
+import { Font, Graphics } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 import { Version } from "../savedata.js";
 
 

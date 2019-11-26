@@ -2,7 +2,7 @@ import { PUnit, Prm, Unit } from "./unit.js";
 import { Tec, PassiveTec } from "./tec.js";
 import { Job } from "./job.js";
 import { Eq } from "./eq.js";
-import { Img } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 import { SaveData } from "./savedata.js";
 
 

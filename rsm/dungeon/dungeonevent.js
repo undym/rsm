@@ -21,7 +21,7 @@ import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
 import { Targeting, Dmg } from "../force.js";
-import { Img } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";

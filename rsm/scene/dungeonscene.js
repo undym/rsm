@@ -4,7 +4,7 @@ import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen, DrawUnits } from "./sceneutil.js";
-import { Img } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 export default class DungeonScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new DungeonScene()); }
     constructor() {

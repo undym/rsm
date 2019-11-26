@@ -1,7 +1,8 @@
 import { Rect, Color, Point } from "../undym/type.js";
 import { Scene, cwait } from "../undym/scene.js";
 import { ILayout } from "../undym/layout.js";
-import { Graphics, Img, Font } from "../graphics/graphics.js";
+import { Graphics, Font } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 import { Sound } from "../sound.js";
 import { Util } from "../util.js";
 import { Story0 } from "./story0.js";

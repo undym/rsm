@@ -6,14 +6,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Force, Targeting } from "./force";
-import { Unit } from "./unit";
-import { Tec } from "./tec";
-import { choice } from "./undym/random";
-import { Util } from "./util";
-import { wait } from "./undym/scene";
-import { Color } from "./undym/type";
-import { Img } from "./graphics/graphics";
+import { Force, Targeting } from "./force.js";
+import { Unit } from "./unit.js";
+import { Tec } from "./tec.js";
+import { choice } from "./undym/random.js";
+import { Util } from "./util.js";
+import { wait } from "./undym/scene.js";
+import { Color } from "./undym/type.js";
+import { Img } from "./graphics/texture.js";
 export class PetFactory {
     constructor(uniqueName, img) {
         this.uniqueName = uniqueName;
@@ -66,7 +66,7 @@ export class Pet extends Force {
 }
 (function (Pet) {
     Pet.ネーレイス = new class extends PetFactory {
-        constructor() { super("ネーレイス", new Img("img/pet/pet2.png")); }
+        constructor() { super("ネーレイス", new Img("img/pet/pet2.png", { clear: Color.BLACK })); }
         create(hp) {
             return new class extends Pet {
                 constructor() { super("ネーレイス", hp); }

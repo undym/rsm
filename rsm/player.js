@@ -2,7 +2,7 @@ import { PUnit, Prm, Unit } from "./unit.js";
 import { Tec } from "./tec.js";
 import { Job } from "./job.js";
 import { Eq } from "./eq.js";
-import { Img } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 export class Player {
     constructor(uniqueName) {
         this.uniqueName = uniqueName;

@@ -1,12 +1,12 @@
-import { Force, PhaseStartForce, Targeting } from "./force";
-import { Unit, PUnit } from "./unit";
-import { Tec, ActiveTec } from "./tec";
-import { choice } from "./undym/random";
+import { Force, PhaseStartForce, Targeting } from "./force.js";
+import { Unit, PUnit } from "./unit.js";
+import { Tec, ActiveTec } from "./tec.js";
+import { choice } from "./undym/random.js";
 import { Player } from "./player";
-import { Util } from "./util";
-import { wait } from "./undym/scene";
-import { Color } from "./undym/type";
-import { Img } from "./graphics/graphics";
+import { Util } from "./util.js";
+import { wait } from "./undym/scene.js";
+import { Color } from "./undym/type.js";
+import { Img } from "./graphics/texture.js";
 
 
 export abstract class PetFactory{
@@ -60,7 +60,7 @@ export class Pet extends Force{
 
 export namespace Pet{
     export const             ネーレイス:PetFactory = new class extends PetFactory{
-        constructor(){super("ネーレイス", new Img("img/pet/pet2.png"));}
+        constructor(){super("ネーレイス", new Img("img/pet/pet2.png", {clear:Color.BLACK}));}
         create(hp:number){
             return new class extends Pet{
                 constructor(){super("ネーレイス", hp);}

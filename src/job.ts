@@ -3,7 +3,7 @@ import { Tec } from "./tec.js";
 import { Player } from "./player.js";
 import { EqPos, Eq } from "./eq.js";
 import { choice, randomInt } from "./undym/random.js";
-import { Img } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 
 /*
 敵のLV毎のHP目安.

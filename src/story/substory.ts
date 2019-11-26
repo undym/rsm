@@ -2,7 +2,7 @@ import { Util } from "../util.js";
 import { Color } from "../undym/type.js";
 import { Sound } from "../sound.js";
 import { cwait } from "../undym/scene.js";
-import { Img } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 import { Story } from "./story.js";
 
 

@@ -595,6 +595,7 @@ export namespace Item{
                                     //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
                                     //なのでremainingUseNumを--してセーブし、セーブ後に++する。
                                     this.remainingUseNum--;
+                                    Sound.save.play();
                                     SaveData.save();
                                     this.remainingUseNum++;
                                     //-------------------------

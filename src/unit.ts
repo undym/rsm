@@ -9,7 +9,8 @@ import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP } from "./fx/fx.js
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
-import { Graphics, Font, Img } from "./graphics/graphics.js";
+import { Graphics, Font } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";

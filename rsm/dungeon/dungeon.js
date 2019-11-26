@@ -16,7 +16,7 @@ import { Util } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
-import { Img } from "../graphics/graphics.js";
+import { Img } from "../graphics/texture.js";
 import { Story1 } from "../story/story1.js";
 import { Story0 } from "../story/story0.js";
 import { Sound } from "../sound.js";

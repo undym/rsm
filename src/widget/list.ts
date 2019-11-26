@@ -1,8 +1,7 @@
 import { Rect, Color, Point } from "../undym/type.js";
 import { ILayout, YLayout, RatioLayout, XLayout, Label } from "../undym/layout.js";
 import { Input } from "../undym/input.js";
-import { Btn } from "./btn.js";
-import { Graphics, Font, Texture } from "../graphics/graphics.js";
+import { Graphics, Font } from "../graphics/graphics.js";
 
 
 
@@ -182,7 +181,7 @@ export class List extends ILayout{
 
     async ctrlInner(bounds:Rect){
         if(this.freezing){return;}
-        
+
         const contains = bounds.contains( Input.point );
 
         if(Input.holding === 0){

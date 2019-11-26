@@ -2,7 +2,7 @@ import { EUnit, Prm } from "./unit.js";
 import { Tec } from "./tec.js";
 import { EqPos, Eq } from "./eq.js";
 import { randomInt } from "./undym/random.js";
-import { Img } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 /*
 敵のLV毎のHP目安.
 e.prm(Prm.MAX_HP).base = 3 + (lv * lv * 0.35);

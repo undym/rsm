@@ -4,13 +4,7 @@ import { Rect, Color } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType, Debug } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
-import { Unit } from "../unit.js";
-import { Dungeon } from "../dungeon/dungeon.js";
-import { TownScene } from "./townscene.js";
-import { Img } from "../graphics/graphics.js";
-import { SaveData } from "../savedata.js";
-import { Player } from "../player.js";
-import { Input } from "../undym/input.js";
+import { Img } from "../graphics/texture.js";
 
 
 

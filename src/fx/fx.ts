@@ -1,5 +1,6 @@
 import { Rect, Color, Point } from "../undym/type.js";
-import { Graphics, Font, Texture } from "../graphics/graphics.js";
+import { Graphics, Font } from "../graphics/graphics.js";
+import { Texture } from "../graphics/texture.js";
 
 
 

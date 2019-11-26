@@ -2,7 +2,7 @@ import { Rect, Color } from "./undym/type.js";
 import Msg from "./widget/msg.js";
 import { XLayout } from "./undym/layout.js";
 import { Unit } from "./unit.js";
-import { Graphics, Img } from "./graphics/graphics.js";
+import { Graphics } from "./graphics/graphics.js";
 import { Scene } from "./undym/scene.js";
 import { TownScene } from "./scene/townscene.js";
 import DungeonScene from "./scene/dungeonscene.js";
