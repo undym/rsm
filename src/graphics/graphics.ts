@@ -135,6 +135,8 @@ export class Img{
             ,/*dw*/dstRatio.w * cw
             ,/*dh*/dstRatio.h * ch
         );
+
+        // ctx.putImageData
     }
 
     /**

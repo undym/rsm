@@ -338,7 +338,7 @@ export abstract class Unit{
     async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(deadUnit, this))}
     async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
 
-    protected async force(forceDlgt:(f:Force)=>void){
+    protected async force(forceDlgt:(f:Force)=>Promise<void>){
         for(const tec of this.tecs){
             await forceDlgt( tec );
         }
@@ -353,6 +353,9 @@ export abstract class Unit{
         }
         for(const icond of this.invisibleConditions.values()){
             await forceDlgt( icond );
+        }
+        if(this.pet){
+            await forceDlgt( this.pet );
         }
     }
     //---------------------------------------------------------

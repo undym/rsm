@@ -324,6 +324,9 @@ export class Unit {
             for (const icond of this.invisibleConditions.values()) {
                 yield forceDlgt(icond);
             }
+            if (this.pet) {
+                yield forceDlgt(this.pet);
+            }
         });
     }
     //---------------------------------------------------------

@@ -89,6 +89,7 @@ export class Img {
         const cw = Graphics.getRenderTarget().canvas.width;
         const ch = Graphics.getRenderTarget().canvas.height;
         ctx.drawImage(this._image, /*sx*/ srcRatio.x * this._image.width, /*sy*/ srcRatio.y * this._image.height, /*sw*/ srcRatio.w * this._image.width, /*sh*/ srcRatio.h * this._image.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        // ctx.putImageData
     }
     /**
      * keepRatio:dstRatioを中心に、縦横を大きい側に合わせる。小さい側はdstRatioに合わず、隙間ができる。

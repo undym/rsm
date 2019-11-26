@@ -1127,7 +1127,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.HP至上主義のメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "HP至上主義のメモ", info: "「とりあえずHPを上げれば間違いはない。俺は詳しいんだ」と書かれている",
-                type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+                type: ItemType.メモ, rank: 0, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.HP懐疑主義のメモ = new class extends Item {

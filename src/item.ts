@@ -984,7 +984,7 @@ export namespace Item{
     };
     export const                         HP至上主義のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"HP至上主義のメモ", info:"「とりあえずHPを上げれば間違いはない。俺は詳しいんだ」と書かれている", 
-                                type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
+                                type:ItemType.メモ, rank:0, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         HP懐疑主義のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"HP懐疑主義のメモ", info:"「何も考えずにHPを上げるのは危険だ。騙されないぞ」と書かれている", 

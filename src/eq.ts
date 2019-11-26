@@ -549,10 +549,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"アカデミーバッヂ", info:"全ステータス+10",
                                 pos:EqPos.指, lv:30});}
         async equip(u:Unit){
-            u.prm(Prm.STR).base += 10; u.prm(Prm.MAG).base += 10;
-            u.prm(Prm.LIG).base += 10; u.prm(Prm.DRK).base += 10;
-            u.prm(Prm.CHN).base += 10; u.prm(Prm.PST).base += 10;
-            u.prm(Prm.GUN).base += 10; u.prm(Prm.ARR).base += 10;
+            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> u.prm(prm).eq += 10);
         }
     }
     export const                         機工の指輪:Eq = new class extends Eq{
