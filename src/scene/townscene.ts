@@ -112,9 +112,6 @@ export class TownScene extends Scene{
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
 
-        super.add(Rect.FULL, ILayout.create({draw:bounds=>{
-            Pet.ネーレイス.img.draw(new Rect(0.3, 0.3, 0.3, 0.3));
-        }}));
         //----------------------------------------------------
 
         SceneType.TOWN.set();

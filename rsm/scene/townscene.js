@@ -35,7 +35,6 @@ import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
 import { Sound } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
-import { Pet } from "../pet.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -108,9 +107,6 @@ export class TownScene extends Scene {
         })()));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
-        super.add(Rect.FULL, ILayout.create({ draw: bounds => {
-                Pet.ネーレイス.img.draw(new Rect(0.3, 0.3, 0.3, 0.3));
-            } }));
         //----------------------------------------------------
         SceneType.TOWN.set();
         TownBtn.reset();
