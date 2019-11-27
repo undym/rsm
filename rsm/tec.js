@@ -207,12 +207,12 @@ TecType._values = [];
         effect(attacker, target, dmg) { }
         sound() { }
     };
-    TecType.ペット = new class extends TecType {
-        constructor() { super("ペット"); }
-        createDmg(attacker, target) { return new Dmg({ pow: attacker.prm(Prm.LV).total }); }
-        effect(attacker, target, dmg) { }
-        sound() { }
-    };
+    // export const             ペット = new class extends TecType{
+    //     constructor(){super("ペット");}
+    //     createDmg(attacker:Unit, target:Unit):Dmg{return new Dmg({pow:attacker.prm(Prm.LV).total});}
+    //     effect(attacker:Unit, target:Unit, dmg:Dmg){}
+    //     sound(){}
+    // };
 })(TecType || (TecType = {}));
 export class Tec extends Force {
     constructor(uniqueName, info, sortType, type) {
@@ -290,6 +290,7 @@ export class ActiveTec extends Tec {
     rndAttackNum() { return this.args.num; }
     get hit() { return this.args.hit; }
     get targetings() { return this.args.targetings; }
+    get flags() { return this.args.flags ? this.args.flags : []; }
     //--------------------------------------------------------------------------
     //
     //
@@ -979,7 +980,7 @@ ActiveTec._valueOf = new Map();
                     absPow: target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
                     counter: true,
                 });
-                attacker.doDmg(cdmg);
+                yield attacker.doDmg(cdmg);
                 yield wait();
             });
         }
@@ -2114,7 +2115,7 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 const dmg = new Dmg({ absPow: attacker.hp });
                 attacker.hp = 0;
-                target.doDmg(dmg);
+                yield target.doDmg(dmg);
                 yield wait();
             });
         }
@@ -2129,7 +2130,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 const dmg = new Dmg({ absPow: attacker.prm(Prm.MAX_HP).total - attacker.hp });
-                target.doDmg(dmg);
+                yield target.doDmg(dmg);
                 yield wait();
             });
         }
@@ -2144,22 +2145,73 @@ ActiveTec._valueOf = new Map();
     //ペットActive
     //
     //--------------------------------------------------------------------------
-    /**未習得技. */
+    /**ペット:ネーレイス. */
     Tec.キュア = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "キュア", info: "一体のHP回復",
-                sort: TecSort.回復, type: TecType.ペット, targetings: Targeting.SELECT,
+            super({ uniqueName: "キュア", info: "味方一体のHP回復",
+                sort: TecSort.その他, type: TecType.回復, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, mp: 4,
+                flags: ["ペット"],
             });
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const result = this.createDmg(attacker, target).calc();
-                Unit.healHP(target, result.value);
+                const value = attacker.prm(Prm.LV).total;
+                Unit.healHP(target, value);
                 Sound.KAIFUKU.play();
-                Util.msg.set(`${target.name}のHPが${result.value}回復した`, Color.GREEN.bright);
+                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
                 yield wait();
             });
+        }
+    };
+    /**ペット:ネーレイス. */
+    Tec.ラクサスキュア = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ラクサスキュア", info: "味方一体のTP+1",
+                sort: TecSort.その他, type: TecType.回復, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 4,
+                flags: ["ペット"],
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = 1;
+                Unit.healTP(target, value);
+                Sound.KAIFUKU.play();
+                Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright);
+                yield wait();
+            });
+        }
+    };
+    /**ペット:強化ネーレイス. */
+    Tec.イスキュア = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "イスキュア", info: "味方全体のHP回復",
+                sort: TecSort.その他, type: TecType.回復, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 4,
+                flags: ["ペット"],
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Tec.キュア.run(attacker, target);
+            });
+        }
+    };
+    /**ペット:ドゥエルガル. */
+    Tec.パンチ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "パンチ", info: "一体に格闘攻撃",
+                sort: TecSort.その他, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 1,
+                flags: ["ペット"],
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.counter = true;
+            return dmg;
         }
     };
 })(Tec || (Tec = {}));

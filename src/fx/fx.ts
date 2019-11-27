@@ -1,6 +1,6 @@
 import { Rect, Color, Point } from "../undym/type.js";
 import { Graphics, Font } from "../graphics/graphics.js";
-import { Texture } from "../graphics/texture.js";
+import { Texture, Img } from "../graphics/texture.js";
 
 
 
@@ -636,53 +636,217 @@ export const FX_ナーガ = (attacker:Point, target:Point)=>{
 };
 FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
 
+export const FX_LVUP = (bounds:Rect, img:Img)=>{
+    const imgData = img.ctx.getImageData(0, 0, img.pixelW, img.pixelH);
+    const data = imgData.data;
+    class Elm{
+        x:number;
+        y:number;
 
-export const FX_LVUP = (center:Point)=>{
+        r:number;
+        g:number;
+        b:number;
+
+        rad:number;
+        vx:number;
+        vy:number;
+    }
+
+    const elms:Elm[] = [];
+    
+    const w = bounds.w / imgData.width;
+    const h = bounds.h / imgData.height;
+    for(let i = 0; i < data.length; i+= 4){
+        if(data[i+3] > 0 && Math.random() < 0.5){
+            const index = i / 4;
+            const e = new Elm();
+            e.x = bounds.x + (index % imgData.width) * w;
+            e.y = bounds.y + index / imgData.width * h;
+
+            e.r = data[i]   / 255;
+            e.g = data[i+1] / 255;
+            e.b = data[i+2] / 255;
+
+            const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
+            e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
+            e.vy = Math.sin(rad) * Graphics.dotH * 0.5;
+
+            elms.push(e);
+        }
+    }
+
+    const w2 = w * 2;
+    const h2 = h * 2;
+    
+    FX.add(count=>{
+        // img.draw(bounds);
+        const over = 80;
+        for(const e of elms){
+            Graphics.fillRect({
+                x:e.x,
+                y:e.y,
+                w:w2,
+                h:h2,
+            }, new Color(e.r, e.g, e.b, 1.0 - count / over));
+
+            e.x += e.vx;
+            e.y += e.vy;
+        }
+        return count < over;
+    });
+};
+const testImg = new Img("img/unit/unit0.png", {transparence:Color.BLACK});
+FXTest.add(FX_LVUP.name, ()=> FX_LVUP( new Rect(0.3, 0.3, 0.1, 0.1), testImg ));
+
+export const FX_NO_USED = (center:Point)=>{
     const PI2 = Math.PI * 2;
     const rnd = ()=>{
-        const v = Graphics.dotW * 4;
+        const v = Graphics.dotW * 5;
         return -v + v * 2 * Math.random()
     };
-    const rndColor = ()=>new Color(0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5);
+    const D_YELLOW = new Color(0.5, 0.5, 0);
+    const drawElm = (cx:number, cy:number)=>{
+        const w = Math.random() * 8 * Graphics.dotW;
+        const h = Math.random() * 8 * Graphics.dotH;
+        let color = Color.WHITE;
+        const random = Math.random();
+             if(random < 0.3){color = Color.D_CYAN;}
+        else if(random < 0.6){color = D_YELLOW;}
+        Graphics.fillRect({
+            x:cx - w / 2, 
+            y:cy - h / 2,
+            w:w,
+            h:h
+        }, color);
+    };
 
-    const loop = 24;
-    for(let i = 0; i < 24; i++){
-        const rad = PI2 * i / (loop-1);
-        let x = center.x;
-        let y = center.y;
-        let vx = Math.cos(rad) * Graphics.dotW * 10;
-        let vy = Math.sin(rad) * Graphics.dotH * 10;
-        
-        FX.add(count=>{
-            const over = 36;
-            x += vx;
-            y += vy;
-            vx *= 0.9;
-            vy *= 0.9;
+    const addFX = ()=>{
+        const loop = 18;
+        for(let i = 0; i < loop; i++){
+            const rad = PI2 * i / (loop-1);
+            let x = center.x;
+            let y = center.y;
+            let vx = Math.cos(rad) * Graphics.dotW * 10;
+            let vy = Math.sin(rad) * Graphics.dotH * 10;
+            
+            FX.add(count=>{
+                const over = 24;
+                x += vx;
+                y += vy;
+                vx *= 0.9;
+                vy *= 0.9;
 
-            Graphics.fillOval(new Point(x + rnd(), y + rnd()), 0.01, rndColor());
-            Graphics.fillOval(new Point(x,y), 0.01, Color.WHITE);
+                for(let i = 0; i < 5; i++){
+                    drawElm(x + rnd(), y + rnd());
+                }
+    
+                if(count >= over){
+                    const over2 = 4;
+                    const _vx = (x - center.x) / over2;
+                    const _vy = (y - center.y) / over2;
+                    FX.add(count2=>{
+                        const v = count2 - (i % (loop / 4));
+                        if(v < 0){
+                            for(let i = 0; i < 5; i++){
+                                drawElm(x + rnd(), y + rnd());
+                            }
+                            return true;
+                        }else{
+                            const r = 0.01 * (1.0 - v / over2);
+                            const _x = x - _vx * v;
+                            const _y = y - _vy * v;
+                            for(let i = 0; i < 5; i++){
+                                drawElm(_x + rnd(), _y + rnd());
+                            }
+                            return v < over2;
+                        }
+                    });
+                }
+                return count < over;
+            });
+        }
+    };
 
-            if(count >= over){
-                const over2 = 8;
-                const _vx = (x - center.x) / over2;
-                const _vy = (y - center.y) / over2;
-                FX.add(count2=>{
-                    const v = count2 - i % (loop / 4);
-                    if(v < 0){
-                        Graphics.fillOval(new Point(x + rnd(), y + rnd()), 0.01, rndColor());
-                        Graphics.fillOval(new Point(x,y), 0.01, Color.WHITE);
-                        return true;
-                    }else{
-                        const _x = x - _vx * v;
-                        const _y = y - _vy * v;
-                        Graphics.fillOval(new Point(_x,_y), 0.01, Color.WHITE);
-                        return v < over2;
-                    }
-                });
-            }
-            return count < over;
-        });
-    }
+    addFX();
+
+    FX.add(count=>{
+        if(count === 5) {addFX();}
+        if(count === 10){addFX();}
+        if(count === 15){
+            addFX(); 
+            return false;
+        }
+        return true;
+    });
 };
-FXTest.add(FX_LVUP.name, () => FX_LVUP( FXTest.attacker ));
+FXTest.add(FX_NO_USED.name, () => FX_NO_USED( FXTest.attacker ));
+
+
+export const FX_PetDie = (center:Point)=>{
+    const PI2 = Math.PI * 2;
+    class Elm{
+        x:number;
+        y:number;
+        vx:number;
+        vy:number;
+        w:number;
+        h:number;
+        lifeTime:number;
+        lifeTimeLim:number;
+
+        constructor(){
+            const rad = PI2 * Math.random();
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            this.x = center.x + cos * Graphics.dotW * 20 * Math.random();
+            this.y = center.y + sin * Graphics.dotH * 20 * Math.random();
+            this.vx = cos * Graphics.dotW * 4 * Math.random();
+            this.vy = sin * Graphics.dotH * 4 * Math.random();
+            if(Math.random() < 0.2){this.vx *= 2;}
+            if(Math.random() < 0.2){this.vy *= 2;}
+            this.w = Math.random() * 20 * Graphics.dotW;
+            this.h = Math.random() * 20 * Graphics.dotH;
+            this.lifeTime = (Math.random() * 50)|0;
+            this.lifeTimeLim = this.lifeTime;
+        }
+
+        draw(){
+            this.lifeTime--;
+            if(this.lifeTime <= 0){return;}
+
+            const col = Math.random() < 0.5 ? Color.WHITE : Color.GRAY;
+            const mul = this.lifeTime / this.lifeTimeLim;
+            const _w = this.w * mul;
+            const _h = this.h * mul;
+            Graphics.fillRect({
+                x:this.x - _w / 2,
+                y:this.y - _h / 2,
+                w:_w,
+                h:_h,
+            }, col);
+
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vx *= 0.95;
+            this.vy *= 0.95;
+        }
+    }
+
+    const elms:Elm[] = [];
+
+    for(let i = 0; i < 80; i++){
+        elms.push(new Elm());
+    }
+
+    FX.add(count=>{
+
+        let exists = false;
+        for(const e of elms){
+            e.draw();
+            if(e.lifeTime > 0){exists = true;}
+        }
+
+        return exists;
+    });
+};
+FXTest.add(FX_PetDie.name, ()=> FX_PetDie( FXTest.attacker ));

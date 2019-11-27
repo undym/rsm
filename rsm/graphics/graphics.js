@@ -59,8 +59,11 @@ export class Graphics {
         ctx.strokeStyle = toHTMLColorString(color);
         ctx.stroke();
     }
-    /**rはtextureのwを基準にする。 */
+    /**rはtextureのwを基準にする。 r<0は無視する。*/
     static fillOval(ratioCenter, ratioR, color) {
+        if (ratioR < 0) {
+            return;
+        }
         const ctx = this.texture.ctx;
         ctx.beginPath();
         ctx.arc(ratioCenter.x * this.texture.pixelW, ratioCenter.y * this.texture.pixelH, ratioR * this.texture.pixelW, 0, Math.PI * 2);

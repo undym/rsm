@@ -93,6 +93,7 @@ Sound.MAX_VOLUME = 10;
     Sound.moji = new Sound("sound/moji.mp3");
     /**踏破. */
     Sound.lvup = new Sound("sound/lvup.mp3");
+    Sound.pet_die = new Sound("sound/pet_die.mp3");
     /**格闘攻撃. */
     Sound.PUNCH = new Sound("sound/PUNCH.mp3");
     /**財宝・ダンジョンクリア時のアイテム. */

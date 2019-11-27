@@ -405,6 +405,17 @@ export namespace Job{
     //         e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
     //     }
     // };
+    export const                         精霊使い:Job = new class extends Job{
+        constructor(){super({uniqueName:"精霊使い", info:"",
+                                appearLv:55, img:new Img("img/unit/unit19.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.MAG, 1]],
+                                learningTecs:()=>[],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+        }
+    };
     //--------------------------------------------------
     //
     //獣

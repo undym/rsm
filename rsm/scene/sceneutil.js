@@ -320,8 +320,10 @@ export class DrawUnits extends InnerLayout {
     static get ins() { return this._ins ? this._ins : (this._ins = new DrawUnits()); }
     constructor() {
         super();
+        let count = 0;
         const haka = new Img("img/unit/haka.png");
         super.add(ILayout.create({ draw: bounds => {
+                count++;
                 Unit.all
                     .filter(u => u.exists)
                     .forEach((u, index) => {
@@ -334,6 +336,16 @@ export class DrawUnits extends InnerLayout {
                         u.img.drawEx({
                             dstRatio: imgBounds,
                             reverseHorizontal: (u instanceof PUnit),
+                        });
+                        Graphics.setAlpha(0.5, () => {
+                            if (u.pet) {
+                                const rad = Math.PI * 2 * (count + index * 5) / 75;
+                                const r = u.imgBounds.w / 2;
+                                const petX = imgBounds.cx + Math.cos(rad) * r - u.imgBounds.w / 2;
+                                const petY = imgBounds.cy + Math.sin(rad) * r - u.imgBounds.h / 2;
+                                const petBounds = new Rect(petX, petY, u.imgBounds.w, u.imgBounds.h);
+                                u.pet.img.draw(petBounds);
+                            }
                         });
                         const str = `${u.hp}`;
                         const point = u.imgBounds.top;

@@ -3,7 +3,7 @@ import {ILayout,Label, XLayout, Layout, RatioLayout, VariableLayout, InnerLayout
 import { YLayout } from "../undym/layout.js";
 import Gage from "../widget/gage.js";
 import { Dungeon } from "../dungeon/dungeon.js";
-import { Color, Rect } from "../undym/type.js";
+import { Color, Rect, Point } from "../undym/type.js";
 import { PlayData, Util, Debug, Place } from "../util.js";
 import { Unit, Prm, PUnit, EUnit } from "../unit.js";
 import { Input } from "../undym/input.js";
@@ -12,6 +12,7 @@ import { EqPos, Eq } from "../eq.js";
 import { Font, Graphics } from "../graphics/graphics.js";
 import { Img } from "../graphics/texture.js";
 import { Version } from "../savedata.js";
+import { Scene } from "../undym/scene.js";
 
 
 
@@ -400,11 +401,15 @@ const createConditionStr = (unit:Unit, types:ReadonlyArray<ConditionType>)=>{
 export class DrawUnits extends InnerLayout{
     private static _ins:DrawUnits;
     static get ins(){return this._ins ? this._ins : (this._ins = new DrawUnits());}
+
     constructor(){
         super();
 
+        let count = 0;
         const haka = new Img("img/unit/haka.png");
         super.add(ILayout.create({draw:bounds=>{
+            count++;
+            
             Unit.all
                 .filter(u=> u.exists)
                 .forEach((u,index)=>{
@@ -416,6 +421,17 @@ export class DrawUnits extends InnerLayout{
                         u.img.drawEx({
                             dstRatio:imgBounds,
                             reverseHorizontal:(u instanceof PUnit),
+                        });
+
+                        Graphics.setAlpha(0.5, ()=>{     
+                            if(u.pet){
+                                const rad = Math.PI * 2 * (count + index * 5) / 75;
+                                const r = u.imgBounds.w / 2;
+                                const petX = imgBounds.cx + Math.cos(rad) * r - u.imgBounds.w / 2;
+                                const petY = imgBounds.cy + Math.sin(rad) * r - u.imgBounds.h / 2;
+                                const petBounds = new Rect( petX, petY, u.imgBounds.w, u.imgBounds.h );
+                                u.pet.img.draw(petBounds);
+                            }
                         });
 
                         const str = `${u.hp}`;

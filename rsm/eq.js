@@ -588,7 +588,7 @@ EqEar._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 Unit.healTP(unit, 1);
                 if (unit instanceof PUnit && unit.player !== Player.雪) {
-                    unit.doDmg(new Dmg({ absPow: unit.prm(Prm.MAX_HP).total * 0.1 }));
+                    yield unit.doDmg(new Dmg({ absPow: unit.prm(Prm.MAX_HP).total * 0.1 }));
                     yield wait();
                 }
             });

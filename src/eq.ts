@@ -511,7 +511,7 @@ export namespace Eq{
             Unit.healTP( unit, 1 );
 
             if(unit instanceof PUnit && unit.player !== Player.雪){
-                unit.doDmg(new Dmg({absPow:unit.prm(Prm.MAX_HP).total * 0.1})); await wait();
+                await unit.doDmg(new Dmg({absPow:unit.prm(Prm.MAX_HP).total * 0.1})); await wait();
             }
         }
     }

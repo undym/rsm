@@ -87,7 +87,6 @@ export class Img extends Texture {
             this.load();
         }
     }
-    get image() { return this.img; }
     draw(dstRatio, srcRatio = Rect.FULL) {
         if (this.loading !== Img.LOADING_DONE) {
             if (this.loading === Img.LOADING_YET) {
@@ -95,10 +94,21 @@ export class Img extends Texture {
             }
             return;
         }
-        const ctx = Graphics.getRenderTarget().ctx;
-        const cw = Graphics.getRenderTarget().canvas.width;
-        const ch = Graphics.getRenderTarget().canvas.height;
-        ctx.drawImage(this.canvas, /*sx*/ srcRatio.x * this.img.width, /*sy*/ srcRatio.y * this.img.height, /*sw*/ srcRatio.w * this.img.width, /*sh*/ srcRatio.h * this.img.height, /*dx*/ dstRatio.x * cw, /*dy*/ dstRatio.y * ch, /*dw*/ dstRatio.w * cw, /*dh*/ dstRatio.h * ch);
+        super.draw(dstRatio, srcRatio);
+        // const ctx = Graphics.getRenderTarget().ctx;
+        // const cw = Graphics.getRenderTarget().canvas.width;
+        // const ch = Graphics.getRenderTarget().canvas.height;
+        // ctx.drawImage(
+        //      this.canvas
+        //     ,/*sx*/srcRatio.x * this.canvas.width
+        //     ,/*sy*/srcRatio.y * this.canvas.height
+        //     ,/*sw*/srcRatio.w * this.canvas.width
+        //     ,/*sh*/srcRatio.h * this.canvas.height
+        //     ,/*dx*/dstRatio.x * cw
+        //     ,/*dy*/dstRatio.y * ch
+        //     ,/*dw*/dstRatio.w * cw
+        //     ,/*dh*/dstRatio.h * ch
+        // );
         // ctx.putImageData
     }
     /**
@@ -154,7 +164,7 @@ export class Img extends Texture {
             ctx.scale(1, -1);
             dstY = -dstY - dstH;
         }
-        ctx.drawImage(this.canvas, /*sx*/ srcX * this.img.width, /*sy*/ srcY * this.img.height, /*sw*/ srcW * this.img.width, /*sh*/ srcH * this.img.height, /*dx*/ dstX * cw, /*dy*/ dstY * ch, /*dw*/ dstW * cw, /*dh*/ dstH * ch);
+        ctx.drawImage(this.canvas, /*sx*/ srcX * this.canvas.width, /*sy*/ srcY * this.canvas.height, /*sw*/ srcW * this.canvas.width, /*sh*/ srcH * this.canvas.height, /*dx*/ dstX * cw, /*dy*/ dstY * ch, /*dw*/ dstW * cw, /*dh*/ dstH * ch);
         if (args.reverseHorizontal) {
             ctx.scale(-1, 1);
             dstX = -dstX - dstW;
@@ -163,24 +173,34 @@ export class Img extends Texture {
             ctx.scale(1, -1);
         }
     }
-    get complete() { return this.img.complete; }
+    get complete() { return (this.loading === Img.LOADING_DONE); }
     load() {
         this.loading = Img.LOADING_NOW;
+        if (!this.img) {
+            return;
+        }
         this.img.onload = () => {
+            if (!this.img) {
+                return;
+            }
             this.loading = Img.LOADING_DONE;
             this.canvas.width = this.img.width;
             this.canvas.height = this.img.height;
             this.ctx.drawImage(this.img, 0, 0);
-            if (this.option && this.option.clear) {
-                this.clear(this.option.clear);
+            if (this.option && this.option.transparence) {
+                this.clear(this.option.transparence);
             }
             if (this.option && this.option.onload) {
                 this.option.onload(this);
             }
+            this.img = undefined;
         };
         this.img.src = this.src;
     }
     clear(color) {
+        if (!this.img) {
+            return;
+        }
         const imgData = this.ctx.getImageData(0, 0, this.img.width, this.img.height);
         const data = imgData.data;
         const r = (color.r * 255) | 0;

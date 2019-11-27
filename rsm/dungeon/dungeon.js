@@ -972,4 +972,34 @@ Dungeon.auNow = 0;
             });
         }
     };
+    // export const                         精霊寺院:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"精霊寺院", info:"",
+    //                             rank:4, enemyLv:13, au:400, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[Item.精霊使いの血],
+    //                             trendItems: ()=>[],
+    //     });}
+    //     isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount > 0;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "鳥人";
+    //         e.prm(Prm.MAX_HP).base = 750;
+    //     };
+    //     setExInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "魔鳥ぱと";
+    //         e.img = new Img("img/unit/trager.png");
+    //         e.prm(Prm.MAX_HP).base = 800;
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //         if(this.dungeonClearCount === 1){
+    //             await Story1.runMain18();
+    //             Sound.lvup.play();
+    //             Util.msg.set("パーティーメンバーの入れ替えができるようになった！"); await cwait();
+    //         }
+    //     }
+    // };
 })(Dungeon || (Dungeon = {}));

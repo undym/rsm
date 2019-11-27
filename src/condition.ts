@@ -269,7 +269,7 @@ export namespace Condition{
 
             Util.msg.set("＞毒", Color.RED);
 
-            unit.doDmg(dmg); await wait();
+            await unit.doDmg(dmg); await wait();
 
             unit.setCondition(this, value * 0.666);
         }

@@ -219,12 +219,12 @@ export namespace TecType{
         effect(attacker:Unit, target:Unit, dmg:Dmg){}
         sound(){}
     };
-    export const             ペット = new class extends TecType{
-        constructor(){super("ペット");}
-        createDmg(attacker:Unit, target:Unit):Dmg{return new Dmg({pow:attacker.prm(Prm.LV).total});}
-        effect(attacker:Unit, target:Unit, dmg:Dmg){}
-        sound(){}
-    };
+    // export const             ペット = new class extends TecType{
+    //     constructor(){super("ペット");}
+    //     createDmg(attacker:Unit, target:Unit):Dmg{return new Dmg({pow:attacker.prm(Prm.LV).total});}
+    //     effect(attacker:Unit, target:Unit, dmg:Dmg){}
+    //     sound(){}
+    // };
 }
 
 
@@ -310,6 +310,8 @@ export abstract class ActiveTec extends Tec implements Action{
     rndAttackNum():number{return this.args.num;}
     get hit():number{return this.args.hit;}
     get targetings():number{return this.args.targetings;}
+
+    get flags():("ペット")[]{return this.args.flags ? this.args.flags : [];}
     //--------------------------------------------------------------------------
     //
     //
@@ -329,6 +331,7 @@ export abstract class ActiveTec extends Tec implements Action{
             tp?:number,
             ep?:number,
             item?:()=>[Item,number][],
+            flags?:("ペット")[],
     }){
         super(args.uniqueName, args.info, args.sort, args.type);
 
@@ -931,7 +934,7 @@ export namespace Tec{
                             absPow:target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
                             counter:true,
                         });
-            attacker.doDmg(cdmg); await wait();
+            await attacker.doDmg(cdmg); await wait();
         }
     }
     export const                          吸血:ActiveTec = new class extends ActiveTec{
@@ -1824,7 +1827,7 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             const dmg = new Dmg({absPow:attacker.hp});
             attacker.hp = 0;
-            target.doDmg(dmg); await wait();
+            await target.doDmg(dmg); await wait();
         }
     }
     export const                          ドラゴンブレス:ActiveTec = new class extends ActiveTec{
@@ -1834,7 +1837,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             const dmg = new Dmg({absPow:attacker.prm(Prm.MAX_HP).total - attacker.hp});
-            target.doDmg(dmg); await wait();
+            await target.doDmg(dmg); await wait();
         }
     }
     //--------------------------------------------------------------------------
@@ -1847,18 +1850,59 @@ export namespace Tec{
     //ペットActive
     //
     //--------------------------------------------------------------------------
-    /**未習得技. */
+    /**ペット:ネーレイス. */
     export const                          キュア:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"キュア", info:"一体のHP回復",
-                              sort:TecSort.回復, type:TecType.ペット, targetings:Targeting.SELECT,
+        constructor(){super({ uniqueName:"キュア", info:"味方一体のHP回復",
+                              sort:TecSort.その他, type:TecType.回復, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
                               mul:1, num:1, hit:1, mp:4,
+                              flags:["ペット"],
         });}
         async run(attacker:Unit, target:Unit){
-            const result = this.createDmg(attacker, target).calc();
-            Unit.healHP(target, result.value);
+            const value = attacker.prm(Prm.LV).total;
+            Unit.healHP(target, value);
 
             Sound.KAIFUKU.play();
-            Util.msg.set(`${target.name}のHPが${result.value}回復した`, Color.GREEN.bright); await wait();
+            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+        }
+    }
+    /**ペット:ネーレイス. */
+    export const                          ラクサスキュア:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ラクサスキュア", info:"味方一体のTP+1",
+                              sort:TecSort.その他, type:TecType.回復, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:4,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            const value = 1;
+            Unit.healTP(target, value);
+
+            Sound.KAIFUKU.play();
+            Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright); await wait();
+        }
+    }
+    /**ペット:強化ネーレイス. */
+    export const                          イスキュア:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"イスキュア", info:"味方全体のHP回復",
+                              sort:TecSort.その他, type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:4,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Tec.キュア.run(attacker, target);
+        }
+    }
+    /**ペット:ドゥエルガル. */
+    export const                          パンチ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"パンチ", info:"一体に格闘攻撃",
+                              sort:TecSort.その他, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:1,
+                              flags:["ペット"],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.counter = true;
+            return dmg;
         }
     }
 }

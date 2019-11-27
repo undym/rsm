@@ -34,12 +34,36 @@ export class PetFactory {
 PetFactory._values = [];
 PetFactory._valueOf = new Map();
 export class Pet extends Force {
-    constructor(name, hp) {
+    constructor(name, img, _hp) {
         super();
         this.name = name;
-        this.hp = hp;
+        this.img = img;
+        this._hp = _hp;
+    }
+    static get HP_LIMIT() { return Pet.HP_NAMES.length - 1; }
+    get hp() { return this._hp; }
+    set hp(value) {
+        if (value < 0) {
+            this._hp = 0;
+        }
+        else if (value > Pet.HP_LIMIT) {
+            this._hp = Pet.HP_LIMIT;
+        }
+        else {
+            this._hp = value;
+        }
     }
     toString() { return this.name; }
+    hpToString() {
+        const index = this.hp | 0;
+        if (index >= Pet.HP_NAMES.length) {
+            return "暴走";
+        }
+        if (0 <= index && index < Pet.HP_NAMES.length) {
+            return Pet.HP_NAMES[index];
+        }
+        return "あの世";
+    }
     useRndPetTec(summoner, tecs) {
         return __awaiter(this, void 0, void 0, function* () {
             if (tecs.length === 0) {
@@ -64,15 +88,18 @@ export class Pet extends Force {
         });
     }
 }
+Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄壁", "無敵",];
 (function (Pet) {
+    /**強化でTec.イスキュアを使用(未設定). */
     Pet.ネーレイス = new class extends PetFactory {
-        constructor() { super("ネーレイス", new Img("img/pet/pet2.png", { clear: Color.BLACK })); }
+        constructor() { super("ネーレイス", new Img("img/pet/pet2.png", { transparence: Color.BLACK })); }
         create(hp) {
+            const img = this.img;
             return new class extends Pet {
-                constructor() { super("ネーレイス", hp); }
+                constructor() { super("ネーレイス", img, hp); }
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.キュア]);
+                        yield this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
                     });
                 }
             };
