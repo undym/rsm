@@ -636,7 +636,7 @@ export const FX_ナーガ = (attacker:Point, target:Point)=>{
 };
 FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
 
-export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color)=>{
+export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolean)=>{
     const imgData = img.ctx.getImageData(0, 0, img.pixelW, img.pixelH);
     const data = imgData.data;
     class Elm{
@@ -672,7 +672,7 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color)=>{
         ){
             const index = i / 4;
             const e = new Elm();
-            e.x = bounds.x + (index % imgData.width) * w;
+            e.x = bounds.xw - (index % imgData.width) * w;
             e.y = bounds.y + index / imgData.width * h;
 
             e.r = data[i]   / 255;
@@ -709,17 +709,20 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color)=>{
         return count < over;
     });
 };
-const FX_LVUP_Test = (img:Img, bounds:Rect)=>{
+const FX_LVUP_Test = (img:Img, bounds:Rect, reverseHorizontal:boolean)=>{
     FX.add(count=>{
-        img.draw(bounds);
+        img.drawEx({
+            dstRatio:bounds,
+            reverseHorizontal:reverseHorizontal
+        });
         return count < 80;
     });
 };
 const testImg = new Img("img/unit/unit0.png", {transparence:Color.BLACK});
 FXTest.add(FX_LVUP.name, ()=>{
     const r = new Rect(0.3, 0.3, 0.1, 0.1);
-    FX_LVUP_Test( testImg, r );
-    FX_LVUP( testImg, r, Color.CLEAR )
+    FX_LVUP_Test( testImg, r, true );
+    FX_LVUP( testImg, r, Color.CLEAR, true )
 });
 
 export const FX_NO_USED = (center:Point)=>{
