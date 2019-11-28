@@ -19,6 +19,7 @@ import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
 import { randomInt, randomFloat } from "./undym/random.js";
 import { Sound } from "./sound.js";
+import { CollectingSkill } from "./collectingskill.js";
 
 
 {
@@ -66,8 +67,6 @@ window.onload = ()=>{
     setInput();
 
     init();
-
-    // setTitle();
 
     title();
 };

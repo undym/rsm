@@ -60,7 +60,6 @@ window.onload = () => {
     Input.init(canvas, rotate);
     setInput();
     init();
-    // setTitle();
     title();
 };
 const ctrl = () => __awaiter(this, void 0, void 0, function* () {
