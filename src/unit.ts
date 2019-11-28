@@ -587,7 +587,7 @@ export class PUnit extends Unit{
             this.prm(Prm.EXP).base = 0;
 
             Sound.lvup.play();
-            FX_LVUP(this.imgBounds, this.img);
+            FX_LVUP( this.img, this.imgBounds, Color.BLACK);
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
             const growHP = this.prm(Prm.LV).base / 50 + 1;

@@ -16,7 +16,7 @@ import { Sound } from "./sound.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,24,10);
+    static readonly NOW = new Version(0,24,11);
     static readonly updateInfo =    [
                                         "(0.24.5)攻撃のバグ修正",
                                         "(0.24.6)ダンジョンの設定のバグ修正",
@@ -24,6 +24,7 @@ export class Version{
                                         "(0.24.8)バグ修正",
                                         "(0.24.9)バグ修正",
                                         "(0.24.10)エフェクト変更",
+                                        "(0.24.11)エフェクト変更",
                                     ];
 
     private values:number[];

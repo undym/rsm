@@ -636,7 +636,7 @@ export const FX_ナーガ = (attacker:Point, target:Point)=>{
 };
 FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
 
-export const FX_LVUP = (bounds:Rect, img:Img)=>{
+export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color)=>{
     const imgData = img.ctx.getImageData(0, 0, img.pixelW, img.pixelH);
     const data = imgData.data;
     class Elm{
@@ -646,6 +646,7 @@ export const FX_LVUP = (bounds:Rect, img:Img)=>{
         r:number;
         g:number;
         b:number;
+        a:number;
 
         rad:number;
         vx:number;
@@ -656,8 +657,19 @@ export const FX_LVUP = (bounds:Rect, img:Img)=>{
     
     const w = bounds.w / imgData.width;
     const h = bounds.h / imgData.height;
-    for(let i = 0; i < data.length; i+= 4){
-        if(data[i+3] > 0 && Math.random() < 0.5){
+
+    const tr = transparence.r * 255;
+    const tg = transparence.g * 255;
+    const tb = transparence.b * 255;
+    const ta = transparence.a * 255;
+
+    for(let i = 0; i < data.length; i += 4 * 2){
+        if(
+               data[i]   !== tr
+            || data[i+1] !== tg
+            || data[i+2] !== tb
+            || data[i+3] !== ta
+        ){
             const index = i / 4;
             const e = new Elm();
             e.x = bounds.x + (index % imgData.width) * w;
@@ -666,6 +678,7 @@ export const FX_LVUP = (bounds:Rect, img:Img)=>{
             e.r = data[i]   / 255;
             e.g = data[i+1] / 255;
             e.b = data[i+2] / 255;
+            e.a = data[i+3] / 255;
 
             const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
             e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
@@ -681,13 +694,14 @@ export const FX_LVUP = (bounds:Rect, img:Img)=>{
     FX.add(count=>{
         // img.draw(bounds);
         const over = 80;
+        const mul = 1.0 - count / over;
         for(const e of elms){
             Graphics.fillRect({
                 x:e.x,
                 y:e.y,
                 w:w2,
                 h:h2,
-            }, new Color(e.r, e.g, e.b, 1.0 - count / over));
+            }, new Color(e.r * mul, e.g * mul, e.b * mul, e.a));
 
             e.x += e.vx;
             e.y += e.vy;
@@ -695,8 +709,18 @@ export const FX_LVUP = (bounds:Rect, img:Img)=>{
         return count < over;
     });
 };
+const FX_LVUP_Test = (img:Img, bounds:Rect)=>{
+    FX.add(count=>{
+        img.draw(bounds);
+        return count < 80;
+    });
+};
 const testImg = new Img("img/unit/unit0.png", {transparence:Color.BLACK});
-FXTest.add(FX_LVUP.name, ()=> FX_LVUP( new Rect(0.3, 0.3, 0.1, 0.1), testImg ));
+FXTest.add(FX_LVUP.name, ()=>{
+    const r = new Rect(0.3, 0.3, 0.1, 0.1);
+    FX_LVUP_Test( testImg, r );
+    FX_LVUP( testImg, r, Color.CLEAR )
+});
 
 export const FX_NO_USED = (center:Point)=>{
     const PI2 = Math.PI * 2;
