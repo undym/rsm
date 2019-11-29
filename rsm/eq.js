@@ -168,7 +168,7 @@ EqEar._valueOf = new Map();
     Eq.月代 = new class extends Eq {
         constructor() {
             super({ uniqueName: "月代", info: "「斬る」威力+25%",
-                pos: EqPos.頭, lv: 0 });
+                pos: EqPos.頭, lv: 10 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -178,13 +178,20 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         魔女のとんがり帽:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"魔女のとんがり帽", info:"最大MP+10", 
-    //                             pos:EqPos.頭, lv:3});}
-    //     equip(unit:Unit){
-    //         unit.prm(Prm.MAX_MP).eq += 10;
-    //     }
-    // }
+    /**合成. */
+    Eq.星的 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "星的", info: "被銃・弓攻撃-10%",
+                pos: EqPos.頭, lv: 3 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃, TecType.弓)) {
+                    dmg.pow.mul *= 0.9;
+                }
+            });
+        }
+    };
     // export const                         山男のとんかつ帽:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"山男のとんかつ帽", info:"最大TP+10", 
     //                             pos:EqPos.頭, lv:3});}
@@ -316,6 +323,18 @@ EqEar._valueOf = new Map();
                     Unit.setCondition(target, Condition.毒, value);
                     yield wait();
                 }
+            });
+        }
+    };
+    /**合成. */
+    Eq.アタックシールド = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アタックシールド", info: "最大HP+20",
+                pos: EqPos.武, lv: 35 });
+        }
+        equip(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.prm(Prm.MAX_HP).eq += 20;
             });
         }
     };
@@ -694,6 +713,21 @@ EqEar._valueOf = new Map();
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 Unit.healHP(unit, unit.prm(Prm.HP).total * 0.05 + 1);
+            });
+        }
+    };
+    /**精霊寺院財宝. */
+    Eq.エスペラント = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "エスペラント", info: "魔法・神格・過去・ペット攻撃+20%",
+                pos: EqPos.指, lv: 77 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec
+                    && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.find(f => f === "ペット"))) {
+                    dmg.pow.mul *= 1.2;
+                }
             });
         }
     };

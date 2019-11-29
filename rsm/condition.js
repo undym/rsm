@@ -94,30 +94,25 @@ Condition._valueOf = new Map();
             });
         }
     };
-    Condition.狙 = new class extends Condition {
-        constructor() { super("狙", ConditionType.GOOD_LV1); }
-        beforeDoAtk(action, attacker, target, dmg) {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec) {
-                    dmg.hit.mul *= 1.2;
-                    attacker.addConditionValue(this, -1);
-                }
-            });
-        }
-    };
-    Condition.闇 = new class extends Condition {
-        constructor() { super("闇", ConditionType.GOOD_LV1); }
-        beforeDoAtk(action, attacker, target, dmg) {
-            return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec) {
-                    Util.msg.set("＞闇");
-                    yield wait();
-                    dmg.pow.add += attacker.prm(Prm.DRK).total;
-                    attacker.addConditionValue(this, -1);
-                }
-            });
-        }
-    };
+    // export const             狙:Condition = new class extends Condition{
+    //     constructor(){super("狙", ConditionType.GOOD_LV1);}
+    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+    //         if(action instanceof ActiveTec){
+    //             dmg.hit.mul *= 1.2;
+    //             attacker.addConditionValue(this, -1);
+    //         }
+    //     }
+    // };
+    // export const             闇:Condition = new class extends Condition{
+    //     constructor(){super("闇", ConditionType.GOOD_LV1);}
+    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+    //         if(action instanceof ActiveTec){
+    //             Util.msg.set("＞闇"); await wait();
+    //             dmg.pow.add += attacker.prm(Prm.DRK).total;
+    //             attacker.addConditionValue(this, -1);
+    //         }
+    //     }
+    // };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV2
@@ -149,8 +144,8 @@ Condition._valueOf = new Map();
             });
         }
     };
-    Condition.風 = new class extends Condition {
-        constructor() { super("風", ConditionType.GOOD_LV2); }
+    Condition.回避 = new class extends Condition {
+        constructor() { super("回避", ConditionType.GOOD_LV2); }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {

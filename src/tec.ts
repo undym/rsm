@@ -11,6 +11,7 @@ import { Num } from "./mix.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
+import { Pet } from "./pet.js";
 
 
 
@@ -1049,32 +1050,11 @@ export namespace Tec{
                               mul:1, num:1, hit:1.2, mp:1,
         });}
     }
-    // export const                          メテオ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"メテオ", info:"ランダムに4～6回過去攻撃",
-    //                           type:TecType.過去, targetings:Targeting.RANDOM,
-    //                           mul:1, num:4, hit:1.2, ep:1,
-    //     });}
-    //     rndAttackNum = ()=> randomInt(4,6);
-    // }
     //--------------------------------------------------------------------------
     //
     //過去Passive
     //
     //--------------------------------------------------------------------------
-    // export const                         ネガティヴフィードバック:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"ネガティヴフィードバック", info:"過去攻撃時　状態異常一つにつき、消費MPの10%を還元",
-    //                             type:TecType.過去,
-    //     });}
-    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && (action.type === TecType.過去)){
-    //             let num = ConditionType.badConditions()
-    //                                     .filter(type=> attacker.existsCondition(type))
-    //                                     .length;
-    //             if(num === 0){return;}
-    //             Unit.healMP( attacker, action.mpCost * 0.1 * num);
-    //         }
-    //     }
-    // };
     //--------------------------------------------------------------------------
     //
     //銃Active
@@ -1355,13 +1335,13 @@ export namespace Tec{
     }
     /**シーフ. */
     export const                          風:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"風", info:"味方全員を＜風2＞（回避UP）状態にする",
+        constructor(){super({ uniqueName:"風", info:"味方全員を＜回避2＞（回避UP）状態にする",
                               sort:TecSort.強化, type:TecType.状態, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
                               mul:1, num:1, hit:1, ep:1,
         });}
         async run(attacker:Unit, target:Unit){
             Sound.up.play();
-            Unit.setCondition( target, Condition.風, 2 ); await wait();
+            Unit.setCondition( target, Condition.回避, 2 ); await wait();
         }
     }
     /**格闘家. */
@@ -1592,15 +1572,6 @@ export namespace Tec{
             Tec.数珠.run(attacker, target);
         }
     }
-    // export const                          ひんやりゼリー:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"ひんやりゼリー", info:"味方全体を回復",
-    //                           type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
-    //                           mul:2, num:1, hit:1, mp:2,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         Tec.ばんそうこう.run( attacker, target );
-    //     }
-    // }
     /**魔法使い. */
     export const                          ジョンD:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ジョンD", info:"自分の最大MPを倍加　MP回復　魔x2",
@@ -1640,6 +1611,7 @@ export namespace Tec{
             Unit.healTP( target, target.prm(Prm.MAX_TP).total );
 
             this.effect( attacker, target, new Dmg() );
+            Util.msg.set(`${target.name}は全回復した！`, Color.GREEN.bright);
         }
     }
     /**忍者. */
@@ -1666,9 +1638,10 @@ export namespace Tec{
             Sound.up.play();
             Util.msg.set("ステータス増加！！"); await wait();
 
-            Unit.setCondition(target, Condition.風, 3);
-            Sound.up.play();
-            Util.msg.set("＜風＞化！！！"); await wait();
+            if(!target.existsCondition(Condition.回避.type)){
+                Sound.up.play();
+                Unit.setCondition(target, Condition.回避, 3); await wait();
+            }
         }
     }
     /**天使. */
@@ -1701,18 +1674,6 @@ export namespace Tec{
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
         }
     }
-    // export const                          吸心:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"吸心", info:"一体からTPを2吸収",
-    //                           type:TecType.回復, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:1, tp:1,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         const value = 2;
-    //         target.tp -= value;
-    //         attacker.tp += value;
-    //         Util.msg.set(`${target.name}からTPを${value}吸収した`); await wait();
-    //     }
-    // }
     //--------------------------------------------------------------------------
     //
     //回復Passive
@@ -1840,6 +1801,42 @@ export namespace Tec{
             await target.doDmg(dmg); await wait();
         }
     }
+    export const                          ドゥエルガル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ドゥエルガル", info:"ドゥエルガルを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:5, item:()=>[[Item.絵画母なる星の緑の丘, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.ドゥエルガル.create(1);
+        }
+    }
+    export const                          ネーレイス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ネーレイス", info:"ネーレイスを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:5, item:()=>[[Item.絵画シェイクスピアの涙, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.ネーレイス.create(1);
+        }
+    }
+    export const                          ヴァルナ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ヴァルナ", info:"ヴァルナを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.絵画彼女の髪, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.ヴァルナ.create(1);
+        }
+    }
+    export const                          イリューガー:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"イリューガー", info:"イリューガーを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.絵画我が情熱の日, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.イリューガー.create(1);
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //その他Passive
@@ -1896,6 +1893,57 @@ export namespace Tec{
         constructor(){super({ uniqueName:"パンチ", info:"一体に格闘攻撃",
                               sort:TecSort.その他, type:TecType.格闘, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1, mp:1,
+                              flags:["ペット"],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.counter = true;
+            return dmg;
+        }
+    }
+    /**ペット:ヴァルナ. */
+    export const                          シルフ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"シルフ", info:"一体を＜回避＞化",
+                              sort:TecSort.その他, type:TecType.格闘, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:3,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Unit.setCondition( target, Condition.回避, 1 ); await wait();
+        }
+    }
+    /**ペット:ヴァルナ. */
+    export const                          レヴィーナの歌声:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"レヴィーナの歌声", info:"一体を＜眠＞化",
+                              sort:TecSort.その他, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:3,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Unit.setCondition( target, Condition.眠, 1 ); await wait();
+        }
+    }
+    /**ペット:ヴァルナ. */
+    export const                          ヴァルナパンチ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ヴァルナパンチ", info:"一体に格闘攻撃",
+                              sort:TecSort.その他, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:3,
+                              flags:["ペット"],
+        });}
+        toString(){return "殴る";}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.counter = true;
+            return dmg;
+        }
+    }
+    /**ペット:イリューガー. */
+    export const                          ファイアブレス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ファイアブレス", info:"敵全体に魔法攻撃",
+                              sort:TecSort.その他, type:TecType.魔法, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, mp:6,
                               flags:["ペット"],
         });}
         createDmg(attacker:Unit, target:Unit){

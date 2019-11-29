@@ -24,6 +24,7 @@ export abstract class PetFactory{
         else                                    {PetFactory._valueOf.set(uniqueName, this);}
         
     }
+
     abstract create(hp:number):Pet;
 }
 
@@ -32,7 +33,7 @@ export class Pet extends Force{
     private static readonly HP_NAMES:ReadonlyArray<string> = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄壁", "無敵",];
     static get HP_LIMIT(){return Pet.HP_NAMES.length-1;}
     constructor(
-        readonly name:string,
+        readonly uniqueName:string,
         readonly img:Img,
         protected _hp:number,
     ){
@@ -46,7 +47,7 @@ export class Pet extends Force{
         else                         {this._hp = value;}
     }
 
-    toString(){return this.name;}
+    toString(){return this.uniqueName;}
     hpToString():string{
         const index = this.hp|0;
         if(index >= Pet.HP_NAMES.length){return "暴走";}
@@ -77,16 +78,68 @@ export class Pet extends Force{
 
 
 export namespace Pet{
-    /**強化でTec.イスキュアを使用(未設定). */
+    export const             empty:PetFactory = new class extends PetFactory{
+        constructor(){super("empty", Img.empty);}
+        create(hp:number){
+            const uniqueName = this.uniqueName;
+            const img = this.img;
+            return new class extends Pet{
+                constructor(){super(uniqueName, img, hp);}
+                toString(){return "";}
+            };
+        }
+    };
+    /** */
+    export const             ドゥエルガル:PetFactory = new class extends PetFactory{
+        constructor(){super("ドゥエルガル", new Img("img/pet/pet1.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.パンチ]);
+                }
+            };
+        }
+    };
+    /**強化でTec.イスキュアを使用(未実装). */
     export const             ネーレイス:PetFactory = new class extends PetFactory{
         constructor(){super("ネーレイス", new Img("img/pet/pet2.png", {transparence:Color.BLACK}));}
         create(hp:number){
-            const img = this.img;
+            const factory = this;
             return new class extends Pet{
-                constructor(){super("ネーレイス", img, hp);}
+                constructor(){super(factory.uniqueName, factory.img, hp);}
     
                 async phaseStart(unit:Unit, pForce:PhaseStartForce){
                     await this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
+                }
+            };
+        }
+    };
+    /** */
+    export const             ヴァルナ:PetFactory = new class extends PetFactory{
+        constructor(){super("ヴァルナ", new Img("img/pet/pet3.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
+                }
+            };
+        }
+    };
+    export const             イリューガー:PetFactory = new class extends PetFactory{
+        constructor(){super("イリューガー", new Img("img/pet/pet4.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.ファイアブレス]);
                 }
             };
         }

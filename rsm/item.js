@@ -786,6 +786,38 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.絵画母なる星の緑の丘 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "絵画母なる星の緑の丘", info: "",
+                type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
+                consumable: true });
+        }
+        toString() { return "絵画『母なる星の緑の丘』"; }
+    };
+    Item.絵画シェイクスピアの涙 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "絵画シェイクスピアの涙", info: "",
+                type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
+                consumable: true });
+        }
+        toString() { return "絵画『シェイクスピアの涙』"; }
+    };
+    Item.絵画彼女の髪 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "絵画彼女の髪", info: "",
+                type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
+                consumable: true });
+        }
+        toString() { return "絵画『彼女の髪』"; }
+    };
+    Item.絵画我が情熱の日 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "絵画我が情熱の日", info: "",
+                type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
+                consumable: true });
+        }
+        toString() { return "絵画『我が情熱の日』"; }
+    };
     //-----------------------------------------------------------------
     //
     //鍵
@@ -1066,7 +1098,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.ヴァンパイアの血 = createBlood("ヴァンパイアの血", "ヴァンパイア", () => Job.ヴァンパイア);
     Item.霊術戦士の血 = createBlood("霊術戦士の血", "霊術戦士", () => Job.霊術戦士);
     Item.ホークマンの血 = createBlood("ホークマンの血", "ホークマン", () => Job.ホークマン);
-    Item.精霊使いの血 = createBlood("精霊使いの血", "精霊使い", () => Job.ホークマン);
+    Item.精霊使いの血 = createBlood("精霊使いの血", "精霊使い", () => Job.精霊使い);
     //-----------------------------------------------------------------
     //
     //書
@@ -1150,6 +1182,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
+    Item.リュサンデールの絵筆 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "リュサンデールの絵筆", info: "これでぬってあげるわね、すごく！",
+                type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
+        }
+    };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
     //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
@@ -1162,6 +1200,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.石 = new class extends Item {
         constructor() {
             super({ uniqueName: "石", info: "",
+                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
+        }
+    };
+    Item.かんな = new class extends Item {
+        constructor() {
+            super({ uniqueName: "かんな", info: "",
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX });
         }
     };
@@ -1284,6 +1328,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.遠い約束 = new class extends Item {
         constructor() {
             super({ uniqueName: "遠い約束", info: "",
+                type: ItemType.素材, rank: 8, drop: ItemDrop.BOX });
+        }
+    };
+    Item.カンバス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "カンバス", info: "",
                 type: ItemType.素材, rank: 8, drop: ItemDrop.BOX });
         }
     };

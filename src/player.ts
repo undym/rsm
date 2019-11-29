@@ -138,8 +138,8 @@ export namespace Player{
             p.prm(Prm.DRK).base = 5;
 
             p.tecs = [
-                Tec.殴る,
                 Tec.暗黒剣,
+                Tec.殴る,
                 Tec.empty,
                 Tec.empty,
                 Tec.empty,
@@ -162,8 +162,8 @@ export namespace Player{
             p.prm(Prm.CHN).base = 6;
 
             p.tecs = [
-                Tec.殴る,
                 Tec.スネイク,
+                Tec.殴る,
                 Tec.empty,
                 Tec.empty,
                 Tec.empty,
@@ -196,8 +196,31 @@ export namespace Player{
 
         }
         setJobChangeList(map:Map<Job,true>){
-            setDefJobChangeList(map, this.ins);
+            // setDefJobChangeList(map, this.ins);
             setBeastJobChangeList(map, this.ins);
+        }
+    };
+    export const             luka = new class extends Player{
+        constructor(){super("luka");}
+        createInner(p:PUnit){
+            p.job = Job.カウボーイ;
+            p.img = new Img("img/unit/p_luka.png");
+            p.prm(Prm.MAX_HP).base = 35;
+            p.prm(Prm.MAX_MP).base = 1;
+            p.prm(Prm.MAX_TP).base = 2;
+            p.prm(Prm.GUN).base = 25;
+
+            p.tecs = [
+                Tec.撃つ,
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+
+        }
+        setJobChangeList(map:Map<Job,true>){
+            setDefJobChangeList(map, this.ins);
         }
     };
 }

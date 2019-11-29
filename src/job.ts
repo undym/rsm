@@ -410,10 +410,10 @@ export namespace Job{
                                 appearLv:55, img:new Img("img/unit/unit19.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 3,
                                 growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.MAG, 1]],
-                                learningTecs:()=>[],
+                                learningTecs:()=>[Tec.ドゥエルガル, Tec.ネーレイス, Tec.ヴァルナ, Tec.イリューガー],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+            e.tecs = [Tec.ドゥエルガル, Tec.ネーレイス, Tec.ヴァルナ, Tec.イリューガー, Tec.殴る, Tec.殴る, Tec.殴る];
         }
     };
     //--------------------------------------------------

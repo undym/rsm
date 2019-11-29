@@ -50,7 +50,7 @@ export class ShopScene extends Scene{
         super();
 
         TecMaster.setCandidates([
-            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー,
+            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー, Tec.ドゥエルガル,
         ]);
 
         if(!ShopScene.completedInitGoods){
@@ -280,6 +280,8 @@ const initGoods = ()=>{
     // createItemGoods(Item.技習得許可証, ()=>50, ()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.技習得許可証.totalGetCount === 0);
     createItemGoods({item:Item.合成許可証, 
         price:()=>300, isVisible:()=>Dungeon.はじまりの丘.dungeonClearCount > 0 && Item.合成許可証.totalGetCount === 0});
+    createItemGoods({item:Item.リュサンデールの絵筆, num:1,
+        price:()=>10000, isVisible:()=>TecMaster.check(Tec.ドゥエルガル) && Item.リュサンデールの絵筆.totalGetCount === 0});
     
     createItemGoods({item:Item.スティックパン,   price:()=>30,  isVisible:()=>true});
     createItemGoods({item:Item.赤い水,          price:()=>50,  isVisible:()=>true});
@@ -295,8 +297,6 @@ const initGoods = ()=>{
     createItemGoods({item:Item.釣り竿,     num:1,  price:()=>(Item.釣り竿.num+1)  * 10000, isVisible:()=>CollectingSkill.水汲.lv >= 10});
     createItemGoods({item:Item.つるはし,   num:1,  price:()=>(Item.つるはし.num+1) * 10000, isVisible:()=>CollectingSkill.地層.lv >= 10});
     
-    // createItemGoods(Item.ボロい釣竿, ()=>300, ()=>Dungeon.マーザン森.dungeonClearCount > 0);
-    // createItemGoods(Item.マーザン竿, ()=>700, ()=>Dungeon.マーザン森.dungeonClearCount > 10);
 
     // createEarGoods(EqEar.おにく,               ()=>100   ,()=>Dungeon.リテの門.dungeonClearCount > 0 && EqEar.おにく.totalGetCount < 2);
     // createEarGoods(EqEar.水晶のピアス,         ()=>200   ,()=>Dungeon.リテの門.dungeonClearCount > 0 && EqEar.水晶のピアス.totalGetCount < 2);

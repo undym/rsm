@@ -699,6 +699,30 @@ export namespace Item{
                                 type:ItemType.弾, rank:11, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         絵画母なる星の緑の丘:Item = new class extends Item{
+        constructor(){super({uniqueName:"絵画母なる星の緑の丘", info:"",
+                                type:ItemType.弾, rank:12, drop:ItemDrop.NO,
+                                consumable:true})}
+        toString(){return "絵画『母なる星の緑の丘』"}
+    };
+    export const                         絵画シェイクスピアの涙:Item = new class extends Item{
+        constructor(){super({uniqueName:"絵画シェイクスピアの涙", info:"",
+                                type:ItemType.弾, rank:12, drop:ItemDrop.NO,
+                                consumable:true})}
+        toString(){return "絵画『シェイクスピアの涙』"}
+    };
+    export const                         絵画彼女の髪:Item = new class extends Item{
+        constructor(){super({uniqueName:"絵画彼女の髪", info:"",
+                                type:ItemType.弾, rank:12, drop:ItemDrop.NO,
+                                consumable:true})}
+        toString(){return "絵画『彼女の髪』"}
+    };
+    export const                         絵画我が情熱の日:Item = new class extends Item{
+        constructor(){super({uniqueName:"絵画我が情熱の日", info:"",
+                                type:ItemType.弾, rank:12, drop:ItemDrop.NO,
+                                consumable:true})}
+        toString(){return "絵画『我が情熱の日』"}
+    };
     //-----------------------------------------------------------------
     //
     //鍵
@@ -935,7 +959,7 @@ export namespace Item{
     export const ホークマンの血 = createBlood(
                 "ホークマンの血",   "ホークマン",   ()=>Job.ホークマン);
     export const 精霊使いの血 = createBlood(
-                "精霊使いの血",     "精霊使い",     ()=>Job.ホークマン);
+                "精霊使いの血",     "精霊使い",     ()=>Job.精霊使い);
     //-----------------------------------------------------------------
     //
     //書
@@ -1001,6 +1025,10 @@ export namespace Item{
         constructor(){super({uniqueName:"合成許可証", info:"「合成してもいいよ」と書かれている", 
                                 type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
     };
+    export const                         リュサンデールの絵筆:Item = new class extends Item{
+        constructor(){super({uniqueName:"リュサンデールの絵筆", info:"これでぬってあげるわね、すごく！", 
+                                type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
+    };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
     //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
@@ -1012,6 +1040,10 @@ export namespace Item{
     //-----------------------------------------------------------------
     export const                         石:Item = new class extends Item{
         constructor(){super({uniqueName:"石", info:"",
+                                type:ItemType.素材, rank:0, drop:ItemDrop.BOX})}
+    };
+    export const                         かんな:Item = new class extends Item{
+        constructor(){super({uniqueName:"かんな", info:"",
                                 type:ItemType.素材, rank:0, drop:ItemDrop.BOX})}
     };
     export const                         少女の心を持ったおっさん:Item = new class extends Item{
@@ -1094,6 +1126,10 @@ export namespace Item{
     };
     export const                         遠い約束:Item = new class extends Item{
         constructor(){super({uniqueName:"遠い約束", info:"",
+                                type:ItemType.素材, rank:8, drop:ItemDrop.BOX})}
+    };
+    export const                         カンバス:Item = new class extends Item{
+        constructor(){super({uniqueName:"カンバス", info:"",
                                 type:ItemType.素材, rank:8, drop:ItemDrop.BOX})}
     };
     export const                         セカンドチャンス:Item = new class extends Item{

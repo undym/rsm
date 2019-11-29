@@ -280,11 +280,11 @@ export abstract class Unit{
             const _doDmg = async(value:number)=>{
                 effect(value);
                 if(this.pet && value >= this.hp){
-                    Util.msg.set(`${this.pet.name}が${value}のダメージを引き受けた`); await wait(1);
+                    Util.msg.set(`${this.pet}が${value}のダメージを引き受けた`); await wait(1);
 
                     this.pet.hp--;
                     if(this.pet.hp <= 0){
-                        const petName = this.pet.name;
+                        const petName = this.pet.toString();
                         this.pet = undefined;
                         Sound.pet_die.play();
                         FX_PetDie( this.imgCenter );
@@ -342,6 +342,8 @@ export abstract class Unit{
             set.condition = Condition.empty;
             set.value = 0;
         }
+
+        this.pet = undefined;
     }
     //---------------------------------------------------------
     //

@@ -15,7 +15,7 @@ import { Item, ItemDrop } from "../item.js";
 import { ILayout, FlowLayout } from "../undym/layout.js";
 import { Color } from "../undym/type.js";
 import { Unit, Prm } from "../unit.js";
-import { FX_Advance, FX_Return } from "../fx/fx.js";
+import { FX_Advance, FX_Return, FX_格闘 } from "../fx/fx.js";
 import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
@@ -289,9 +289,9 @@ class EventImg {
                     if (!p.exists || p.dead) {
                         continue;
                     }
+                    FX_格闘(p.imgCenter);
                     const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 5 });
                     yield p.doDmg(dmg);
-                    yield wait();
                     yield p.judgeDead();
                 }
                 if (Unit.players.every(p => !p.exists || p.dead)) {

@@ -841,12 +841,12 @@ export namespace Story1{
 /*
         const f_empty  = new Img("img/face/p_rs.jpg");
         const f_1      = new Img("img/face/p_1.jpg");
-        const f_siki  = new Img("img/face/p_siki.jpg");
-        const f_yuki = new Img("img/face/p_yuki2.jpg");
+        const f_siki   = new Img("img/face/p_siki.jpg");
+        const f_yuki   = new Img("img/face/p_yuki2.jpg");
         const f_luka   = new Img("img/face/p_luka.jpg");
-        const f_luka2   = new Img("img/face/p_luka2.jpg");
-        const f_memo = new Img("img/face/p_sol.jpg");
-        const f_vega = new Img("img/face/p_vega.jpg");
+        const f_luka2  = new Img("img/face/p_luka2.jpg");
+        const f_memo   = new Img("img/face/p_sol.jpg");
+        const f_vega   = new Img("img/face/p_vega.jpg");
         const f_pea    = new Img("img/face/p_pea.jpg");
         const f_ruin   = new Img("img/face/p_ruin.jpg");
 

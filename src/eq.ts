@@ -200,20 +200,23 @@ export namespace Eq{
     }
     export const                         月代:Eq = new class extends Eq{
         constructor(){super({uniqueName:"月代", info:"「斬る」威力+25%", 
-                                pos:EqPos.頭, lv:0});}
+                                pos:EqPos.頭, lv:10});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action === ActiveTec.斬る){
                 dmg.pow.mul *= 1.25;
             }
-        }   
+        }
     }
-    // export const                         魔女のとんがり帽:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"魔女のとんがり帽", info:"最大MP+10", 
-    //                             pos:EqPos.頭, lv:3});}
-    //     equip(unit:Unit){
-    //         unit.prm(Prm.MAX_MP).eq += 10;
-    //     }
-    // }
+    /**合成. */
+    export const                         星的:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"星的", info:"被銃・弓攻撃-10%", 
+                                pos:EqPos.頭, lv:3});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃, TecType.弓)){
+                dmg.pow.mul *= 0.9;
+            }
+        }
+    }
     // export const                         山男のとんかつ帽:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"山男のとんかつ帽", info:"最大TP+10", 
     //                             pos:EqPos.頭, lv:3});}
@@ -318,6 +321,14 @@ export namespace Eq{
                 const value = attacker.prm(Prm.DRK).total + 1;
                 Unit.setCondition(target, Condition.毒, value); await wait();
             }
+        }
+    }
+    /**合成. */
+    export const                         アタックシールド:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"アタックシールド", info:"最大HP+20",
+                                pos:EqPos.武, lv:35});}
+        async equip(unit:Unit){
+            unit.prm(Prm.MAX_HP).eq += 20;
         }
     }
     //--------------------------------------------------------------------------
@@ -575,7 +586,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"魔ヶ玉", info:"行動開始時MP+1",
                                 pos:EqPos.指, lv:98});}
         async phaseStart(unit:Unit){
-            Unit.healMP(unit, 1 );
+            Unit.healMP( unit, 1 );
         }
     }
     /**古マーザン森EX. */
@@ -584,6 +595,19 @@ export namespace Eq{
                                 pos:EqPos.指, lv:97});}
         async phaseStart(unit:Unit){
             Unit.healHP(unit, unit.prm(Prm.HP).total * 0.05 + 1 );
+        }
+    }
+    /**精霊寺院財宝. */
+    export const                         エスペラント:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"エスペラント", info:"魔法・神格・過去・ペット攻撃+20%",
+                                pos:EqPos.指, lv:77});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(
+                   action instanceof ActiveTec 
+                && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.find(f=> f === "ペット"))
+            ){
+                dmg.pow.mul *= 1.2;
+            }
         }
     }
     // export const                         瑠璃:Eq = new class extends Eq{

@@ -368,41 +368,66 @@ export namespace Mix{
     });
 
 
+    const           絵画母なる星の緑の丘:Mix = new Mix({
+        uniqueName:"絵画母なる星の緑の丘", limit:Mix.LIMIT_INF,
+        result:()=>[Item.絵画母なる星の緑の丘, 1],
+        materials:()=>[[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.良い土, 5]],
+        isVisible:()=>Item.リュサンデールの絵筆.totalGetCount > 0,
+    });
+    const           絵画シェイクスピアの涙:Mix = new Mix({
+        uniqueName:"絵画シェイクスピアの涙", limit:Mix.LIMIT_INF,
+        result:()=>[Item.絵画シェイクスピアの涙, 1],
+        materials:()=>[[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.清龍, 2]],
+        isVisible:()=>Item.リュサンデールの絵筆.totalGetCount > 0,
+    });
+    const           絵画彼女の髪:Mix = new Mix({
+        uniqueName:"絵画彼女の髪", limit:Mix.LIMIT_INF,
+        result:()=>[Item.絵画彼女の髪, 1],
+        materials:()=>[[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.火と水と土と風と光と闇のアニムス, 2]],
+        isVisible:()=>Item.リュサンデールの絵筆.totalGetCount > 0,
+    });
+    const           絵画我が情熱の日:Mix = new Mix({
+        uniqueName:"絵画我が情熱の日", limit:Mix.LIMIT_INF,
+        result:()=>[Item.絵画我が情熱の日, 1],
+        materials:()=>[[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.烈火, 10]],
+        isVisible:()=>Item.リュサンデールの絵筆.totalGetCount > 0,
+    });
+
 
     const           杉材:Mix = new Mix({
         uniqueName:"杉材", limit:Mix.LIMIT_INF,
         result:()=>[Item.杉材, 1],
-        materials:()=>[[Item.杉, 3]],
+        materials:()=>[[Item.杉, 3], [Item.かんな, 1]],
         isVisible:()=>ボロ木工所.count > 0,
     });
     const           ヒノキ材:Mix = new Mix({
         uniqueName:"ヒノキ材", limit:Mix.LIMIT_INF,
         result:()=>[Item.ヒノキ材, 1],
-        materials:()=>[[Item.ヒノキ, 3]],
+        materials:()=>[[Item.ヒノキ, 3], [Item.かんな, 1]],
         isVisible:()=>ボロ木工所.count > 0,
     });
     const           竹材:Mix = new Mix({
         uniqueName:"竹材", limit:Mix.LIMIT_INF,
         result:()=>[Item.竹材, 1],
-        materials:()=>[[Item.竹, 3]],
+        materials:()=>[[Item.竹, 3], [Item.かんな, 1]],
         isVisible:()=>竹林.count > 0,
     });
     const           合板:Mix = new Mix({
         uniqueName:"合板", limit:Mix.LIMIT_INF,
         result:()=>[Item.合板, 1],
-        materials:()=>[[Item.松, 2], [Item.クワ, 2]],
+        materials:()=>[[Item.松, 2], [Item.クワ, 2], [Item.かんな, 1]],
         isVisible:()=>小さな木工所.count > 0,
     });
     const           サクラ材:Mix = new Mix({
         uniqueName:"サクラ材", limit:Mix.LIMIT_INF,
         result:()=>[Item.サクラ材, 1],
-        materials:()=>[[Item.桜, 3],],
+        materials:()=>[[Item.桜, 3], [Item.かんな, 1]],
         isVisible:()=>大きな木工所.count > 0,
     });
     const           松材:Mix = new Mix({
         uniqueName:"松材", limit:Mix.LIMIT_INF,
         result:()=>[Item.松材, 1],
-        materials:()=>[[Item.松, 3],],
+        materials:()=>[[Item.松, 3], [Item.かんな, 1]],
         isVisible:()=>大きな木工所.count > 0,
     });
 
@@ -436,4 +461,16 @@ export namespace Mix{
     //装備
     //
     //--------------------------------------------------------
+    const           アタックシールド:Mix = new Mix({
+        uniqueName:"アタックシールド", limit:1,
+        result:()=>[Eq.アタックシールド, 1],
+        materials:()=>[[Item.杉材, 2], [Item.ヒノキ材, 2]],
+        isVisible:()=>Dungeon.予感の街レ.dungeonClearCount > 0,
+    });
+    const           星的:Mix = new Mix({
+        uniqueName:"星的", limit:1,
+        result:()=>[Eq.星的, 1],
+        materials:()=>[[Item.少女の心を持ったおっさん, 10], [Item.砂, 5]],
+        isVisible:()=>Dungeon.予感の街レ.dungeonClearCount > 0,
+    });
 }

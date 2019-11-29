@@ -111,8 +111,8 @@ Player._valueOf = new Map();
             p.prm(Prm.STR).base = 2;
             p.prm(Prm.DRK).base = 5;
             p.tecs = [
-                Tec.殴る,
                 Tec.暗黒剣,
+                Tec.殴る,
                 Tec.empty,
                 Tec.empty,
                 Tec.empty,
@@ -134,8 +134,8 @@ Player._valueOf = new Map();
             p.prm(Prm.STR).base = 1;
             p.prm(Prm.CHN).base = 6;
             p.tecs = [
-                Tec.殴る,
                 Tec.スネイク,
+                Tec.殴る,
                 Tec.empty,
                 Tec.empty,
                 Tec.empty,
@@ -165,8 +165,29 @@ Player._valueOf = new Map();
             ];
         }
         setJobChangeList(map) {
-            setDefJobChangeList(map, this.ins);
+            // setDefJobChangeList(map, this.ins);
             setBeastJobChangeList(map, this.ins);
+        }
+    };
+    Player.luka = new class extends Player {
+        constructor() { super("luka"); }
+        createInner(p) {
+            p.job = Job.カウボーイ;
+            p.img = new Img("img/unit/p_luka.png");
+            p.prm(Prm.MAX_HP).base = 35;
+            p.prm(Prm.MAX_MP).base = 1;
+            p.prm(Prm.MAX_TP).base = 2;
+            p.prm(Prm.GUN).base = 25;
+            p.tecs = [
+                Tec.撃つ,
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+        }
+        setJobChangeList(map) {
+            setDefJobChangeList(map, this.ins);
         }
     };
 })(Player || (Player = {}));

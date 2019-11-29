@@ -12,6 +12,7 @@ import { Mix } from "./mix.js";
 import { PartySkill } from "./partyskill.js";
 import { CollectingSkill } from "./collectingskill.js";
 import { Sound } from "./sound.js";
+import { PetFactory } from "./pet.js";
 export class Version {
     /**Integer. */
     constructor(major, minior, mentener) {
@@ -41,7 +42,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 24, 13);
+Version.NOW = new Version(0, 25, 0);
 Version.updateInfo = [
     "(0.24.7)アカデミーバッヂのバグ修正",
     "(0.24.8)バグ修正",
@@ -50,6 +51,7 @@ Version.updateInfo = [
     "(0.24.11)エフェクト変更",
     "(0.24.12)エフェクト修正",
     "(0.24.13)収集スキルの計算式修正",
+    "(0.25.0)ダンジョンとか追加",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -353,6 +355,23 @@ const storagePlayer = (save, json) => {
                 for (let set of savedConditions) {
                     u.setCondition(set.condition, set.value);
                 }
+            }
+        }
+        { //pet
+            const petObj = ioObject(save, obj, "Pet");
+            if (save && u.pet) {
+                ioInt(save, petObj, "hp", u.pet.hp, load => { });
+                ioStr(save, petObj, "name", u.pet.uniqueName, load => { });
+            }
+            if (!save) {
+                let hp = 0;
+                ioInt(save, petObj, "hp", 0, load => hp = load);
+                ioStr(save, petObj, "name", "", load => {
+                    const factory = PetFactory.valueOf(load);
+                    if (factory) {
+                        factory.create(hp);
+                    }
+                });
             }
         }
     }

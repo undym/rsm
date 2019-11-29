@@ -337,7 +337,7 @@ export namespace Dungeon{
             }
             if(Item.脱出ポッド.totalGetCount === 0){
                 Sound.rare.play();
-                Item.脱出ポッド.add(1); await wait();
+                Item.脱出ポッド.add(1); await cwait();
                 Sound.bpup.play();
                 Util.msg.set("[お店]が出現した", Color.PINK.bright); await cwait();
             }
@@ -348,7 +348,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
-                                trendItems: ()=>[Item.草, Item.水, Item.竹],
+                                trendItems: ()=>[Item.草, Item.水, Item.竹, Item.かんな],
         });}
         isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
         setBossInner = ()=>{
@@ -375,7 +375,7 @@ export namespace Dungeon{
             }
             if(Item.動かない映写機.totalGetCount === 0){
                 Sound.rare.play();
-                Item.動かない映写機.add(1); await wait();
+                Item.動かない映写機.add(1); await cwait();
             }
         }
     };
@@ -384,7 +384,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:4, au:100, btn:[DungeonArea.中央島, new Rect(0.7, 0.15, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.オールマント],
                                 exItems:    ()=>[Eq.ライダーベルト],
-                                trendItems: ()=>[Item.肉, Item.竹, Item.砂],
+                                trendItems: ()=>[Item.肉, Item.竹, Item.砂, Item.かんな],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
         });}
         isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
@@ -414,7 +414,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:9, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.7, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ミルテの棍],
                                 exItems:    ()=>[Eq.いばらの鎧],
-                                trendItems: ()=>[Item.粘土, Item.土, Item.ガラス],
+                                trendItems: ()=>[Item.粘土, Item.土, Item.ガラス, Item.かんな],
         });}
         toString(){return "予感の街・レ";}
         isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
@@ -571,7 +571,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:10, au:100, btn:[DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔性のマント],
                                 exItems:    ()=>[Eq.妖魔の手],
-                                trendItems: ()=>[Item.バッタ, Item.クワ],
+                                trendItems: ()=>[Item.バッタ, Item.クワ, Item.銅, Item.鉄],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
         isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount > 0;
@@ -835,7 +835,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.天使.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影キキツキ";
-            e.img = new Img("img/unit/trager.png");
+            e.img = new Img("img/unit/kiki.png");
             e.prm(Prm.MAX_HP).base = 700;
         };
         async dungeonClearEvent(){
@@ -863,7 +863,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "魔鳥ぱと";
-            e.img = new Img("img/unit/trager.png");
+            e.img = new Img("img/unit/hato.png");
             e.prm(Prm.MAX_HP).base = 800;
         };
         async dungeonClearEvent(){
@@ -876,36 +876,44 @@ export namespace Dungeon{
             }
         }
     };
-    // export const                         精霊寺院:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"精霊寺院", info:"",
-    //                             rank:4, enemyLv:13, au:400, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[Item.精霊使いの血],
-    //                             trendItems: ()=>[],
-    //     });}
-    //     isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount > 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "鳥人";
-    //         e.prm(Prm.MAX_HP).base = 750;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "魔鳥ぱと";
-    //         e.img = new Img("img/unit/trager.png");
-    //         e.prm(Prm.MAX_HP).base = 800;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story1.runMain18();
-
-    //             Sound.lvup.play();
-    //             Util.msg.set("パーティーメンバーの入れ替えができるようになった！"); await cwait();
-    //         }
-    //     }
-    // };
+    export const                         精霊寺院:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"精霊寺院", info:"",
+                                rank:6, enemyLv:13, au:500, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.エスペラント],
+                                exItems:    ()=>[Item.精霊使いの血],
+                                trendItems: ()=>[Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],
+        });}
+        isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.テンプルナイト.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "死せる住職";
+            e.prm(Prm.MAX_HP).base = 750;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "新王ブレッシュ";
+            e.img = new Img("img/unit/bresh.png");
+            e.prm(Prm.MAX_HP).base = 800;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story1.runMain19();
+                
+                Player.一号.member = false;
+                Player.雪.member = false;
+                for(let i = 0; i < Unit.players.length; i++){
+                    Unit.setPlayer( i, Player.empty );
+                }
+                
+                Player.ルイン.join();
+                Player.ピアー.join();
+                Player.ベガ.join();
+                Player.luka.join();
+            }
+        }
+    };
 }
 

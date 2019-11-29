@@ -7,7 +7,7 @@ import { Item, ItemDrop, ItemType } from "../item.js";
 import { ILayout, YLayout, XLayout, VariableLayout, FlowLayout } from "../undym/layout.js";
 import { Color } from "../undym/type.js";
 import { Unit, Prm } from "../unit.js";
-import { FX, FX_Advance, FX_Return } from "../fx/fx.js";
+import { FX, FX_Advance, FX_Return, FX_格闘 } from "../fx/fx.js";
 import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
@@ -281,8 +281,9 @@ export namespace DungeonEvent{
                                     for(let p of Unit.players){
                                         if(!p.exists || p.dead){continue;}
 
+                                        FX_格闘( p.imgCenter );
                                         const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 5});
-                                        await p.doDmg(dmg); await wait();
+                                        await p.doDmg(dmg);
                                         await p.judgeDead();
                                     }
 
