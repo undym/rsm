@@ -433,7 +433,7 @@ class EventImg {
     DungeonEvent.LAKE = new class extends DungeonEvent {
         constructor() {
             super();
-            // createImg = ()=> new Img("img/tree.png");
+            this.createImg = () => new Img("img/mizu.png");
             this.happenInner = () => {
                 Util.msg.set("湖だ");
             };

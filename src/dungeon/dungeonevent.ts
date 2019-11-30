@@ -417,7 +417,7 @@ export namespace DungeonEvent{
     };
     export const LAKE:DungeonEvent = new class extends DungeonEvent{
         constructor(){super();}
-        // createImg = ()=> new Img("img/tree.png");
+        createImg = ()=> new Img("img/mizu.png");
         happenInner = ()=>{
             Util.msg.set("湖だ");
         };
