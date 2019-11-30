@@ -5,6 +5,9 @@ import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType, Debug } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Img } from "../graphics/texture.js";
+import { Btn } from "../widget/btn.js";
+import { Sound } from "../sound.js";
+import { SaveData } from "../savedata.js";
 
 
 
@@ -39,6 +42,13 @@ export default class DungeonScene extends Scene{
                 return btnLayout;
             })
         })());
+        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 4),
+            new Btn("セーブ", ()=>{
+                SaveData.save();
+                Sound.save.play();
+                Util.msg.set("セーブしました", Color.CYAN);
+            })
+        );
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);

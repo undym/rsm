@@ -587,22 +587,22 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         動かない映写機:Item = new class extends Item{
-        constructor(){super({uniqueName:"動かない映写機", info:"ダンジョン内で使用するとセーブできる",
+        constructor(){super({uniqueName:"動かない映写機", info:"壊れている...",
                                 type:ItemType.ダンジョン, rank:10, drop:ItemDrop.NO,
-                                consumable:true, 
-                                use:async(user,target)=>{
-                                    //-------------------------
-                                    //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
-                                    //なのでremainingUseNumを--してセーブし、セーブ後に++する。
-                                    this.remainingUseNum--;
-                                    Sound.save.play();
-                                    SaveData.save();
-                                    this.remainingUseNum++;
-                                    //-------------------------
-                                    FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
-                                },
+                                // consumable:true, 
+                                // use:async(user,target)=>{
+                                //     //-------------------------
+                                //     //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
+                                //     //なのでremainingUseNumを--してセーブし、セーブ後に++する。
+                                //     this.remainingUseNum--;
+                                //     Sound.save.play();
+                                //     SaveData.save();
+                                //     this.remainingUseNum++;
+                                //     //-------------------------
+                                //     FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
+                                // },
         })}
-        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+        // canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
     };
     export const                         脱出ポッド:Item = new class extends Item{
         constructor(){super({uniqueName:"脱出ポッド", info:"ダンジョンから脱出する。なくならない。",

@@ -17,7 +17,6 @@ import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
-import { SaveData } from "./savedata.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Tec } from "./tec.js";
 import { Condition } from "./condition.js";
@@ -643,23 +642,10 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.動かない映写機 = new class extends Item {
         constructor() {
-            super({ uniqueName: "動かない映写機", info: "ダンジョン内で使用するとセーブできる",
+            super({ uniqueName: "動かない映写機", info: "壊れている...",
                 type: ItemType.ダンジョン, rank: 10, drop: ItemDrop.NO,
-                consumable: true,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    //-------------------------
-                    //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
-                    //なのでremainingUseNumを--してセーブし、セーブ後に++する。
-                    this.remainingUseNum--;
-                    Sound.save.play();
-                    SaveData.save();
-                    this.remainingUseNum++;
-                    //-------------------------
-                    FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
-                }),
             });
         }
-        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
     };
     Item.脱出ポッド = new class extends Item {
         constructor() {
