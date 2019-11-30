@@ -343,6 +343,7 @@ export namespace DungeonEvent{
                                     for(let p of Unit.players){
                                         if(!p.exists || p.dead){continue;}
 
+                                        FX_格闘( p.imgCenter );
                                         const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
                                         await p.doDmg(dmg);
                                         await p.judgeDead();

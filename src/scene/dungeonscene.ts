@@ -42,11 +42,10 @@ export default class DungeonScene extends Scene{
                 return btnLayout;
             })
         })());
-        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 4),
+        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8),
             new Btn("セーブ", ()=>{
                 SaveData.save();
                 Sound.save.play();
-                Util.msg.set("セーブしました", Color.CYAN);
             })
         );
         

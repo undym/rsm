@@ -31,6 +31,7 @@ import { Sound } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
 import { Player } from "../player.js";
 import { Pet } from "../pet.js";
+import { EqPos } from "../eq.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -163,6 +164,7 @@ const createDungeonBtnLayout = ()=>{
                             DungeonArea.now = am.to;
                             choosedDungeon = undefined;
                             TownScene.ins.init();
+                            Sound.system.play();
                         });
             btn.groundColor = ()=> Color.BLACK;
             btn.frameColor = ()=>Color.YELLOW;
@@ -296,6 +298,15 @@ class TownBtn{
                     this._ins = createOptionBtn();
                 },
             });
+            // l.add({
+            //     center:()=>"test",
+            //     push:elm=>{
+            //         Dungeon.精霊寺院.setEnemy();
+            //         for(const e of Unit.enemies){
+            //             Util.msg.set(`${e.getEq(EqPos.体).toString()},${e.hp}/${e.prm(Prm.MAX_HP).total}`);
+            //         }
+            //     },
+            // });
 
             
         this._ins = l;

@@ -34,7 +34,7 @@ class PrmSet{
 
     get total():number{
         let res = this.base + this.eq + this.battle;
-        if(res < 0){return res;}
+        if(res < 0){return 0;}
         return res;
     }
 }
@@ -249,8 +249,8 @@ export abstract class Unit{
     set bp(value:number) {this.prm(Prm.BP).base = value|0;}
 
     private fixPrm(checkPrm:Prm, maxPrm:Prm){
-             if(this.prm(checkPrm).base < 0)                     {this.prm(checkPrm).base = 0;}
-        else if(this.prm(checkPrm).base > this.prm(maxPrm).total){this.prm(checkPrm).base = this.prm(maxPrm).total;}
+        if(this.prm(checkPrm).base > this.prm(maxPrm).total){this.prm(checkPrm).base = this.prm(maxPrm).total;}
+        if(this.prm(checkPrm).base < 0)                     {this.prm(checkPrm).base = 0;}
     }
     //---------------------------------------------------------
     //
@@ -350,11 +350,13 @@ export abstract class Unit{
     //force
     //
     //---------------------------------------------------------
-    async equip(){
+    equip(){
         for(const prm of Prm.values){
             this.prm(prm).eq = 0;
         }
-        await this.force(f=> f.equip(this));
+        (async()=>{
+            await this.force(async f=> f.equip(this));
+        })();
     }
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}

@@ -123,7 +123,6 @@ export abstract class Job{
         e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
 
-        e.tp = 0;
         e.ep = 0;
 
         for(const pos of EqPos.values){
@@ -135,6 +134,7 @@ export abstract class Job{
         this.setEnemyInner(e);
 
         e.equip();
+        
         e.hp = e.prm(Prm.MAX_HP).total;
         e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
     }

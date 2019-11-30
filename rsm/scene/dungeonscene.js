@@ -1,6 +1,6 @@
 import { Scene } from "../undym/scene.js";
 import { ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
-import { Rect, Color } from "../undym/type.js";
+import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen, DrawUnits } from "./sceneutil.js";
@@ -30,10 +30,9 @@ export default class DungeonScene extends Scene {
                 return btnLayout;
             });
         })());
-        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 4), new Btn("セーブ", () => {
+        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8), new Btn("セーブ", () => {
             SaveData.save();
             Sound.save.play();
-            Util.msg.set("セーブしました", Color.CYAN);
         }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);

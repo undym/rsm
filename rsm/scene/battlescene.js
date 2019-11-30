@@ -26,7 +26,7 @@ let chooseTargetLayout;
 export class BattleScene extends Scene {
     constructor() {
         super();
-        this.background = bounds => { };
+        this.background = emptyBG;
         this.tecInfo = { tec: Tec.empty, user: Unit.players[0] };
         btnSpace = new Layout();
         chooseTargetLayout = ILayout.empty;
@@ -404,7 +404,9 @@ const finish = () => __awaiter(this, void 0, void 0, function* () {
         u.clearInvisibleConditions();
     }
     btnSpace.clear();
+    BattleScene.ins.background = emptyBG;
 });
+const emptyBG = (bounds) => { };
 const createNormalBG = () => {
     return bounds => {
         for (let i = 0; i < 5; i++) {

@@ -36,7 +36,7 @@ class PrmSet {
     get total() {
         let res = this.base + this.eq + this.battle;
         if (res < 0) {
-            return res;
+            return 0;
         }
         return res;
     }
@@ -193,11 +193,11 @@ export class Unit {
     get bp() { return this.prm(Prm.BP).base; }
     set bp(value) { this.prm(Prm.BP).base = value | 0; }
     fixPrm(checkPrm, maxPrm) {
+        if (this.prm(checkPrm).base > this.prm(maxPrm).total) {
+            this.prm(checkPrm).base = this.prm(maxPrm).total;
+        }
         if (this.prm(checkPrm).base < 0) {
             this.prm(checkPrm).base = 0;
-        }
-        else if (this.prm(checkPrm).base > this.prm(maxPrm).total) {
-            this.prm(checkPrm).base = this.prm(maxPrm).total;
         }
     }
     //---------------------------------------------------------
@@ -302,12 +302,12 @@ export class Unit {
     //
     //---------------------------------------------------------
     equip() {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const prm of Prm.values) {
-                this.prm(prm).eq = 0;
-            }
-            yield this.force(f => f.equip(this));
-        });
+        for (const prm of Prm.values) {
+            this.prm(prm).eq = 0;
+        }
+        (() => __awaiter(this, void 0, void 0, function* () {
+            yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return f.equip(this); }));
+        }))();
     }
     battleStart() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.battleStart(this); })); });

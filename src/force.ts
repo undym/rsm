@@ -3,7 +3,7 @@ import { choice } from "./undym/random.js";
 
 
 export class Force{
-    async equip(unit:Unit){};
+    equip(unit:Unit){};
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
@@ -125,7 +125,7 @@ export class Dmg{
 
         if(_abs > 0){
             isHit = true;
-            value += _abs;
+            value += _abs|0;
         }
 
         this.result.value = value > 0 ? value|0 : 0;

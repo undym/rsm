@@ -643,14 +643,17 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
         x:number;
         y:number;
 
-        r:number;
-        g:number;
-        b:number;
-        a:number;
+        color:Color;
+        // r:number;
+        // g:number;
+        // b:number;
+        // a:number;
 
         rad:number;
         vx:number;
         vy:number;
+
+        lifeTime:number;
     }
 
     const elms:Elm[] = [];
@@ -675,14 +678,13 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
             e.x = bounds.xw - (index % imgData.width) * w;
             e.y = bounds.y + index / imgData.width * h;
 
-            e.r = data[i]   / 255;
-            e.g = data[i+1] / 255;
-            e.b = data[i+2] / 255;
-            e.a = data[i+3] / 255;
+            e.color = new Color(data[i] / 255, data[i+1] / 255, data[i+2] / 255, data[i+3] / 255);
 
             const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
             e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
             e.vy = Math.sin(rad) * Graphics.dotH * 0.5;
+
+            e.lifeTime = (60 + Math.random() * 40)|0;
 
             elms.push(e);
         }
@@ -692,21 +694,22 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
     const h2 = h * 2;
     
     FX.add(count=>{
-        // img.draw(bounds);
-        const over = 80;
-        const mul = 1.0 - count / over;
+        let exists  = false;
         for(const e of elms){
+            if(count >= e.lifeTime){continue;}
+            exists = true;
+
             Graphics.fillRect({
                 x:e.x,
                 y:e.y,
                 w:w2,
                 h:h2,
-            }, new Color(e.r * mul, e.g * mul, e.b * mul, e.a));
+            }, Math.random() < 0.5 ? e.color : Color.WHITE);
 
             e.x += e.vx;
             e.y += e.vy;
         }
-        return count < over;
+        return exists;
     });
 };
 const FX_LVUP_Test = (img:Img, bounds:Rect, reverseHorizontal:boolean)=>{
@@ -725,7 +728,7 @@ FXTest.add(FX_LVUP.name, ()=>{
     FX_LVUP( testImg, r, Color.CLEAR, true )
 });
 
-export const FX_NO_USED = (center:Point)=>{
+const FX_NO_USED = (center:Point)=>{
     const PI2 = Math.PI * 2;
     const rnd = ()=>{
         const v = Graphics.dotW * 5;

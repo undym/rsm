@@ -8,9 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { choice } from "./undym/random.js";
 export class Force {
-    equip(unit) {
-        return __awaiter(this, void 0, void 0, function* () { });
-    }
+    equip(unit) { }
     ;
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
@@ -140,7 +138,7 @@ export class Dmg {
         }
         if (_abs > 0) {
             isHit = true;
-            value += _abs;
+            value += _abs | 0;
         }
         this.result.value = value > 0 ? value | 0 : 0;
         this.result.isHit = isHit;

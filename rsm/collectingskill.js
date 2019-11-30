@@ -22,7 +22,7 @@ export class CollectingSkill {
             const prob = rank / (this.lv + 1);
             if (Math.random() < prob * prob) {
                 this.lv++;
-                Util.msg.set(`${this.uniqueName}スキルが${this.lv}になった`, Color.YELLOW.bright);
+                Util.msg.set(`≪${this.uniqueName}スキル≫が${this.lv}になった`, Color.YELLOW.bright);
                 yield wait();
             }
         });

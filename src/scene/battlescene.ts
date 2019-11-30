@@ -28,7 +28,7 @@ export class BattleScene extends Scene{
     static get ins():BattleScene{return this._ins ? this._ins : (this._ins = new BattleScene());}
 
 
-    background:(bounds:Rect)=>void = bounds=>{};
+    background:(bounds:Rect)=>void = emptyBG;
 
     private tecInfo:{tec:Tec, user:Unit} = {tec:Tec.empty, user:Unit.players[0]};
 
@@ -447,8 +447,12 @@ const finish = async()=>{
     }
 
     btnSpace.clear();
+
+    BattleScene.ins.background = emptyBG;
 }
 
+
+const emptyBG = (bounds:Rect)=>{};
 
 const createNormalBG:()=>(bounds:Rect)=>void = ()=>{
     return bounds=>{

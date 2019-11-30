@@ -608,6 +608,42 @@ Item.DEF_NUM_LIMIT = 9999;
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
     };
+    Item.旧式ミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "旧式ミサイル", info: "戦闘時、250ダメージを与える",
+                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 250 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.帝国式ミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "帝国式ミサイル", info: "戦闘時、350ダメージを与える",
+                type: ItemType.ダメージ, rank: 4, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 350 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.ハル式ミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ハル式ミサイル", info: "戦闘時、450ダメージを与える",
+                type: ItemType.ダメージ, rank: 5, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 450 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.バスターミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "バスターミサイル", info: "戦闘時、1000ダメージを与える",
+                type: ItemType.ダメージ, rank: 7, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1000 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
     Item.鬼火 = new class extends Item {
         constructor() {
             super({ uniqueName: "鬼火", info: "戦闘時、敵全体に10ダメージを与える",
@@ -631,6 +667,33 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に100ダメージを与える",
                 type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX, targetings: Targeting.ALL,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 100 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.鬼火のダイナマイト = new class extends Item {
+        constructor() {
+            super({ uniqueName: "鬼火のダイナマイト", info: "戦闘時、敵全体に200ダメージを与える",
+                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 200 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.セクシーダイナマイツ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "セクシーダイナマイツ", info: "戦闘時、敵全体に1000ダメージを与える",
+                type: ItemType.ダメージ, rank: 8, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1000 })); }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
+    };
+    Item.バスターマシン3号 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "バスターマシン3号", info: "戦闘時、敵味方全体に30000ダメージを与える",
+                type: ItemType.ダメージ, rank: 10, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 30000 })); }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -1539,7 +1602,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.銅 = new class extends Item {
         constructor() {
             super({ uniqueName: "銅", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM | ItemDrop.FOSSIL });
+                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX | ItemDrop.STRATUM | ItemDrop.FOSSIL });
         }
     };
     Item.鉄 = new class extends Item {
