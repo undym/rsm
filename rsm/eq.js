@@ -349,6 +349,7 @@ EqEar._valueOf = new Map();
                 pos: EqPos.盾, lv: 0 });
         }
     };
+    /**見知らぬ海岸財宝. */
     Eq.銅板 = new class extends Eq {
         constructor() {
             super({ uniqueName: "銅板", info: "防御値+100",
@@ -383,6 +384,7 @@ EqEar._valueOf = new Map();
                 pos: EqPos.体, lv: 0 });
         }
     };
+    /**見知らぬ海岸EX. */
     Eq.草の服 = new class extends Eq {
         constructor() {
             super({ uniqueName: "草の服", info: "最大HP+20",
@@ -528,7 +530,7 @@ EqEar._valueOf = new Map();
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                dmg.pow.add += 10;
+                dmg.abs.add += 10;
             });
         }
     };

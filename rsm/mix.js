@@ -4,7 +4,6 @@ import { Item } from "./item.js";
 import { Player } from "./player.js";
 import { Eq } from "./eq.js";
 import { Prm } from "./unit.js";
-import { Dungeon } from "./dungeon/dungeon.js";
 export class Num {
     static add(obj, v) {
         v = v | 0;
@@ -135,7 +134,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const ルインドアースLv5 = new Mix({
         uniqueName: "ルインドアースLv5", limit: 1, info: "",
-        materials: () => [[Item.銅板, 2], [Item.針金, 3],],
+        materials: () => [[Item.銅板, 1], [Item.針金, 1],],
         isVisible: () => ルインドアースLv4.count > 0,
     });
     const ルインドアースLv6 = new Mix({
@@ -286,6 +285,16 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.金, 4], [Item.銀, 3]],
         isVisible: () => ルインドアースLv10.count > 0,
     });
+    Mix.パン屋のごみ箱 = new Mix({
+        uniqueName: "パン屋のごみ箱", limit: 1, info: "お店に新しい商品が並ぶ",
+        materials: () => [[Item.ドラッグ, 5]],
+        isVisible: () => ルインドアースLv4.count > 0,
+    });
+    Mix.健康保険証 = new Mix({
+        uniqueName: "健康保険証", limit: 1, info: "お店に新しい商品が並ぶ",
+        materials: () => [[Item.ドラッグ, 5], [Item.草, 5]],
+        isVisible: () => ルインドアースLv5.count > 0,
+    });
     // //--------------------------------------------------------
     // //
     // //アイテム
@@ -322,25 +331,25 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     const 絵画母なる星の緑の丘 = new Mix({
         uniqueName: "絵画母なる星の緑の丘", limit: Mix.LIMIT_INF,
         result: () => [Item.絵画母なる星の緑の丘, 1],
-        materials: () => [[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.良い土, 5]],
+        materials: () => [[Item.エレタの絵の具, 5], [Item.カンバス, 5], [Item.良い土, 5]],
         isVisible: () => Item.リュサンデールの絵筆.totalGetCount > 0,
     });
     const 絵画シェイクスピアの涙 = new Mix({
         uniqueName: "絵画シェイクスピアの涙", limit: Mix.LIMIT_INF,
         result: () => [Item.絵画シェイクスピアの涙, 1],
-        materials: () => [[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.清龍, 2]],
+        materials: () => [[Item.エレタの絵の具, 5], [Item.カンバス, 5], [Item.清龍, 2]],
         isVisible: () => Item.リュサンデールの絵筆.totalGetCount > 0,
     });
     const 絵画彼女の髪 = new Mix({
         uniqueName: "絵画彼女の髪", limit: Mix.LIMIT_INF,
         result: () => [Item.絵画彼女の髪, 1],
-        materials: () => [[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.火と水と土と風と光と闇のアニムス, 2]],
+        materials: () => [[Item.エレタクレヨン, 5], [Item.カンバス, 5], [Item.火と水と土と風と光と闇のアニムス, 2]],
         isVisible: () => Item.リュサンデールの絵筆.totalGetCount > 0,
     });
     const 絵画我が情熱の日 = new Mix({
         uniqueName: "絵画我が情熱の日", limit: Mix.LIMIT_INF,
         result: () => [Item.絵画我が情熱の日, 1],
-        materials: () => [[Item.エレタの絵の具, 3], [Item.カンバス, 5], [Item.烈火, 10]],
+        materials: () => [[Item.エレタクレヨン, 5], [Item.カンバス, 5], [Item.烈火, 10]],
         isVisible: () => Item.リュサンデールの絵筆.totalGetCount > 0,
     });
     const 杉材 = new Mix({
@@ -412,12 +421,12 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         uniqueName: "アタックシールド", limit: 1,
         result: () => [Eq.アタックシールド, 1],
         materials: () => [[Item.杉材, 2], [Item.ヒノキ材, 2]],
-        isVisible: () => Dungeon.予感の街レ.dungeonClearCount > 0,
+        isVisible: () => Item.レレシピ.totalGetCount > 0,
     });
     const 星的 = new Mix({
         uniqueName: "星的", limit: 1,
         result: () => [Eq.星的, 1],
         materials: () => [[Item.少女の心を持ったおっさん, 10], [Item.砂, 5]],
-        isVisible: () => Dungeon.予感の街レ.dungeonClearCount > 0,
+        isVisible: () => Item.レレシピ.totalGetCount > 0,
     });
 })(Mix || (Mix = {}));

@@ -1188,6 +1188,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 10, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
+    Item.レレシピ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "レレシピ", info: "予感の街・レに伝わる秘伝の装備レシピ",
+                type: ItemType.メモ, rank: 8, drop: ItemDrop.NO, numLimit: 1 });
+        }
+    };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
     //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}
@@ -1547,13 +1553,13 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.銅 = new class extends Item {
         constructor() {
             super({ uniqueName: "銅", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM | ItemDrop.FOSSIL });
         }
     };
     Item.鉄 = new class extends Item {
         constructor() {
             super({ uniqueName: "鉄", info: "",
-                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM | ItemDrop.FOSSIL });
         }
     };
     Item.土 = new class extends Item {

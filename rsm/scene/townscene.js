@@ -58,10 +58,10 @@ export class TownScene extends Scene {
                 .add(() => d().info)
                 .add(() => `攻略回数:${d().dungeonClearCount}`, () => d().dungeonClearCount > 0 ? Color.WHITE : Color.GRAY)
                 .add(() => `鍵:${d().treasureKey}`)
-                .add(() => `Extra:`)
+                .add(() => "財宝:")
                 .addArray(() => {
                 const res = [];
-                for (const t of d().exItems) {
+                for (const t of d().treasures) {
                     if (t.totalGetCount > 0) {
                         res.push([` ${t}`]);
                     }
@@ -71,10 +71,10 @@ export class TownScene extends Scene {
                 }
                 return res;
             })
-                .add(() => `財宝:`)
+                .add(() => "Extra:")
                 .addArray(() => {
                 const res = [];
-                for (const t of d().treasures) {
+                for (const t of d().exItems) {
                     if (t.totalGetCount > 0) {
                         res.push([` ${t}`]);
                     }

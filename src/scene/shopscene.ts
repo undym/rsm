@@ -283,9 +283,11 @@ const initGoods = ()=>{
     createItemGoods({item:Item.リュサンデールの絵筆, num:1,
         price:()=>10000, isVisible:()=>TecMaster.check(Tec.ドゥエルガル) && Item.リュサンデールの絵筆.totalGetCount === 0});
     
-    createItemGoods({item:Item.スティックパン,   price:()=>30,  isVisible:()=>true});
-    createItemGoods({item:Item.赤い水,          price:()=>50,  isVisible:()=>true});
-    createItemGoods({item:Item.サンタクララ薬,   price:()=>100, isVisible:()=>true});
+    createItemGoods({item:Item.スティックパン,        price:()=>30,  isVisible:()=>true});
+    createItemGoods({item:Item.硬化スティックパン,    price:()=>100,  isVisible:()=>Mix.パン屋のごみ箱.count > 0});
+    createItemGoods({item:Item.シェイクスピア分子1,   price:()=>500,  isVisible:()=>Mix.健康保険証.count > 0});
+    createItemGoods({item:Item.赤い水,               price:()=>50,  isVisible:()=>true});
+    createItemGoods({item:Item.サンタクララ薬,        price:()=>100, isVisible:()=>true});
 
     createItemGoods({item:Item.夜叉の矢,   num:2,  price:()=>(Item.夜叉の矢.num+2)   * 1000, isVisible:()=>TecMaster.check(Tec.ヤクシャ)});
     createItemGoods({item:Item.降雨の矢,   num:4,  price:()=>(Item.降雨の矢.num+4)   * 1000, isVisible:()=>TecMaster.check(Tec.ナーガ)});

@@ -340,6 +340,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"板", info:"",
                                 pos:EqPos.盾, lv:0});}
     }
+    /**見知らぬ海岸財宝. */
     export const                         銅板:Eq = new class extends Eq{
         constructor(){super({uniqueName:"銅板", info:"防御値+100",
                                 pos:EqPos.盾, lv:12});}
@@ -364,6 +365,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"襤褸切れ", info:"",
                                 pos:EqPos.体, lv:0});}
     }
+    /**見知らぬ海岸EX. */
     export const                         草の服:Eq = new class extends Eq{
         constructor(){super({uniqueName:"草の服", info:"最大HP+20",
                                 pos:EqPos.体, lv:15});}
@@ -464,7 +466,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"ライダーベルト", info:"攻撃+10",
                                 pos:EqPos.腰, lv:35});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            dmg.pow.add += 10;
+            dmg.abs.add += 10;
         }
     }
     export const                         チェーンベルト:Eq = new class extends Eq{
