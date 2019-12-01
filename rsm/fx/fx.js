@@ -552,7 +552,7 @@ export const FX_LVUP = (img, bounds, transparence, reverse) => {
             const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
             e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
             e.vy = Math.sin(rad) * Graphics.dotH * 0.5;
-            e.lifeTime = (60 + Math.random() * 40) | 0;
+            e.lifeTime = (30 + Math.random() * 70) | 0;
             elms.push(e);
         }
     }

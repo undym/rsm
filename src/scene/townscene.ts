@@ -62,6 +62,7 @@ export class TownScene extends Scene{
                                     .add(()=>`[${d()}]`)
                                     .add(()=>`Rank:${d().rank}`)
                                     .add(()=>`Lv:${d().enemyLv}`)
+                                    .add(()=>`AU:${d().au}`)
                                     .add(()=>d().info)
                                     .add(()=>`攻略回数:${d().dungeonClearCount}`, ()=>d().dungeonClearCount > 0 ? Color.WHITE : Color.GRAY)
                                     .add(()=>`鍵:${d().treasureKey}`)

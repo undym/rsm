@@ -733,13 +733,6 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         瑠璃:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"瑠璃", info:"戦闘開始時TP+10%",
-    //                             pos:EqPos.指, lv:50});}
-    //     battleStart(unit:Unit){
-    //         Unit.healTP(unit, unit.prm(Prm.MAX_TP).total * 0.1 + 1);
-    //     }
-    // }
     // export const                         キャットネイル:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"キャットネイル", info:"攻撃時追加攻撃",
     //                             pos:EqPos.指, lv:50});}
@@ -807,15 +800,6 @@ EqEar._valueOf = new Map();
             });
         }
     };
-    // export const                         安全靴:Eq = new class extends Eq{
-    //     constructor(){super({uniqueName:"安全靴", info:"被攻撃時稀に<盾>化",
-    //                             pos:EqPos.脚, lv:40});}
-    //     afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type !== TecType.状態 && Math.random() < 0.6){
-    //             Unit.setCondition(target, Condition.盾, 1);
-    //         }
-    //     }
-    // }
     // export const                         鉄下駄:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"鉄下駄", info:"攻撃命中率x0.9 防御値x2",
     //                             pos:EqPos.脚, lv:21});}

@@ -1056,7 +1056,7 @@ export namespace Item{
     };
     export const                         SPのメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"SPのメモ", info:"「SPは戦闘開始時に回復する。なので、SPを消費する技は基本的に一度の戦闘で一回しか使えない」と書かれている", 
-                                type:ItemType.メモ, rank:2, drop:ItemDrop.BOX, numLimit:1})}
+                                type:ItemType.メモ, rank:5, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         HP至上主義のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"HP至上主義のメモ", info:"「とりあえずHPを上げれば間違いはない。俺は詳しいんだ」と書かれている", 

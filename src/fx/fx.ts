@@ -684,7 +684,7 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
             e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
             e.vy = Math.sin(rad) * Graphics.dotH * 0.5;
 
-            e.lifeTime = (60 + Math.random() * 40)|0;
+            e.lifeTime = (30 + Math.random() * 70)|0;
 
             elms.push(e);
         }

@@ -1204,7 +1204,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.SPのメモ = new class extends Item {
         constructor() {
             super({ uniqueName: "SPのメモ", info: "「SPは戦闘開始時に回復する。なので、SPを消費する技は基本的に一度の戦闘で一回しか使えない」と書かれている",
-                type: ItemType.メモ, rank: 2, drop: ItemDrop.BOX, numLimit: 1 });
+                type: ItemType.メモ, rank: 5, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.HP至上主義のメモ = new class extends Item {

@@ -503,7 +503,7 @@ export namespace Dungeon{
     };
     export const                         クラウンボトル:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"クラウンボトル", info:"",
-                                rank:3, enemyLv:20, au:300, btn:[DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
+                                rank:3, enemyLv:20, au:250, btn:[DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.呪縛の弓矢],
                                 exItems:    ()=>[Eq.コスモガン],
                                 trendItems: ()=>[Item.血粉末, Item.うんち, Item.太陽の欠片],
@@ -602,7 +602,7 @@ export namespace Dungeon{
     };
     export const                         黒い丘:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒い丘", info:"地層+",
-                                rank:1, enemyLv:12, au:200, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
+                                rank:1, enemyLv:12, au:150, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉の手首飾り],
                                 exItems:    ()=>[Eq.無色の靴],
                                 trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト],
@@ -631,7 +631,7 @@ export namespace Dungeon{
     };
     export const                         黒遺跡:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒遺跡", info:"地層+",
-                                rank:2, enemyLv:18, au:250, btn:[DungeonArea.黒地域, new Rect(0.55, 0.3, 0.3, 0.1)],
+                                rank:2, enemyLv:18, au:200, btn:[DungeonArea.黒地域, new Rect(0.55, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ダークネスロード],
                                 exItems:    ()=>[Item.ヴァンパイアの血],
                                 trendItems: ()=>[Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.鉄, Item.桜],
@@ -660,7 +660,7 @@ export namespace Dungeon{
     };
     export const                         黒の廃村:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒の廃村", info:"地層+",
-                                rank:3, enemyLv:19, au:350, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
+                                rank:3, enemyLv:19, au:250, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.機工の指輪],
                                 exItems:    ()=>[Item.霊術戦士の血],
                                 trendItems: ()=>[Item.ロウ, Item.桐, Item.銅, Item.鉄],
@@ -823,7 +823,7 @@ export namespace Dungeon{
     ///////////////////////////////////////////////////////////////////////
     export const                         古マーザン森:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"古マーザン森", info:"",
-                                rank:2, enemyLv:11, au:300, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
+                                rank:2, enemyLv:11, au:250, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉],
                                 exItems:    ()=>[Eq.水晶の指輪],
                                 trendItems: ()=>[],
@@ -851,7 +851,7 @@ export namespace Dungeon{
     };
     export const                         魔鳥の岩壁:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"魔鳥の岩壁", info:"",
-                                rank:4, enemyLv:13, au:400, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                rank:4, enemyLv:13, au:300, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.水晶の手首飾り],
                                 exItems:    ()=>[Item.ホークマンの血],
                                 trendItems: ()=>[],
@@ -882,7 +882,7 @@ export namespace Dungeon{
     };
     export const                         精霊寺院:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"精霊寺院", info:"",
-                                rank:6, enemyLv:13, au:500, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                rank:6, enemyLv:13, au:350, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.エスペラント],
                                 exItems:    ()=>[Item.精霊使いの血],
                                 trendItems: ()=>[Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],

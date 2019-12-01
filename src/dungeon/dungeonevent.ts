@@ -235,6 +235,7 @@ export namespace DungeonEvent{
                                         Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_TREASURE.happen();
                                     }else{
+                                        Sound.PUNCH.play();
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
