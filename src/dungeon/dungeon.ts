@@ -120,11 +120,9 @@ export abstract class Dungeon{
     /**通常rndDungeonEvent()の最後に実行される。 */
     private rndTrendEvents():DungeonEvent{
         if(this.args.trendEvents){
-            if(this.args.trendEvents){
-                for(const set of this.args.trendEvents()){
-                    if(Math.random() < set[1]){
-                        return set[0];
-                    }
+            for(const set of this.args.trendEvents()){
+                if(Math.random() < set[1]){
+                    return set[0];
                 }
             }
         }
@@ -438,6 +436,7 @@ export namespace Dungeon{
             }
 
             if(Item.レレシピ.totalGetCount === 0){
+                Sound.rare.play();
                 Item.レレシピ.add(1); await cwait();
             }
         }
@@ -469,6 +468,10 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
                 await Story0.runMain7();
+            }
+            if(Item.イスレシピ.totalGetCount === 0){
+                Sound.rare.play();
+                Item.イスレシピ.add(1); await cwait();
             }
         }
     };

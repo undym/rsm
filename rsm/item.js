@@ -1243,6 +1243,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 8, drop: ItemDrop.NO, numLimit: 1 });
         }
     };
+    Item.イスレシピ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "イスレシピ", info: "水の都・イスに伝わる秘伝の装備レシピ",
+                type: ItemType.メモ, rank: 8, drop: ItemDrop.NO, numLimit: 1 });
+        }
+    };
     // export const                         パーティースキル取り扱い許可証:Item = new class extends Item{
     //     constructor(){super({uniqueName:"パーティースキル取り扱い許可証", info:"パーティースキルが解放される", 
     //                             type:ItemType.メモ, rank:10, drop:ItemDrop.NO, numLimit:1})}

@@ -373,6 +373,16 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**イスレシピ. */
+    Eq.愛の盾 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "愛の盾", info: "魔+30",
+                pos: EqPos.盾, lv: 102 });
+        }
+        equip(unit) {
+            unit.prm(Prm.MAG).eq += 30;
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //体
@@ -797,6 +807,18 @@ EqEar._valueOf = new Map();
                 if (action instanceof ActiveTec && action.type.any(TecType.過去)) {
                     dmg.pow.mul *= 1.2;
                 }
+            });
+        }
+    };
+    /**イスレシピ. */
+    Eq.空飛ぶ靴 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "空飛ぶ靴", info: "攻撃回避率+5%",
+                pos: EqPos.脚, lv: 255 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                dmg.hit.mul *= 0.95;
             });
         }
     };

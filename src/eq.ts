@@ -356,6 +356,14 @@ export namespace Eq{
             dmg.def.add += 200;
         }
     }
+    /**イスレシピ. */
+    export const                         愛の盾:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"愛の盾", info:"魔+30",
+                                pos:EqPos.盾, lv:102});}
+        equip(unit:Unit){
+            unit.prm(Prm.MAG).eq += 30;
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //体
@@ -661,6 +669,14 @@ export namespace Eq{
             if(action instanceof ActiveTec && action.type.any(TecType.過去)){
                 dmg.pow.mul *= 1.2;
             }
+        }
+    }
+    /**イスレシピ. */
+    export const                         空飛ぶ靴:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"空飛ぶ靴", info:"攻撃回避率+5%",
+                                pos:EqPos.脚, lv:255});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            dmg.hit.mul *= 0.95;
         }
     }
     // export const                         鉄下駄:Eq = new class extends Eq{

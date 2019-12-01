@@ -300,17 +300,6 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     // //アイテム
     // //
     // //--------------------------------------------------------
-    // const           硬化スティックパン:Mix = new Mix({
-    //     uniqueName:"硬化スティックパン", limit:10,
-    //     result:()=>[Item.硬化スティックパン, 1],
-    //     materials:()=>[[Item.はじまりの丘チール, 2], [Item.石, 5], [Item.土, 5]],
-    // });
-    // const           布:Mix = new Mix({
-    //     uniqueName:"布", limit:Mix.LIMIT_INF,
-    //     result:()=>[Item.布, 1],
-    //     materials:()=>[[Item.草, 5], [Item.枝, 1]],
-    //     isVisible:()=>草の服.count > 0,
-    // });
     // const           天地創造の書:Mix = new Mix({
     //     uniqueName:"天地創造の書", limit:Mix.LIMIT_INF,
     //     result:()=>[Item.天地創造の書, 1],
@@ -428,5 +417,17 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         result: () => [Eq.星的, 1],
         materials: () => [[Item.少女の心を持ったおっさん, 10], [Item.砂, 5]],
         isVisible: () => Item.レレシピ.totalGetCount > 0,
+    });
+    const 愛の盾 = new Mix({
+        uniqueName: "愛の盾", limit: 1,
+        result: () => [Eq.愛の盾, 1],
+        materials: () => [[Item.少女の心を持ったおっさん, 10], [Item.土, 5], [Item.針金, 1]],
+        isVisible: () => Item.イスレシピ.totalGetCount > 0,
+    });
+    const 空飛ぶ靴 = new Mix({
+        uniqueName: "空飛ぶ靴", limit: 1,
+        result: () => [Eq.空飛ぶ靴, 1],
+        materials: () => [[Item.イズミミズ, 5], [Item.杉材, 5], [Item.ヒノキ材, 5], [Item.針金, 1]],
+        isVisible: () => Item.イスレシピ.totalGetCount > 0,
     });
 })(Mix || (Mix = {}));
