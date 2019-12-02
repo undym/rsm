@@ -549,36 +549,6 @@ export namespace Tec{
             return dmg;
         }
     }
-    // export const                          人狼剣:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"人狼剣", info:"一体に自分の力値分のダメージを与える",
-    //                           type:TecType.格闘, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:3, tp:1,
-    //     });}
-    //     createDmg(attacker:Unit, target:Unit):Dmg{
-    //         return new Dmg({
-    //                     absPow:attacker.prm(Prm.STR).total,
-    //                     hit:this.hit,
-    //                 });
-    //     }
-    // }
-    // export const                          閻魔の笏:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"閻魔の笏", info:"一体に4回格闘攻撃",
-    //                           type:TecType.格闘, targetings:Targeting.SELECT,
-    //                           mul:1, num:4, hit:1, ep:1,
-    //     });}
-    // }
-    // export const                          マジカルパンチ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"マジカルパンチ", info:"マジカル格闘攻撃",
-    //                           type:TecType.格闘, targetings:Targeting.SELECT,
-    //                           learning:()=>undefined,
-    //                           mul:1, num:1, hit:1, mp:1,
-    //     });}
-    //     createDmg(attacker:Unit, target:Unit):Dmg{
-    //         let dmg = super.createDmg(attacker, target);
-    //         dmg.pow.base = attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total;
-    //         return dmg;
-    //     }
-    // }
     // export const                          聖剣:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"聖剣", info:"一体に格闘攻撃　攻撃後光依存で回復",
     //                           type:TecType.格闘, targetings:Targeting.SELECT,

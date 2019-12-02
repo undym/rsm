@@ -134,7 +134,7 @@ export abstract class Job{
         this.setEnemyInner(e);
 
         e.equip();
-        
+
         e.hp = e.prm(Prm.MAX_HP).total;
         e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
     }
@@ -191,7 +191,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.格闘攻撃UP, Tec.格闘防御UP, Tec.防御, Tec.印, Tec.涅槃寂静],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP, Tec.防御, Tec.涅槃寂静];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.タックル, Tec.タックル, Tec.格闘防御UP, Tec.防御];
         }
     };
     export const                         剣士:Job = new class extends Job{
@@ -202,7 +202,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.斬る, Tec.パワーファクト, Tec.閻魔の笏],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.パワーファクト];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.パワーファクト, Tec.閻魔の笏];
         }
     };
     export const                         忍者:Job = new class extends Job{

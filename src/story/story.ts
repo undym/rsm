@@ -48,14 +48,16 @@ export class Story{
 
             Font.def.draw(this.name, nameBounds.center, Color.WHITE, "center");
 
-            if(this.loaded < this.msg.length){
-                const newStr = this.msg.substring(this.loaded, this.loaded+1);
-                if(Font.def.measureRatioW(this.screenMsg[ this.screenMsg.length - 1] + newStr ) >= msgBoundsInner.w){
-                    this.screenMsg.push("");
-                }
+            for(let i = 0; i < 2; i++){       
+                if(this.loaded < this.msg.length){
+                    const newStr = this.msg.substring(this.loaded, this.loaded+1);
+                    if(Font.def.measureRatioW(this.screenMsg[ this.screenMsg.length - 1] + newStr ) >= msgBoundsInner.w){
+                        this.screenMsg.push("");
+                    }
 
-                this.screenMsg[ this.screenMsg.length - 1 ] += newStr;
-                this.loaded++;
+                    this.screenMsg[ this.screenMsg.length - 1 ] += newStr;
+                    this.loaded++;
+                }
             }
             this.screenMsg.forEach((s,i)=>{
                 Font.def.draw(s, new Point(msgBoundsInner.x, msgBoundsInner.y + Font.def.ratioH * i), Color.WHITE);
