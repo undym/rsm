@@ -594,7 +594,7 @@ export class PUnit extends Unit{
             FX_LVUP( this.img, this.imgBounds, Color.BLACK, true );
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
-            const growHP = this.prm(Prm.LV).base / 50 + 1;
+            const growHP = this.prm(Prm.LV).base / 100 + 1;
             this.growPrm( Prm.MAX_HP, growHP );
 
             for(const gp of this.job.growthPrms){
