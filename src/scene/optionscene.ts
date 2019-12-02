@@ -15,6 +15,7 @@ import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
 import { Sound } from "../sound.js";
+import { Dungeon } from "../dungeon/dungeon.js";
 
 const list = new List(6);
 let returnAction:()=>void = ()=>{};
@@ -233,6 +234,17 @@ const setDebugBtn = ()=>{
             PlayData.yen += value;
     
             Util.msg.set(`yen+${value}`);
+        },
+    });
+    list.add({
+        center:()=>"鍵",
+        push:elm=>{
+            for(const d of Dungeon.values){
+                d.treasureKey += 10;
+            }
+
+            Item.丸い鍵.add(10);
+            Item.三角鍵.add(10);
         },
     });
     list.add({

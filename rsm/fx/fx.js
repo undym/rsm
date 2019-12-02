@@ -592,6 +592,104 @@ FXTest.add(FX_LVUP.name, () => {
     FX_LVUP_Test(testImg, r, true);
     FX_LVUP(testImg, r, Color.CLEAR, true);
 });
+export const FX_PetDie = (center) => {
+    const PI2 = Math.PI * 2;
+    class Elm {
+        constructor() {
+            const rad = PI2 * Math.random();
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            this.x = center.x + cos * Graphics.dotW * 20 * Math.random();
+            this.y = center.y + sin * Graphics.dotH * 20 * Math.random();
+            this.vx = cos * Graphics.dotW * 4 * Math.random();
+            this.vy = sin * Graphics.dotH * 4 * Math.random();
+            if (Math.random() < 0.2) {
+                this.vx *= 2;
+            }
+            if (Math.random() < 0.2) {
+                this.vy *= 2;
+            }
+            this.w = Math.random() * 20 * Graphics.dotW;
+            this.h = Math.random() * 20 * Graphics.dotH;
+            this.lifeTime = (Math.random() * 50) | 0;
+            this.lifeTimeLim = this.lifeTime;
+        }
+        draw() {
+            this.lifeTime--;
+            if (this.lifeTime <= 0) {
+                return;
+            }
+            const col = Math.random() < 0.5 ? Color.WHITE : Color.GRAY;
+            const mul = this.lifeTime / this.lifeTimeLim;
+            const _w = this.w * mul;
+            const _h = this.h * mul;
+            Graphics.fillRect({
+                x: this.x - _w / 2,
+                y: this.y - _h / 2,
+                w: _w,
+                h: _h,
+            }, col);
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vx *= 0.95;
+            this.vy *= 0.95;
+        }
+    }
+    const elms = [];
+    for (let i = 0; i < 80; i++) {
+        elms.push(new Elm());
+    }
+    FX.add(count => {
+        let exists = false;
+        for (const e of elms) {
+            e.draw();
+            if (e.lifeTime > 0) {
+                exists = true;
+            }
+        }
+        return exists;
+    });
+};
+FXTest.add(FX_PetDie.name, () => FX_PetDie(FXTest.attacker));
+export const FX_Poison = (center) => {
+    const PI2 = Math.PI * 2;
+    const addBubble2 = (elms) => {
+        FX.add(count => {
+            let exists = false;
+            for (const e of elms) {
+                if (count >= e.lifeTime) {
+                    continue;
+                }
+                exists = true;
+                Graphics.fillRect(new Rect(e.x, e.y, Graphics.dotW * 2, Graphics.dotH * 2), new Color(0, 1, 0, 1.0 - count / e.lifeTime));
+                e.x += e.vx;
+                e.y += e.vy;
+                e.vx *= 0.8;
+                e.vy *= 0.8;
+            }
+            return exists;
+        });
+    };
+    const addBubble = (lifeTime, cx, cy, r) => {
+        FX.add(count => {
+            if (count % 3 === 0) {
+                Graphics.fillOval(new Point(cx, cy), (1.0 - count / lifeTime) * r, new Color(0, 0.5, 0));
+            }
+            cy -= 0.001;
+            return count < lifeTime;
+        });
+    };
+    FX.add(count => {
+        const rnd = () => -0.05 + Math.random() * 0.10;
+        addBubble(
+        /*lifeTime*/ 5 + Math.random() * 20, 
+        /*cx*/ center.x + rnd(), 
+        /*cy*/ center.y + rnd(), 
+        /*r*/ 0.01 + Math.random() * 0.02);
+        return count < 30;
+    });
+};
+FXTest.add(FX_Poison.name, () => FX_Poison(FXTest.target));
 const FX_NO_USED = (center) => {
     const PI2 = Math.PI * 2;
     const rnd = () => {
@@ -677,62 +775,3 @@ const FX_NO_USED = (center) => {
     });
 };
 FXTest.add(FX_NO_USED.name, () => FX_NO_USED(FXTest.attacker));
-export const FX_PetDie = (center) => {
-    const PI2 = Math.PI * 2;
-    class Elm {
-        constructor() {
-            const rad = PI2 * Math.random();
-            const cos = Math.cos(rad);
-            const sin = Math.sin(rad);
-            this.x = center.x + cos * Graphics.dotW * 20 * Math.random();
-            this.y = center.y + sin * Graphics.dotH * 20 * Math.random();
-            this.vx = cos * Graphics.dotW * 4 * Math.random();
-            this.vy = sin * Graphics.dotH * 4 * Math.random();
-            if (Math.random() < 0.2) {
-                this.vx *= 2;
-            }
-            if (Math.random() < 0.2) {
-                this.vy *= 2;
-            }
-            this.w = Math.random() * 20 * Graphics.dotW;
-            this.h = Math.random() * 20 * Graphics.dotH;
-            this.lifeTime = (Math.random() * 50) | 0;
-            this.lifeTimeLim = this.lifeTime;
-        }
-        draw() {
-            this.lifeTime--;
-            if (this.lifeTime <= 0) {
-                return;
-            }
-            const col = Math.random() < 0.5 ? Color.WHITE : Color.GRAY;
-            const mul = this.lifeTime / this.lifeTimeLim;
-            const _w = this.w * mul;
-            const _h = this.h * mul;
-            Graphics.fillRect({
-                x: this.x - _w / 2,
-                y: this.y - _h / 2,
-                w: _w,
-                h: _h,
-            }, col);
-            this.x += this.vx;
-            this.y += this.vy;
-            this.vx *= 0.95;
-            this.vy *= 0.95;
-        }
-    }
-    const elms = [];
-    for (let i = 0; i < 80; i++) {
-        elms.push(new Elm());
-    }
-    FX.add(count => {
-        let exists = false;
-        for (const e of elms) {
-            e.draw();
-            if (e.lifeTime > 0) {
-                exists = true;
-            }
-        }
-        return exists;
-    });
-};
-FXTest.add(FX_PetDie.name, () => FX_PetDie(FXTest.attacker));

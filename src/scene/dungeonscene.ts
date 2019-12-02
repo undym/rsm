@@ -8,6 +8,7 @@ import { Img } from "../graphics/texture.js";
 import { Btn } from "../widget/btn.js";
 import { Sound } from "../sound.js";
 import { SaveData } from "../savedata.js";
+import { List } from "../widget/list.js";
 
 
 
@@ -16,10 +17,23 @@ export default class DungeonScene extends Scene{
     static get ins():DungeonScene{return this._ins ? this._ins : (this._ins = new DungeonScene());}
 
 
+    private debug_eventList:List;
 
     private constructor(){
         super();
         DungeonEvent.now = DungeonEvent.empty;
+
+        if(Debug.debugMode){
+            this.debug_eventList = new List();
+            for(const ev of DungeonEvent.values){
+                this.debug_eventList.add({
+                    right:()=>ev.name,
+                    push:async()=>{
+                        await ev.happen();
+                    },
+                });
+            }
+        }
     }
 
     init(){
@@ -42,12 +56,22 @@ export default class DungeonScene extends Scene{
                 return btnLayout;
             })
         })());
-        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8),
+        const save = new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8);
+        super.add(save,
             new Btn("セーブ", ()=>{
                 SaveData.save();
                 Sound.save.play();
             })
         );
+
+        if(Debug.debugMode){
+            super.add(new Rect(save.x, save.yh, save.w, 1 - save.yh),
+                new VariableLayout(()=>{
+                    if(this.debug_eventList){return this.debug_eventList;}
+                    return ILayout.empty;
+                })
+            );
+        }
         
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);

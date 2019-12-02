@@ -11,7 +11,7 @@ import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
-import { FX_Str } from "./fx/fx.js";
+import { FX_Str, FX_回復 } from "./fx/fx.js";
 import { Targeting, Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
@@ -74,12 +74,6 @@ export var ItemDrop;
     ItemDrop[ItemDrop["FISHING"] = 16] = "FISHING";
     ItemDrop[ItemDrop["FOSSIL"] = 32] = "FOSSIL";
 })(ItemDrop || (ItemDrop = {}));
-// export const ItemDrop = {
-//     get NO()  {return 0;},
-//     get BOX() {return 1 << 0;},
-//     get TREE(){return 1 << 1;},
-//     get DIG() {return 1 << 2;},
-// }
 class ItemValues {
     constructor(items) {
         this.values = new Map();
@@ -116,6 +110,7 @@ export class Item {
      * @param rank
      */
     static rndItem(dropType, rank) {
+        rank = rank | 0;
         if (!this._dropTypeValues.has(dropType)) {
             const typeValues = this.values.filter(item => item.dropTypes & dropType);
             this._dropTypeValues.set(dropType, new ItemValues(typeValues));
@@ -223,6 +218,7 @@ Item.DEF_NUM_LIMIT = 9999;
         target.hp = 0;
         Unit.healHP(target, hp);
         Sound.KAIFUKU.play();
+        FX_回復(target.imgCenter);
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}は生き返った`);
             yield wait();
@@ -232,6 +228,7 @@ Item.DEF_NUM_LIMIT = 9999;
         value = value | 0;
         Unit.healHP(target, value);
         Sound.KAIFUKU.play();
+        FX_回復(target.imgCenter);
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
             yield wait();
@@ -315,6 +312,14 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.マーラーカオ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "マーラーカオ", info: "HP+70",
+                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 70); }),
+            });
+        }
+    };
     Item.霊水 = new class extends Item {
         constructor() {
             super({ uniqueName: "霊水", info: "HP+300",
@@ -328,6 +333,14 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "聖水", info: "HP+400",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 400); }),
+            });
+        }
+    };
+    Item.超聖水 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "超聖水", info: "HP+500",
+                type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 500); }),
             });
         }
     };
@@ -541,6 +554,22 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "血清", info: "＜毒＞状態を解除する",
                 type: ItemType.状態, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.毒); }),
+            });
+        }
+    };
+    Item.目覚まし時計 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "目覚まし時計", info: "＜眠＞状態を解除する",
+                type: ItemType.状態, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.眠); }),
+            });
+        }
+    };
+    Item.石溶け水 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "石溶け水", info: "＜石＞状態を解除する",
+                type: ItemType.状態, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.石); }),
             });
         }
     };
@@ -1893,12 +1922,6 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.ロウ = new class extends Item {
         constructor() {
             super({ uniqueName: "ロウ", info: "",
-                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE });
-        }
-    };
-    Item.石溶け水 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "石溶け水", info: "",
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE });
         }
     };

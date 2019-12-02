@@ -1,18 +1,38 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { Scene } from "../undym/scene.js";
 import { ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
-import { Place, Util, SceneType } from "../util.js";
+import { Place, Util, SceneType, Debug } from "../util.js";
 import { DrawSTBoxes, DrawUnitDetail, DrawDungeonData, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Img } from "../graphics/texture.js";
 import { Btn } from "../widget/btn.js";
 import { Sound } from "../sound.js";
 import { SaveData } from "../savedata.js";
+import { List } from "../widget/list.js";
 export default class DungeonScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new DungeonScene()); }
     constructor() {
         super();
         DungeonEvent.now = DungeonEvent.empty;
+        if (Debug.debugMode) {
+            this.debug_eventList = new List();
+            for (const ev of DungeonEvent.values) {
+                this.debug_eventList.add({
+                    right: () => ev.name,
+                    push: () => __awaiter(this, void 0, void 0, function* () {
+                        yield ev.happen();
+                    }),
+                });
+            }
+        }
     }
     init() {
         super.clear();
@@ -30,10 +50,19 @@ export default class DungeonScene extends Scene {
                 return btnLayout;
             });
         })());
-        super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8), new Btn("セーブ", () => {
+        const save = new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8);
+        super.add(save, new Btn("セーブ", () => {
             SaveData.save();
             Sound.save.play();
         }));
+        if (Debug.debugMode) {
+            super.add(new Rect(save.x, save.yh, save.w, 1 - save.yh), new VariableLayout(() => {
+                if (this.debug_eventList) {
+                    return this.debug_eventList;
+                }
+                return ILayout.empty;
+            }));
+        }
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Rect.FULL, DrawUnits.ins);
         super.add(Place.MSG, Util.msg);

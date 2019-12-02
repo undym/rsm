@@ -35,7 +35,7 @@ export abstract class DungeonEvent{
     
     abstract createBtnLayout():ILayout;
 
-    protected constructor(){
+    protected constructor(readonly name:string){
         DungeonEvent._values.push(this);
     }
 
@@ -63,15 +63,14 @@ namespace EventImg{
     export const OPEN_BOX = new EventImg("img/box_open.png");
 }
 
-
 export namespace DungeonEvent{
-    export const empty:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             empty:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("empty");}
         happenInner = ()=>{Util.msg.set("");};
         createBtnLayout = ()=> createDefLayout();
     };
-    export const BOX:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             BOX:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("BOX");}
         createImg = ()=> EventImg.BOX.img;
         happenInner = async()=>{Util.msg.set("宝箱だ")};
         createBtnLayout = ()=> createDefLayout()
@@ -81,8 +80,8 @@ export namespace DungeonEvent{
                                 }))
                                 ;
     };
-    export const OPEN_BOX:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             OPEN_BOX:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("OPEN_BOX");}
         createImg = ()=> EventImg.OPEN_BOX.img;
         isZoomImg = ()=> false;
         happenInner = async()=>{
@@ -100,130 +99,89 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const OPEN_KEY_BOX:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             OPEN_KEY_BOX:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("OPEN_KEY_BOX");}
         createImg = ()=> EventImg.OPEN_BOX.img;
         isZoomImg = ()=> false;
         happenInner = async()=>{};
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const KEY_BOX_RANK2:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.BOX.img;
-        happenInner = async()=>{Util.msg.set("丸い箱だ")};
-        createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    const key = Item.丸い鍵;
-                                    if(key.num > 0){
-                                        key.num--;
-                                        Sound.TRAGER.play();
-                                        Util.msg.set(`開けた(${key}残り${key.num})`);
-                                        await DungeonEvent.OPEN_KEY_BOX.happen();
 
-                                        for(let i = 0; i < 5; i++){
-                                            await wait();
-                                            openKeyBox(/*base*/2, /*fluctuateRange*/2);
-                                        }
-                                    }else{
-                                        Util.msg.set("鍵を持っていない");
-                                    }
-                                }))
-                                ;
-    };
-    export const KEY_BOX_RANK3:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.BOX.img;
-        happenInner = async()=>{Util.msg.set("三角型の箱だ")};
-        createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    const key = Item.三角鍵;
-                                    if(key.num > 0){
-                                        key.num--;
-                                        Sound.TRAGER.play();
-                                        Util.msg.set(`開けた(${key}残り${key.num})`);
-                                        await DungeonEvent.OPEN_KEY_BOX.happen();
+    const createKeyBoxEvent = (name:string, msg:string, key:()=>Item, open:()=>void)=>{
+        return new class extends DungeonEvent{
+            constructor(){super(name);}
+            createImg(){return EventImg.BOX.img;}
+            async happenInner(){Util.msg.set(msg);}
+            createBtnLayout(){
+                return createDefLayout()
+                            .set(ReturnBtn.index, new Btn("開ける", async()=>{
+                                const _key = key();
+                                if(_key.num > 0){
+                                    _key.num--;
+                                    Sound.TRAGER.play();
+                                    Util.msg.set(`開けた(${_key}残り${_key.num})`);
+                                    await DungeonEvent.OPEN_KEY_BOX.happen();
 
-                                        for(let i = 0; i < 6; i++){
-                                            await wait();
-                                            openKeyBox(/*base*/3, /*fluctuateRange*/2);
-                                        }
-                                    }else{
-                                        Util.msg.set("鍵を持っていない");
+                                    for(let i = 0; i < 5; i++){
+                                        await wait();
+                                        openKeyBox(/*base*/2, /*fluctuateRange*/2);
                                     }
-                                }))
-                                ;
+                                    open();
+                                }else{
+                                    Util.msg.set("鍵を持っていない");
+                                }
+                            }))
+                            ;
+            };
+        };
     };
-    export const KEY_BOX_RANK4:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.BOX.img;
-        happenInner = async()=>{Util.msg.set("トゲトゲの箱だ")};
-        createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    const key = Item.トゲトゲ鍵;
-                                    if(key.num > 0){
-                                        key.num--;
-                                        Sound.TRAGER.play();
-                                        Util.msg.set(`開けた(${key}残り${key.num})`);
-                                        await DungeonEvent.OPEN_KEY_BOX.happen();
-
-                                        for(let i = 0; i < 7; i++){
-                                            await wait();
-                                            openKeyBox(/*base*/4, /*fluctuateRange*/2);
-                                        }
-                                    }else{
-                                        Util.msg.set("鍵を持っていない");
-                                    }
-                                }))
-                                ;
-    };
-    export const KEY_BOX_RANK5:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.BOX.img;
-        happenInner = async()=>{Util.msg.set("ツルツルの箱だ")};
-        createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    const key = Item.ツルツル鍵;
-                                    if(key.num > 0){
-                                        key.num--;
-                                        Sound.TRAGER.play();
-                                        Util.msg.set(`開けた(${key}残り${key.num})`);
-                                        await DungeonEvent.OPEN_KEY_BOX.happen();
-
-                                        for(let i = 0; i < 8; i++){
-                                            await wait();
-                                            openKeyBox(/*base*/5, /*fluctuateRange*/2);
-                                        }
-                                    }else{
-                                        Util.msg.set("鍵を持っていない");
-                                    }
-                                }))
-                                ;
-    };
-    export const KEY_BOX_RANK6:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
-        createImg = ()=> EventImg.BOX.img;
-        happenInner = async()=>{Util.msg.set("ヘンテコな箱だ")};
-        createBtnLayout = ()=> createDefLayout()
-                                .set(ReturnBtn.index, new Btn("開ける", async()=>{
-                                    const key = Item.ヘンテコ鍵;
-                                    if(key.num > 0){
-                                        key.num--;
-                                        Sound.TRAGER.play();
-                                        Util.msg.set(`開けた(${key}残り${key.num})`);
-                                        await DungeonEvent.OPEN_KEY_BOX.happen();
-
-                                        for(let i = 0; i < 9; i++){
-                                            await wait();
-                                            openKeyBox(/*base*/6, /*fluctuateRange*/2);
-                                        }
-                                    }else{
-                                        Util.msg.set("鍵を持っていない");
-                                    }
-                                }))
-                                ;
-    };
-    export const TREASURE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             KEY_BOX_RANK2:DungeonEvent = createKeyBoxEvent(
+                            "KEY_BOX_RANK2", "丸い箱だ", ()=>Item.丸い鍵,
+                            async()=>{
+                                for(let i = 0; i < 5; i++){
+                                    await wait();
+                                    openKeyBox(/*base*/2, /*fluctuateRange*/2);
+                                }
+                            },
+    );
+    export const             KEY_BOX_RANK3:DungeonEvent = createKeyBoxEvent(
+                            "KEY_BOX_RANK3", "三角形の箱だ", ()=>Item.三角鍵,
+                            async()=>{
+                                for(let i = 0; i < 6; i++){
+                                    await wait();
+                                    openKeyBox(/*base*/3, /*fluctuateRange*/2);
+                                }
+                            },
+    );
+    export const             KEY_BOX_RANK4:DungeonEvent = createKeyBoxEvent(
+                            "KEY_BOX_RANK4", "トゲトゲの箱だ", ()=>Item.トゲトゲ鍵,
+                            async()=>{
+                                for(let i = 0; i < 7; i++){
+                                    await wait();
+                                    openKeyBox(/*base*/4, /*fluctuateRange*/2);
+                                }
+                            },
+    );
+    export const             KEY_BOX_RANK5:DungeonEvent = createKeyBoxEvent(
+                            "KEY_BOX_RANK5", "ツルツルの箱だ", ()=>Item.ツルツル鍵,
+                            async()=>{
+                                for(let i = 0; i < 8; i++){
+                                    await wait();
+                                    openKeyBox(/*base*/5, /*fluctuateRange*/2);
+                                }
+                            },
+    );
+    export const             KEY_BOX_RANK6:DungeonEvent = createKeyBoxEvent(
+                            "KEY_BOX_RANK6", "ヘンテコな箱だ", ()=>Item.ヘンテコ鍵,
+                            async()=>{
+                                for(let i = 0; i < 9; i++){
+                                    await wait();
+                                    openKeyBox(/*base*/6, /*fluctuateRange*/2);
+                                }
+                            },
+    );
+    export const             TREASURE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("TREASURE");}
         createImg = ()=> new Img("img/treasure.png");
         happenInner = async()=>{
             Util.msg.set("財宝の箱だ！")
@@ -241,8 +199,8 @@ export namespace DungeonEvent{
                                 }))
                                 ;
     };
-    export const OPEN_TREASURE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             OPEN_TREASURE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("OPEN_TREASURE");}
         createImg = ()=> new Img("img/treasure_open.png");
         happenInner = async()=>{
             const treasure:Num|undefined = Dungeon.now.rndTreasure();
@@ -255,8 +213,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const GET_TREASURE_KEY:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             GET_TREASURE_KEY:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("GET_TREASURE_KEY");}
         happenInner = async()=>{
             Dungeon.now.treasureKey++;
             Sound.rare.play();
@@ -264,8 +222,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const TRAP:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             TRAP:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("TRAP");}
         createImg = ()=> new Img("img/trap.png");
         happenInner = ()=>{
             Util.msg.set("罠だ");
@@ -298,8 +256,8 @@ export namespace DungeonEvent{
                                 }).dontMove())
                                 ;
     };
-    export const TRAP_BROKEN:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             TRAP_BROKEN:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("TRAP_BROKEN");}
         createImg = ()=> new Img("img/trap_broken.png");
         isZoomImg = ()=> false;
         happenInner = async()=>{
@@ -308,8 +266,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const REST:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             REST:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("REST");}
         happenInner = async()=>{
             Util.msg.set("休めそうな場所がある...");
         };
@@ -330,8 +288,8 @@ export namespace DungeonEvent{
                                 }))
                                 ;
     };
-    export const TREE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             TREE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("TREE");}
         createImg = ()=> new Img("img/tree.png");
         happenInner = ()=>{
             Util.msg.set("木だ");
@@ -356,8 +314,8 @@ export namespace DungeonEvent{
                                 }))
                                 ;
     };
-    export const TREE_GET:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             TREE_GET:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("TREE_GET");}
         createImg = ()=> new Img("img/tree_broken.png");
         isZoomImg = ()=> false;
         happenInner = async()=>{
@@ -365,8 +323,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const STRATUM:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             STRATUM:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("STRATUM");}
         createImg = ()=> new Img("img/stratum.png");
         happenInner = ()=>{Util.msg.set("掘れそうな場所がある");};
         createBtnLayout = ()=> createDefLayout()
@@ -375,8 +333,8 @@ export namespace DungeonEvent{
                                 }))
                                 ;
     };
-    export const STRATUM_GET:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             STRATUM_GET:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("STRATUM_GET");}
         // createImg = ()=> new Img("img/tree_broken.png");
         // isZoomImg = ()=> false;
         happenInner = async()=>{
@@ -384,8 +342,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const FOSSIL:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             FOSSIL:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("FOSSIL");}
         createImg = ()=> new Img("img/stratum.png");
         happenInner = ()=>{Util.msg.set("何かありそうだ...");};
         createBtnLayout = ()=> createDefLayout()
@@ -417,8 +375,8 @@ export namespace DungeonEvent{
                                 })())
                                 ;
     };
-    export const LAKE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             LAKE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("LAKE");}
         createImg = ()=> new Img("img/mizu.png");
         happenInner = ()=>{
             Util.msg.set("湖だ");
@@ -450,8 +408,8 @@ export namespace DungeonEvent{
                                 })())
                                 ;
     };
-    export const BATTLE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             BATTLE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("BATTLE");}
         happenInner = async()=>{
             Util.msg.set("敵が現れた！");
             Dungeon.now.setEnemy();
@@ -472,8 +430,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const BOSS_BATTLE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             BOSS_BATTLE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("BOSS_BATTLE");}
         happenInner = async()=>{
             Util.msg.set(`[${Dungeon.now}]のボスが現れた！`, Color.WHITE.bright);
             Dungeon.now.setBoss();
@@ -494,8 +452,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const EX_BATTLE:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             EX_BATTLE:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("EX_BATTLE");}
         happenInner = async()=>{
             Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
             Dungeon.now.setEx();
@@ -523,8 +481,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
-    export const ESCAPE_DUNGEON:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             ESCAPE_DUNGEON:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("ESCAPE_DUNGEON");}
         happenInner = async()=>{
 
             Util.msg.set(`${Dungeon.now.toString()}を脱出します...`); await cwait(); await wait();
@@ -537,8 +495,8 @@ export namespace DungeonEvent{
         };
         createBtnLayout = ()=> ILayout.empty;
     };
-    export const CLEAR_DUNGEON:DungeonEvent = new class extends DungeonEvent{
-        constructor(){super();}
+    export const             CLEAR_DUNGEON:DungeonEvent = new class extends DungeonEvent{
+        constructor(){super("CLEAR_DUNGEON");}
         happenInner = async()=>{
             BattleScene.ins.background = bounds=>{};
 

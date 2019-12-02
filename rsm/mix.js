@@ -4,6 +4,7 @@ import { Item } from "./item.js";
 import { Player } from "./player.js";
 import { Eq } from "./eq.js";
 import { Prm } from "./unit.js";
+import { Dungeon } from "./dungeon/dungeon.js";
 export class Num {
     static add(obj, v) {
         v = v | 0;
@@ -243,6 +244,22 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         isVisible: () => ルインドアースLv4.count > 0,
         action: () => {
             Player.ピアー.ins.prm(Prm.MAG).base += 1;
+        },
+    });
+    const よく焼けた肉 = new Mix({
+        uniqueName: "よく焼けた肉", limit: 10, info: "一号の闇+1",
+        materials: () => [[Item.肉, 2], [Item.針金, 1]],
+        isVisible: () => Dungeon.テント樹林.dungeonClearCount > 0,
+        action: () => {
+            Player.一号.ins.prm(Prm.DRK).base += 1;
+        },
+    });
+    const 生焼けの肉 = new Mix({
+        uniqueName: "生焼けの肉", limit: 10, info: "雪の鎖+1",
+        materials: () => [[Item.肉, 2], [Item.草, 2]],
+        isVisible: () => Dungeon.テント樹林.dungeonClearCount > 0,
+        action: () => {
+            Player.雪.ins.prm(Prm.CHN).base += 1;
         },
     });
     const 竹林 = new Mix({

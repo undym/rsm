@@ -3,7 +3,7 @@ import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
-import { FX_Str, FX_RotateStr } from "./fx/fx.js";
+import { FX_Str, FX_RotateStr, FX_回復 } from "./fx/fx.js";
 import { Targeting, Action, Dmg } from "./force.js";
 import { randomInt, choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
@@ -89,12 +89,7 @@ export enum ItemDrop{
     FISHING = 1 << 4,
     FOSSIL  = 1 << 5,
 }
-// export const ItemDrop = {
-//     get NO()  {return 0;},
-//     get BOX() {return 1 << 0;},
-//     get TREE(){return 1 << 1;},
-//     get DIG() {return 1 << 2;},
-// }
+
 
 class ItemValues{
     private values = new Map<number,Item[]>();
@@ -133,6 +128,7 @@ export class Item implements Action, Num{
      * @param rank 
      */
     static rndItem(dropType:number, rank:number):Item{
+        rank = rank|0;
         if(!this._dropTypeValues.has(dropType)){
             const typeValues = this.values.filter(item=> item.dropTypes & dropType);
             this._dropTypeValues.set(dropType, new ItemValues(typeValues));
@@ -262,7 +258,9 @@ export namespace Item{
         target.dead = false;
         target.hp = 0;
         Unit.healHP(target, hp);
+
         Sound.KAIFUKU.play();
+        FX_回復( target.imgCenter );
         if(SceneType.now === SceneType.BATTLE){
             Util.msg.set(`${target.name}は生き返った`); await wait();
         }
@@ -270,18 +268,22 @@ export namespace Item{
     const itemHealHP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healHP(target, value);
+
         Sound.KAIFUKU.play();
+        FX_回復( target.imgCenter );
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();}
     };
     const itemHealMP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healMP(target, value)
+
         Sound.KAIFUKU.play();
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のMPが${value}回復した`, Color.PINK.bright); await wait();}
     };
     const itemHealTP = async(target:Unit, value:number)=>{
         value = value|0;
         Unit.healTP(target, value)
+
         Sound.KAIFUKU.play();
         if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright); await wait();}
     };
@@ -333,6 +335,12 @@ export namespace Item{
                                 use:async(user,target)=>await itemHealHP(target, 50),
         })}
     };
+    export const                         マーラーカオ:Item = new class extends Item{
+        constructor(){super({uniqueName:"マーラーカオ", info:"HP+70",
+                                type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealHP(target, 70),
+        })}
+    };
     export const                         霊水:Item = new class extends Item{
         constructor(){super({uniqueName:"霊水", info:"HP+300",
                                 type:ItemType.HP回復, rank:7, drop:ItemDrop.BOX,
@@ -343,6 +351,12 @@ export namespace Item{
         constructor(){super({uniqueName:"聖水", info:"HP+400",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX,
                                 use:async(user,target)=>await itemHealHP(target, 400),
+        })}
+    };
+    export const                         超聖水:Item = new class extends Item{
+        constructor(){super({uniqueName:"超聖水", info:"HP+500",
+                                type:ItemType.HP回復, rank:9, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealHP(target, 500),
         })}
     };
     export const                         ドラッグ:Item = new class extends Item{
@@ -508,6 +522,18 @@ export namespace Item{
         constructor(){super({uniqueName:"血清", info:"＜毒＞状態を解除する",
                                 type:ItemType.状態, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>target.removeCondition(Condition.毒),
+        })}
+    };
+    export const                         目覚まし時計:Item = new class extends Item{
+        constructor(){super({uniqueName:"目覚まし時計", info:"＜眠＞状態を解除する",
+                                type:ItemType.状態, rank:2, drop:ItemDrop.BOX,
+                                use:async(user,target)=>target.removeCondition(Condition.眠),
+        })}
+    };
+    export const                         石溶け水:Item = new class extends Item{
+        constructor(){super({uniqueName:"石溶け水", info:"＜石＞状態を解除する",
+                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>target.removeCondition(Condition.石),
         })}
     };
     export const                         火の尻尾:Item = new class extends Item{
@@ -1530,10 +1556,6 @@ export namespace Item{
     };
     export const                         ロウ:Item = new class extends Item{
         constructor(){super({uniqueName:"ロウ", info:"",
-                                type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE})}
-    };
-    export const                         石溶け水:Item = new class extends Item{
-        constructor(){super({uniqueName:"石溶け水", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE})}
     };
     export const                         精霊の涙:Item = new class extends Item{

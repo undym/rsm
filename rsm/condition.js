@@ -87,7 +87,6 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type === TecType.格闘) {
                     Util.msg.set("＞練");
-                    yield wait();
                     dmg.pow.mul *= (1 + attacker.getConditionValue(this) * 0.5);
                     attacker.addConditionValue(this, -1);
                 }
@@ -124,7 +123,6 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
                     Util.msg.set("＞盾");
-                    yield wait();
                     dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
                     target.addConditionValue(this, -1);
                 }
@@ -137,7 +135,6 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)) {
                     Util.msg.set("＞雲");
-                    yield wait();
                     dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
                     target.addConditionValue(this, -1);
                 }
@@ -223,7 +220,6 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
                     Util.msg.set("＞攻↓");
-                    yield wait();
                     dmg.pow.mul *= 0.5;
                 }
             });
@@ -236,7 +232,6 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec) {
                     Util.msg.set("＞防↓");
-                    yield wait();
                     dmg.def.mul *= 0.5;
                     target.addConditionValue(this, -1);
                 }
@@ -261,7 +256,7 @@ Condition._valueOf = new Map();
     };
     Condition.毒 = new class extends Condition {
         constructor() { super("毒", ConditionType.BAD_LV1); }
-        phaseEnd(unit) {
+        phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
                 const value = unit.getConditionValue(this);
                 if (value < unit.prm(Prm.DRK).total + 1) {
@@ -270,6 +265,11 @@ Condition._valueOf = new Map();
                     yield wait();
                     return;
                 }
+            });
+        }
+        phaseEnd(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = unit.getConditionValue(this);
                 let dmg = new Dmg({ absPow: value });
                 Util.msg.set("＞毒", Color.RED);
                 yield unit.doDmg(dmg);

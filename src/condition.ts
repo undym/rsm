@@ -97,7 +97,7 @@ export namespace Condition{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type === TecType.格闘){
                 
-                Util.msg.set("＞練"); await wait();
+                Util.msg.set("＞練");
                 dmg.pow.mul *= (1 + attacker.getConditionValue(this) * 0.5)
 
                 attacker.addConditionValue(this, -1);
@@ -136,7 +136,7 @@ export namespace Condition{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 
-                Util.msg.set("＞盾"); await wait();
+                Util.msg.set("＞盾");
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
 
                 target.addConditionValue(this, -1);
@@ -148,7 +148,7 @@ export namespace Condition{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)){
                 
-                Util.msg.set("＞雲"); await wait();
+                Util.msg.set("＞雲");
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
 
                 target.addConditionValue(this, -1);
@@ -226,7 +226,7 @@ export namespace Condition{
         }
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec){
-                Util.msg.set("＞攻↓"); await wait();
+                Util.msg.set("＞攻↓");
                 dmg.pow.mul *= 0.5;
             }
         }
@@ -236,7 +236,7 @@ export namespace Condition{
         toString(){return "防↓";}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec){
-                Util.msg.set("＞防↓"); await wait();
+                Util.msg.set("＞防↓");
                 dmg.def.mul *= 0.5;
 
                 target.addConditionValue(this, -1);
@@ -257,14 +257,16 @@ export namespace Condition{
     };
     export const             毒:Condition = new class extends Condition{
         constructor(){super("毒", ConditionType.BAD_LV1);}
-        async phaseEnd(unit:Unit){
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
             const value = unit.getConditionValue(this);
             if(value < unit.prm(Prm.DRK).total + 1){
                 unit.removeCondition(this);
                 Util.msg.set(`${unit.name}の<毒>が解除された`); await wait();
                 return;
             }
-
+        }
+        async phaseEnd(unit:Unit){
+            const value = unit.getConditionValue(this);
             let dmg = new Dmg({absPow:value});
 
             Util.msg.set("＞毒", Color.RED);

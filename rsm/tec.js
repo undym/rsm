@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison } from "./fx/fx.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
@@ -951,6 +951,7 @@ ActiveTec._valueOf = new Map();
                     absPow: target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
                     counter: true,
                 });
+                FX_格闘(attacker.imgCenter);
                 yield attacker.doDmg(cdmg);
                 yield wait();
             });
@@ -1625,7 +1626,8 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.awa.play();
-                const value = attacker.prm(Prm.DRK).total + 1;
+                FX_Poison(target.imgCenter);
+                const value = attacker.prm(Prm.DRK).total * 2 + 1;
                 Unit.setCondition(target, Condition.毒, value);
                 yield wait();
             });
@@ -1657,23 +1659,14 @@ ActiveTec._valueOf = new Map();
                     Unit.setCondition(target, Condition.癒, 3);
                 }
                 else {
-                    const value = attacker.prm(Prm.DRK).total + 1;
+                    const value = attacker.prm(Prm.DRK).total * 2 + 1;
+                    FX_Poison(target.imgCenter);
                     Unit.setCondition(target, Condition.毒, value);
                 }
             });
         }
     };
-    // export const                          凍てつく波動:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"凍てつく波動", info:"敵味方全体の状態を解除",
-    //                           sort:TecSort.弱体, type:TecType.状態, targetings:Targeting.ALL | Targeting.WITH_FRIEND,
-    //                           mul:1, num:1, hit:1, ep:1,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         target.clearConditions();
-    //         Sound.seikou.play();
-    //         Util.msg.set(`${target.name}の状態が解除された！`, Color.WHITE.bright); await wait();
-    //     }
-    // }
+    /**アメーバ. */
     Tec.弱体液 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "弱体液", info: "一体を＜防↓2＞状態にする",
@@ -1692,7 +1685,7 @@ ActiveTec._valueOf = new Map();
     /**テンプルナイト. */
     Tec.光の護封剣 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "光の護封剣", info: "敵全体を＜攻↓3＞状態にする",
+            super({ uniqueName: "光の護封剣", info: "敵全体を＜攻↓5＞状態にする",
                 sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, mp: 9,
             });
@@ -1700,7 +1693,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.sin.play();
-                Unit.setCondition(target, Condition.攻撃低下, 3);
+                Unit.setCondition(target, Condition.攻撃低下, 5);
                 yield wait();
             });
         }
