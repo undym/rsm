@@ -76,14 +76,36 @@ const setOptionBtn = ()=>{
             const encoded = encoder.encode( SaveData.export() );
             let save = "";
             for(const e of encoded){
-                save += e + "/";
+                save += e.toString(36) + "\n";
             }
             // const file = new File([encoded], "rsm_export.txt");
             const dl = document.createElement("a");
+            dl.id = "export";
             dl.download = "rsm_export";
             dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
             dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-            dl.click();
+            dl.style.position = "fixed";
+            dl.style.width = "33vh";
+            dl.style.height = "33vw";
+            dl.style.transformOrigin = "top left";
+            dl.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+            dl.style.fontSize = "30px";
+            dl.style.backgroundColor = "black";
+            dl.innerHTML = "EXPORT";
+            // position:fixed;
+            // width:33vh;
+            // height:33vw;
+            // transform-origin: top left;
+            // transform: translateX(66vw) translateY(33vh) rotate(90deg);
+            // visibility: hidden;
+            // font-size: 30px;
+            document.body.appendChild(dl);
+        },
+    });
+    list.add({
+        center:()=>"inport",
+        push:elm=>{
+            
         },
     });
     // list.add({
@@ -129,6 +151,10 @@ const setOptionBtn = ()=>{
     }
     
     returnAction = ()=>{
+        const exp = document.getElementById("export");
+        if(exp){
+            document.body.removeChild(exp);
+        }
         Scene.load( TownScene.ins );
     };
 
