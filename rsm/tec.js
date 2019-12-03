@@ -1575,6 +1575,48 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ガーディアン. */
+    Tec.ガブリエル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ガブリエル", info: "一体を＜格闘・鎖術無効5＞状態にする",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 6, item: () => [[Item.聖水, 1]],
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(target, Condition.格鎖無効, 5);
+            });
+        }
+    };
+    /**ガーディアン. */
+    Tec.ラファエル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ラファエル", info: "一体を＜魔法・過去無効5＞状態にする",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 6, item: () => [[Item.聖水, 1]],
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(target, Condition.魔過無効, 5);
+            });
+        }
+    };
+    /**ガーディアン. */
+    Tec.ウリエル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ウリエル", info: "一体を＜銃・弓無効5＞状態にする",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 6, item: () => [[Item.聖水, 1]],
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(target, Condition.銃弓無効, 5);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1816,12 +1858,16 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                target.prm(Prm.MAX_MP).battle += target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
-                target.mp = target.prm(Prm.MAX_MP).total;
-                target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
                 Sound.sin.play();
                 Util.msg.set(`${target.name}に魔力が満ちる...！`);
                 yield wait();
+                if (target.prm(Prm.MAX_MP).battle < target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq) {
+                    target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
+                }
+                if (target.prm(Prm.MAG).battle < target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq) {
+                    target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
+                }
+                target.mp = target.prm(Prm.MAX_MP).total;
                 Sound.up.play();
                 Util.msg.set(`MP全回復 & 魔力x2！！`);
                 yield wait();
@@ -1979,6 +2025,20 @@ ActiveTec._valueOf = new Map();
         }
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                Unit.healMP(unit, 1);
+            });
+        }
+    };
+    /**ガーディアン. */
+    Tec.HPMP回復 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "HPMP回復", info: "行動開始時HP+1%MP+1",
+                sort: TecSort.回復, type: TecType.回復,
+            });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.01 + 1);
                 Unit.healMP(unit, 1);
             });
         }

@@ -4,6 +4,7 @@ import { Player } from "./player.js";
 import { EqPos, Eq } from "./eq.js";
 import { choice, randomInt } from "./undym/random.js";
 import { Img } from "./graphics/texture.js";
+import { Condition } from "./condition.js";
 
 /*
 敵のLV毎のHP目安.
@@ -418,13 +419,26 @@ export namespace Job{
     };
     export const                         侍:Job = new class extends Job{
         constructor(){super({uniqueName:"侍", info:"",
-                                appearLv:55, img:new Img("img/unit/unit24.png"),
+                                appearLv:65, img:new Img("img/unit/unit24.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 3,
                                 growthPrms:()=>[[Prm.MAX_HP, 1], [Prm.STR, 1]],
                                 learningTecs:()=>[Tec.格闘連携, Tec.格闘能力UP, Tec.時雨, Tec.五月雨],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.ドゥエルガル, Tec.ネーレイス, Tec.ヴァルナ, Tec.格闘能力UP, Tec.殴る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.五月雨, Tec.時雨, Tec.格闘連携, Tec.格闘能力UP, Tec.殴る, Tec.殴る, Tec.殴る];
+        }
+    };
+    export const                         ガーディアン:Job = new class extends Job{
+        constructor(){super({uniqueName:"ガーディアン", info:"",
+                                appearLv:75, img:new Img("img/unit/unit25.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                growthPrms:()=>[[Prm.MAG, 1], [Prm.LIG, 1]],
+                                learningTecs:()=>[Tec.ガブリエル, Tec.HPMP回復, Tec.ラファエル, Tec.ウリエル],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.レーザー, Tec.HPMP回復, Tec.ガブリエル, Tec.ラファエル, Tec.ウリエル, Tec.格闘能力UP, Tec.殴る, Tec.殴る, Tec.殴る];
+            const c = choice( [Condition.格鎖無効, Condition.魔過無効, Condition.銃弓無効] );
+            e.setCondition( c, 5 );
         }
     };
     //--------------------------------------------------

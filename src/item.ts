@@ -347,8 +347,8 @@ export namespace Item{
                                 use:async(user,target)=>await itemHealHP(target, 300),
         })}
     };
-    export const                         聖水:Item = new class extends Item{
-        constructor(){super({uniqueName:"聖水", info:"HP+400",
+    export const                         清水:Item = new class extends Item{
+        constructor(){super({uniqueName:"清水", info:"HP+400",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX,
                                 use:async(user,target)=>await itemHealHP(target, 400),
         })}
@@ -797,6 +797,11 @@ export namespace Item{
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,
                                 consumable:true})}
         toString(){return "絵画『我が情熱の日』"}
+    };
+    export const                         聖水:Item = new class extends Item{
+        constructor(){super({uniqueName:"聖水", info:"",
+                                type:ItemType.弾, rank:9, drop:ItemDrop.NO,
+                                consumable:true})}
     };
     //-----------------------------------------------------------------
     //

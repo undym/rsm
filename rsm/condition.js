@@ -93,6 +93,42 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.格鎖無効 = new class extends Condition {
+        constructor() { super("格鎖無効", ConditionType.GOOD_LV1); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.鎖術)) {
+                    Util.msg.set("＞無効");
+                    dmg.pow.base = 0;
+                    attacker.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
+    Condition.魔過無効 = new class extends Condition {
+        constructor() { super("魔過無効", ConditionType.GOOD_LV1); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去)) {
+                    Util.msg.set("＞無効");
+                    dmg.pow.base = 0;
+                    attacker.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
+    Condition.銃弓無効 = new class extends Condition {
+        constructor() { super("銃弓無効", ConditionType.GOOD_LV1); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃, TecType.弓)) {
+                    Util.msg.set("＞無効");
+                    dmg.pow.base = 0;
+                    attacker.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
     // export const             狙:Condition = new class extends Condition{
     //     constructor(){super("狙", ConditionType.GOOD_LV1);}
     //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){

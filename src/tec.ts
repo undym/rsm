@@ -1380,6 +1380,36 @@ export namespace Tec{
             }
         }
     }
+    /**ガーディアン. */
+    export const                          ガブリエル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ガブリエル", info:"一体を＜格闘・鎖術無効5＞状態にする",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Unit.setCondition( target, Condition.格鎖無効, 5 );
+        }
+    }
+    /**ガーディアン. */
+    export const                          ラファエル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ラファエル", info:"一体を＜魔法・過去無効5＞状態にする",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Unit.setCondition( target, Condition.魔過無効, 5 );
+        }
+    }
+    /**ガーディアン. */
+    export const                          ウリエル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ウリエル", info:"一体を＜銃・弓無効5＞状態にする",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELECT | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Unit.setCondition( target, Condition.銃弓無効, 5 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1562,12 +1592,18 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
         async run(attacker:Unit, target:Unit){
-            target.prm(Prm.MAX_MP).battle += target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
-            target.mp = target.prm(Prm.MAX_MP).total;
-            target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
 
             Sound.sin.play();
             Util.msg.set(`${target.name}に魔力が満ちる...！`); await wait();
+            
+            if(target.prm(Prm.MAX_MP).battle < target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq){
+                target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
+            }
+            if(target.prm(Prm.MAG).battle < target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq){
+                target.prm(Prm.MAG).battle = target.prm(Prm.MAG).base + target.prm(Prm.MAG).eq;
+            }
+            
+            target.mp = target.prm(Prm.MAX_MP).total;
 
             Sound.up.play();
             Util.msg.set(`MP全回復 & 魔力x2！！`); await wait();
@@ -1702,6 +1738,16 @@ export namespace Tec{
         });}
         async phaseStart(unit:Unit){
             Unit.healMP(unit, 1);
+        }
+    };
+    /**ガーディアン. */
+    export const                         HPMP回復:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"HPMP回復", info:"行動開始時HP+1%MP+1",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        async phaseStart(unit:Unit){
+            Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.01 + 1 );
+            Unit.healMP( unit, 1 );
         }
     };
     export const                         TP自動回復:PassiveTec = new class extends PassiveTec{

@@ -50,7 +50,7 @@ export class ShopScene extends Scene{
         super();
 
         TecMaster.setCandidates([
-            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー, Tec.ドゥエルガル,
+            Tec.ヤクシャ, Tec.ナーガ, Tec.ガルダ, Tec.キンナラ, Tec.手裏剣, Tec.レーザー, Tec.ドゥエルガル, Tec.ガブリエル,
         ]);
 
         if(!ShopScene.completedInitGoods){
@@ -295,6 +295,7 @@ const initGoods = ()=>{
     createItemGoods({item:Item.歌舞の矢,   num:6,  price:()=>(Item.歌舞の矢.num+6)   * 1000, isVisible:()=>TecMaster.check(Tec.キンナラ)});
     createItemGoods({item:Item.手裏剣,     num:2,  price:()=>(Item.手裏剣.num+2)     * 1000, isVisible:()=>TecMaster.check(Tec.手裏剣)});
     createItemGoods({item:Item.バッテリー, num:1,  price:()=>(Item.バッテリー.num+1)  * 1000, isVisible:()=>TecMaster.check(Tec.レーザー)});
+    createItemGoods({item:Item.聖水,       num:1,  price:()=>(Item.聖水.num+1)       * 3000, isVisible:()=>TecMaster.check(Tec.ガブリエル)});
     
     createItemGoods({item:Item.釣り竿,     num:1,  price:()=>(Item.釣り竿.num+1)  * 10000, isVisible:()=>CollectingSkill.水汲.lv >= 10});
     createItemGoods({item:Item.つるはし,   num:1,  price:()=>(Item.つるはし.num+1) * 10000, isVisible:()=>CollectingSkill.地層.lv >= 10});

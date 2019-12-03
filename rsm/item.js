@@ -328,9 +328,9 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
-    Item.聖水 = new class extends Item {
+    Item.清水 = new class extends Item {
         constructor() {
-            super({ uniqueName: "聖水", info: "HP+400",
+            super({ uniqueName: "清水", info: "HP+400",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 400); }),
             });
@@ -895,6 +895,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
         toString() { return "絵画『我が情熱の日』"; }
+    };
+    Item.聖水 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "聖水", info: "",
+                type: ItemType.弾, rank: 9, drop: ItemDrop.NO,
+                consumable: true });
+        }
     };
     //-----------------------------------------------------------------
     //
