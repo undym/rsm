@@ -206,10 +206,13 @@ export namespace Condition{
                 target.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = "吸収";
                     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
                         Unit.healHP( target, value );
                         target.removeInvisibleCondition(this);
                     }
                 });
+                
+                Util.msg.set("＞吸収");
 
                 dmg.pow.add -= dmg.pow.base;
 

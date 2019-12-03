@@ -201,11 +201,14 @@ Condition._valueOf = new Map();
                         }
                         afterBeAtk(action, attacker, target, dmg) {
                             return __awaiter(this, void 0, void 0, function* () {
+                                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                                yield wait();
                                 Unit.healHP(target, value);
                                 target.removeInvisibleCondition(this);
                             });
                         }
                     });
+                    Util.msg.set("＞吸収");
                     dmg.pow.add -= dmg.pow.base;
                     target.addConditionValue(this, -1);
                 }

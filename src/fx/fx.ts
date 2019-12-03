@@ -802,33 +802,6 @@ FXTest.add(FX_PetDie.name, ()=> FX_PetDie( FXTest.attacker ));
 
 
 export const FX_Poison = (center:Point)=>{
-    const PI2 = Math.PI * 2;
-
-    type Elm = {x:number, y:number, vx:number, vy:number, lifeTime:number};
-
-    const addBubble2 = (elms:Elm[])=>{
-        FX.add(count=>{
-            let exists = false;
-            for(const e of elms){
-                if(count >= e.lifeTime){continue;}
-                exists = true;
-
-                Graphics.fillRect(new Rect(
-                    e.x,
-                    e.y,
-                    Graphics.dotW * 2,
-                    Graphics.dotH * 2,
-                ), new Color(0, 1, 0, 1.0 - count / e.lifeTime));
-
-                e.x += e.vx;
-                e.y += e.vy;
-                e.vx *= 0.8;
-                e.vy *= 0.8;
-            }
-            return exists;
-        });
-    };
-
     const addBubble = (lifeTime:number, cx:number, cy:number, r:number)=>{
         FX.add(count=>{
             if(count % 3 === 0){
@@ -852,6 +825,41 @@ export const FX_Poison = (center:Point)=>{
     });
 };
 FXTest.add(FX_Poison.name, ()=> FX_Poison( FXTest.target ));
+
+
+export const FX_Buff = (center:Point)=>{
+    
+    const elms:{x:number, y:number, h:number, vy:number, lifeTime:number}[] = [];
+
+    for(let i = 0; i < 40; i++){
+        elms.push({
+            x: center.x - 0.03 + Math.random() * 0.06,
+            y: center.y + Math.random() * 0.02,
+            h: 0.01 + Math.random() * 0.06,
+            vy: -Math.random() * 0.003,
+            lifeTime: 5 + Math.random() * 35,
+        });
+    }
+
+    FX.add(count=>{
+        let exists = false;
+        for(const e of elms){
+            if(count >= e.lifeTime){continue;}
+            exists = true;
+
+            const h = e.h * (1.0 - count / e.lifeTime) / 2;
+            Graphics.line(
+                new Point(e.x, e.y - h),
+                new Point(e.x, e.y + h),
+                Math.random() < 0.3 ? Color.WHITE : Color.D_CYAN,
+            );
+
+            e.y += e.vy;
+        }
+        return exists;
+    });
+};
+FXTest.add(FX_Buff.name, ()=> FX_Buff( FXTest.target ));
 
 const FX_NO_USED = (center:Point)=>{
     const PI2 = Math.PI * 2;

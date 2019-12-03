@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff } from "./fx/fx.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
@@ -1440,6 +1440,7 @@ ActiveTec._valueOf = new Map();
                     let value = target.getConditionValue(Condition.練) + 1;
                     value = value <= limit ? value : limit;
                     Sound.up.play();
+                    FX_Buff(target.imgCenter);
                     Unit.setCondition(target, Condition.練, value, true);
                     yield wait();
                 }
@@ -1471,6 +1472,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.治, 10);
                 yield wait();
             });
@@ -1486,6 +1488,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.吸収, 1);
                 yield wait();
             });
@@ -1502,6 +1505,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.回避, 2);
                 yield wait();
             });
@@ -1525,6 +1529,7 @@ ActiveTec._valueOf = new Map();
                     value++;
                 }
                 Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.盾, value);
                 yield wait();
             });
@@ -1569,6 +1574,7 @@ ActiveTec._valueOf = new Map();
                         }
                     });
                     Sound.seikou.play();
+                    FX_Buff(target.imgCenter);
                     Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright);
                     yield wait();
                 }
@@ -1585,6 +1591,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.格鎖無効, 5);
             });
         }
@@ -1599,6 +1607,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.魔過無効, 5);
             });
         }
@@ -1613,6 +1623,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.銃弓無効, 5);
             });
         }

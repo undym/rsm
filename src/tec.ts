@@ -4,7 +4,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting, Action, PhaseStartForce } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
@@ -1289,6 +1289,7 @@ export namespace Tec{
                 value = value <= limit ? value : limit;
                 
                 Sound.up.play();
+                FX_Buff( target.imgCenter );
                 Unit.setCondition( target, Condition.練, value, true ); await wait();
             }
 
@@ -1311,6 +1312,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition(target, Condition.治, 10); await wait();
         }
     }
@@ -1321,6 +1323,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.吸収, 1 ); await wait();
         }
     }
@@ -1332,6 +1335,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.回避, 2 ); await wait();
         }
     }
@@ -1346,6 +1350,7 @@ export namespace Tec{
             if(attacker.prm(Prm.LIG).total >= 25){value++;}
             if(attacker.prm(Prm.LIG).total >= 50){value++;}
             Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.盾, value ); await wait();
         }
     }
@@ -1376,6 +1381,7 @@ export namespace Tec{
                     }
                 });
                 Sound.seikou.play();
+                FX_Buff( target.imgCenter );
                 Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright); await wait();
             }
         }
@@ -1387,6 +1393,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
         });}
         async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.格鎖無効, 5 );
         }
     }
@@ -1397,6 +1405,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
         });}
         async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.魔過無効, 5 );
         }
     }
@@ -1407,6 +1417,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:6, item:()=>[[Item.聖水, 1]],
         });}
         async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            FX_Buff( target.imgCenter );
             Unit.setCondition( target, Condition.銃弓無効, 5 );
         }
     }
