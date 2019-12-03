@@ -4,8 +4,9 @@ import { Job } from "./job.js";
 import { Eq } from "./eq.js";
 import { Img } from "./graphics/texture.js";
 export class Player {
-    constructor(uniqueName) {
+    constructor(uniqueName, sex) {
         this.uniqueName = uniqueName;
+        this.sex = sex;
         this.member = false;
         this.toString = () => this.uniqueName;
         Player._values.push(this);
@@ -52,14 +53,14 @@ Player._valueOf = new Map();
 //セーブデータの互換性のため、プレイヤーの定義の順番をかえてはいけない。
 (function (Player) {
     Player.empty = new class extends Player {
-        constructor() { super("empty"); }
+        constructor() { super("empty", "♂"); }
         createInner(p) {
             p.exists = false;
         }
         setJobChangeList(map) { }
     };
     Player.ルイン = new class extends Player {
-        constructor() { super("ルイン"); }
+        constructor() { super("ルイン", "♂"); }
         createInner(p) {
             p.job = Job.訓練生;
             p.img = new Img("img/unit/p_ruin.png");
@@ -78,7 +79,7 @@ Player._valueOf = new Map();
         setJobChangeList(map) { setDefJobChangeList(map, this.ins); }
     };
     Player.ピアー = new class extends Player {
-        constructor() { super("ピアー"); }
+        constructor() { super("ピアー", "♂"); }
         createInner(p) {
             p.job = Job.魔法使い;
             p.img = new Img("img/unit/p_pea.png");
@@ -101,7 +102,7 @@ Player._valueOf = new Map();
         }
     };
     Player.一号 = new class extends Player {
-        constructor() { super("一号"); }
+        constructor() { super("一号", "♂"); }
         createInner(p) {
             p.job = Job.暗黒戦士;
             p.img = new Img("img/unit/p_1.png");
@@ -124,7 +125,7 @@ Player._valueOf = new Map();
         }
     };
     Player.雪 = new class extends Player {
-        constructor() { super("雪"); }
+        constructor() { super("雪", "♂"); }
         createInner(p) {
             p.job = Job.鎖使い;
             p.img = new Img("img/unit/p_yuki.png");
@@ -148,7 +149,7 @@ Player._valueOf = new Map();
         }
     };
     Player.ベガ = new class extends Player {
-        constructor() { super("ベガ"); }
+        constructor() { super("ベガ", "♂"); }
         createInner(p) {
             p.job = Job.鎖使い;
             p.img = new Img("img/unit/unit108.png");
@@ -170,7 +171,7 @@ Player._valueOf = new Map();
         }
     };
     Player.luka = new class extends Player {
-        constructor() { super("luka"); }
+        constructor() { super("luka", "♀"); }
         createInner(p) {
             p.job = Job.カウボーイ;
             p.img = new Img("img/unit/p_luka.png");
@@ -206,6 +207,9 @@ const setDefJobChangeList = (map, u) => {
     add(Job.シーフ, [Job.訓練生二年生]);
     add(Job.剣士, [Job.訓練生]);
     add(Job.忍者, [Job.剣士, Job.シーフ]);
+    if (u.player.sex === "♂") {
+        add(Job.侍, [Job.剣士, Job.格闘家]);
+    }
     add(Job.魔法使い, [Job.訓練生]);
     add(Job.ウィザード, [Job.魔法使い]);
     add(Job.天使, [Job.訓練生]);

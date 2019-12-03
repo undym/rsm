@@ -36,7 +36,7 @@ export class MemberChangeScene extends Scene {
         super.add(Place.YEN, DrawYen.ins);
         super.add(Place.LIST_TYPE, ILayout.empty);
         super.add(Place.LIST_BTN, new Btn("<<", () => {
-            if (!Unit.players.find(p => p.exists)) {
+            if (!Unit.players.some(p => p.exists)) {
                 FX_Str(Font.def, "誰もいない", Point.CENTER, Color.WHITE);
                 return;
             }

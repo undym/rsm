@@ -737,7 +737,7 @@ EqEar._valueOf = new Map();
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec
-                    && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.find(f => f === "ペット"))) {
+                    && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.some(f => f === "ペット"))) {
                     dmg.pow.mul *= 1.2;
                 }
             });

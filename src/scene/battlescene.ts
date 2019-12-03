@@ -227,60 +227,69 @@ export class BattleScene extends Scene{
 
         let choosedTec:Tec|undefined;
 
+
+        const addActiveTec = (tec:ActiveTec, index:number)=>{
+            list.add({
+                center:()=>tec.toString(),
+                push:async elm=>{
+                    chooseTargetLayout = ILayout.empty;
+                    choosedTec = tec;
+                    Sound.system.play();
+
+                    attacker.tecListScroll = index;
+
+                    this.tecInfo.tec = Tec.empty;
+                    
+                    if(tec.targetings & Targeting.SELECT){
+        
+                        Util.msg.set(`[${tec}]のターゲットを選択してください`);
+                        
+                        
+                        await this.setChooseTargetBtn(attacker, async(targets)=>{
+                            if(
+                                   !targets[0].dead 
+                                || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
+                            ){
+                                list.freeze(true);
+                                Util.msg.set(`＞${targets[0].name}を選択`);
+                                await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
+                                await this.phaseEnd();
+                            }
+                        });
+                        
+                        await wait(1);
+        
+                        return;
+                    }else{
+                        list.freeze(true);
+                        let targets:Unit[] = [];
+                        targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
+                        await tec.use(attacker, targets);
+                        await this.phaseEnd();
+                    }
+                },
+                hold:elm=>{
+                    this.tecInfo.tec = tec;
+                    this.tecInfo.user = attacker;
+                },
+                groundColor:()=>{
+                    if(tec.checkCost(attacker)){
+                        return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
+                    }else{
+                        return choosedTec === tec ? Color.RED : Color.D_RED;
+                    }
+                },
+                stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
+            });
+        };
+        
+        if(!attacker.tecs.some(tec=> tec instanceof ActiveTec)){
+            addActiveTec( Tec.何もしない, 0 );
+        }
+
         attacker.tecs.forEach((tec,index)=>{
             if(tec instanceof ActiveTec){
-                list.add({
-                    center:()=>tec.toString(),
-                    push:async elm=>{
-                        chooseTargetLayout = ILayout.empty;
-                        choosedTec = tec;
-                        Sound.system.play();
-
-                        attacker.tecListScroll = index;
-
-                        this.tecInfo.tec = Tec.empty;
-                        
-                        if(tec.targetings & Targeting.SELECT){
-            
-                            Util.msg.set(`[${tec}]のターゲットを選択してください`);
-                            
-                            
-                            await this.setChooseTargetBtn(attacker, async(targets)=>{
-                                if(
-                                       !targets[0].dead 
-                                    || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
-                                ){
-                                    list.freeze(true);
-                                    Util.msg.set(`＞${targets[0].name}を選択`);
-                                    await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
-                                    await this.phaseEnd();
-                                }
-                            });
-                            
-                            await wait(1);
-            
-                            return;
-                        }else{
-                            list.freeze(true);
-                            let targets:Unit[] = [];
-                            targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
-                            await tec.use(attacker, targets);
-                            await this.phaseEnd();
-                        }
-                    },
-                    hold:elm=>{
-                        this.tecInfo.tec = tec;
-                        this.tecInfo.user = attacker;
-                    },
-                    groundColor:()=>{
-                        if(tec.checkCost(attacker)){
-                            return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
-                        }else{
-                            return choosedTec === tec ? Color.RED : Color.D_RED;
-                        }
-                    },
-                    stringColor:()=>tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
-                });
+                addActiveTec(tec, index);
             }else if(tec instanceof PassiveTec){
                 list.add({
                     center:()=>tec.toString(),
@@ -293,6 +302,7 @@ export class BattleScene extends Scene{
                 });
             }
         });
+
 
         list.add({
             center:()=>"アイテム",

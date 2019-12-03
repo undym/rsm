@@ -416,6 +416,17 @@ export namespace Job{
             e.tecs = [Tec.ドゥエルガル, Tec.ネーレイス, Tec.ヴァルナ, Tec.イリューガー, Tec.殴る, Tec.殴る, Tec.殴る];
         }
     };
+    export const                         侍:Job = new class extends Job{
+        constructor(){super({uniqueName:"侍", info:"",
+                                appearLv:55, img:new Img("img/unit/unit24.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                growthPrms:()=>[[Prm.MAX_HP, 1], [Prm.STR, 1]],
+                                learningTecs:()=>[Tec.格闘連携, Tec.格闘能力UP, Tec.時雨, Tec.五月雨],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.ドゥエルガル, Tec.ネーレイス, Tec.ヴァルナ, Tec.格闘能力UP, Tec.殴る, Tec.殴る, Tec.殴る];
+        }
+    };
     //--------------------------------------------------
     //
     //獣

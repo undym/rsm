@@ -549,18 +549,21 @@ export namespace Tec{
             return dmg;
         }
     }
-    // export const                          聖剣:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"聖剣", info:"一体に格闘攻撃　攻撃後光依存で回復",
-    //                           type:TecType.格闘, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:1, mp:3, tp:2,
-    //     });}
-    //     async run(attacker:Unit, target:Unit){
-    //         await super.run(attacker, target);
-
-    //         const value = attacker.prm(Prm.LIG).total;
-    //         Unit.healHP(attacker, value);
-    //     }
-    // }
+    /**侍. */
+    export const                          時雨:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"時雨", info:"一体に格闘攻撃x2",
+                            sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                            mul:2, num:1, hit:1, tp:2,
+        });}
+    }
+    /**侍. */
+    export const                          五月雨:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"五月雨", info:"一体に格闘攻撃2～4回",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:4,
+        });}
+        rndAttackNum(){return randomInt(2, 4, "[]");}
+    }
     /**無習得技. */
     export const                          格闘カウンター:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"格闘カウンター", info:"！カウンター技用",
@@ -654,17 +657,6 @@ export namespace Tec{
             }
         }
     };
-    // export const                         急所:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"急所", info:"格闘攻撃時稀にクリティカル発生",
-    //                             type:TecType.格闘,
-    //     });}
-    //     beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec && action.type === TecType.格闘 && Math.random() < 0.3){
-    //             Util.msg.set("＞急所");
-    //             dmg.pow.mul *= 1.5;
-    //         }
-    //     }
-    // };
     export const                         我慢:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"我慢", info:"被格闘・神格・鎖術・銃攻撃-20%",
                                 sort:TecSort.格闘, type:TecType.格闘,
@@ -672,6 +664,34 @@ export namespace Tec{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 dmg.pow.mul *= 0.80;
+            }
+        }
+    };
+    /**侍. */
+    export const                         格闘能力UP:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"格闘能力UP", info:"格闘攻撃+20%　被格闘攻撃-20%",
+                                sort:TecSort.格闘, type:TecType.格闘,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.mul *= 1.2;
+            }
+        }
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.mul *= 0.8;
+            }
+        }
+    };
+    /**侍. */
+    export const                         格闘連携:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"格闘連携", info:"格闘連携をセットしている味方の格闘攻撃時、連携攻撃",
+                                sort:TecSort.格闘, type:TecType.格闘,
+        });}
+        async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && attacker.tecs.some(tec=> tec === Tec.格闘連携)){
+                Util.msg.set(`${me.name}の連携攻撃`); await wait();
+                await Tec.格闘カウンター.run(me, target);
             }
         }
     };
@@ -781,11 +801,11 @@ export namespace Tec{
     };
     /**ウィザード. */
     export const                         魔道連携:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"魔道連携", info:"味方の魔法攻撃時、連携攻撃",
+        constructor(){super({uniqueName:"魔道連携", info:"魔道連携をセットしている味方の魔法攻撃時、連携攻撃",
                                 sort:TecSort.魔法, type:TecType.魔法,
         });}
         async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.counter){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.counter && attacker.tecs.some(tec=> tec === Tec.魔道連携)){
                 Util.msg.set(`${me.name}の連携攻撃`); await wait();
                 await Tec.魔法カウンター.run(me, target);
             }
@@ -1346,7 +1366,7 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
         async run(attacker:Unit, target:Unit){
-            if(!target.getInvisibleConditions().find(inv=> inv.uniqueName === Tec.アンドロメダ.uniqueName)){
+            if(!target.getInvisibleConditions().some(inv=> inv.uniqueName === Tec.アンドロメダ.uniqueName)){
                 target.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = Tec.アンドロメダ.uniqueName;
                     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){

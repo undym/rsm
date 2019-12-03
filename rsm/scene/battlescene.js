@@ -211,52 +211,58 @@ export class BattleScene extends Scene {
         return __awaiter(this, void 0, void 0, function* () {
             const list = new List(7);
             let choosedTec;
+            const addActiveTec = (tec, index) => {
+                list.add({
+                    center: () => tec.toString(),
+                    push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                        chooseTargetLayout = ILayout.empty;
+                        choosedTec = tec;
+                        Sound.system.play();
+                        attacker.tecListScroll = index;
+                        this.tecInfo.tec = Tec.empty;
+                        if (tec.targetings & Targeting.SELECT) {
+                            Util.msg.set(`[${tec}]のターゲットを選択してください`);
+                            yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
+                                if (!targets[0].dead
+                                    || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
+                                    list.freeze(true);
+                                    Util.msg.set(`＞${targets[0].name}を選択`);
+                                    yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
+                                    yield this.phaseEnd();
+                                }
+                            }));
+                            yield wait(1);
+                            return;
+                        }
+                        else {
+                            list.freeze(true);
+                            let targets = [];
+                            targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
+                            yield tec.use(attacker, targets);
+                            yield this.phaseEnd();
+                        }
+                    }),
+                    hold: elm => {
+                        this.tecInfo.tec = tec;
+                        this.tecInfo.user = attacker;
+                    },
+                    groundColor: () => {
+                        if (tec.checkCost(attacker)) {
+                            return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
+                        }
+                        else {
+                            return choosedTec === tec ? Color.RED : Color.D_RED;
+                        }
+                    },
+                    stringColor: () => tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
+                });
+            };
+            if (!attacker.tecs.some(tec => tec instanceof ActiveTec)) {
+                addActiveTec(Tec.何もしない, 0);
+            }
             attacker.tecs.forEach((tec, index) => {
                 if (tec instanceof ActiveTec) {
-                    list.add({
-                        center: () => tec.toString(),
-                        push: (elm) => __awaiter(this, void 0, void 0, function* () {
-                            chooseTargetLayout = ILayout.empty;
-                            choosedTec = tec;
-                            Sound.system.play();
-                            attacker.tecListScroll = index;
-                            this.tecInfo.tec = Tec.empty;
-                            if (tec.targetings & Targeting.SELECT) {
-                                Util.msg.set(`[${tec}]のターゲットを選択してください`);
-                                yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
-                                    if (!targets[0].dead
-                                        || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
-                                        list.freeze(true);
-                                        Util.msg.set(`＞${targets[0].name}を選択`);
-                                        yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
-                                        yield this.phaseEnd();
-                                    }
-                                }));
-                                yield wait(1);
-                                return;
-                            }
-                            else {
-                                list.freeze(true);
-                                let targets = [];
-                                targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
-                                yield tec.use(attacker, targets);
-                                yield this.phaseEnd();
-                            }
-                        }),
-                        hold: elm => {
-                            this.tecInfo.tec = tec;
-                            this.tecInfo.user = attacker;
-                        },
-                        groundColor: () => {
-                            if (tec.checkCost(attacker)) {
-                                return choosedTec === tec ? Color.D_CYAN : Color.BLACK;
-                            }
-                            else {
-                                return choosedTec === tec ? Color.RED : Color.D_RED;
-                            }
-                        },
-                        stringColor: () => tec.checkCost(attacker) ? Color.WHITE : Color.D_RED,
-                    });
+                    addActiveTec(tec, index);
                 }
                 else if (tec instanceof PassiveTec) {
                     list.add({

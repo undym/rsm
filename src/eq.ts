@@ -614,7 +614,7 @@ export namespace Eq{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(
                    action instanceof ActiveTec 
-                && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.find(f=> f === "ペット"))
+                && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.some(f=> f === "ペット"))
             ){
                 dmg.pow.mul *= 1.2;
             }
