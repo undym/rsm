@@ -151,7 +151,7 @@ Player._valueOf = new Map();
     Player.ベガ = new class extends Player {
         constructor() { super("ベガ", "♂"); }
         createInner(p) {
-            p.job = Job.鎖使い;
+            p.job = Job.ドラゴン;
             p.img = new Img("img/unit/unit108.png");
             p.prm(Prm.MAX_HP).base = 70;
             p.prm(Prm.MAX_MP).base = 0;
@@ -167,6 +167,7 @@ Player._valueOf = new Map();
         }
         setJobChangeList(map) {
             // setDefJobChangeList(map, this.ins);
+            map.set(Job.ドラゴン, true);
             setBeastJobChangeList(map, this.ins);
         }
     };

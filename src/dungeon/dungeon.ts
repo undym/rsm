@@ -16,6 +16,7 @@ import { Img } from "../graphics/texture.js";
 import { Story1 } from "../story/story1.js";
 import { Story0 } from "../story/story0.js";
 import { Sound } from "../sound.js";
+import { Story2 } from "../story/story2.js";
 
 
 export class DungeonArea{
@@ -567,6 +568,34 @@ export namespace Dungeon{
             }
         }
     };
+    export const                         塔4000階:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔4000階", info:"",
+                                rank:5, enemyLv:25, au:240, btn:[DungeonArea.中央島, new Rect(0.35, 0.4, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.ミサイリストスーツ],
+                                exItems:    ()=>[Eq.ぱとバット],
+                                trendItems: ()=>[Item.松, Item.桜, Item.クワ, Item.良い土, Item.イズミジュエリー, Item.肉],
+        });}
+        isVisible = ()=>Dungeon.精霊寺院.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "太古の亜人";
+            e.prm(Prm.MAX_HP).base = 1000;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影ユキエモン";
+            e.img = new Img("img/unit/yukiemon.png");
+            e.prm(Prm.MAX_HP).base = 1050;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story2.runMain20();
+            }
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////////
     //                                                                   //
@@ -826,7 +855,7 @@ export namespace Dungeon{
     ///////////////////////////////////////////////////////////////////////
     export const                         古マーザン森:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"古マーザン森", info:"",
-                                rank:2, enemyLv:11, au:250, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
+                                rank:2, enemyLv:21, au:250, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉],
                                 exItems:    ()=>[Eq.水晶の指輪],
                                 trendItems: ()=>[],
@@ -854,7 +883,7 @@ export namespace Dungeon{
     };
     export const                         魔鳥の岩壁:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"魔鳥の岩壁", info:"",
-                                rank:4, enemyLv:13, au:300, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                rank:4, enemyLv:23, au:300, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.水晶の手首飾り],
                                 exItems:    ()=>[Item.ホークマンの血],
                                 trendItems: ()=>[],
@@ -885,7 +914,7 @@ export namespace Dungeon{
     };
     export const                         精霊寺院:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"精霊寺院", info:"",
-                                rank:6, enemyLv:13, au:350, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+                                rank:6, enemyLv:25, au:350, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.エスペラント],
                                 exItems:    ()=>[Item.精霊使いの血],
                                 trendItems: ()=>[Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],

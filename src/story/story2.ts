@@ -312,6 +312,7 @@ export namespace Story2{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第22話『人間にあらず者』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
+    /**6666階クリア. */
     export const runMain23 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
         const f_exe  = new Img("img/face/p_exe.jpg");

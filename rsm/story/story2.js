@@ -301,6 +301,7 @@ export var Story2;
         Sound.moji.play();
         yield cwait();
     });
+    /**6666階クリア. */
     Story2.runMain23 = () => __awaiter(this, void 0, void 0, function* () {
         const f_empty = new Img("img/face/p_rs.jpg");
         const f_exe = new Img("img/face/p_exe.jpg");

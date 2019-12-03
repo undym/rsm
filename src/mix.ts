@@ -215,6 +215,11 @@ export namespace Mix{
         materials:()=>[[Item.銅板, 5], [Item.発砲ツル, 5]],
         isVisible:()=>ルインドアースLv13.count > 0,
     });
+    const           ルインドアースLv15:Mix = new Mix({
+        uniqueName:"ルインドアースLv15", limit:1, info:"",
+        materials:()=>[[Item.サクラ材, 5], [Item.クワ, 3]],
+        isVisible:()=>ルインドアースLv14.count > 0,
+    });
 
 
 
@@ -246,7 +251,7 @@ export namespace Mix{
         },
     });
     const           ねこじゃらし:Mix = new Mix({
-        uniqueName:"ねこじゃらし", limit:5, info:"ルインの力+1",
+        uniqueName:"ねこじゃらし", limit:10, info:"ルインの力+1",
         materials:()=>[[Item.竹材, 2], [Item.バッタ, 2], [Item.草, 1]],
         isVisible:()=>ルインドアースLv3.count > 0,
         action:()=>{
@@ -256,7 +261,7 @@ export namespace Mix{
     const           銅像:Mix = new Mix({
         uniqueName:"銅像", limit:5, info:"ルインの最大TP+1",
         materials:()=>[[Item.銅板, 3], [Item.少女の心を持ったおっさん, 3], [Item.たんぽぽ, 1]],
-        isVisible:()=>ルインドアースLv4.count > 0,
+        isVisible:()=>ルインドアースLv10.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_TP).base += 1;
         },
@@ -272,13 +277,13 @@ export namespace Mix{
     const           ゴーグルケース:Mix = new Mix({
         uniqueName:"ゴーグルケース", limit:5, info:"ピアーの最大MP+1",
         materials:()=>[[Item.ガラス, 3], [Item.ヒノキ, 2], [Item.針金, 1]],
-        isVisible:()=>ルインドアースLv3.count > 0,
+        isVisible:()=>ルインドアースLv10.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_MP).base += 1;
         },
     });
     const           水晶玉:Mix = new Mix({
-        uniqueName:"水晶玉", limit:5, info:"ピアーの魔+1",
+        uniqueName:"水晶玉", limit:10, info:"ピアーの魔+1",
         materials:()=>[[Item.ガラス, 3], [Item.水, 2]],
         isVisible:()=>ルインドアースLv4.count > 0,
         action:()=>{
@@ -300,6 +305,22 @@ export namespace Mix{
         isVisible:()=>Dungeon.テント樹林.dungeonClearCount > 0,
         action:()=>{
             Player.雪.ins.prm(Prm.CHN).base += 1;
+        },
+    });
+    const           ガンステーキ:Mix = new Mix({
+        uniqueName:"ガンステーキ", limit:10, info:"lukaの銃+1",
+        materials:()=>[[Item.肉, 2], [Item.発砲ツル, 1]],
+        isVisible:()=>Player.luka.member,
+        action:()=>{
+            Player.luka.ins.prm(Prm.GUN).base += 1;
+        },
+    });
+    const           石焼き肉:Mix = new Mix({
+        uniqueName:"石焼き肉", limit:10, info:"ベガの最大HP+1",
+        materials:()=>[[Item.肉, 2], [Item.石, 2]],
+        isVisible:()=>Player.ベガ.member,
+        action:()=>{
+            Player.ベガ.ins.prm(Prm.MAX_HP).base += 1;
         },
     });
 

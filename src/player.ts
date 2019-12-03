@@ -179,7 +179,7 @@ export namespace Player{
     export const             ベガ = new class extends Player{
         constructor(){super("ベガ", "♂");}
         createInner(p:PUnit){
-            p.job = Job.鎖使い;
+            p.job = Job.ドラゴン;
             p.img = new Img("img/unit/unit108.png");
             p.prm(Prm.MAX_HP).base = 70;
             p.prm(Prm.MAX_MP).base = 0;
@@ -197,6 +197,7 @@ export namespace Player{
         }
         setJobChangeList(map:Map<Job,true>){
             // setDefJobChangeList(map, this.ins);
+            map.set(Job.ドラゴン, true);
             setBeastJobChangeList(map, this.ins);
         }
     };

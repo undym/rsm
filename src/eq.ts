@@ -331,6 +331,16 @@ export namespace Eq{
             unit.prm(Prm.MAX_HP).eq += 20;
         }
     }
+    /**塔4000階EX. */
+    export const                         ぱとバット:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ぱとバット", info:"＜眠＞から目覚めやすくなる",
+                                pos:EqPos.武, lv:0});}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            if(unit.existsCondition(Condition.眠)){
+                unit.addConditionValue(Condition.眠, -1);
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //盾
@@ -458,6 +468,17 @@ export namespace Eq{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.弓)){
                 dmg.hit.mul *= 1.2;
+            }
+        }
+    }
+    /**塔4000階財宝. */
+    export const                         ミサイリストスーツ:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ミサイリストスーツ", info:"銃攻撃時稀にクリティカル",
+                                pos:EqPos.体, lv:285});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃) && Math.random() < 0.25){
+                Util.msg.set("＞ミサイリストスーツ");
+                dmg.hit.mul *= 2;
             }
         }
     }

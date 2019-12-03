@@ -338,6 +338,20 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**塔4000階EX. */
+    Eq.ぱとバット = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ぱとバット", info: "＜眠＞から目覚めやすくなる",
+                pos: EqPos.武, lv: 0 });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (unit.existsCondition(Condition.眠)) {
+                    unit.addConditionValue(Condition.眠, -1);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //盾
@@ -518,6 +532,21 @@ EqEar._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
                     dmg.hit.mul *= 1.2;
+                }
+            });
+        }
+    };
+    /**塔4000階財宝. */
+    Eq.ミサイリストスーツ = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ミサイリストスーツ", info: "銃攻撃時稀にクリティカル",
+                pos: EqPos.体, lv: 285 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃) && Math.random() < 0.25) {
+                    Util.msg.set("＞ミサイリストスーツ");
+                    dmg.hit.mul *= 2;
                 }
             });
         }
