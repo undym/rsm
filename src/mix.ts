@@ -286,16 +286,16 @@ export namespace Mix{
         },
     });
 
-    const           よく焼けた肉:Mix = new Mix({
-        uniqueName:"よく焼けた肉", limit:10, info:"一号の闇+1",
+    const           ウェルダン:Mix = new Mix({
+        uniqueName:"ウェルダン", limit:10, info:"一号の闇+1",
         materials:()=>[[Item.肉, 2], [Item.針金, 1]],
         isVisible:()=>Dungeon.テント樹林.dungeonClearCount > 0,
         action:()=>{
             Player.一号.ins.prm(Prm.DRK).base += 1;
         },
     });
-    const           生焼けの肉:Mix = new Mix({
-        uniqueName:"生焼けの肉", limit:10, info:"雪の鎖+1",
+    const           レア:Mix = new Mix({
+        uniqueName:"レア", limit:10, info:"雪の鎖+1",
         materials:()=>[[Item.肉, 2], [Item.草, 2]],
         isVisible:()=>Dungeon.テント樹林.dungeonClearCount > 0,
         action:()=>{
