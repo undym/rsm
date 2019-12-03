@@ -98,6 +98,17 @@ export class SaveData {
         this.io(/*save*/ true, json);
         return JSON.stringify(json);
     }
+    // /**受け取ったstringをUint8Arrayにして返す。 */
+    // static stringToByteArray(data:string):Uint8Array{
+    //     const encoder = new TextEncoder();
+    //     const encoded = encoder.encode( data );
+    //     return encoded;
+    // }
+    // /**受け取ったUint8Arrayをstringにして返す。 */
+    // static byteArrayToString(data:Uint8Array):string{
+    //     const decoder = new TextDecoder();
+    //     return 
+    // }
     static io(save, json) {
         storageVersion(save, ioObject(save, json, "Version"));
         storageItem(save, ioObject(save, json, "Item"));

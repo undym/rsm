@@ -67,6 +67,23 @@ const setOptionBtn = () => {
             Sound.save.play();
         },
     });
+    list.add({
+        center: () => "export",
+        push: elm => {
+            const encoder = new TextEncoder();
+            const encoded = encoder.encode(SaveData.export());
+            let save = "";
+            for (const e of encoded) {
+                save += e + "/";
+            }
+            // const file = new File([encoded], "rsm_export.txt");
+            const dl = document.createElement("a");
+            dl.download = "rsm_export";
+            dl.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
+            dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
+            dl.click();
+        },
+    });
     // list.add({
     //     center:()=>"EXPORT",
     //     push:elm=>{
