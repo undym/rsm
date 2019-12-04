@@ -78,12 +78,13 @@ const setOptionBtn = ()=>{
                     document.body.removeChild(exp);
                 }
             }
-            const encoder = new TextEncoder();
-            const encoded = encoder.encode( SaveData.export() );
+
+            const encoded = new TextEncoder().encode( SaveData.export() );
             let save = "";
             for(const e of encoded){
-                save += e.toString(36) + "\n";
+                save += e.toString(36) + "+";
             }
+            save = save.substring(0, save.length-1);
             const a = document.createElement("input");
             a.id = "export";
             a.value = save;
@@ -93,114 +94,55 @@ const setOptionBtn = ()=>{
             a.style.transformOrigin = "top left";
             a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
             a.style.fontSize = "30px";
-            a.style.backgroundColor = "black";
             document.body.appendChild(a);
             a.focus();
 
             a.setSelectionRange(0, save.length);
-            // const range = document.createRange();
-            // range.selectNodeContents(a);
-            // const s = window.getSelection();
-            // console.log(s);
-            // if(s){
-            //     s.addRange(range);
-            // }
-
-            // const file = new File([encoded], "rsm_export.txt");
-            // const dl = document.createElement("a");
-            // dl.id = "export";
-            // dl.download = "rsm_export";
-            // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
-            // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-            // dl.style.position = "fixed";
-            // dl.style.width = "33vh";
-            // dl.style.height = "33vw";
-            // dl.style.transformOrigin = "top left";
-            // dl.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-            // dl.style.fontSize = "30px";
-            // dl.style.backgroundColor = "black";
-            // dl.innerHTML = "EXPORT";
-            // position:fixed;
-            // width:33vh;
-            // height:33vw;
-            // transform-origin: top left;
-            // transform: translateX(66vw) translateY(33vh) rotate(90deg);
-            // visibility: hidden;
-            // font-size: 30px;
-            // document.body.appendChild(dl);
         },
     });
-    // list.add({
-    //     center:()=>"export2",
-    //     push:elm=>{
-    //         const encoder = new TextEncoder();
-    //         const encoded = encoder.encode( SaveData.export() );
-    //         let save = "";
-    //         for(const e of encoded){
-    //             save += e.toString(36) + "\n";
-    //         }
-    //         const url = URL.createObjectURL(new Blob([save], {type: "text/csv"}));
-    //         window.location.href = url;
-    //         // const a = document.createElement("a");
-    //         // a.href = URL.createObjectURL(new Blob([save], {type: "text/plain"}));
-    //         // a.download = "rsm_export.txt";
-    //         // a.addEventListener("touchend", ev=>{
-    //         //     a.click();
-    //         // });
-    //         // // const file = new File([encoded], "rsm_export.txt");
-    //         // // const dl = document.createElement("a");
-    //         // // dl.id = "export";
-    //         // // dl.download = "rsm_export";
-    //         // // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
-    //         // // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-    //         // a.style.position = "fixed";
-    //         // a.style.width = "33vh";
-    //         // a.style.height = "33vw";
-    //         // a.style.transformOrigin = "top left";
-    //         // a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-    //         // a.style.fontSize = "30px";
-    //         // a.style.backgroundColor = "black";
-    //         // a.innerHTML = "EXPORT";
-    //         // document.body.appendChild(a);
-    //     },
-    // });
     list.add({
         center:()=>"inport",
         push:elm=>{
-            
+            const input = document.createElement("input");
+            input.id = "inport";
+            input.type = "file";
+            input.addEventListener("change", (ev:any)=>{
+                console.log("change");
+                if(ev.target.files && ev.target.files[0]){
+                    const fileName = ev.target.files[0].name;
+                    console.log(fileName);
+                    const reader = new FileReader();
+                    reader.onload = ev=>{
+                        const result = reader.result;
+                        
+                        if(typeof result === "string"){
+                            console.log(result);
+                            const split:string[] = result.split("+");
+                            console.log("length:", split.length);
+                            const arr = new Uint8Array(split.length);
+                            for(let i = 0; i < split.length; i++){
+                                arr[i] = Number.parseInt( split[i], 36 );
+                            }
+                            const decoded = new TextDecoder().decode(arr);
+                            
+                            if(SaveData.load(decoded)){
+                                Util.msg.set("inport成功");
+                            }else{
+                                Util.msg.set("import失敗");
+                            }
+                        }else{
+                            Util.msg.set("失敗");
+                        }
+                    };
+                    
+                    reader.readAsBinaryString(ev.target.files[0]);
+                }
+            });
+
+            document.body.appendChild(input);
+            input.click();
         },
     });
-    // list.add({
-    //     center:()=>"EXPORT",
-    //     push:elm=>{
-    //         const textarea = document.createElement('textarea') as HTMLTextAreaElement;
-          
-    //         textarea.value = SaveData.export();
-    //         textarea.selectionStart = 0;
-    //         textarea.selectionEnd = textarea.value.length;
-          
-    //         const s = textarea.style;
-    //         s.position = 'fixed';
-    //         s.left = '-100%';
-          
-    //         document.body.appendChild(textarea);
-    //         textarea.focus();
-    //         const result = document.execCommand('copy');
-    //         textarea.blur();
-    //         document.body.removeChild(textarea);
-    //         // true なら実行できている falseなら失敗か対応していないか
-    //         if(result){
-    //             Util.msg.set("クリップボードにコピーしました");
-    //         }else{
-    //             Util.msg.set("失敗");
-    //         }
-    //     },
-    // });
-    // list.add({
-    //     center:()=>"INPORT",
-    //     push:async elm=>{
-    //     },
-    // });
 
 
     if(Debug.debugMode){
@@ -213,10 +155,18 @@ const setOptionBtn = ()=>{
     }
     
     returnAction = ()=>{
-        const exp = document.getElementById("export");
-        if(exp){
-            document.body.removeChild(exp);
+        for(;;){
+            const exp = document.getElementById("export");
+            if(exp){document.body.removeChild(exp);}
+            else{break;}
         }
+        for(;;){
+            const inp = document.getElementById("inport");
+            if(inp){document.body.removeChild(inp);}
+            else{break;}
+        }
+
+
         Scene.load( TownScene.ins );
     };
 
