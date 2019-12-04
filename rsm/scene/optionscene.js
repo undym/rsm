@@ -77,7 +77,7 @@ const setOptionBtn = () => {
                 save += e.toString(36) + "\n";
             }
             const a = document.createElement("a");
-            a.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
+            a.href = URL.createObjectURL(new Blob([save], { type: "text/csv" }));
             a.download = "rsm_export.txt";
             document.body.appendChild(a);
             a.click();
@@ -115,7 +115,7 @@ const setOptionBtn = () => {
             for (const e of encoded) {
                 save += e.toString(36) + "\n";
             }
-            const url = URL.createObjectURL(new Blob([save], { type: "text/plain" }));
+            const url = URL.createObjectURL(new Blob([save], { type: "text/csv" }));
             window.location.href = url;
             // const a = document.createElement("a");
             // a.href = URL.createObjectURL(new Blob([save], {type: "text/plain"}));
