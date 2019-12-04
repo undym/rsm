@@ -72,19 +72,40 @@ const setOptionBtn = ()=>{
     list.add({
         center:()=>"export",
         push:elm=>{
+            {
+                const exp = document.getElementById("export");
+                if(exp){
+                    document.body.removeChild(exp);
+                }
+            }
             const encoder = new TextEncoder();
             const encoded = encoder.encode( SaveData.export() );
             let save = "";
             for(const e of encoded){
                 save += e.toString(36) + "\n";
             }
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(new Blob([save], {type: "text/csv"}));
-            a.download = "rsm_export.txt";
+            const a = document.createElement("input");
+            a.id = "export";
+            a.value = save;
+            a.style.position = "fixed";
+            a.style.width = "33vh";
+            a.style.height = "33vw";
+            a.style.transformOrigin = "top left";
+            a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+            a.style.fontSize = "30px";
+            a.style.backgroundColor = "black";
             document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
+            a.focus();
+
+            a.setSelectionRange(0, save.length);
+            // const range = document.createRange();
+            // range.selectNodeContents(a);
+            // const s = window.getSelection();
+            // console.log(s);
+            // if(s){
+            //     s.addRange(range);
+            // }
+
             // const file = new File([encoded], "rsm_export.txt");
             // const dl = document.createElement("a");
             // dl.id = "export";
@@ -109,40 +130,40 @@ const setOptionBtn = ()=>{
             // document.body.appendChild(dl);
         },
     });
-    list.add({
-        center:()=>"export2",
-        push:elm=>{
-            const encoder = new TextEncoder();
-            const encoded = encoder.encode( SaveData.export() );
-            let save = "";
-            for(const e of encoded){
-                save += e.toString(36) + "\n";
-            }
-            const url = URL.createObjectURL(new Blob([save], {type: "text/csv"}));
-            window.location.href = url;
-            // const a = document.createElement("a");
-            // a.href = URL.createObjectURL(new Blob([save], {type: "text/plain"}));
-            // a.download = "rsm_export.txt";
-            // a.addEventListener("touchend", ev=>{
-            //     a.click();
-            // });
-            // // const file = new File([encoded], "rsm_export.txt");
-            // // const dl = document.createElement("a");
-            // // dl.id = "export";
-            // // dl.download = "rsm_export";
-            // // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
-            // // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-            // a.style.position = "fixed";
-            // a.style.width = "33vh";
-            // a.style.height = "33vw";
-            // a.style.transformOrigin = "top left";
-            // a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-            // a.style.fontSize = "30px";
-            // a.style.backgroundColor = "black";
-            // a.innerHTML = "EXPORT";
-            // document.body.appendChild(a);
-        },
-    });
+    // list.add({
+    //     center:()=>"export2",
+    //     push:elm=>{
+    //         const encoder = new TextEncoder();
+    //         const encoded = encoder.encode( SaveData.export() );
+    //         let save = "";
+    //         for(const e of encoded){
+    //             save += e.toString(36) + "\n";
+    //         }
+    //         const url = URL.createObjectURL(new Blob([save], {type: "text/csv"}));
+    //         window.location.href = url;
+    //         // const a = document.createElement("a");
+    //         // a.href = URL.createObjectURL(new Blob([save], {type: "text/plain"}));
+    //         // a.download = "rsm_export.txt";
+    //         // a.addEventListener("touchend", ev=>{
+    //         //     a.click();
+    //         // });
+    //         // // const file = new File([encoded], "rsm_export.txt");
+    //         // // const dl = document.createElement("a");
+    //         // // dl.id = "export";
+    //         // // dl.download = "rsm_export";
+    //         // // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
+    //         // // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
+    //         // a.style.position = "fixed";
+    //         // a.style.width = "33vh";
+    //         // a.style.height = "33vw";
+    //         // a.style.transformOrigin = "top left";
+    //         // a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+    //         // a.style.fontSize = "30px";
+    //         // a.style.backgroundColor = "black";
+    //         // a.innerHTML = "EXPORT";
+    //         // document.body.appendChild(a);
+    //     },
+    // });
     list.add({
         center:()=>"inport",
         push:elm=>{

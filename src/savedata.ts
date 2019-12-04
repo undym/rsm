@@ -17,11 +17,8 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,26,3);
+    static readonly NOW = new Version(0,26,4);
     static readonly updateInfo =    [
-                                        "(0.24.12)エフェクト修正",
-                                        "(0.24.13)収集スキルの計算式修正",
-                                        "(0.25.0)ダンジョンとか追加",
                                         "(0.25.1)合成追加",
                                         "(0.25.2)こまごま",
                                         "(0.25.3)一部ダンジョンのAUを減らした",
@@ -34,6 +31,7 @@ export class Version{
                                         "(0.26.1)exporttest",
                                         "(0.26.2)exporttest",
                                         "(0.26.3)exporttest",
+                                        "(0.26.4)exporttest",
                                     ];
 
     private values:number[];
