@@ -39,6 +39,19 @@ export const createOptionBtn = () => {
     ;
 };
 const setOptionBtn = () => {
+    const remove = (ids) => {
+        for (const id of ids) {
+            for (;;) {
+                const exp = document.getElementById(id);
+                if (exp) {
+                    document.body.removeChild(exp);
+                }
+                else {
+                    break;
+                }
+            }
+        }
+    };
     list.clear();
     list.add({
         center: () => "データ削除",
@@ -70,37 +83,33 @@ const setOptionBtn = () => {
     list.add({
         center: () => "export",
         push: elm => {
-            {
-                const exp = document.getElementById("export");
-                if (exp) {
-                    document.body.removeChild(exp);
-                }
-            }
+            remove(["export", "import"]);
             const encoded = new TextEncoder().encode(SaveData.export());
             let save = "";
             for (const e of encoded) {
                 save += e.toString(36) + "+";
             }
             save = save.substring(0, save.length - 1);
-            const a = document.createElement("input");
+            const a = document.createElement("textarea");
             a.id = "export";
             a.value = save;
             a.style.position = "fixed";
-            a.style.width = "33vh";
-            a.style.height = "33vw";
-            a.style.transformOrigin = "top left";
-            a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-            a.style.fontSize = "30px";
+            a.style.top = "0px";
+            a.style.left = "0px";
+            a.style.width = "50vw";
+            a.style.height = "50vh";
+            // a.style.transformOrigin = "top left";
             document.body.appendChild(a);
             a.focus();
             a.setSelectionRange(0, save.length);
         },
     });
     list.add({
-        center: () => "inport",
+        center: () => "import",
         push: elm => {
+            remove(["export", "import"]);
             const input = document.createElement("input");
-            input.id = "inport";
+            input.id = "import";
             input.type = "file";
             input.addEventListener("change", (ev) => {
                 console.log("change");
@@ -120,7 +129,7 @@ const setOptionBtn = () => {
                             }
                             const decoded = new TextDecoder().decode(arr);
                             if (SaveData.load(decoded)) {
-                                Util.msg.set("inport成功");
+                                Util.msg.set("import成功");
                             }
                             else {
                                 Util.msg.set("import失敗");
@@ -146,24 +155,7 @@ const setOptionBtn = () => {
         });
     }
     returnAction = () => {
-        for (;;) {
-            const exp = document.getElementById("export");
-            if (exp) {
-                document.body.removeChild(exp);
-            }
-            else {
-                break;
-            }
-        }
-        for (;;) {
-            const inp = document.getElementById("inport");
-            if (inp) {
-                document.body.removeChild(inp);
-            }
-            else {
-                break;
-            }
-        }
+        remove(["export", "import"]);
         Scene.load(TownScene.ins);
     };
 };
