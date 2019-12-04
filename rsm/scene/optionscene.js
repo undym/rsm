@@ -76,20 +76,24 @@ const setOptionBtn = () => {
             for (const e of encoded) {
                 save += e.toString(36) + "\n";
             }
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
+            a.download = "rsm_export.txt";
+            a.click();
             // const file = new File([encoded], "rsm_export.txt");
-            const dl = document.createElement("a");
-            dl.id = "export";
-            dl.download = "rsm_export";
-            dl.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
-            dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-            dl.style.position = "fixed";
-            dl.style.width = "33vh";
-            dl.style.height = "33vw";
-            dl.style.transformOrigin = "top left";
-            dl.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-            dl.style.fontSize = "30px";
-            dl.style.backgroundColor = "black";
-            dl.innerHTML = "EXPORT";
+            // const dl = document.createElement("a");
+            // dl.id = "export";
+            // dl.download = "rsm_export";
+            // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
+            // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
+            // dl.style.position = "fixed";
+            // dl.style.width = "33vh";
+            // dl.style.height = "33vw";
+            // dl.style.transformOrigin = "top left";
+            // dl.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+            // dl.style.fontSize = "30px";
+            // dl.style.backgroundColor = "black";
+            // dl.innerHTML = "EXPORT";
             // position:fixed;
             // width:33vh;
             // height:33vw;
@@ -97,7 +101,39 @@ const setOptionBtn = () => {
             // transform: translateX(66vw) translateY(33vh) rotate(90deg);
             // visibility: hidden;
             // font-size: 30px;
-            document.body.appendChild(dl);
+            // document.body.appendChild(dl);
+        },
+    });
+    list.add({
+        center: () => "export2",
+        push: elm => {
+            const encoder = new TextEncoder();
+            const encoded = encoder.encode(SaveData.export());
+            let save = "";
+            for (const e of encoded) {
+                save += e.toString(36) + "\n";
+            }
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
+            a.download = "rsm_export.txt";
+            a.addEventListener("touchend", ev => {
+                a.click();
+            });
+            // const file = new File([encoded], "rsm_export.txt");
+            // const dl = document.createElement("a");
+            // dl.id = "export";
+            // dl.download = "rsm_export";
+            // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
+            // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
+            a.style.position = "fixed";
+            a.style.width = "33vh";
+            a.style.height = "33vw";
+            a.style.transformOrigin = "top left";
+            a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+            a.style.fontSize = "30px";
+            a.style.backgroundColor = "black";
+            a.innerHTML = "EXPORT";
+            document.body.appendChild(a);
         },
     });
     list.add({
