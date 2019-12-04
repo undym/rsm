@@ -79,7 +79,9 @@ const setOptionBtn = () => {
             const a = document.createElement("a");
             a.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
             a.download = "rsm_export.txt";
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             // const file = new File([encoded], "rsm_export.txt");
             // const dl = document.createElement("a");
             // dl.id = "export";
@@ -113,27 +115,29 @@ const setOptionBtn = () => {
             for (const e of encoded) {
                 save += e.toString(36) + "\n";
             }
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(new Blob([save], { type: "text.plain" }));
-            a.download = "rsm_export.txt";
-            a.addEventListener("touchend", ev => {
-                a.click();
-            });
-            // const file = new File([encoded], "rsm_export.txt");
-            // const dl = document.createElement("a");
-            // dl.id = "export";
-            // dl.download = "rsm_export";
-            // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
-            // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
-            a.style.position = "fixed";
-            a.style.width = "33vh";
-            a.style.height = "33vw";
-            a.style.transformOrigin = "top left";
-            a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
-            a.style.fontSize = "30px";
-            a.style.backgroundColor = "black";
-            a.innerHTML = "EXPORT";
-            document.body.appendChild(a);
+            const url = URL.createObjectURL(new Blob([save], { type: "text/plain" }));
+            window.location.href = url;
+            // const a = document.createElement("a");
+            // a.href = URL.createObjectURL(new Blob([save], {type: "text/plain"}));
+            // a.download = "rsm_export.txt";
+            // a.addEventListener("touchend", ev=>{
+            //     a.click();
+            // });
+            // // const file = new File([encoded], "rsm_export.txt");
+            // // const dl = document.createElement("a");
+            // // dl.id = "export";
+            // // dl.download = "rsm_export";
+            // // dl.href = URL.createObjectURL(new Blob([save], {type: "text.plain"}));
+            // // dl.dataset.downloadurl = ["text/plain", dl.download, dl.href].join(":");
+            // a.style.position = "fixed";
+            // a.style.width = "33vh";
+            // a.style.height = "33vw";
+            // a.style.transformOrigin = "top left";
+            // a.style.transform = "translateX(66vw) translateY(33vh) rotate(90deg)";
+            // a.style.fontSize = "30px";
+            // a.style.backgroundColor = "black";
+            // a.innerHTML = "EXPORT";
+            // document.body.appendChild(a);
         },
     });
     list.add({
