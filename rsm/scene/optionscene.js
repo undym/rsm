@@ -39,8 +39,8 @@ export const createOptionBtn = () => {
     ;
 };
 const setOptionBtn = () => {
-    const remove = (ids) => {
-        for (const id of ids) {
+    const removeElements = () => {
+        for (const id of ["export", "importText", "paste", "runImport"]) {
             for (;;) {
                 const exp = document.getElementById(id);
                 if (exp) {
@@ -83,7 +83,7 @@ const setOptionBtn = () => {
     list.add({
         center: () => "export",
         push: elm => {
-            remove(["export", "import"]);
+            removeElements();
             const encoded = new TextEncoder().encode(SaveData.export());
             let save = "";
             for (const e of encoded) {
@@ -92,6 +92,7 @@ const setOptionBtn = () => {
             save = save.substring(0, save.length - 1);
             const a = document.createElement("textarea");
             a.id = "export";
+            a.readOnly = true;
             a.value = save;
             a.style.position = "fixed";
             a.style.top = "0px";
@@ -107,43 +108,56 @@ const setOptionBtn = () => {
     list.add({
         center: () => "import",
         push: elm => {
-            remove(["export", "import"]);
-            const input = document.createElement("input");
-            input.id = "import";
-            input.type = "file";
-            input.addEventListener("change", (ev) => {
-                console.log("change");
-                if (ev.target.files && ev.target.files[0]) {
-                    const fileName = ev.target.files[0].name;
-                    console.log(fileName);
-                    const reader = new FileReader();
-                    reader.onload = ev => {
-                        const result = reader.result;
-                        if (typeof result === "string") {
-                            console.log(result);
-                            const split = result.split("+");
-                            console.log("length:", split.length);
-                            const arr = new Uint8Array(split.length);
-                            for (let i = 0; i < split.length; i++) {
-                                arr[i] = Number.parseInt(split[i], 36);
-                            }
-                            const decoded = new TextDecoder().decode(arr);
-                            if (SaveData.load(decoded)) {
-                                Util.msg.set("import成功");
-                            }
-                            else {
-                                Util.msg.set("import失敗");
-                            }
-                        }
-                        else {
-                            Util.msg.set("失敗");
-                        }
-                    };
-                    reader.readAsBinaryString(ev.target.files[0]);
-                }
-            });
-            document.body.appendChild(input);
-            input.click();
+            removeElements();
+            const a = document.createElement("textarea");
+            a.id = "importText";
+            // a.readOnly = true;
+            a.style.position = "fixed";
+            a.style.top = "0px";
+            a.style.left = "0px";
+            a.style.width = "50vw";
+            a.style.height = "50vh";
+            // const paste = document.createElement("button");
+            // paste.onclick = ()=>{
+            //     a.readOnly = false;
+            //     document.execCommand("paste");
+            //     a.readOnly = true;
+            // };
+            document.body.appendChild(a);
+            // const input = document.createElement("input");
+            // input.id = "import";
+            // input.type = "file";
+            // input.addEventListener("change", (ev:any)=>{
+            //     console.log("change");
+            //     if(ev.target.files && ev.target.files[0]){
+            //         const fileName = ev.target.files[0].name;
+            //         console.log(fileName);
+            //         const reader = new FileReader();
+            //         reader.onload = ev=>{
+            //             const result = reader.result;
+            //             if(typeof result === "string"){
+            //                 console.log(result);
+            //                 const split:string[] = result.split("+");
+            //                 console.log("length:", split.length);
+            //                 const arr = new Uint8Array(split.length);
+            //                 for(let i = 0; i < split.length; i++){
+            //                     arr[i] = Number.parseInt( split[i], 36 );
+            //                 }
+            //                 const decoded = new TextDecoder().decode(arr);
+            //                 if(SaveData.load(decoded)){
+            //                     Util.msg.set("import成功");
+            //                 }else{
+            //                     Util.msg.set("import失敗");
+            //                 }
+            //             }else{
+            //                 Util.msg.set("失敗");
+            //             }
+            //         };
+            //         reader.readAsBinaryString(ev.target.files[0]);
+            //     }
+            // });
+            // document.body.appendChild(input);
+            // input.click();
         },
     });
     if (Debug.debugMode) {
@@ -155,7 +169,7 @@ const setOptionBtn = () => {
         });
     }
     returnAction = () => {
-        remove(["export", "import"]);
+        removeElements();
         Scene.load(TownScene.ins);
     };
 };
