@@ -99,6 +99,9 @@ const setOptionBtn = () => {
             a.style.left = "0px";
             a.style.width = "50vw";
             a.style.height = "50vh";
+            a.onclick = ev => {
+                a.setSelectionRange(0, save.length);
+            };
             // a.style.transformOrigin = "top left";
             document.body.appendChild(a);
             a.focus();
@@ -109,20 +112,14 @@ const setOptionBtn = () => {
         center: () => "import",
         push: elm => {
             removeElements();
-            const a = document.createElement("input");
+            const a = document.createElement("textarea");
             a.id = "importText";
-            // a.readOnly = true;
             a.style.position = "fixed";
             a.style.top = "0px";
             a.style.left = "0px";
             a.style.width = "50vw";
             a.style.height = "50vh";
-            // const paste = document.createElement("button");
-            // paste.onclick = ()=>{
-            //     a.readOnly = false;
-            //     document.execCommand("paste");
-            //     a.readOnly = true;
-            // };
+            a.contentEditable = "true";
             document.body.appendChild(a);
             // const input = document.createElement("input");
             // input.id = "import";
