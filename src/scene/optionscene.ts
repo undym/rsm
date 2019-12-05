@@ -110,7 +110,7 @@ const setOptionBtn = ()=>{
         push:elm=>{
             removeElements();
 
-            const a = document.createElement("textarea");
+            const a = document.createElement("input");
             a.id = "importText";
             // a.readOnly = true;
             a.style.position = "fixed";
