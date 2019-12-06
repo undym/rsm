@@ -976,36 +976,52 @@ export namespace Item{
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
     };
-    export const                         灰色のまぼろし:Item = new class extends Item{
-        constructor(){super({uniqueName:"灰色のまぼろし", info:"対象の経験値+30",
-                                type:ItemType.ドーピング, rank:0, drop:ItemDrop.BOX,
+    export const                         列なりの思い出:Item = new class extends Item{
+        constructor(){super({uniqueName:"列なりの思い出", info:"Lv-1",
+                                type:ItemType.ドーピング, rank:12, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    Sound.exp.play();
-                                    target.exp += 30;
+                                    if(target.prm(Prm.LV).base > 0){
+                                        target.prm(Prm.LV).base--;
+                                        Sound.bpup.play();
+                                        FX_Str(Font.def, `${target.name}のLv-1`, Point.CENTER, Color.WHITE);
+                                    }
                                 },
         })}
         canUse(user:Unit, targets:Unit[]){
             for(const t of targets){
-                if(t instanceof PUnit && t.exp >= t.getNextLvExp()){return false;}
+                if(t.prm(Prm.LV).base <= 0){return false;}
             }
             return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
         }
     };
-    export const                         黒色のまぼろし:Item = new class extends Item{
-        constructor(){super({uniqueName:"黒色のまぼろし", info:"対象の経験値+50",
-                                type:ItemType.ドーピング, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>{
-                                    Sound.exp.play();
-                                    target.exp += 50;
-                                },
-        })}
-        canUse(user:Unit, targets:Unit[]){
-            for(const t of targets){
-                if(t instanceof PUnit && t.exp >= t.getNextLvExp()){return false;}
+
+    const createMaborosi = (uniqueName:string, rank:number, value:number)=>{
+        return new class extends Item{
+            constructor(){super({uniqueName:uniqueName, info:"対象の経験値+"+value,
+                                    type:ItemType.ドーピング, rank:rank, drop:ItemDrop.BOX,
+                                    use:async(user,target)=>{
+                                        Sound.exp.play();
+                                        target.exp += value;
+                                    },
+            })}
+            canUse(user:Unit, targets:Unit[]){
+                for(const t of targets){
+                    if(t instanceof PUnit && t.exp >= t.getNextLvExp()){return false;}
+                }
+                return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
             }
-            return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;
-        }
+        };
     };
+    export const 灰色のまぼろし = createMaborosi(
+                "灰色のまぼろし", /*rank*/0, /*value*/30);
+    export const 黒色のまぼろし = createMaborosi(
+                "黒色のまぼろし", /*rank*/2, /*value*/50);
+    export const 白色のまぼろし = createMaborosi(
+                "白色のまぼろし", /*rank*/4, /*value*/70);
+    export const 金色のまぼろし = createMaborosi(
+                "金色のまぼろし", /*rank*/6, /*value*/90);
+    export const 緋色のまぼろし = createMaborosi(
+                "緋色のまぼろし", /*rank*/8, /*value*/110);
     export const                         アーク素子:Item = new class extends Item{
         constructor(){super({uniqueName:"アーク素子", info:"",
                                 type:ItemType.ドーピング, rank:1, drop:ItemDrop.BOX,
@@ -1080,6 +1096,10 @@ export namespace Item{
     export const                         夏のメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"夏のメモ", info:"「夏はいつ終わるの？」と書かれている", 
                                 type:ItemType.メモ, rank:1, drop:ItemDrop.BOX, numLimit:1})}
+    };
+    export const                         冬のメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"冬のメモ", info:"「いつまでもこの冬が続けばいいのに」と書かれている", 
+                                type:ItemType.メモ, rank:7, drop:ItemDrop.BOX, numLimit:1})}
     };
     export const                         EPのメモ:Item = new class extends Item{
         constructor(){super({uniqueName:"EPのメモ", info:"「EPはダンジョンに侵入する時に回復する。なので、EPを消費する技は基本的に一度の侵入で一回しか使えない」と書かれている", 

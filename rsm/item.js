@@ -1112,44 +1112,54 @@ Item.DEF_NUM_LIMIT = 9999;
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
     };
-    Item.灰色のまぼろし = new class extends Item {
+    Item.列なりの思い出 = new class extends Item {
         constructor() {
-            super({ uniqueName: "灰色のまぼろし", info: "対象の経験値+30",
-                type: ItemType.ドーピング, rank: 0, drop: ItemDrop.BOX,
+            super({ uniqueName: "列なりの思い出", info: "Lv-1",
+                type: ItemType.ドーピング, rank: 12, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    Sound.exp.play();
-                    target.exp += 30;
+                    if (target.prm(Prm.LV).base > 0) {
+                        target.prm(Prm.LV).base--;
+                        Sound.bpup.play();
+                        FX_Str(Font.def, `${target.name}のLv-1`, Point.CENTER, Color.WHITE);
+                    }
                 }),
             });
         }
         canUse(user, targets) {
             for (const t of targets) {
-                if (t instanceof PUnit && t.exp >= t.getNextLvExp()) {
+                if (t.prm(Prm.LV).base <= 0) {
                     return false;
                 }
             }
             return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
         }
     };
-    Item.黒色のまぼろし = new class extends Item {
-        constructor() {
-            super({ uniqueName: "黒色のまぼろし", info: "対象の経験値+50",
-                type: ItemType.ドーピング, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    Sound.exp.play();
-                    target.exp += 50;
-                }),
-            });
-        }
-        canUse(user, targets) {
-            for (const t of targets) {
-                if (t instanceof PUnit && t.exp >= t.getNextLvExp()) {
-                    return false;
-                }
+    const createMaborosi = (uniqueName, rank, value) => {
+        return new class extends Item {
+            constructor() {
+                super({ uniqueName: uniqueName, info: "対象の経験値+" + value,
+                    type: ItemType.ドーピング, rank: rank, drop: ItemDrop.BOX,
+                    use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                        Sound.exp.play();
+                        target.exp += value;
+                    }),
+                });
             }
-            return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
-        }
+            canUse(user, targets) {
+                for (const t of targets) {
+                    if (t instanceof PUnit && t.exp >= t.getNextLvExp()) {
+                        return false;
+                    }
+                }
+                return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE;
+            }
+        };
     };
+    Item.灰色のまぼろし = createMaborosi("灰色のまぼろし", /*rank*/ 0, /*value*/ 30);
+    Item.黒色のまぼろし = createMaborosi("黒色のまぼろし", /*rank*/ 2, /*value*/ 50);
+    Item.白色のまぼろし = createMaborosi("白色のまぼろし", /*rank*/ 4, /*value*/ 70);
+    Item.金色のまぼろし = createMaborosi("金色のまぼろし", /*rank*/ 6, /*value*/ 90);
+    Item.緋色のまぼろし = createMaborosi("緋色のまぼろし", /*rank*/ 8, /*value*/ 110);
     Item.アーク素子 = new class extends Item {
         constructor() {
             super({ uniqueName: "アーク素子", info: "",
@@ -1229,6 +1239,12 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "夏のメモ", info: "「夏はいつ終わるの？」と書かれている",
                 type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+    };
+    Item.冬のメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "冬のメモ", info: "「いつまでもこの冬が続けばいいのに」と書かれている",
+                type: ItemType.メモ, rank: 7, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
     Item.EPのメモ = new class extends Item {
