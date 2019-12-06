@@ -95,14 +95,13 @@ const setOptionBtn = () => {
             a.readOnly = true;
             a.value = save;
             a.style.position = "fixed";
-            a.style.top = "0px";
-            a.style.left = "0px";
+            a.style.top = "0vh";
+            a.style.left = "50vw";
             a.style.width = "50vw";
             a.style.height = "50vh";
             a.onclick = ev => {
                 a.setSelectionRange(0, save.length);
             };
-            // a.style.transformOrigin = "top left";
             document.body.appendChild(a);
             a.focus();
             a.setSelectionRange(0, save.length);
@@ -110,52 +109,22 @@ const setOptionBtn = () => {
     });
     list.add({
         center: () => "import",
-        push: elm => {
+        push: (elm) => __awaiter(this, void 0, void 0, function* () {
             removeElements();
-            const a = document.createElement("textarea");
+            const a = document.createElement("input");
             a.id = "importText";
+            a.type = "file";
             a.style.position = "fixed";
-            a.style.top = "0px";
-            a.style.left = "0px";
+            a.style.top = "0vh";
+            a.style.left = "50vw";
             a.style.width = "50vw";
             a.style.height = "50vh";
-            a.contentEditable = "true";
+            // a.onclick = ev=>{
+            //     a.focus();
+            //     console.log( document.execCommand("paste", true, "a") );
+            // };
             document.body.appendChild(a);
-            // const input = document.createElement("input");
-            // input.id = "import";
-            // input.type = "file";
-            // input.addEventListener("change", (ev:any)=>{
-            //     console.log("change");
-            //     if(ev.target.files && ev.target.files[0]){
-            //         const fileName = ev.target.files[0].name;
-            //         console.log(fileName);
-            //         const reader = new FileReader();
-            //         reader.onload = ev=>{
-            //             const result = reader.result;
-            //             if(typeof result === "string"){
-            //                 console.log(result);
-            //                 const split:string[] = result.split("+");
-            //                 console.log("length:", split.length);
-            //                 const arr = new Uint8Array(split.length);
-            //                 for(let i = 0; i < split.length; i++){
-            //                     arr[i] = Number.parseInt( split[i], 36 );
-            //                 }
-            //                 const decoded = new TextDecoder().decode(arr);
-            //                 if(SaveData.load(decoded)){
-            //                     Util.msg.set("import成功");
-            //                 }else{
-            //                     Util.msg.set("import失敗");
-            //                 }
-            //             }else{
-            //                 Util.msg.set("失敗");
-            //             }
-            //         };
-            //         reader.readAsBinaryString(ev.target.files[0]);
-            //     }
-            // });
-            // document.body.appendChild(input);
-            // input.click();
-        },
+        }),
     });
     if (Debug.debugMode) {
         list.add({
