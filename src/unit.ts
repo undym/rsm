@@ -746,7 +746,7 @@ export namespace Unit{
         if(!overwrite && target.getCondition(condition.type) !== Condition.empty){return;}
 
         target.setCondition(condition, value);
-        FX_Str(FXFont.def, `<${condition}>`, target.imgBounds.center, Color.WHITE);
+        FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
 

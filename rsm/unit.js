@@ -704,7 +704,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
         target.setCondition(condition, value);
-        FX_Str(FXFont.def, `<${condition}>`, target.imgBounds.center, Color.WHITE);
+        FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
     Unit.healHP = (target, value) => {

@@ -40,7 +40,7 @@ export const createOptionBtn = () => {
 };
 const setOptionBtn = () => {
     const removeElements = () => {
-        for (const id of ["export", "importText", "paste", "runImport"]) {
+        for (const id of ["export", "importText", "inputParent", "runImport"]) {
             for (;;) {
                 const exp = document.getElementById(id);
                 if (exp) {
@@ -98,7 +98,7 @@ const setOptionBtn = () => {
             a.style.top = "0vh";
             a.style.left = "50vw";
             a.style.width = "50vw";
-            a.style.height = "50vh";
+            a.style.height = "30vh";
             a.onclick = ev => {
                 a.setSelectionRange(0, save.length);
             };
@@ -109,22 +109,83 @@ const setOptionBtn = () => {
     });
     list.add({
         center: () => "import",
-        push: (elm) => __awaiter(this, void 0, void 0, function* () {
-            removeElements();
-            const a = document.createElement("input");
+        push: (() => {
+            let readText;
+            const a = document.createElement("textarea");
             a.id = "importText";
-            a.type = "file";
+            a.readOnly = true;
             a.style.position = "fixed";
             a.style.top = "0vh";
             a.style.left = "50vw";
             a.style.width = "50vw";
-            a.style.height = "50vh";
-            // a.onclick = ev=>{
-            //     a.focus();
-            //     console.log( document.execCommand("paste", true, "a") );
-            // };
-            document.body.appendChild(a);
-        }),
+            a.style.height = "30vh";
+            const xhr = new XMLHttpRequest();
+            xhr.onload = req => {
+                const res = xhr.responseText;
+                a.readOnly = false;
+                a.innerText = res;
+                a.readOnly = true;
+                readText = res;
+            };
+            const inputParent = document.createElement("div");
+            inputParent.id = "inputParent";
+            inputParent.style.position = "fixed";
+            inputParent.style.top = "30vh";
+            inputParent.style.left = "50vw";
+            inputParent.style.width = "50vw";
+            inputParent.style.height = "20vh";
+            inputParent.style.background = "gray";
+            const b = document.createElement("input");
+            b.id = "chooseImportFile";
+            b.type = "file";
+            b.style.position = "fixed";
+            b.style.top = "30vh";
+            b.style.left = "50vw";
+            b.style.width = "50vw";
+            b.style.height = "20vh";
+            b.style.fontSize = "4rem";
+            b.addEventListener("change", ev => {
+                xhr.abort();
+                if (b.files && b.files[0]) {
+                    const blob = new Blob([b.files[0]]);
+                    const url = URL.createObjectURL(blob);
+                    xhr.open("GET", url);
+                    xhr.send();
+                }
+            });
+            inputParent.appendChild(b);
+            const runImport = document.createElement("button");
+            runImport.id = "runImport";
+            runImport.style.position = "fixed";
+            runImport.style.top = "50vh";
+            runImport.style.left = "50vw";
+            runImport.style.width = "50vw";
+            runImport.style.height = "20vh";
+            runImport.style.fontSize = "4rem";
+            runImport.innerText = "実行";
+            runImport.onclick = ev => {
+                if (!readText) {
+                    Util.msg.set("ファイルが選択されていません");
+                    return;
+                }
+                const split = readText.split("+");
+                const arr = new Uint8Array(split.length);
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i] = Number.parseInt(split[i], 36);
+                }
+                const decoded = new TextDecoder().decode(arr);
+                if (SaveData.load(decoded)) {
+                    Util.msg.set("import成功");
+                    removeElements();
+                }
+            };
+            return (elm) => __awaiter(this, void 0, void 0, function* () {
+                removeElements();
+                document.body.appendChild(a);
+                document.body.appendChild(inputParent);
+                document.body.appendChild(runImport);
+            });
+        })(),
     });
     if (Debug.debugMode) {
         list.add({
