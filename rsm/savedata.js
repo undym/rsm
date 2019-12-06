@@ -42,7 +42,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 26, 11);
+Version.NOW = new Version(0, 26, 12);
 Version.updateInfo = [
     "(0.25.6)バグ修正",
     "(0.25.7)ジョブ追加、他",
@@ -59,6 +59,7 @@ Version.updateInfo = [
     "(0.26.9)importttest",
     "(0.26.10)importttest",
     "(0.26.11)importttest",
+    "(0.26.12)セーブデータ少し最適化",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -301,12 +302,14 @@ const storagePlayer = (save, json) => {
         const u = p.ins;
         ioBool(save, obj, "exists", u.exists, load => u.exists = load);
         ioBool(save, obj, "dead", u.dead, load => u.dead = load);
-        const prmObj = ioObject(save, obj, "Prm");
-        for (const prm of Prm.values) {
-            ioInt(save, prmObj, `${prm}_b`, u.prm(prm).base | 0, load => u.prm(prm).base = load);
-            ioInt(save, prmObj, `${prm}_e`, u.prm(prm).eq | 0, load => u.prm(prm).eq = load);
-            //戦闘中にセーブはできないので、battleを保存する必要はない
-            // ioInt(save, obj, `${prm}_battle`, u.prm(prm).battle|0, load=>u.prm(prm).battle = load);
+        if (!saveDataVersion.isNewerThan(new Version(0, 26, 11))) {
+            const prmObj = ioObject(save, obj, "Prm");
+            for (const prm of Prm.values) {
+                ioInt(save, prmObj, `${prm}_b`, u.prm(prm).base | 0, load => u.prm(prm).base = load);
+                //戦闘中にセーブはできないので、battleを保存する必要はない
+                //2019/12/07追記:eも必要ない
+                // ioInt(save, obj, `${prm}_battle`, u.prm(prm).battle|0, load=>u.prm(prm).battle = load);
+            }
         }
         for (let i = 0; i < Unit.EAR_NUM; i++) {
             ioStr(save, obj, `eqear_${i}`, u.getEqEar(i).uniqueName, load => {
@@ -393,6 +396,23 @@ const storagePlayer = (save, json) => {
             }
         }
     }
+    if (saveDataVersion.isNewerThan(new Version(0, 26, 11))) {
+        const prmObj = ioObject(save, json, "Prm");
+        const digit = 4;
+        for (const prm of Prm.values) {
+            const prms = Player.values.map(p => p.ins.prm(prm).base);
+            const value = to36Radix(digit, prms);
+            ioStr(save, prmObj, `${prm}`, value, load => {
+                Player.values.forEach((p, index) => {
+                    if (index * digit >= load.length) {
+                        return;
+                    }
+                    p.ins.prm(prm).base = parse36Radix(digit, load, index);
+                });
+            });
+        }
+    }
+    Player.values.forEach(p => p.ins.equip());
     {
         const activeTecObj = ioObject(save, json, "ActiveTec");
         const digit = 1;
@@ -468,8 +488,15 @@ const storagePlayer = (save, json) => {
     }
 };
 const storageMix = (save, json) => {
-    for (const mix of Mix.values) {
-        ioInt(save, json, `${mix.uniqueName}_c`, mix.count, load => mix.count = load);
+    if (saveDataVersion.isNewerThan(new Version(0, 26, 11))) {
+        for (const mix of Mix.values) {
+            ioInt(save, json, `${mix.uniqueName}`, mix.count, load => mix.count = load);
+        }
+    }
+    else {
+        for (const mix of Mix.values) {
+            ioInt(save, json, `${mix.uniqueName}_c`, mix.count, load => mix.count = load);
+        }
     }
 };
 const storagePlayData = (save, json) => {

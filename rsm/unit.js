@@ -622,6 +622,7 @@ export class PUnit extends Unit {
                     for (let ei = 0; ei < this.tecs.length; ei++) {
                         if (this.tecs[ei] === Tec.empty) {
                             this.tecs[ei] = learnings[i];
+                            this.equip();
                             break;
                         }
                     }
