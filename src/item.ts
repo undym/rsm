@@ -260,9 +260,11 @@ export namespace Item{
         Unit.healHP(target, hp);
 
         Sound.KAIFUKU.play();
-        FX_回復( target.imgCenter );
         if(SceneType.now === SceneType.BATTLE){
+            FX_回復( target.imgCenter );
             Util.msg.set(`${target.name}は生き返った`); await wait();
+        }else{
+            FX_回復( target.boxCenter );
         }
     }
     const itemHealHP = async(target:Unit, value:number)=>{
@@ -270,8 +272,12 @@ export namespace Item{
         Unit.healHP(target, value);
 
         Sound.KAIFUKU.play();
-        FX_回復( target.imgCenter );
-        if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();}
+        if(SceneType.now === SceneType.BATTLE){
+            FX_回復( target.imgCenter );
+            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+        }else{
+            FX_回復( target.boxCenter );
+        }
     };
     const itemHealMP = async(target:Unit, value:number)=>{
         value = value|0;
@@ -296,7 +302,7 @@ export namespace Item{
         constructor(){super({uniqueName:"サンタクララ薬", info:"一体をHP1で蘇生",
                                 type:ItemType.蘇生, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    itemRevive( target, 1 );
+                                    await itemRevive( target, 1 );
                                 }
         })}
     };

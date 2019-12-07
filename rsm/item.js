@@ -218,20 +218,26 @@ Item.DEF_NUM_LIMIT = 9999;
         target.hp = 0;
         Unit.healHP(target, hp);
         Sound.KAIFUKU.play();
-        FX_回復(target.imgCenter);
         if (SceneType.now === SceneType.BATTLE) {
+            FX_回復(target.imgCenter);
             Util.msg.set(`${target.name}は生き返った`);
             yield wait();
+        }
+        else {
+            FX_回復(target.boxCenter);
         }
     });
     const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healHP(target, value);
         Sound.KAIFUKU.play();
-        FX_回復(target.imgCenter);
         if (SceneType.now === SceneType.BATTLE) {
+            FX_回復(target.imgCenter);
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
             yield wait();
+        }
+        else {
+            FX_回復(target.boxCenter);
         }
     });
     const itemHealMP = (target, value) => __awaiter(this, void 0, void 0, function* () {
@@ -262,7 +268,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "サンタクララ薬", info: "一体をHP1で蘇生",
                 type: ItemType.蘇生, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    itemRevive(target, 1);
+                    yield itemRevive(target, 1);
                 })
             });
         }
