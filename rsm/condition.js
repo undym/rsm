@@ -224,9 +224,7 @@ Condition._valueOf = new Map();
         constructor() { super("癒", ConditionType.GOOD_LV3); }
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = unit.prm(Prm.MAX_HP).total * 0.1;
-                Util.msg.set("＞癒", Color.CYAN.bright);
-                unit.hp += value;
+                Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.1);
                 unit.addConditionValue(this, -1);
             });
         }
@@ -235,9 +233,7 @@ Condition._valueOf = new Map();
         constructor() { super("治", ConditionType.GOOD_LV3); }
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = unit.prm(Prm.MAX_HP).total * 0.2;
-                Util.msg.set("＞癒", Color.CYAN.bright);
-                unit.hp += value;
+                Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.2);
                 unit.addConditionValue(this, -1);
             });
         }
