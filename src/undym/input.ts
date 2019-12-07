@@ -89,8 +89,8 @@ export class Input{
             if(ev.touches.length >= 2){return;}
 
             setXYTouch(ev);
-            const xRatio = Math.abs( (this.x - this.touchStart.x) / this.canvas.width );
-            const yRatio = Math.abs( (this.y - this.touchStart.y) / this.canvas.height );
+            const xRatio = Math.abs( this.x - this.touchStart.x );
+            const yRatio = Math.abs( this.y - this.touchStart.y );
             if(xRatio <= 0.05 && yRatio <= 0.05){
                 this._click = true;
             }
