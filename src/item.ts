@@ -568,91 +568,130 @@ export namespace Item{
     export const                         呪素:Item = new class extends Item{
         constructor(){super({uniqueName:"呪素", info:"戦闘時、10ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
+                                use:async(user,target)=>{
+                                    Sound.bom.play();
+                                    await target.doDmg(new Dmg({absPow:10}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         呪:Item = new class extends Item{
         constructor(){super({uniqueName:"呪", info:"戦闘時、50ダメージを与える",
                                 type:ItemType.ダメージ, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:50})),
+                                use:async(user,target)=>{
+                                    Sound.bom.play();
+                                    await target.doDmg(new Dmg({absPow:50}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         呪詛:Item = new class extends Item{
         constructor(){super({uniqueName:"呪詛", info:"戦闘時、150ダメージを与える",
                                 type:ItemType.ダメージ, rank:2, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:150})),
+                                use:async(user,target)=>{
+                                    Sound.bom.play();
+                                    await target.doDmg(new Dmg({absPow:150}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         旧式ミサイル:Item = new class extends Item{
         constructor(){super({uniqueName:"旧式ミサイル", info:"戦闘時、250ダメージを与える",
                                 type:ItemType.ダメージ, rank:3, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:250})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:250}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         帝国式ミサイル:Item = new class extends Item{
         constructor(){super({uniqueName:"帝国式ミサイル", info:"戦闘時、350ダメージを与える",
                                 type:ItemType.ダメージ, rank:4, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:350})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:350}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         ハル式ミサイル:Item = new class extends Item{
         constructor(){super({uniqueName:"ハル式ミサイル", info:"戦闘時、450ダメージを与える",
                                 type:ItemType.ダメージ, rank:5, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:450})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:450}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         バスターミサイル:Item = new class extends Item{
         constructor(){super({uniqueName:"バスターミサイル", info:"戦闘時、1000ダメージを与える",
                                 type:ItemType.ダメージ, rank:7, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:1000})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:1000}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         鬼火:Item = new class extends Item{
         constructor(){super({uniqueName:"鬼火", info:"戦闘時、敵全体に10ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:10})),
+                                use:async(user,target)=>{
+                                    Sound.bom.play();
+                                    await target.doDmg(new Dmg({absPow:10}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         ウィルスα:Item = new class extends Item{
         constructor(){super({uniqueName:"ウィルスα", info:"戦闘時、敵全体に25ダメージを与える",
                                 type:ItemType.ダメージ, rank:0, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:25})),
+                                use:async(user,target)=>{
+                                    Sound.bom.play();
+                                    await target.doDmg(new Dmg({absPow:25}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         手榴弾:Item = new class extends Item{
         constructor(){super({uniqueName:"手榴弾", info:"戦闘時、敵全体に100ダメージを与える",
                                 type:ItemType.ダメージ, rank:1, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:100})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:100}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         鬼火のダイナマイト:Item = new class extends Item{
         constructor(){super({uniqueName:"鬼火のダイナマイト", info:"戦闘時、敵全体に200ダメージを与える",
                                 type:ItemType.ダメージ, rank:3, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:200})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:200}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         セクシーダイナマイツ:Item = new class extends Item{
         constructor(){super({uniqueName:"セクシーダイナマイツ", info:"戦闘時、敵全体に1000ダメージを与える",
                                 type:ItemType.ダメージ, rank:8, drop:ItemDrop.BOX, targetings: Targeting.ALL,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:1000})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:1000}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };
     export const                         バスターマシン3号:Item = new class extends Item{
         constructor(){super({uniqueName:"バスターマシン3号", info:"戦闘時、敵味方全体に30000ダメージを与える",
                                 type:ItemType.ダメージ, rank:10, drop:ItemDrop.BOX, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
-                                use:async(user,target)=>await target.doDmg(new Dmg({absPow:30000})),
+                                use:async(user,target)=>{
+                                    Sound.bom2.play();
+                                    await target.doDmg(new Dmg({absPow:3000}))
+                                },
         })}
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.BATTLE;}
     };

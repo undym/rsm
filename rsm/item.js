@@ -614,7 +614,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "呪素", info: "戦闘時、10ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom.play();
+                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -623,7 +626,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "呪", info: "戦闘時、50ダメージを与える",
                 type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 50 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom.play();
+                    yield target.doDmg(new Dmg({ absPow: 50 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -632,7 +638,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "呪詛", info: "戦闘時、150ダメージを与える",
                 type: ItemType.ダメージ, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 150 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom.play();
+                    yield target.doDmg(new Dmg({ absPow: 150 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -641,7 +650,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "旧式ミサイル", info: "戦闘時、250ダメージを与える",
                 type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 250 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 250 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -650,7 +662,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "帝国式ミサイル", info: "戦闘時、350ダメージを与える",
                 type: ItemType.ダメージ, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 350 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 350 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -659,7 +674,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ハル式ミサイル", info: "戦闘時、450ダメージを与える",
                 type: ItemType.ダメージ, rank: 5, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 450 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 450 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -668,7 +686,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "バスターミサイル", info: "戦闘時、1000ダメージを与える",
                 type: ItemType.ダメージ, rank: 7, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1000 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 1000 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -677,7 +698,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "鬼火", info: "戦闘時、敵全体に10ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 10 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom.play();
+                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -686,7 +710,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ウィルスα", info: "戦闘時、敵全体に25ダメージを与える",
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 25 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom.play();
+                    yield target.doDmg(new Dmg({ absPow: 25 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -695,7 +722,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に100ダメージを与える",
                 type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 100 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 100 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -704,7 +734,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "鬼火のダイナマイト", info: "戦闘時、敵全体に200ダメージを与える",
                 type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 200 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 200 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -713,7 +746,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "セクシーダイナマイツ", info: "戦闘時、敵全体に1000ダメージを与える",
                 type: ItemType.ダメージ, rank: 8, drop: ItemDrop.BOX, targetings: Targeting.ALL,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 1000 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 1000 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }
@@ -722,7 +758,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "バスターマシン3号", info: "戦闘時、敵味方全体に30000ダメージを与える",
                 type: ItemType.ダメージ, rank: 10, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield target.doDmg(new Dmg({ absPow: 30000 })); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.bom2.play();
+                    yield target.doDmg(new Dmg({ absPow: 3000 }));
+                }),
             });
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.BATTLE; }

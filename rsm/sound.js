@@ -67,6 +67,10 @@ Sound.MAX_VOLUME = 10;
     Sound.blood = new Sound("sound/blood.mp3");
     /**瞑想. */
     Sound.bpup = new Sound("sound/bpup.mp3");
+    /**小規模攻撃アイテム. */
+    Sound.bom = new Sound("sound/bom.mp3");
+    /**ミサイル系攻撃. */
+    Sound.bom2 = new Sound("sound/bom2.mp3");
     Sound.chain = new Sound("sound/chain.mp3");
     /**休む. */
     Sound.camp = new Sound("sound/camp.mp3");

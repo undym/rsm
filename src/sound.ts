@@ -79,6 +79,10 @@ export namespace Sound{
     export const blood      = new Sound("sound/blood.mp3");
     /**瞑想. */
     export const bpup       = new Sound("sound/bpup.mp3");
+    /**小規模攻撃アイテム. */
+    export const bom        = new Sound("sound/bom.mp3");
+    /**ミサイル系攻撃. */
+    export const bom2       = new Sound("sound/bom2.mp3");
     export const chain      = new Sound("sound/chain.mp3");
     /**休む. */
     export const camp       = new Sound("sound/camp.mp3");
