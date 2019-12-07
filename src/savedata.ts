@@ -97,7 +97,7 @@ export class SaveData{
         window.localStorage.setItem(this.data, JSON.stringify(json));
         Util.msg.set("セーブしました", Color.CYAN.bright);
 
-        // console.log(JSON.stringify(json, undefined, 4));
+        console.log(JSON.stringify(json, undefined, 4));
         // console.log(JSON.stringify(json));
     }
     /**jsonStr指定でインポート. */
