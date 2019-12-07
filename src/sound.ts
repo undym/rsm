@@ -103,6 +103,7 @@ export namespace Sound{
     export const drain      = new Sound("sound/kyuusyuu.mp3");
     /**合成. */
     export const made       = new Sound("sound/made.mp3");
+    export const no         = new Sound("sound/no.mp3");
     /**魔法攻撃. */
     export const MAGIC      = new Sound("sound/MAGIC.mp3");
     /**story. */

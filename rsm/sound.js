@@ -91,6 +91,7 @@ Sound.MAX_VOLUME = 10;
     Sound.drain = new Sound("sound/kyuusyuu.mp3");
     /**合成. */
     Sound.made = new Sound("sound/made.mp3");
+    Sound.no = new Sound("sound/no.mp3");
     /**魔法攻撃. */
     Sound.MAGIC = new Sound("sound/MAGIC.mp3");
     /**story. */

@@ -125,6 +125,7 @@ class EventImg {
                         open();
                     }
                     else {
+                        Sound.no.play();
                         Util.msg.set("鍵を持っていない");
                     }
                 })));
@@ -177,7 +178,7 @@ class EventImg {
                     yield DungeonEvent.OPEN_TREASURE.happen();
                 }
                 else {
-                    Sound.PUNCH.play();
+                    Sound.no.play();
                     Util.msg.set("鍵を持っていない");
                 }
             })));

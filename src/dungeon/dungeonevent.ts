@@ -128,6 +128,7 @@ export namespace DungeonEvent{
                                     }
                                     open();
                                 }else{
+                                    Sound.no.play();
                                     Util.msg.set("鍵を持っていない");
                                 }
                             }))
@@ -193,7 +194,7 @@ export namespace DungeonEvent{
                                         Sound.TRAGER.play();
                                         await DungeonEvent.OPEN_TREASURE.happen();
                                     }else{
-                                        Sound.PUNCH.play();
+                                        Sound.no.play();
                                         Util.msg.set("鍵を持っていない");
                                     }
                                 }))
