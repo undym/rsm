@@ -372,7 +372,11 @@ export const FX_暗黒 = (center:{x:number, y:number})=>{
             const x = (start.x * (over - count2) + end.x * count2) / over;
             const y = (start.y * (over - count2) + end.y * count2) / over;
 
-            for(let i = 0; i < 13; i++){
+            for(let i = 0; i < 6; i++){
+                const vec = 1 + Math.random() * 12 * (1 - count / over);
+                addParticle({x:x, y:y}, vec, /*size*/0.01 + 0.01 * Math.random() * (1 - count / over), Color.RED);
+            }
+            for(let i = 0; i < 6; i++){
                 const vec = 1 + Math.random() * 12 * (1 - count / over);
                 const c = 0.1 + Math.random() * 0.2;
                 addParticle({x:x, y:y}, vec, /*size*/0.01 + 0.01 * Math.random() * (1 - count / over), new Color(c + Math.random() * 0.4,c,c));
@@ -424,7 +428,7 @@ export const FX_鎖術 = (attacker:{x:number, y:number}, target:{x:number, y:num
         const points:{x:number,y:number}[] = [];
         for(let i = 0; i < loop; i++){
             const rad = Math.PI * 2 * i / loop * 2.5 + count * 0.6;
-            const r = 40 * i / loop + 40 * Math.random();
+            const r = 20 * i / loop + 70 * Math.random();
             let x = target.x + Math.cos(rad) * r * Graphics.dotW;
             let y = target.y + Math.sin(rad) * r * Graphics.dotH;
             points.push({x:x, y:y});
@@ -681,10 +685,10 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
             e.color = new Color(data[i] / 255, data[i+1] / 255, data[i+2] / 255, data[i+3] / 255);
 
             const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
-            e.vx = Math.cos(rad) * Graphics.dotW * 0.5;
-            e.vy = Math.sin(rad) * Graphics.dotH * 0.5;
+            e.vx = Math.cos(rad) * Graphics.dotW * 0.6;
+            e.vy = Math.sin(rad) * Graphics.dotH * 0.6;
 
-            e.lifeTime = (30 + Math.random() * 70)|0;
+            e.lifeTime = (10 + Math.random() * 80)|0;
 
             elms.push(e);
         }

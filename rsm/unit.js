@@ -71,6 +71,7 @@ Prm.BP = new Prm("BP");
 Prm.EP = new Prm("EP");
 Prm.MAX_EP = new Prm("最大EP");
 Prm.SP = new Prm("SP");
+Prm.GHOST = new Prm("GHOST");
 export class Unit {
     //---------------------------------------------------------
     //
@@ -192,6 +193,11 @@ export class Unit {
     set exp(value) { this.prm(Prm.EXP).base = value | 0; }
     get bp() { return this.prm(Prm.BP).base; }
     set bp(value) { this.prm(Prm.BP).base = value | 0; }
+    get ghost() { return this.prm(Prm.GHOST).base; }
+    set ghost(value) {
+        const lim = 999999;
+        this.prm(Prm.GHOST).base = value < lim ? value : lim;
+    }
     fixPrm(checkPrm, maxPrm) {
         if (this.prm(checkPrm).base > this.prm(maxPrm).total) {
             this.prm(checkPrm).base = this.prm(maxPrm).total;
@@ -312,6 +318,9 @@ export class Unit {
     battleStart() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.battleStart(this); })); });
     }
+    deadPhaseStart() {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.deadPhaseStart(this); })); });
+    }
     phaseStart(pForce) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseStart(this, pForce); })); });
     }
@@ -334,7 +343,7 @@ export class Unit {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenDead(this); })); });
     }
     whenAnyoneDead(deadUnit) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenAnyoneDead(deadUnit, this); })); });
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenAnyoneDead(this, deadUnit); })); });
     }
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseEnd(this); })); });

@@ -174,6 +174,9 @@ export class BattleScene extends Scene {
                 yield wait();
             }
             let attacker = Battle.getPhaseUnit();
+            if (attacker.exists && attacker.dead) {
+                yield attacker.deadPhaseStart();
+            }
             if (!attacker.exists || attacker.dead) {
                 yield this.phaseEnd();
                 return;

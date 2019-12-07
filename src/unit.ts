@@ -69,7 +69,8 @@ export class Prm{
     static readonly EP      = new Prm("EP");
     static readonly MAX_EP  = new Prm("最大EP");
     static readonly SP      = new Prm("SP");
-
+    
+    static readonly GHOST   = new Prm("GHOST");
 
 
     readonly ordinal:number;
@@ -248,6 +249,12 @@ export abstract class Unit{
     get bp():number      {return this.prm(Prm.BP).base;}
     set bp(value:number) {this.prm(Prm.BP).base = value|0;}
 
+    get ghost():number   {return this.prm(Prm.GHOST).base;}
+    set ghost(value:number){
+        const lim = 999999;
+        this.prm(Prm.GHOST).base = value < lim ? value : lim;
+    }
+
     private fixPrm(checkPrm:Prm, maxPrm:Prm){
         if(this.prm(checkPrm).base > this.prm(maxPrm).total){this.prm(checkPrm).base = this.prm(maxPrm).total;}
         if(this.prm(checkPrm).base < 0)                     {this.prm(checkPrm).base = 0;}
@@ -359,6 +366,7 @@ export abstract class Unit{
         })();
     }
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
+    async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
     async beforeDoAtk(action:Action, target:Unit, dmg:Dmg)  {await this.force(async f=> await f.beforeDoAtk(action, this, target, dmg));}
     async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
@@ -366,7 +374,7 @@ export abstract class Unit{
     async afterBeAtk(action:Action, attacker:Unit, dmg:Dmg) {await this.force(async f=> await f.afterBeAtk(action, attacker, this, dmg));}
     async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
     async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
-    async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(deadUnit, this))}
+    async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
     async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
 
     protected async force(forceDlgt:(f:Force)=>Promise<void>){

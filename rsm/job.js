@@ -222,7 +222,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.ユグドラシル];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル];
         }
     };
     Job.毒使い = new class extends Job {
@@ -340,20 +340,20 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+            e.tecs = [Tec.暗黒剣, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.殴る, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
         }
     };
     Job.霊術戦士 = new class extends Job {
         constructor() {
             super({ uniqueName: "霊術戦士", info: "",
-                appearLv: 75, img: new Img("img/unit/unit20.png"),
+                appearLv: 80, img: new Img("img/unit/unit20.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
                 growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
-                learningTecs: () => [],
+                learningTecs: () => [Tec.怨霊使い, Tec.鎌, Tec.怨霊回復],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+            e.tecs = [Tec.怨霊使い, Tec.鎌, Tec.怨霊回復, Tec.殴る, Tec.死神の鎌, Tec.鎌, Tec.鎌, Tec.パワーファクト];
         }
     };
     Job.暗黒戦士 = new class extends Job {
@@ -379,7 +379,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.暗黒剣, Tec.吸血, Tec.殴る, Tec.ヤクシャ, Tec.吸血, Tec.吸血, Tec.VAMPIRE_VLOODY_STAR];
+            e.tecs = [Tec.槍, Tec.槍, Tec.槍, Tec.殴る, Tec.殴る, Tec.槍, Tec.空中浮遊, Tec.煙幕];
         }
     };
     Job.テンプルナイト = new class extends Job {
@@ -447,6 +447,32 @@ Job.DEF_LVUP_EXP = 10;
             e.setCondition(c, 5);
         }
     };
+    Job.考古学者 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "考古学者", info: "未実装",
+                appearLv: 60, img: new Img("img/unit/unit26.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.CHN, 1], [Prm.PST, 1]],
+                learningTecs: () => [],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.念力, Tec.スネイク, Tec.射る, Tec.撃つ, Tec.殴る, Tec.殴る, Tec.殴る];
+        }
+    };
+    Job.落武者 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "落武者", info: "",
+                appearLv: 100, img: new Img("img/unit/unit27.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.STR, 1], [Prm.DRK, 1]],
+                learningTecs: () => [Tec.武者鎌, Tec.成仏, Tec.怨霊回復3, Tec.アンデッド],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.怨霊使い, Tec.鎌, Tec.武者鎌, Tec.時雨, Tec.五月雨, Tec.殴る, Tec.殴る, Tec.成仏];
+        }
+    };
     //--------------------------------------------------
     //
     //獣
@@ -459,7 +485,7 @@ Job.DEF_LVUP_EXP = 10;
                 appearLv: 0, img: new Img("img/unit/unit100.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 1,
                 growthPrms: () => [[Prm.ARR, 1]],
-                learningTecs: () => [],
+                learningTecs: () => [Tec.空中浮遊, Tec.射る],
                 beast: true,
             });
         }

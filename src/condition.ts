@@ -288,22 +288,25 @@ export namespace Condition{
     export const             毒:Condition = new class extends Condition{
         constructor(){super("毒", ConditionType.BAD_LV1);}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
-            const value = unit.getConditionValue(this);
-            if(value < unit.prm(Prm.DRK).total + 1){
-                unit.removeCondition(this);
-                Util.msg.set(`${unit.name}の<毒>が解除された`); await wait();
-                return;
+            {
+                const value = unit.getConditionValue(this);
+                if(value < unit.prm(Prm.DRK).total + 1){
+                    unit.removeCondition(this);
+                    Util.msg.set(`${unit.name}の<毒>が解除された`); await wait();
+                    return;
+                }
             }
-        }
-        async phaseEnd(unit:Unit){
-            const value = unit.getConditionValue(this);
-            let dmg = new Dmg({absPow:value});
-
-            Util.msg.set("＞毒", Color.RED);
-
-            await unit.doDmg(dmg); await wait();
-
-            unit.setCondition(this, value * 0.666);
+            
+            {
+                const value = unit.getConditionValue(this);
+                let dmg = new Dmg({absPow:value});
+    
+                Util.msg.set("＞毒", Color.RED);
+    
+                await unit.doDmg(dmg); await wait();
+    
+                unit.setCondition(this, value * 0.666);
+            }
         }
     };
     //--------------------------------------------------------------------------

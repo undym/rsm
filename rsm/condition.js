@@ -293,23 +293,23 @@ Condition._valueOf = new Map();
         constructor() { super("毒", ConditionType.BAD_LV1); }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = unit.getConditionValue(this);
-                if (value < unit.prm(Prm.DRK).total + 1) {
-                    unit.removeCondition(this);
-                    Util.msg.set(`${unit.name}の<毒>が解除された`);
-                    yield wait();
-                    return;
+                {
+                    const value = unit.getConditionValue(this);
+                    if (value < unit.prm(Prm.DRK).total + 1) {
+                        unit.removeCondition(this);
+                        Util.msg.set(`${unit.name}の<毒>が解除された`);
+                        yield wait();
+                        return;
+                    }
                 }
-            });
-        }
-        phaseEnd(unit) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const value = unit.getConditionValue(this);
-                let dmg = new Dmg({ absPow: value });
-                Util.msg.set("＞毒", Color.RED);
-                yield unit.doDmg(dmg);
-                yield wait();
-                unit.setCondition(this, value * 0.666);
+                {
+                    const value = unit.getConditionValue(this);
+                    let dmg = new Dmg({ absPow: value });
+                    Util.msg.set("＞毒", Color.RED);
+                    yield unit.doDmg(dmg);
+                    yield wait();
+                    unit.setCondition(this, value * 0.666);
+                }
             });
         }
     };

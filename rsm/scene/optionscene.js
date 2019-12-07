@@ -42,9 +42,9 @@ const setOptionBtn = () => {
     const removeElements = () => {
         for (const id of ["export", "importText", "inputParent", "runImport"]) {
             for (;;) {
-                const exp = document.getElementById(id);
-                if (exp) {
-                    document.body.removeChild(exp);
+                const e = document.getElementById(id);
+                if (e) {
+                    document.body.removeChild(e);
                 }
                 else {
                     break;

@@ -6,6 +6,7 @@ export class Force{
     equip(unit:Unit){};
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
+    async deadPhaseStart(unit:Unit){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
@@ -17,7 +18,7 @@ export class Force{
      * 他のキャラクターのwhenAnyoneDeadによって死亡が回避された場合でも、残りの全ての生存キャラクター分呼ばれるので、
      * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
      * */
-    async whenAnyoneDead(deadUnit:Unit, me:Unit){}
+    async whenAnyoneDead(me:Unit, deadUnit:Unit){}
     async phaseEnd(unit:Unit){}
 }
 

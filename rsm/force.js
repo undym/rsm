@@ -16,6 +16,9 @@ export class Force {
     phaseStart(unit, pForce) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
+    deadPhaseStart(unit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     beforeDoAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
@@ -39,7 +42,7 @@ export class Force {
      * 他のキャラクターのwhenAnyoneDeadによって死亡が回避された場合でも、残りの全ての生存キャラクター分呼ばれるので、
      * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
      * */
-    whenAnyoneDead(deadUnit, me) {
+    whenAnyoneDead(me, deadUnit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     phaseEnd(unit) {
