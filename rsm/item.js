@@ -583,7 +583,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "火の尻尾", info: "一体を＜練＞状態にする",
                 type: ItemType.状態, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return Unit.setCondition(target, Condition.練, 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, 1);
+                }),
             });
         }
     };
@@ -591,7 +594,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "燃える髪", info: "一体を＜練2＞状態にする",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return Unit.setCondition(target, Condition.練, 2); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, 2);
+                }),
             });
         }
     };
@@ -599,7 +605,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "赤き髪の目", info: "一体を＜練3＞状態にする",
                 type: ItemType.状態, rank: 5, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return Unit.setCondition(target, Condition.練, 3); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, 3);
+                }),
             });
         }
     };
@@ -607,7 +616,10 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ジルの血", info: "一体を＜練4＞状態にする",
                 type: ItemType.状態, rank: 7, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return Unit.setCondition(target, Condition.練, 4); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    Unit.setCondition(target, Condition.練, 4);
+                }),
             });
         }
     };

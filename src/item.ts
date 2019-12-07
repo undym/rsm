@@ -545,25 +545,37 @@ export namespace Item{
     export const                         火の尻尾:Item = new class extends Item{
         constructor(){super({uniqueName:"火の尻尾", info:"一体を＜練＞状態にする",
                                 type:ItemType.状態, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>Unit.setCondition(target, Condition.練, 1),
+                                use:async(user,target)=>{
+                                    Sound.up.play();
+                                    Unit.setCondition(target, Condition.練, 1);
+                                },
         })}
     };
     export const                         燃える髪:Item = new class extends Item{
         constructor(){super({uniqueName:"燃える髪", info:"一体を＜練2＞状態にする",
                                 type:ItemType.状態, rank:3, drop:ItemDrop.BOX,
-                                use:async(user,target)=>Unit.setCondition(target, Condition.練, 2),
+                                use:async(user,target)=>{
+                                    Sound.up.play();
+                                    Unit.setCondition(target, Condition.練, 2);
+                                },
         })}
     };
     export const                         赤き髪の目:Item = new class extends Item{
         constructor(){super({uniqueName:"赤き髪の目", info:"一体を＜練3＞状態にする",
                                 type:ItemType.状態, rank:5, drop:ItemDrop.BOX,
-                                use:async(user,target)=>Unit.setCondition(target, Condition.練, 3),
+                                use:async(user,target)=>{
+                                    Sound.up.play();
+                                    Unit.setCondition(target, Condition.練, 3);
+                                },
         })}
     };
     export const                         ジルの血:Item = new class extends Item{
         constructor(){super({uniqueName:"ジルの血", info:"一体を＜練4＞状態にする",
                                 type:ItemType.状態, rank:7, drop:ItemDrop.BOX,
-                                use:async(user,target)=>Unit.setCondition(target, Condition.練, 4),
+                                use:async(user,target)=>{
+                                    Sound.up.play();
+                                    Unit.setCondition(target, Condition.練, 4);
+                                },
         })}
     };
     //-----------------------------------------------------------------
