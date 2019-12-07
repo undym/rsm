@@ -57,7 +57,7 @@ Version.updateInfo = [
     "(0.26.12)セーブデータ少し最適化",
     "(0.26.13)セーブデータ少し最適化",
     "(0.26.14)タッチテスト",
-    "(0.26.15)タッチテスト",
+    "(0.26.15)タッチテストa",
 ];
 let saveDataVersion;
 export class SaveData {
