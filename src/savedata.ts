@@ -17,7 +17,7 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,26,12);
+    static readonly NOW = new Version(0,26,13);
     static readonly updateInfo =    [
                                         "(0.25.6)バグ修正",
                                         "(0.25.7)ジョブ追加、他",
@@ -35,6 +35,7 @@ export class Version{
                                         "(0.26.10)importttest",
                                         "(0.26.11)importttest",
                                         "(0.26.12)セーブデータ少し最適化",
+                                        "(0.26.13)セーブデータ少し最適化",
                                     ];
 
     private values:number[];
@@ -72,6 +73,8 @@ export class Version{
 }
 
 
+type ioType = "save"|"load";
+
 
 let saveDataVersion:Version;
 
@@ -89,12 +92,12 @@ export class SaveData{
     /** */
     static save(){
         let json:any = {};
-        this.io(/*save*/true, json);
+        this.io("save", json);
 
         window.localStorage.setItem(this.data, JSON.stringify(json));
         Util.msg.set("セーブしました", Color.CYAN.bright);
 
-        // console.log(JSON.stringify(json, undefined, 4));
+        console.log(JSON.stringify(json, undefined, 4));
         // console.log(JSON.stringify(json));
     }
     /**jsonStr指定でインポート. */
@@ -105,7 +108,7 @@ export class SaveData{
         if(jsonStr){
             try{
                 const json = JSON.parse( jsonStr );
-                this.io(/*save*/false, json);
+                this.io("load", json);
                 return true;
             }catch(e){
                 Util.msg.set("セーブデータのパース失敗");
@@ -118,7 +121,7 @@ export class SaveData{
     /** */
     static export():string{
         let json:any = {};
-        this.io(/*save*/true, json);
+        this.io("save", json);
         return JSON.stringify( json );
     }
     // /**受け取ったstringをUint8Arrayにして返す。 */
@@ -133,77 +136,131 @@ export class SaveData{
     //     return 
     // }
 
-    private static io(save:boolean, json:any){
-        storageVersion(save,         ioObject(save, json, "Version"));
-        storageItem(save,            ioObject(save, json, "Item"));
-        storageEq(save,              ioObject(save, json, "Eq"));
-        storageEqEar(save,           ioObject(save, json, "EqEar"));
-        storageDungeon(save,         ioObject(save, json, "Dungeon"));
-        storagePlayer(save,          ioObject(save, json, "Player"));
-        storageMix(save,             ioObject(save, json, "Mix"));
-        storagePlayData(save,        ioObject(save, json, "PlayData"));
-        storageCollectingSkill(save, ioObject(save, json, "CollectingSkill"));
-        storagePartySkill(save,      ioObject(save, json, "PartySkill"));
+    private static io(type:ioType, json:any){
+        storageVersion(type,         ioObject(type, json, "Version"));
+        storageItem(type,            ioObject(type, json, "Item"));
+        storageEq(type,              ioObject(type, json, "Eq"));
+        storageEqEar(type,           ioObject(type, json, "EqEar"));
+        storageDungeon(type,         ioObject(type, json, "Dungeon"));
+        storagePlayer(type,          ioObject(type, json, "Player"));
+        storageMix(type,             ioObject(type, json, "Mix"));
+        storagePlayData(type,        ioObject(type, json, "PlayData"));
+        storageCollectingSkill(type, ioObject(type, json, "CollectingSkill"));
+        storagePartySkill(type,      ioObject(type, json, "PartySkill"));
 
     }
 }
 
 
-const ioInt = (save:boolean, json:any, key:string, value:number, loadAction:(load:number)=>void):void=>{
-    if(save){
-        json[key] = value|0;
-    }else{
-        const load = json[key];
-        if(load){
-            const parsed:number = Number.parseInt(load);
-            if(parsed !== undefined){loadAction(parsed);}
-            else                    {console.log(`ioInt() parseFail: "${key}":${load}`);}
-        }
+const ioInt = (type:ioType, json:any, key:string, value:number, loadAction:(load:number)=>void):void=>{
+    switch(type){
+        case "save":
+            json[key] = value|0;
+            break;
+        case "load":
+            if(key in json){
+                const load:string = json[key];
+                const parsed:number = Number.parseInt(load);
+                if(parsed !== undefined){loadAction(parsed);}
+                else                    {console.log(`ioInt() parseFail: "${key}":${load}`);}
+            }
+            break;
     }
 };
 
-const ioStr = (save:boolean, json:any, key:string, value:string, loadAction:(load:string)=>void):void=>{
-    if(save){
-        json[key] = value;
-    }else{
-        const load = json[key];
-        if(load){
-            loadAction(load);
-        }
+const ioStr = (type:ioType, json:any, key:string, value:string, loadAction:(load:string)=>void):void=>{
+    switch(type){
+        case "save":
+            json[key] = value;
+            break;
+        case "load":
+            if(key in json){
+                loadAction( json[key] );
+            }
+            break;
     }
 };
 
-const ioBool = (save:boolean, json:any, key:string, value:boolean, loadAction:(load:boolean)=>void):void=>{
+const ioBool = (type:ioType, json:any, key:string, value:boolean, loadAction:(load:boolean)=>void):void=>{
     //セーブデータファイルの容量の削減のため、0,1で保存する。false,trueよりも短いので。
-    if(save){
-        if(value){json[key] = 1;}
-        else     {json[key] = 0;}
-    }else{
-        const load = json[key];
-        if(load !== undefined){
-            if(load){loadAction(true);}
-            else    {loadAction(false);}
+    switch(type){
+        case "save":
+            if(value){json[key] = 1;}
+            else     {json[key] = 0;}
+            break;
+        case "load":
+            if(key in json){
+                if(json[key]){loadAction(true);}
+                else         {loadAction(false);}
+            }
+            break;
+    }
+};
+
+
+const ioObject = (type:ioType, json:any, key:string):any=>{
+    switch(type){
+        case "save":
+            return (json[key] = {});
+        case "load":
+            if(json[key]){return json[key];}
+            return {};
+    }
+};
+
+
+const ioNumbers = (args:{
+    type:ioType,
+    json:any,
+    key:string,
+    values:number[],
+    digit:number,
+    loadAction:(load:number, index:number)=>void,
+})=>{
+    switch(args.type){
+        case "save":
+            args.json[ args.key ] = to36Radix( args.digit, args.values );
+            break;
+        case "load":
+            if(args.key in args.json){
+                const load:string = args.json[ args.key ];
+
+                for(let i = 0, i2 = 0; i < load.length; i += args.digit){
+                    args.loadAction( parse36Radix( load, args.digit, i2 ), i2 );
+                    i2++;
+                }
+            }
+            break;
+    }
+};
+
+const ioBooleans = (args:{
+    type:ioType,
+    json:any,
+    key:string,
+    values:boolean[],
+    loadAction:(load:boolean, index:number)=>void,
+})=>{
+    ioNumbers({
+        type:args.type,
+        json:args.json,
+        key:args.key,
+        values:args.values.map(v=> v ? 1 : 0),
+        digit:1,
+        loadAction:(load, index)=>{
+            if(load === 1)  {args.loadAction(true, index);}
+            else            {args.loadAction(false, index);}
         }
-    }
+    });
 };
 
-
-const ioObject = (save:boolean, json:any, key:string):any=>{
-    if(save){
-        return (json[key] = {});
-    }else{
-        if(json[key]){return json[key];}
-        return {};
-    }
-};
-
-const storageVersion = (save:boolean, json:any)=>{
+const storageVersion = (type:ioType, json:any)=>{
     let major:number = Version.NOW.major;
     let minior:number = Version.NOW.minior;
     let mentener:number = Version.NOW.mentener;
-    ioInt(save, json, "major",    Version.NOW.major,    load=>major = load);
-    ioInt(save, json, "minior",   Version.NOW.minior,   load=>minior = load);
-    ioInt(save, json, "mentener", Version.NOW.mentener, load=>mentener = load);
+    ioInt(type, json, "major",    Version.NOW.major,    load=>major = load);
+    ioInt(type, json, "minior",   Version.NOW.minior,   load=>minior = load);
+    ioInt(type, json, "mentener", Version.NOW.mentener, load=>mentener = load);
 
     saveDataVersion = new Version(major, minior, mentener);
 };
@@ -270,11 +327,11 @@ const to36Radix = (digit:number, values:number[]):string=>{
     return res;
 };
 
-const parse36Radix = (digit:number, str:string, index:number):number=>{
+const parse36Radix = (str:string, digit:number, index:number):number=>{
     return Number.parseInt( str.substring(digit * index, digit * (index+1)), 36 );
 };
 
-const storageItem = (save:boolean, json:any)=>{
+const storageItem = (type:ioType, json:any)=>{
     for(const item of Item.values){
         const value =   to36Radix(
                             /*digit*/4,
@@ -284,16 +341,16 @@ const storageItem = (save:boolean, json:any)=>{
                                 item.remainingUseNum,
                             ]
                         );
-        ioStr(save, json, item.uniqueName, value, load=>{
-            item.num                = parse36Radix(/*digit*/4, load, /*index*/0);
-            item.totalGetCount      = parse36Radix(/*digit*/4, load, /*index*/1);
-            item.remainingUseNum    = parse36Radix(/*digit*/4, load, /*index*/2);
+        ioStr(type, json, item.uniqueName, value, load=>{
+            item.num                = parse36Radix(load, /*digit*/4, /*index*/0);
+            item.totalGetCount      = parse36Radix(load, /*digit*/4, /*index*/1);
+            item.remainingUseNum    = parse36Radix(load, /*digit*/4, /*index*/2);
         });
     }
 };
 
 
-const storageEq = (save:boolean, json:any)=>{
+const storageEq = (type:ioType, json:any)=>{
     for(const eq of Eq.values){
         const value =   to36Radix(
                             /*digit*/4,
@@ -302,64 +359,63 @@ const storageEq = (save:boolean, json:any)=>{
                                 eq.totalGetCount,
                             ]
                         );
-        ioStr(save, json, eq.uniqueName, value, load=>{
-            eq.num                = parse36Radix(/*digit*/4, load, /*index*/0);
-            eq.totalGetCount      = parse36Radix(/*digit*/4, load, /*index*/1);
+        ioStr(type, json, eq.uniqueName, value, load=>{
+            eq.num                = parse36Radix(load, /*digit*/4, /*index*/0);
+            eq.totalGetCount      = parse36Radix(load, /*digit*/4, /*index*/1);
         });
     }
 }
 
 
-const storageEqEar = (save:boolean, json:any)=>{
+const storageEqEar = (type:ioType, json:any)=>{
     for(const ear of EqEar.values){
-        const obj = ioObject(save, json, ear.uniqueName);
-        ioInt(save, obj, "num",   ear.num,           load=>ear.num = load);
-        ioInt(save, obj, "count", ear.totalGetCount, load=>ear.totalGetCount = load);
+        const obj = ioObject(type, json, ear.uniqueName);
+        ioInt(type, obj, "num",   ear.num,           load=>ear.num = load);
+        ioInt(type, obj, "count", ear.totalGetCount, load=>ear.totalGetCount = load);
     }
 }
 
 
-const storageDungeon = (save:boolean, json:any)=>{
+const storageDungeon = (type:ioType, json:any)=>{
     for(const d of Dungeon.values){
-        const obj = ioObject(save, json, d.uniqueName);
-        ioInt(save, obj, "tkey",   d.treasureKey,       load=>d.treasureKey = load);
-        ioInt(save, obj, "clear",  d.dungeonClearCount, load=>d.dungeonClearCount = load);
-        ioInt(save, obj, "ex",     d.exKillCount,       load=>d.exKillCount = load);
+        const obj = ioObject(type, json, d.uniqueName);
+        ioInt(type, obj, "tkey",   d.treasureKey,       load=>d.treasureKey = load);
+        ioInt(type, obj, "clear",  d.dungeonClearCount, load=>d.dungeonClearCount = load);
+        ioInt(type, obj, "ex",     d.exKillCount,       load=>d.exKillCount = load);
     }
 };
 
 
-const storagePlayer = (save:boolean, json:any)=>{
+const storagePlayer = (type:ioType, json:any)=>{
     for(const p of Player.values){
-        const obj = ioObject(save, json, p.uniqueName);
-        ioBool(save, obj, "member", p.member, load=>p.member = load);
+        const obj = ioObject(type, json, p.uniqueName);
         const u = p.ins;
-        ioBool(save, obj, "exists", u.exists, load=>u.exists = load);
-        ioBool(save, obj, "dead", u.dead, load=>u.dead = load);
+        if(!saveDataVersion.isNewerThan(new Version(0,26,12))){
+            ioBool(type, obj, "member", p.member, load=>p.member = load);
+            ioBool(type, obj, "exists", u.exists, load=>u.exists = load);
+            ioBool(type, obj, "dead", u.dead, load=>u.dead = load);
+        }
         if(!saveDataVersion.isNewerThan(new Version(0,26,11))){
-            const prmObj = ioObject(save, obj, "Prm");
+            const prmObj = ioObject(type, obj, "Prm");
             for(const prm of Prm.values){
-                ioInt(save, prmObj, `${prm}_b`,   u.prm(prm).base|0,   load=>u.prm(prm).base = load);
-                //戦闘中にセーブはできないので、battleを保存する必要はない
-                //2019/12/07追記:eも必要ない
-                // ioInt(save, obj, `${prm}_battle`, u.prm(prm).battle|0, load=>u.prm(prm).battle = load);
+                ioInt(type, prmObj, `${prm}_b`,   u.prm(prm).base|0,   load=>u.prm(prm).base = load);
             }
         }
 
         for(let i = 0; i < Unit.EAR_NUM; i++){
-            ioStr(save, obj, `eqear_${i}`, u.getEqEar(i).uniqueName, load=>{
+            ioStr(type, obj, `eqear_${i}`, u.getEqEar(i).uniqueName, load=>{
                 const ear = EqEar.valueOf(load);
                 if(ear){u.setEqEar(i, ear);}
             });
         }
         for(const pos of EqPos.values){
-            ioStr(save, obj, `eq_${pos}`, u.getEq(pos).uniqueName, load=>{
+            ioStr(type, obj, `eq_${pos}`, u.getEq(pos).uniqueName, load=>{
                 const eq = Eq.valueOf(load);
                 if(eq){u.setEq(pos, eq);}
             });
         }
     
-        ioStr(save, obj, `job`, u.job.uniqueName, load=>{
+        ioStr(type, obj, `job`, u.job.uniqueName, load=>{
             const job = Job.valueOf(load);
             if(job){
                 u.job = job;
@@ -367,7 +423,7 @@ const storagePlayer = (save:boolean, json:any)=>{
         });
     
         let tecsLen = u.tecs.length;
-        ioInt(save, obj, `tecs_length`, u.tecs.length, load=> tecsLen = load);
+        ioInt(type, obj, `tecs_length`, u.tecs.length, load=> tecsLen = load);
     
         u.tecs.length = tecsLen;
         for(let i = 0; i < u.tecs.length; i++){
@@ -381,7 +437,7 @@ const storagePlayer = (save:boolean, json:any)=>{
             const key = `tec_${i}`;
             const value = u.tecs[i].uniqueName;
     
-            ioStr(save, obj, key, value, load=>{
+            ioStr(type, obj, key, value, load=>{
                 const passive = PassiveTec.valueOf(load);
                 if(passive){
                     u.tecs[i] = passive; 
@@ -398,22 +454,22 @@ const storagePlayer = (save:boolean, json:any)=>{
         
 
         {//condition
-            const conditionObj = ioObject(save, obj, "Condition");
+            const conditionObj = ioObject(type, obj, "Condition");
             let savedConditions:{condition:Condition, value:number}[] = [];
-            for(const type of ConditionType.values){
-                const set = u.getConditionSet(type);
+            for(const ctype of ConditionType.values){
+                const set = u.getConditionSet(ctype);
                 const loadSet = {condition:Condition.empty, value:0};
-                ioStr(save, conditionObj, `${type.uniqueName}_condition`, set.condition.uniqueName, load=>{
+                ioStr(type, conditionObj, `${ctype.uniqueName}_condition`, set.condition.uniqueName, load=>{
                     const condition = Condition.valueOf(load);
                     if(condition){
                         loadSet.condition = condition;
                     }
                 });
-                ioInt(save, conditionObj, `${type.uniqueName}_value`, set.value, load=> loadSet.value = load);
+                ioInt(type, conditionObj, `${ctype.uniqueName}_value`, set.value, load=> loadSet.value = load);
     
                 savedConditions.push(loadSet);
             }
-            if(!save){
+            if(type === "load"){
                 for(let set of savedConditions){
                     u.setCondition( set.condition, set.value );
                 }
@@ -421,15 +477,15 @@ const storagePlayer = (save:boolean, json:any)=>{
         }
 
         {//pet
-            const petObj = ioObject(save, obj, "Pet");
-            if(save && u.pet){
-                ioInt(save, petObj, "hp", u.pet.hp, load=>{});
-                ioStr(save, petObj, "name", u.pet.uniqueName, load=>{});
+            const petObj = ioObject(type, obj, "Pet");
+            if(type === "save" && u.pet){
+                ioInt(type, petObj, "hp", u.pet.hp, load=>{});
+                ioStr(type, petObj, "name", u.pet.uniqueName, load=>{});
             }
-            if(!save){
+            if(type === "load"){
                 let hp = 0;
-                ioInt(save, petObj, "hp", 0, load=>hp = load);
-                ioStr(save, petObj, "name", "", load=>{
+                ioInt(type, petObj, "hp", 0, load=>hp = load);
+                ioStr(type, petObj, "name", "", load=>{
                     const factory = PetFactory.valueOf(load);
                     if(factory){
                         factory.create(hp);
@@ -438,124 +494,123 @@ const storagePlayer = (save:boolean, json:any)=>{
             }
         }
     }
+
+    ioBooleans({
+        type:type,
+        json:json,
+        key:"member",
+        values:Player.values.map(p=> p.member),
+        loadAction:(load,index)=>Player.values[index].member = load,
+    });
+    ioBooleans({
+        type:type,
+        json:json,
+        key:"exists",
+        values:Player.values.map(p=> p.ins.exists),
+        loadAction:(load,index)=>Player.values[index].ins.exists = load,
+    });
+    ioBooleans({
+        type:type,
+        json:json,
+        key:"dead",
+        values:Player.values.map(p=> p.ins.dead),
+        loadAction:(load,index)=>Player.values[index].ins.dead = load,
+    });
+
     
     if(saveDataVersion.isNewerThan(new Version(0,26,11))){
-        const prmObj = ioObject(save, json, "Prm");
-        const digit = 4;
+        const prmObj = ioObject(type, json, "Prm");
         for(const prm of Prm.values){
-            const prms:number[]  = Player.values.map(p=> p.ins.prm(prm).base);
-            const value:string = to36Radix(digit, prms);
-            ioStr(save, prmObj, `${prm}`, value, load=>{
-                Player.values.forEach((p,index)=>{
-                    if(index * digit >= load.length){return;}
-
-                    p.ins.prm(prm).base = parse36Radix(digit, load, index);
-                });
+            ioNumbers({
+                type:type,
+                json:prmObj,
+                key:`${prm}`,
+                values:Player.values.map(p=> p.ins.prm(prm).base),
+                digit:4,
+                loadAction:(load,index)=>Player.values[index].ins.prm(prm).base = load,
             });
         }
-
     }
     Player.values.forEach(p=> p.ins.equip());
 
-    {
-        const activeTecObj = ioObject(save, json, "ActiveTec");
-        const digit = 1;
-        for(const tec of ActiveTec.values){
-            const values:number[] = Player.values.map(p=> p.ins.isMasteredTec(tec) ? 1 : 0);
-            const value = to36Radix(digit, values);
-            ioStr(save, activeTecObj, tec.uniqueName, value, load=>{
-                Player.values.forEach((p,index)=>{
-                    if(index * digit >= load.length){return;}
-                    
-                    if(parse36Radix(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
-                    else                                        {p.ins.setMasteredTec(tec, false);}
-                });
-            });
-        }
+    const activeTecObj = ioObject(type, json, "ActiveTec");
+    for(const tec of ActiveTec.values){
+        ioBooleans({
+            type:type,
+            json:activeTecObj,
+            key:tec.uniqueName,
+            values:Player.values.map(p=> p.ins.isMasteredTec(tec)),
+            loadAction:(load,index)=>Player.values[index].ins.setMasteredTec(tec,load),
+        });
     }
 
-    
-    {
-        const passiveTecObj = ioObject(save, json, "PassiveTec");
-        const digit = 1;
-        for(const tec of PassiveTec.values){
-            const values:number[] = Player.values.map(p=> p.ins.isMasteredTec(tec) ? 1 : 0);
-            const value = to36Radix(digit, values);
-            ioStr(save, passiveTecObj, tec.uniqueName, value, load=>{
-                Player.values.forEach((p,index)=>{
-                    if(index * digit >= load.length){return;}
-                    
-                    if(parse36Radix(digit, load, index) === 1)  {p.ins.setMasteredTec(tec, true);}
-                    else                                        {p.ins.setMasteredTec(tec, false);}
-                });
-            });
-        }
+    const passiveTecObj = ioObject(type, json, "PassiveTec");
+    for(const tec of PassiveTec.values){
+        ioBooleans({
+            type:type,
+            json:passiveTecObj,
+            key:tec.uniqueName,
+            values:Player.values.map(p=> p.ins.isMasteredTec(tec)),
+            loadAction:(load,index)=>Player.values[index].ins.setMasteredTec(tec, load),
+        });
     }
-    {
-        const jobParentObj = ioObject(save, json, "JobLvExp");
-        const digit = 4;
-        for(const job of Job.values){
-            const jobObj = ioObject(save, jobParentObj, `${job.uniqueName}`);
-            {
-                const lvs:number[]  = Player.values.map(p=> p.ins.getJobLv(job));
-                const value:string = to36Radix(digit, lvs);
-                ioStr(save, jobObj, "lv", value, load=>{
-                    Player.values.forEach((p,index)=>{
-                        if(index * digit >= load.length){return;}
     
-                        p.ins.setJobLv( job, parse36Radix(digit, load, index) );
-                    });
-                });
-            }
-            {
-                const exps:number[] = Player.values.map(p=> p.ins.getJobExp(job));
-                const value:string = to36Radix(digit, exps);
-                ioStr(save, jobObj, "exp", value, load=>{
-                    Player.values.forEach((p,index)=>{
-                        if(index * digit >= load.length){return;}
-    
-                        p.ins.setJobExp( job, parse36Radix(digit, load, index) );
-                    });
-                });
-            }
-        }
+    const jobParentObj = ioObject(type, json, "JobLvExp");
+    for(const job of Job.values){
+        const jobObj = ioObject(type, jobParentObj, `${job.uniqueName}`);
+        ioNumbers({
+            type:type,
+            json:jobObj,
+            key:"lv",
+            values:Player.values.map(p=> p.ins.getJobLv(job)),
+            digit:4,
+            loadAction:(load,index)=>Player.values[index].ins.setJobLv( job, load ),
+        });
+        ioNumbers({
+            type:type,
+            json:jobObj,
+            key:"exp",
+            values:Player.values.map(p=> p.ins.getJobExp(job)),
+            digit:4,
+            loadAction:(load,index)=>Player.values[index].ins.setJobExp( job, load ),
+        });
     }
 };
 
 
 
-const storageMix = (save:boolean, json:any)=>{
+const storageMix = (type:ioType, json:any)=>{
 
     if(saveDataVersion.isNewerThan(new Version(0,26,11))){
         for(const mix of Mix.values){
-            ioInt(save, json, `${mix.uniqueName}`, mix.count, load=>mix.count = load);
+            ioInt(type, json, `${mix.uniqueName}`, mix.count, load=>mix.count = load);
         }
     }else{
         for(const mix of Mix.values){
-            ioInt(save, json, `${mix.uniqueName}_c`, mix.count, load=>mix.count = load);
+            ioInt(type, json, `${mix.uniqueName}_c`, mix.count, load=>mix.count = load);
         }
     }
 };
 
 
-const storagePlayData = (save:boolean, json:any)=>{
-    ioInt(save, json, "yen", PlayData.yen, load=>PlayData.yen = load);
+const storagePlayData = (type:ioType, json:any)=>{
+    ioInt(type, json, "yen", PlayData.yen, load=>PlayData.yen = load);
     
-    ioBool(save, json, "gotAnyEq", PlayData.gotAnyEq, load=>PlayData.gotAnyEq = load);
-    ioStr(save, json, "dungeonNow", Dungeon.now.uniqueName, load=>{
+    ioBool(type, json, "gotAnyEq", PlayData.gotAnyEq, load=>PlayData.gotAnyEq = load);
+    ioStr(type, json, "dungeonNow", Dungeon.now.uniqueName, load=>{
         const dungeon = Dungeon.valueOf(load);
         if(dungeon){
             Dungeon.now = dungeon;
         }
     });
-    ioStr(save, json, "dungeonAreaNow", DungeonArea.now.uniqueName, load=>{
+    ioStr(type, json, "dungeonAreaNow", DungeonArea.now.uniqueName, load=>{
         const area = DungeonArea.valueOf(load);
         if(area){
             DungeonArea.now = area;
         }
     });
-    ioInt(save, json, "dungeonAU", Dungeon.auNow, load=> Dungeon.auNow = load);
-    ioStr(save, json, "sceneType", SceneType.now.uniqueName, load=>{
+    ioInt(type, json, "dungeonAU", Dungeon.auNow, load=> Dungeon.auNow = load);
+    ioStr(type, json, "sceneType", SceneType.now.uniqueName, load=>{
         const type = SceneType.valueOf(load);
         if(type){
             type.loadAction();
@@ -566,7 +621,7 @@ const storagePlayData = (save:boolean, json:any)=>{
     });
 
     for(let i = 0; i < Unit.players.length; i++){
-        ioStr(save, json, `players_${i}`, Unit.players[i].player.uniqueName, load=>{
+        ioStr(type, json, `players_${i}`, Unit.players[i].player.uniqueName, load=>{
             const p = Player.valueOf(load);
             if(p){
                 Unit.setPlayer( i, p );
@@ -575,21 +630,21 @@ const storagePlayData = (save:boolean, json:any)=>{
     }
 
 
-    ioInt(save, json, "SoundVolume", Sound.volume, load=> Sound.volume = load);
+    ioInt(type, json, "SoundVolume", Sound.volume, load=> Sound.volume = load);
 };
 
-const storageCollectingSkill = (save:boolean, json:any):void=>{
+const storageCollectingSkill = (type:ioType, json:any):void=>{
     for(const cs of CollectingSkill.values){
-        ioInt(save, json, cs.uniqueName, cs.lv, load=> cs.lv = load);
+        ioInt(type, json, cs.uniqueName, cs.lv, load=> cs.lv = load);
     }
 };
 
-const storagePartySkill = (save:boolean, json:any)=>{
+const storagePartySkill = (type:ioType, json:any)=>{
     for(const skill of PartySkill.values){
-        ioBool(save, json, `${skill.uniqueName}_has`, skill.has, load=> skill.has = load);
+        ioBool(type, json, `${skill.uniqueName}_has`, skill.has, load=> skill.has = load);
     }
     
-    ioInt(save, json, "skills_length", PartySkill.skills.length, load=>{
+    ioInt(type, json, "skills_length", PartySkill.skills.length, load=>{
         PartySkill.skills.length = load;
         for(let i = 0; i < PartySkill.skills.length; i++){
             if(!PartySkill.skills[i]){
@@ -599,7 +654,7 @@ const storagePartySkill = (save:boolean, json:any)=>{
     });
 
     for(let i = 0; i < PartySkill.skills.length; i++){
-        ioStr(save, json, `set_${i}`, PartySkill.skills[i].uniqueName, load=>{
+        ioStr(type, json, `set_${i}`, PartySkill.skills[i].uniqueName, load=>{
             const skill = PartySkill.valueOf(load);
             if(skill){
                 PartySkill.skills[i] = skill;
