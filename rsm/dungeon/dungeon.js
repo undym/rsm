@@ -42,8 +42,8 @@ export class DungeonArea {
 DungeonArea._valueOf = new Map();
 (function (DungeonArea) {
     DungeonArea.中央島 = new DungeonArea("中央島", "img/map1.jpg", () => [
-        [DungeonArea.黒地域, new Rect(0.7, 0.4, 0.3, 0.1), () => Dungeon.黒平原.isVisible()],
-        [DungeonArea.古マーザン, new Rect(0.0, 0.25, 0.3, 0.1), () => Dungeon.古マーザン森.isVisible()],
+        [DungeonArea.黒地域, new Rect(0.7, 0.45, 0.3, 0.1), () => Dungeon.黒平原.isVisible()],
+        [DungeonArea.古マーザン, new Rect(0.0, 0.4, 0.3, 0.1), () => Dungeon.古マーザン森.isVisible()],
     ]);
     DungeonArea.黒地域 = new DungeonArea("黒地域", "img/map2.jpg", () => [
         [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), () => true],
@@ -281,7 +281,7 @@ Dungeon.auNow = 0;
     Dungeon.再構成トンネル = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "再構成トンネル", info: "",
-                rank: 0, enemyLv: 1, au: 50, btn: [DungeonArea.中央島, new Rect(0.1, 0.1, 0.3, 0.1)],
+                rank: 0, enemyLv: 1, au: 50, btn: [DungeonArea.中央島, new Rect(0, 0.2, 0.3, 0.1)],
                 treasures: () => [Eq.安全靴],
                 exItems: () => [Eq.アカデミーバッヂ],
                 trendItems: () => [Item.石, Item.杉, Item.ヒノキ, Item.竹, Item.草],
@@ -327,7 +327,7 @@ Dungeon.auNow = 0;
     Dungeon.見知らぬ海岸 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "見知らぬ海岸", info: "",
-                rank: 0, enemyLv: 3, au: 60, btn: [DungeonArea.中央島, new Rect(0.2, 0.2, 0.3, 0.1)],
+                rank: 0, enemyLv: 3, au: 60, btn: [DungeonArea.中央島, new Rect(0.1, 0.3, 0.3, 0.1)],
                 treasures: () => [Eq.銅板],
                 exItems: () => [Eq.草の服],
                 trendItems: () => [Item.草, Item.水, Item.竹, Item.かんな],
