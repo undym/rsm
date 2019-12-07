@@ -519,6 +519,88 @@ export namespace Item{
                                 use:async(user,target)=>await itemHealMP(target, 4),
         })}
     };
+    export const                         赤蛍草:Item = new class extends Item{
+        constructor(){super({uniqueName:"赤蛍草", info:"MP+6",
+                                type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealMP(target, 6),
+        })}
+    };
+    export const                         インパチェンス:Item = new class extends Item{
+        constructor(){super({uniqueName:"インパチェンス", info:"MP+7",
+                                type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealMP(target, 7),
+        })}
+    };
+    export const                         アウラレッドグラス:Item = new class extends Item{
+        constructor(){super({uniqueName:"アウラレッドグラス", info:"MP+10",
+                                type:ItemType.MP回復, rank:5, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealMP(target, 10),
+        })}
+    };
+    //-----------------------------------------------------------------
+    //
+    //
+    //
+    //-----------------------------------------------------------------
+    export const                         ヴァイスドラッグ:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ", info:"HP+20MP+2",
+                                type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 20);
+                                    await itemHealMP(target, 2);
+                                },
+        })}
+    };
+    export const                         ヴァイスドラッグ2:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ2", info:"HP+30MP+3",
+                                type:ItemType.MP回復, rank:2, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 30);
+                                    await itemHealMP(target, 3);
+                                },
+        })}
+        toString(){return "ヴァイスドラッグⅡ";}
+    };
+    export const                         ヴァイスドラッグ3:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ3", info:"HP+50MP+5",
+                                type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 50);
+                                    await itemHealMP(target, 5);
+                                },
+        })}
+        toString(){return "ヴァイスドラッグⅢ";}
+    };
+    export const                         ヴァイスドラッグ4:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ4", info:"HP+100MP+10",
+                                type:ItemType.MP回復, rank:6, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 100);
+                                    await itemHealMP(target, 10);
+                                },
+        })}
+        toString(){return "ヴァイスドラッグⅣ";}
+    };
+    export const                         ヴァイスドラッグ5:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ5", info:"HP+200MP+20",
+                                type:ItemType.MP回復, rank:7, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 200);
+                                    await itemHealMP(target, 20);
+                                },
+        })}
+        toString(){return "ヴァイスドラッグⅤ";}
+    };
+    export const                         ヴァイスドラッグ6:Item = new class extends Item{
+        constructor(){super({uniqueName:"ヴァイスドラッグ6", info:"HP+400MP+40",
+                                type:ItemType.MP回復, rank:8, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    await itemHealHP(target, 400);
+                                    await itemHealMP(target, 40);
+                                },
+        })}
+        toString(){return "ヴァイスドラッグⅥ";}
+    };
     //-----------------------------------------------------------------
     //
     //状態

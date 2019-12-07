@@ -86,7 +86,6 @@ export class Input {
             if (xRatio <= 0.05 && yRatio <= 0.05) {
                 this._click = true;
             }
-            // setXYTouch(ev);
         });
     }
     static update() {

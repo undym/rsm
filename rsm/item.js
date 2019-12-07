@@ -550,6 +550,106 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.赤蛍草 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "赤蛍草", info: "MP+6",
+                type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 6); }),
+            });
+        }
+    };
+    Item.インパチェンス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "インパチェンス", info: "MP+7",
+                type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 7); }),
+            });
+        }
+    };
+    Item.アウラレッドグラス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "アウラレッドグラス", info: "MP+10",
+                type: ItemType.MP回復, rank: 5, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 10); }),
+            });
+        }
+    };
+    //-----------------------------------------------------------------
+    //
+    //
+    //
+    //-----------------------------------------------------------------
+    Item.ヴァイスドラッグ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ", info: "HP+20MP+2",
+                type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 20);
+                    yield itemHealMP(target, 2);
+                }),
+            });
+        }
+    };
+    Item.ヴァイスドラッグ2 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ2", info: "HP+30MP+3",
+                type: ItemType.MP回復, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 30);
+                    yield itemHealMP(target, 3);
+                }),
+            });
+        }
+        toString() { return "ヴァイスドラッグⅡ"; }
+    };
+    Item.ヴァイスドラッグ3 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ3", info: "HP+50MP+5",
+                type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 50);
+                    yield itemHealMP(target, 5);
+                }),
+            });
+        }
+        toString() { return "ヴァイスドラッグⅢ"; }
+    };
+    Item.ヴァイスドラッグ4 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ4", info: "HP+100MP+10",
+                type: ItemType.MP回復, rank: 6, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 100);
+                    yield itemHealMP(target, 10);
+                }),
+            });
+        }
+        toString() { return "ヴァイスドラッグⅣ"; }
+    };
+    Item.ヴァイスドラッグ5 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ5", info: "HP+200MP+20",
+                type: ItemType.MP回復, rank: 7, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 200);
+                    yield itemHealMP(target, 20);
+                }),
+            });
+        }
+        toString() { return "ヴァイスドラッグⅤ"; }
+    };
+    Item.ヴァイスドラッグ6 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ヴァイスドラッグ6", info: "HP+400MP+40",
+                type: ItemType.MP回復, rank: 8, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    yield itemHealHP(target, 400);
+                    yield itemHealMP(target, 40);
+                }),
+            });
+        }
+        toString() { return "ヴァイスドラッグⅥ"; }
+    };
     //-----------------------------------------------------------------
     //
     //状態

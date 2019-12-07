@@ -44,10 +44,6 @@ export class Version {
 }
 Version.NOW = new Version(0, 26, 16);
 Version.updateInfo = [
-    "(0.26.2)exporttest",
-    "(0.26.3)exporttest",
-    "(0.26.4)exporttest",
-    "(0.26.5)exporimportttest",
     "(0.26.6)exporimportttest",
     "(0.26.7)exporimportttest",
     "(0.26.8)importttest",
