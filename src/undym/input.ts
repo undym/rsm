@@ -9,6 +9,7 @@ export class Input{
     private static touch:boolean;
     private static hold:number = 0;
     private static _holding:boolean = false;
+    private static touchStart:Point;
 
     static init(canvas:HTMLCanvasElement, rotate:boolean){
         this.canvas = canvas;
@@ -73,7 +74,7 @@ export class Input{
             if(ev.touches.length >= 2){return;}
             
             setXYTouch(ev);
-
+            this.touchStart = new Point(this.x, this.y);
         });
         this.canvas.addEventListener("touchmove", (ev)=>{
             ev.preventDefault();
@@ -87,7 +88,12 @@ export class Input{
             this.hold = 0;
             if(ev.touches.length >= 2){return;}
 
-            this._click = true;
+            setXYTouch(ev);
+            const xRatio = Math.abs( (this.x - this.touchStart.x) / this.canvas.width );
+            const yRatio = Math.abs( (this.y - this.touchStart.y) / this.canvas.height );
+            if(xRatio <= 0.05 && yRatio <= 0.05){
+                this._click = true;
+            }
             
             // setXYTouch(ev);
         });
