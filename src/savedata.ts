@@ -17,7 +17,7 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,26,17);
+    static readonly NOW = new Version(0,26,18);
     static readonly updateInfo =    [
                                         "(0.26.8)importttest",
                                         "(0.26.9)importttest",
@@ -29,6 +29,7 @@ export class Version{
                                         "(0.26.15)タッチテスト",
                                         "(0.26.16)タッチテスト",
                                         "(0.26.17)こまごま",
+                                        "(0.26.18)バグ修正",
                                     ];
 
     private values:number[];

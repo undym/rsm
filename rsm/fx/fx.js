@@ -781,7 +781,7 @@ export const FX_BOM = (center) => {
     const color = new Color(0.5, 0, 0.5);
     const white = new Color(0.8, 0.8, 0.8);
     FX.add(count => {
-        const over = 50;
+        const over = 45;
         const width = Graphics.pixelW * 0.07;
         Graphics.setLineWidth(width - width * count / over, () => {
             Graphics.drawOval(center, r, Math.random() < 0.8 ? color : white);

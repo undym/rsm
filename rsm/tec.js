@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械 } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -2345,6 +2345,7 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.その他, type: TecType.その他, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
+            this.dmgValue = 0;
         }
         use(attacker, targets) {
             const _super = Object.create(null, {
@@ -2354,6 +2355,10 @@ ActiveTec._valueOf = new Map();
                 const canUse = this.checkCost(attacker);
                 Util.msg.set(`${attacker.name}の体から光が溢れる...`);
                 yield wait();
+                if (canUse) {
+                    this.dmgValue = attacker.hp;
+                    this.soundAndFX = true;
+                }
                 _super.use.call(this, attacker, targets);
                 if (!canUse) {
                     Util.msg.set(`光に吸い寄せられた虫が体にいっぱいくっついた...`);
@@ -2363,7 +2368,12 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const dmg = new Dmg({ absPow: attacker.hp });
+                if (this.soundAndFX) {
+                    this.soundAndFX = false;
+                    Sound.bom2.play();
+                    FX_BOM(attacker.imgCenter);
+                }
+                const dmg = new Dmg({ absPow: this.dmgValue });
                 attacker.hp = 0;
                 yield target.doDmg(dmg);
                 yield wait();
