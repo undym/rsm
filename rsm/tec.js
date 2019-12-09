@@ -2116,7 +2116,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.checkCost(attacker)) {
-                    Sound.KAIFUKU.play();
+                    Sound.sin.play();
                 }
                 yield _super.use.call(this, attacker, targets);
             });
@@ -2127,8 +2127,10 @@ ActiveTec._valueOf = new Map();
                 Unit.healHP(target, target.prm(Prm.MAX_HP).total);
                 Unit.healMP(target, target.prm(Prm.MAX_MP).total);
                 Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                Sound.KAIFUKU.play();
                 this.effect(attacker, target, new Dmg());
                 Util.msg.set(`${target.name}は全回復した！`, Color.GREEN.bright);
+                yield wait();
             });
         }
     };

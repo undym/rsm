@@ -1787,7 +1787,7 @@ export namespace Tec{
         });}
         async use(attacker:Unit, targets:Unit[]){
             if(this.checkCost(attacker)){
-                Sound.KAIFUKU.play();
+                Sound.sin.play();
             }
             await super.use(attacker, targets);
 
@@ -1799,8 +1799,11 @@ export namespace Tec{
             Unit.healMP( target, target.prm(Prm.MAX_MP).total );
             Unit.healTP( target, target.prm(Prm.MAX_TP).total );
 
+            Sound.KAIFUKU.play();
             this.effect( attacker, target, new Dmg() );
             Util.msg.set(`${target.name}は全回復した！`, Color.GREEN.bright);
+
+            await wait();
         }
     }
     /**忍者. */
