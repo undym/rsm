@@ -247,7 +247,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.MP自動回復, Tec.天籟, Tec.数珠, Tec.ユグドラシル],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル, Tec.空中浮遊];
         }
     };
     export const                         毒使い:Job = new class extends Job{
@@ -468,7 +468,6 @@ export namespace Job{
     //獣
     //
     //--------------------------------------------------
-    //TODO
     export const                         雷鳥:Job = new class extends Job{
         constructor(){super({uniqueName:"雷鳥", info:"",
                                 appearLv:0, img:new Img("img/unit/unit100.png"),
@@ -478,10 +477,9 @@ export namespace Job{
                                 beast:true,
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る];
+            e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る, Tec.空中浮遊];
         }
     };
-    //TODO
     export const                         アメーバ:Job = new class extends Job{
         constructor(){super({uniqueName:"アメーバ", info:"",
                                 appearLv:8, img:new Img("img/unit/unit101.png"),
@@ -494,7 +492,6 @@ export namespace Job{
             e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
         }
     };
-    //TODO
     export const                         妖精:Job = new class extends Job{
         constructor(){super({uniqueName:"妖精", info:"",
                                 appearLv:0, img:new Img("img/unit/unit102.png"),
@@ -507,21 +504,6 @@ export namespace Job{
             e.tecs = [Tec.妖精の粉, Tec.妖精の粉, Tec.ヴァハ, Tec.殴る, Tec.MP自動回復];
         }
     };
-    //TODO
-    export const                         ドラゴン:Job = new class extends Job{
-        constructor(){super({uniqueName:"ドラゴン", info:"",
-                                appearLv:95, img:new Img("img/unit/unit108.png"),
-                                lvupExp:Job.DEF_LVUP_EXP * 1,
-                                growthPrms:()=>[[Prm.MAX_HP, 2]],
-                                learningTecs:()=>[Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
-                                beast:true,
-        });}
-        setEnemyInner(e:EUnit){
-            e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
-            e.prm(Prm.MAX_HP).base *= 2;
-        }
-    };
-    //TODO
     export const                         鬼火:Job = new class extends Job{
         constructor(){super({uniqueName:"鬼火", info:"",
                                 appearLv:10, img:new Img("img/unit/unit103.png"),
@@ -534,7 +516,6 @@ export namespace Job{
             e.tecs = [Tec.ファイアボール, Tec.ファイアボール, Tec.殴る, Tec.殴る, Tec.魔法攻撃UP];
         }
     };
-    //TODO
     export const                         ノーム:Job = new class extends Job{
         constructor(){super({uniqueName:"ノーム", info:"",
                                 appearLv:10, img:new Img("img/unit/unit104.png"),
@@ -547,6 +528,31 @@ export namespace Job{
             e.tecs = [Tec.光合成, Tec.良き占い, Tec.殴る, Tec.殴る, Tec.殴る];
         }
     };
+    export const                         チルナノーグ:Job = new class extends Job{
+        constructor(){super({uniqueName:"チルナノーグ", info:"",
+                                appearLv:70, img:new Img("img/unit/unit105.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                growthPrms:()=>[[Prm.PST, 2]],
+                                learningTecs:()=>[Tec.スモッグ, Tec.雲隠れ, Tec.念力],
+                                beast:true,
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.スモッグ, Tec.雲隠れ, Tec.念力, Tec.殴る, Tec.殴る, Tec.殴る, Tec.チルナノーグ];
+        }
+    };
+    export const                         魔獣ドンゴ:Job = new class extends Job{
+        constructor(){super({uniqueName:"魔獣ドンゴ", info:"",
+                                appearLv:130, img:new Img("img/unit/unit106.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                growthPrms:()=>[[Prm.STR, 1]],
+                                learningTecs:()=>[Tec.体当たり, Tec.格闘攻撃UP, Tec.格闘防御UP],
+                                beast:true,
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.体当たり, Tec.格闘攻撃UP, Tec.格闘防御UP, Tec.殴る, Tec.殴る, Tec.体当たり, Tec.タックル];
+            e.prm(Prm.MAX_HP).base *= 1.5;
+        }
+    };
     export const                         カリストコウモリ:Job = new class extends Job{
         constructor(){super({uniqueName:"カリストコウモリ", info:"",
                                 appearLv:13, img:new Img("img/unit/unit107.png"),
@@ -557,6 +563,32 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.ひっかく, Tec.吸血, Tec.ひっかく, Tec.殴る, Tec.殴る, Tec.空中浮遊];
+        }
+    };
+    //
+    export const                         ドラゴン:Job = new class extends Job{
+        constructor(){super({uniqueName:"ドラゴン", info:"",
+                                appearLv:295, img:new Img("img/unit/unit108.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                growthPrms:()=>[[Prm.MAX_HP, 2]],
+                                learningTecs:()=>[Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
+                                beast:true,
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
+            e.prm(Prm.MAX_HP).base *= 2;
+        }
+    };
+    export const                         月狼:Job = new class extends Job{
+        constructor(){super({uniqueName:"月狼", info:"",
+                                appearLv:95, img:new Img("img/unit/unit109.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 1,
+                                growthPrms:()=>[[Prm.STR, 2]],
+                                learningTecs:()=>[Tec.噛みつく, Tec.回避UP, Tec.練気],
+                                beast:true,
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.噛みつく, Tec.回避UP, Tec.練気, Tec.殴る, Tec.自然治癒];
         }
     };
 }

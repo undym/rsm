@@ -759,7 +759,7 @@ export class EUnit extends Unit{
             }
         }
 
-        Tec.何もしない.use( attacker, [attacker] );
+        Tec.殴る.use( attacker, Targeting.filter( Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum() ) );
     };
 
     yen:number = 0;

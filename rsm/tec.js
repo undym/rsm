@@ -559,6 +559,55 @@ ActiveTec._valueOf = new Map();
         }
         rndAttackNum() { return randomInt(2, 4, "[]"); }
     };
+    /**魔獣ドンゴ. */
+    Tec.体当たり = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "体当たり", info: "一体に格闘攻撃x2 確率で相手を＜眠1＞化　反撃有",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 2, num: 1, hit: 1, tp: 2,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                if (Math.random() < 0.7) {
+                    Unit.setCondition(target, Condition.眠, 1);
+                }
+                Util.msg.set("＞反撃");
+                yield Tec.格闘カウンター.run(target, attacker);
+            });
+        }
+    };
+    /**月狼. */
+    Tec.噛みつく = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "噛みつく", info: "一体に格闘攻撃 MP3とTP1を吸収",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                Sound.drain.play();
+                FX_吸収(attacker.imgCenter, target.imgCenter);
+                const drainMP = target.mp < 3 ? target.mp : 3;
+                const drainTP = target.tp < 1 ? target.tp : 1;
+                target.mp -= drainMP;
+                target.tp -= drainTP;
+                attacker.mp += drainMP;
+                attacker.tp += drainTP;
+                Util.msg.set(`MP${drainMP}とTP${drainTP}吸収！`);
+                yield wait();
+            });
+        }
+    };
     /**無習得技. */
     Tec.格闘カウンター = new class extends ActiveTec {
         constructor() {
@@ -730,6 +779,22 @@ ActiveTec._valueOf = new Map();
                     Util.msg.set(`${me.name}の連携攻撃`);
                     yield wait();
                     yield Tec.格闘カウンター.run(me, target);
+                }
+            });
+        }
+    };
+    /**敵:チルナノーグ. */
+    Tec.チルナノーグ = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "チルナノーグ", info: "被格闘攻撃-90%",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    Util.msg.set("＞チルナノーグ");
+                    dmg.pow.mul *= 0.1;
                 }
             });
         }
@@ -1845,6 +1910,22 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**チルナノーグ. */
+    Tec.スモッグ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "スモッグ", info: "味方全体を＜雲3＞状態にする",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 5,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                FX_Buff(target.imgCenter);
+                Unit.setCondition(target, Condition.雲, 3);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1892,6 +1973,21 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
                     dmg.pow.mul *= 0.8;
+                }
+            });
+        }
+    };
+    /**チルナノーグ. */
+    Tec.雲隠れ = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "雲隠れ", info: "魔法・神格・過去回避率+15%",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
+                    dmg.hit.mul *= 0.85;
                 }
             });
         }

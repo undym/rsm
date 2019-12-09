@@ -222,7 +222,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル, Tec.空中浮遊];
         }
     };
     Job.毒使い = new class extends Job {
@@ -478,7 +478,6 @@ Job.DEF_LVUP_EXP = 10;
     //獣
     //
     //--------------------------------------------------
-    //TODO
     Job.雷鳥 = new class extends Job {
         constructor() {
             super({ uniqueName: "雷鳥", info: "",
@@ -490,10 +489,9 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る];
+            e.tecs = [Tec.射る, Tec.射る, Tec.ヴァハ, Tec.殴る, Tec.空中浮遊];
         }
     };
-    //TODO
     Job.アメーバ = new class extends Job {
         constructor() {
             super({ uniqueName: "アメーバ", info: "",
@@ -508,7 +506,6 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
         }
     };
-    //TODO
     Job.妖精 = new class extends Job {
         constructor() {
             super({ uniqueName: "妖精", info: "",
@@ -523,23 +520,6 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.妖精の粉, Tec.妖精の粉, Tec.ヴァハ, Tec.殴る, Tec.MP自動回復];
         }
     };
-    //TODO
-    Job.ドラゴン = new class extends Job {
-        constructor() {
-            super({ uniqueName: "ドラゴン", info: "",
-                appearLv: 95, img: new Img("img/unit/unit108.png"),
-                lvupExp: Job.DEF_LVUP_EXP * 1,
-                growthPrms: () => [[Prm.MAX_HP, 2]],
-                learningTecs: () => [Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
-                beast: true,
-            });
-        }
-        setEnemyInner(e) {
-            e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
-            e.prm(Prm.MAX_HP).base *= 2;
-        }
-    };
-    //TODO
     Job.鬼火 = new class extends Job {
         constructor() {
             super({ uniqueName: "鬼火", info: "",
@@ -554,7 +534,6 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.ファイアボール, Tec.ファイアボール, Tec.殴る, Tec.殴る, Tec.魔法攻撃UP];
         }
     };
-    //TODO
     Job.ノーム = new class extends Job {
         constructor() {
             super({ uniqueName: "ノーム", info: "",
@@ -569,6 +548,35 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.光合成, Tec.良き占い, Tec.殴る, Tec.殴る, Tec.殴る];
         }
     };
+    Job.チルナノーグ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "チルナノーグ", info: "",
+                appearLv: 70, img: new Img("img/unit/unit105.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 1,
+                growthPrms: () => [[Prm.PST, 2]],
+                learningTecs: () => [Tec.スモッグ, Tec.雲隠れ, Tec.念力],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.スモッグ, Tec.雲隠れ, Tec.念力, Tec.殴る, Tec.殴る, Tec.殴る, Tec.チルナノーグ];
+        }
+    };
+    Job.魔獣ドンゴ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "魔獣ドンゴ", info: "",
+                appearLv: 130, img: new Img("img/unit/unit106.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 1,
+                growthPrms: () => [[Prm.STR, 1]],
+                learningTecs: () => [Tec.体当たり, Tec.格闘攻撃UP, Tec.格闘防御UP],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.体当たり, Tec.格闘攻撃UP, Tec.格闘防御UP, Tec.殴る, Tec.殴る, Tec.体当たり, Tec.タックル];
+            e.prm(Prm.MAX_HP).base *= 1.5;
+        }
+    };
     Job.カリストコウモリ = new class extends Job {
         constructor() {
             super({ uniqueName: "カリストコウモリ", info: "",
@@ -581,6 +589,36 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.ひっかく, Tec.吸血, Tec.ひっかく, Tec.殴る, Tec.殴る, Tec.空中浮遊];
+        }
+    };
+    //
+    Job.ドラゴン = new class extends Job {
+        constructor() {
+            super({ uniqueName: "ドラゴン", info: "",
+                appearLv: 295, img: new Img("img/unit/unit108.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 1,
+                growthPrms: () => [[Prm.MAX_HP, 2]],
+                learningTecs: () => [Tec.自然治癒, Tec.龍撃, Tec.ドラゴンテイル, Tec.ドラゴンブレス],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.ドラゴンテイル, Tec.ドラゴンテイル, Tec.龍撃, Tec.殴る, Tec.自然治癒];
+            e.prm(Prm.MAX_HP).base *= 2;
+        }
+    };
+    Job.月狼 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "月狼", info: "",
+                appearLv: 95, img: new Img("img/unit/unit109.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 1,
+                growthPrms: () => [[Prm.STR, 2]],
+                learningTecs: () => [Tec.噛みつく, Tec.回避UP, Tec.練気],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.噛みつく, Tec.回避UP, Tec.練気, Tec.殴る, Tec.自然治癒];
         }
     };
 })(Job || (Job = {}));

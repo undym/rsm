@@ -579,6 +579,45 @@ export namespace Tec{
         });}
         rndAttackNum(){return randomInt(2, 4, "[]");}
     }
+    /**魔獣ドンゴ. */
+    export const                          体当たり:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"体当たり", info:"一体に格闘攻撃x2 確率で相手を＜眠1＞化　反撃有",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:2, num:1, hit:1, tp:2,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+
+            if(Math.random() < 0.7){
+                Unit.setCondition( target, Condition.眠, 1 );
+            }
+
+            Util.msg.set("＞反撃");
+            await Tec.格闘カウンター.run( target, attacker );
+        }
+    }
+    /**月狼. */
+    export const                          噛みつく:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"噛みつく", info:"一体に格闘攻撃 MP3とTP1を吸収",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+
+
+            Sound.drain.play();
+            FX_吸収( attacker.imgCenter, target.imgCenter );
+
+            const drainMP = target.mp < 3 ? target.mp : 3;
+            const drainTP = target.tp < 1 ? target.tp : 1;
+            target.mp -= drainMP;
+            target.tp -= drainTP;
+            attacker.mp += drainMP;
+            attacker.tp += drainTP;
+            Util.msg.set(`MP${drainMP}とTP${drainTP}吸収！`); await wait();            
+        }
+    }
     /**無習得技. */
     export const                          格闘カウンター:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"格闘カウンター", info:"！カウンター技用",
@@ -707,6 +746,18 @@ export namespace Tec{
             if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && attacker.tecs.some(tec=> tec === Tec.格闘連携)){
                 Util.msg.set(`${me.name}の連携攻撃`); await wait();
                 await Tec.格闘カウンター.run(me, target);
+            }
+        }
+    };
+    /**敵:チルナノーグ. */
+    export const                         チルナノーグ:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"チルナノーグ", info:"被格闘攻撃-90%",
+                                sort:TecSort.格闘, type:TecType.格闘,
+        });}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                Util.msg.set("＞チルナノーグ");
+                dmg.pow.mul *= 0.1;
             }
         }
     };
@@ -1580,6 +1631,18 @@ export namespace Tec{
             Unit.setCondition( target, Condition.銃弓無効, 5 );
         }
     }
+    /**チルナノーグ. */
+    export const                          スモッグ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"スモッグ", info:"味方全体を＜雲3＞状態にする",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:5,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            FX_Buff( target.imgCenter );
+            Unit.setCondition( target, Condition.雲, 3 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -1616,6 +1679,17 @@ export namespace Tec{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)){
                 dmg.pow.mul *= 0.8;
+            }
+        }
+    };
+    /**チルナノーグ. */
+    export const                         雲隠れ:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"雲隠れ", info:"魔法・神格・過去回避率+15%",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)){
+                dmg.hit.mul *= 0.85;
             }
         }
     };

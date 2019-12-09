@@ -715,7 +715,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
     }
-    Tec.何もしない.use(attacker, [attacker]);
+    Tec.殴る.use(attacker, Targeting.filter(Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum()));
 });
 (function (Unit) {
     class FXFont {
