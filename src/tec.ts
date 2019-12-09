@@ -4,7 +4,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting, Action, PhaseStartForce } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械 } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
@@ -1977,10 +1977,19 @@ export namespace Tec{
                               sort:TecSort.その他, type:TecType.その他, targetings:Targeting.ALL,
                               mul:1, num:1, hit:1, ep:1,
         });}
+
+        dmgValue = 0;
+        soundAndFX:boolean;
+
         async use(attacker:Unit, targets:Unit[]){
             const canUse = this.checkCost(attacker);
 
             Util.msg.set(`${attacker.name}の体から光が溢れる...`); await wait();
+
+            if(canUse){
+                this.dmgValue = attacker.hp;
+                this.soundAndFX = true;
+            }
             super.use(attacker, targets);
             
             if(!canUse){
@@ -1988,7 +1997,12 @@ export namespace Tec{
             }
         }
         async run(attacker:Unit, target:Unit){
-            const dmg = new Dmg({absPow:attacker.hp});
+            if(this.soundAndFX){
+                this.soundAndFX = false;
+                Sound.bom2.play();
+                FX_BOM( attacker.imgCenter );
+            }
+            const dmg = new Dmg({absPow:this.dmgValue});
             attacker.hp = 0;
             await target.doDmg(dmg); await wait();
         }

@@ -328,14 +328,13 @@ export const FX_鎖術 = (attacker, target) => {
             color.g = Math.random();
             return color;
         };
-        //line: attacker to target
-        for (let i2 = 0; i2 < 2; i2++) {
+        if (count % 2) { //line: attacker to target
             const points = [];
-            const loop = 10;
+            const loop = 20;
             for (let i = 1; i < loop - 1; i++) {
                 let x = (attacker.x * (loop - i) + target.x * i) / loop;
                 let y = (attacker.y * (loop - i) + target.y * i) / loop;
-                const rad = i * 0.6 + count * 1.2 + i2 * 0.6;
+                const rad = i * 0.6 + count * 1.2;
                 const r = 0.05;
                 x = x + Math.sin(rad ^ Number.MAX_SAFE_INTEGER * 1.0) * r;
                 y = y + Math.sin(rad) * r;
@@ -349,20 +348,21 @@ export const FX_鎖術 = (attacker, target) => {
                 });
             }
         }
-        //line: target
-        const loop = 20;
-        const points = [];
-        for (let i = 0; i < loop; i++) {
-            const rad = Math.PI * 2 * i / loop * 2.5 + count * 0.6;
-            const r = 20 * i / loop + 70 * Math.random();
-            let x = target.x + Math.cos(rad) * r * Graphics.dotW;
-            let y = target.y + Math.sin(rad) * r * Graphics.dotH;
-            points.push({ x: x, y: y });
-        }
-        for (let i = 0; i < points.length - 1; i++) {
-            Graphics.setLineWidth(1 + Math.random() * 6, () => {
-                Graphics.line(points[i], points[i + 1], rndColor());
-            });
+        else { //line: target
+            const loop = 26;
+            const points = [];
+            for (let i = 0; i < loop; i++) {
+                const rad = Math.PI * 2 * i / loop * 2.5 + count * 0.6;
+                const r = 20 * i / loop + 70 * Math.random();
+                let x = target.x + Math.cos(rad) * r * Graphics.dotW;
+                let y = target.y + Math.sin(rad) * r * Graphics.dotH;
+                points.push({ x: x, y: y });
+            }
+            for (let i = 0; i < points.length - 1; i++) {
+                Graphics.setLineWidth(1 + Math.random() * 6, () => {
+                    Graphics.line(points[i], points[i + 1], rndColor());
+                });
+            }
         }
         return count < over;
     });
@@ -775,6 +775,23 @@ export const FX_機械 = (attacker, target) => {
     });
 };
 FXTest.add(FX_機械.name, () => FX_機械(FXTest.attacker, FXTest.target));
+export const FX_BOM = (center) => {
+    let r = 0.01;
+    let vec = 0.03;
+    const color = new Color(0.5, 0, 0.5);
+    const white = new Color(0.8, 0.8, 0.8);
+    FX.add(count => {
+        const over = 50;
+        const width = Graphics.pixelW * 0.07;
+        Graphics.setLineWidth(width - width * count / over, () => {
+            Graphics.drawOval(center, r, Math.random() < 0.8 ? color : white);
+            r += vec;
+            vec *= 0.9;
+        });
+        return count < over;
+    });
+};
+FXTest.add(FX_BOM.name, () => FX_BOM(FXTest.target));
 const FX_NO_USED = (center) => {
     const PI2 = Math.PI * 2;
     const rnd = () => {
