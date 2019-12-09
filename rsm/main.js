@@ -23,6 +23,7 @@ import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
 import { Sound } from "./sound.js";
+import { EffectTest } from "./scene/optionscene.js";
 {
     const run = document.getElementById("runreload");
     run.onclick = () => {
@@ -106,6 +107,9 @@ const setInput = () => {
         document.addEventListener("keydown", ev => {
             if (ev.key === "d") {
                 Debug.debugMode = !Debug.debugMode;
+            }
+            if (ev.key === "e") {
+                Scene.load(new EffectTest());
             }
             if (Debug.debugMode) {
                 if (ev.key === "1") {

@@ -489,54 +489,74 @@ export class Unit {
     //
     //
     //---------------------------------------------------------
-    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。デフォルトでは含めない。!existsは含めない。deadは含める.*/
-    getParty(withHimSelf = false) {
-        const searchMember = (units) => {
-            let res = [];
-            for (const u of units) {
-                if (!u.exists) {
-                    continue;
+    /**
+     * そのユニットのパーティーメンバーを返す。!existsは含めない。deadは含める.
+     * @withHimSelf 本人を含めるかどうか。デフォルトでは含めない。
+     * */
+    // getParty(withHimSelf = false):Unit[]{
+    //     const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
+    //         let res:Unit[] = [];
+    //         for(const u of units){
+    //             if(!u.exists){continue;}
+    //             if(withHimSelf && u === this){continue;}
+    //             res.push(u);
+    //         }
+    //         return res;
+    //     };
+    //     if(this instanceof PUnit){
+    //         return searchMember( Unit.players );
+    //     }
+    //     if(this instanceof EUnit){
+    //         return searchMember( Unit.enemies );
+    //     }
+    //     return [];
+    // }
+    /**
+     * @party 本人を含める.
+     */
+    searchUnits(who) {
+        const top = who.some(w => w === "top");
+        const bottom = who.some(w => w === "bottom");
+        const ftf = who.some(w => w === "faceToFace");
+        const party = who.some(w => w === "party");
+        const searchIndex = (units) => {
+            for (let i = 0; i < units.length; i++) {
+                if (units[i] === this) {
+                    return i;
                 }
-                if (withHimSelf && u === this) {
-                    continue;
-                }
-                res.push(u);
+            }
+            return 0;
+        };
+        const search = (units, others) => {
+            const map = new Map();
+            const index = searchIndex(units);
+            if (top && index > 0) {
+                map.set(units[index - 1], true);
+            }
+            if (bottom && index < units.length - 1) {
+                map.set(units[index - 1], true);
+            }
+            if (ftf && others[index].exists) {
+                map.set(others[index], true);
+            }
+            if (party) {
+                units.forEach(u => map.set(u, true));
+            }
+            const res = [];
+            for (const key of map.keys()) {
+                res.push(key);
             }
             return res;
         };
         if (this instanceof PUnit) {
-            return searchMember(Unit.players);
+            return search(Unit.players, Unit.enemies);
         }
         if (this instanceof EUnit) {
-            return searchMember(Unit.enemies);
+            return search(Unit.enemies, Unit.players);
         }
         return [];
     }
-    /**このユニットが隣接しているユニット。 */
-    getAdjacentUnits(top = true, bottom = true) {
-        const search = (units) => {
-            for (let i = 0; i < units.length; i++) {
-                if (units[i] === this) {
-                    const res = [];
-                    if (i > 0) {
-                        res.push(units[i - 1]);
-                    }
-                    if (i < units.length - 1) {
-                        res.push(units[i + 1]);
-                    }
-                    return res;
-                }
-            }
-            return [];
-        };
-        if (this instanceof PUnit) {
-            return search(Unit.players);
-        }
-        if (this instanceof EUnit) {
-            return search(Unit.enemies);
-        }
-        return [];
-    }
+    ;
 }
 Unit.DEF_MAX_EP = 1;
 Unit.EAR_NUM = 2;

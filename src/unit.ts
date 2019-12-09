@@ -518,47 +518,91 @@ export abstract class Unit{
     //
     //
     //---------------------------------------------------------
-    /**そのユニットのパーティーメンバーを返す。withHimSelfで本人を含めるかどうか。デフォルトでは含めない。!existsは含めない。deadは含める.*/
-    getParty(withHimSelf = false):Unit[]{
-        const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
-            let res:Unit[] = [];
-            for(const u of units){
-                if(!u.exists){continue;}
-                if(withHimSelf && u === this){continue;}
-                res.push(u);
+    /**
+     * そのユニットのパーティーメンバーを返す。!existsは含めない。deadは含める.
+     * @withHimSelf 本人を含めるかどうか。デフォルトでは含めない。
+     * */
+    // getParty(withHimSelf = false):Unit[]{
+    //     const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
+    //         let res:Unit[] = [];
+    //         for(const u of units){
+    //             if(!u.exists){continue;}
+    //             if(withHimSelf && u === this){continue;}
+    //             res.push(u);
+    //         }
+    //         return res;
+    //     };
+
+    //     if(this instanceof PUnit){
+    //         return searchMember( Unit.players );
+    //     }
+    //     if(this instanceof EUnit){
+    //         return searchMember( Unit.enemies );
+    //     }
+    //     return [];
+    // }
+    /**
+     * @party 本人を含める.
+     */
+    searchUnits(who:("top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
+        const top    = who.some(w=> w === "top");
+        const bottom = who.some(w=> w === "bottom");
+        const ftf    = who.some(w=> w === "faceToFace");
+        const party  = who.some(w=> w === "party");
+        const searchIndex = (units:ReadonlyArray<Unit>):number=>{
+            for(let i = 0; i < units.length; i++){
+                if(units[i] === this){return i;}
+            }
+            return 0;
+        };
+        const search = (units:ReadonlyArray<Unit>, others:ReadonlyArray<Unit>):Unit[]=>{
+            const map = new Map<Unit,true>();
+            const index = searchIndex(units);
+            if(top    && index > 0)                {map.set(units[index-1], true);}
+            if(bottom && index < units.length - 1) {map.set(units[index-1], true);}
+            if(ftf && others[index].exists)        {map.set(others[index], true);}
+            if(party)                              {units.forEach(u=> map.set(u, true));}
+            
+            const res:Unit[] = [];
+            for(const key of map.keys()){
+                res.push(key);
             }
             return res;
-        };
-
-        if(this instanceof PUnit){
-            return searchMember( Unit.players );
-        }
-        if(this instanceof EUnit){
-            return searchMember( Unit.enemies );
-        }
-        return [];
-    }
-    /**このユニットが隣接しているユニット。 */
-    getAdjacentUnits(top = true, bottom = true):Unit[]{
-        const search = (units:ReadonlyArray<Unit>):Unit[]=>{
-            for(let i = 0; i < units.length; i++){
-                if(units[i] === this){
-                    const res:Unit[] = [];
-                    if(i > 0)                {res.push(units[i-1]);}
-                    if(i < units.length - 1) {res.push(units[i+1]);}
-                    return res;
-                }
-            }
-            return [];
         }
         if(this instanceof PUnit){
-            return search(Unit.players);
+            return search(Unit.players, Unit.enemies);
         }
         if(this instanceof EUnit){
-            return search(Unit.enemies);
+            return search(Unit.enemies, Unit.players);
         }
         return [];
-    }
+    };
+    /**
+     * このユニットが隣接しているユニット。 
+     * 
+    */
+    // getAdjacentUnits(who:("top"|"bottom")[]):Unit[]{
+    //     const top    = who.some(w=> w === "top");
+    //     const bottom = who.some(w=> w === "bottom");
+    //     const search = (units:ReadonlyArray<Unit>):Unit[]=>{
+    //         for(let i = 0; i < units.length; i++){
+    //             if(units[i] === this){
+    //                 const res:Unit[] = [];
+    //                 if(top    && i > 0)                {res.push(units[i-1]);}
+    //                 if(bottom && i < units.length - 1) {res.push(units[i+1]);}
+    //                 return res;
+    //             }
+    //         }
+    //         return [];
+    //     }
+    //     if(this instanceof PUnit){
+    //         return search(Unit.players);
+    //     }
+    //     if(this instanceof EUnit){
+    //         return search(Unit.enemies);
+    //     }
+    //     return [];
+    // }
 }
 
 

@@ -6,13 +6,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Unit, Prm, PUnit, EUnit } from "./unit.js";
+import { Unit, Prm, PUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械 } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -136,7 +136,7 @@ TecType._values = [];
     TecType.怨霊 = new class extends TecType {
         constructor() { super("怨霊"); }
         createDmg(attacker, target) {
-            const pow = attacker.tecs.some(tec => Tec.怨霊使い)
+            const pow = attacker.tecs.some(tec => tec === Tec.怨霊使い)
                 ? attacker.prm(Prm.GHOST).total * 0.1
                 : attacker.prm(Prm.GHOST).total * 0.01;
             return new Dmg({
@@ -188,8 +188,8 @@ TecType._values = [];
                 def: target.prm(Prm.ARR).total,
             });
         }
-        effect(attacker, target, dmg) { FX_銃(attacker.imgBounds.center, target.imgBounds.center); }
-        sound() { Sound.gun.play(); }
+        effect(attacker, target, dmg) { FX_機械(attacker.imgBounds.center, target.imgBounds.center); }
+        sound() { Sound.lazer.play(); }
     };
     TecType.弓 = new class extends TecType {
         constructor() { super("弓"); }
@@ -816,7 +816,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 _super.run.call(this, attacker, target);
-                for (const u of target.getAdjacentUnits()) {
+                for (const u of target.searchUnits(["top", "bottom"])) {
                     _super.run.call(this, attacker, u);
                 }
             });
@@ -1122,7 +1122,7 @@ ActiveTec._valueOf = new Map();
     /**落武者. */
     Tec.武者鎌 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "武者鎌", info: "一体に怨霊攻撃x2",
+            super({ uniqueName: "武者鎌", info: "一体に怨霊攻撃x2 怨霊使いのセットが必要",
                 sort: TecSort.暗黒, type: TecType.怨霊, targetings: Targeting.SELECT,
                 mul: 2, num: 1, hit: 1, tp: 1,
             });
@@ -1219,12 +1219,9 @@ ActiveTec._valueOf = new Map();
                 if (Battle.getPhaseUnit() !== me) {
                     return;
                 }
-                const tmp = deadUnit.prm(Prm.MAX_HP).total * 0.334;
-                const value = tmp < deadUnit.prm(Prm.MAX_HP).base ? tmp : deadUnit.prm(Prm.MAX_HP).base - 1;
+                const value = deadUnit.prm(Prm.MAX_HP).total * 0.334;
                 me.ghost += value;
-                if (deadUnit instanceof EUnit) {
-                    deadUnit.prm(Prm.MAX_HP).base -= value;
-                }
+                deadUnit.prm(Prm.MAX_HP).battle -= value;
             });
         }
     };
@@ -1399,7 +1396,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 _super.run.call(this, attacker, target);
-                for (const u of target.getAdjacentUnits()) {
+                for (const u of target.searchUnits(["top", "bottom"])) {
                     _super.run.call(this, attacker, u);
                 }
             });

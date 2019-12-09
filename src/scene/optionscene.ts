@@ -373,7 +373,7 @@ const setDebugBtn = ()=>{
 };
 
 
-class EffectTest extends Scene{
+export class EffectTest extends Scene{
 
     async init() {
         let list = new List();

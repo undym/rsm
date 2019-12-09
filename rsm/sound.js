@@ -98,6 +98,7 @@ Sound.MAX_VOLUME = 10;
     Sound.MAGIC = new Sound("sound/MAGIC.mp3");
     /**story. */
     Sound.moji = new Sound("sound/moji.mp3");
+    Sound.lazer = new Sound("sound/lazer.mp3");
     /**踏破. */
     Sound.lvup = new Sound("sound/lvup.mp3");
     Sound.pet_die = new Sound("sound/pet_die.mp3");

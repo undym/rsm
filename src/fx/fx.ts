@@ -1,6 +1,7 @@
-import { Rect, Color, Point } from "../undym/type.js";
+import { Rect, Color, Point, Size } from "../undym/type.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { Texture, Img } from "../graphics/texture.js";
+import { randomFloat } from "../undym/random.js";
 
 
 
@@ -865,6 +866,99 @@ export const FX_Buff = (center:Point)=>{
 };
 FXTest.add(FX_Buff.name, ()=> FX_Buff( FXTest.target ));
 
+
+export const FX_機械 = (attacker:Point, target:Point)=>{
+    const PI2 = Math.PI * 2;
+
+    const addBlood = (args:{
+        x:number,
+        y:number,
+        size:number,
+        vx:number,
+        vy:number,
+        lifeTime:number,
+        color:Color,
+    })=>{
+        let points:{x:number, y:number}[] = [];
+        const vertex = 3 + Math.random() * 5;
+        for(let i = 0; i < vertex; i++){
+            points.push({
+                x:randomFloat(-args.size, args.size),
+                y:randomFloat(-args.size, args.size),
+            });
+        }
+        
+        FX.add(count=>{
+            if(Math.random() < 0.3){return true;}
+            args.x += args.vx;
+            args.y += args.vy;
+            args.vx *= 0.8;
+            args.vy *= 0.8;
+            const s2 = args.size / 2;
+            // Graphics.fillRect(new Rect(args.x - s2, args.y - s2, args.size, args.size), args.color);
+            const p:{x:number, y:number}[] = [];
+            for(const _p of points){
+                p.push({
+                    x:args.x + _p.x,
+                    y:args.y + _p.y,
+                });
+            }
+            Graphics.fillPolygon(p, args.color);
+            return count < args.lifeTime;
+        });
+    };
+
+    const addLazer = (sx:number, sy:number, lifeTime:number, color:Color)=>{
+        lifeTime = lifeTime|0;
+        let beforeX = sx;
+        let beforeY = sy;
+        FX.add(count=>{
+            const x = (sx * (lifeTime - count) + target.x * count) / lifeTime;
+            const y = (sy * (lifeTime - count) + target.y * count) / lifeTime;
+            Graphics.setLineWidth( 3, ()=>{
+                Graphics.line(new Point(beforeX, beforeY), new Point(x,y), color);
+            });
+
+            beforeX = x;
+            beforeY = y;
+            if(count >= lifeTime){
+                const rad = PI2 * Math.random();
+                const v = Math.random() * 0.02;
+                addBlood({
+                    x:x,
+                    y:y,
+                    size:0.001 + Math.random() * 0.025,
+                    vx:Math.cos(rad) * v,
+                    vy:Math.sin(rad) * v,
+                    lifeTime:1 + Math.random() * 20,
+                    color,
+                })
+                return false;
+            }
+            return true;
+        });
+    };
+    
+    FX.add(count=>{
+        const over = 20;
+        const rnd = 0.01;
+        const colors = [Color.CYAN, Color.YELLOW, Color.WHITE];
+
+        for(let i = 0; i < 3; i++){
+            addLazer(
+                attacker.x + randomFloat(-rnd, rnd),
+                attacker.y + randomFloat(-rnd, rnd),
+                3 + Math.random() * 10,
+                colors[ i % colors.length ],
+            );
+        }
+        
+        return count < over;
+    });
+};
+FXTest.add(FX_機械.name, ()=> FX_機械( FXTest.attacker, FXTest.target ));
+
+
 const FX_NO_USED = (center:Point)=>{
     const PI2 = Math.PI * 2;
     const rnd = ()=>{
@@ -947,3 +1041,35 @@ const FX_NO_USED = (center:Point)=>{
     });
 };
 FXTest.add(FX_NO_USED.name, () => FX_NO_USED( FXTest.attacker ));
+
+
+export const FX_NO_USED2 = (target:Point) => {
+    const PI2 = Math.PI * 2;
+    const t = new Point(target.x * Graphics.pixelW, target.y * Graphics.pixelH);
+    FX.add(count => {
+        const over1 = 60;
+        const over2 = 66;
+        const ctx = Graphics.context;
+        for(let i2 = 0; i2 < 2; i2++){
+        const r = Graphics.pixelW * (0.02 + 0.04 * (i2 + 1));
+        ctx.beginPath();
+        if(count < over1)   {ctx.strokeStyle = Color.CYAN.toString();}
+        else                {ctx.strokeStyle = new Color(0,1,1, 1 - (over1 - count) / (over1 - over2)).toString();}
+        // const loop = count / 2 + 2;
+        const c = count < over1 ? count : over1;
+        let loop = c / 2 + 2;
+        for (let i = 0; i < loop; i++) {
+            const rad = PI2 * i / (loop - 1);
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            const rad2 = PI2 * (i + 1) / (loop - 1);
+            const cos2 = Math.cos(rad2);
+            const sin2 = Math.sin(rad2);
+            ctx.quadraticCurveTo(t.x + cos2 * r, t.y + sin2 * r, t.x + cos * r, t.y + sin * r);
+        }
+        ctx.stroke();
+}
+        return count < over2;
+    });
+};
+FXTest.add(FX_NO_USED2.name, () => FX_NO_USED2(FXTest.target));

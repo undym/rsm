@@ -339,7 +339,7 @@ const setDebugBtn = () => {
         Scene.load(TownScene.ins);
     };
 };
-class EffectTest extends Scene {
+export class EffectTest extends Scene {
     init() {
         const _super = Object.create(null, {
             clear: { get: () => super.clear },

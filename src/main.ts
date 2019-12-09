@@ -20,6 +20,7 @@ import { PartySkill } from "./partyskill.js";
 import { randomInt, randomFloat } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { CollectingSkill } from "./collectingskill.js";
+import { EffectTest } from "./scene/optionscene.js";
 
 
 {
@@ -128,6 +129,9 @@ const setInput = ()=>{
         document.addEventListener("keydown", ev=>{
             if(ev.key === "d"){
                 Debug.debugMode = !Debug.debugMode;
+            }
+            if(ev.key === "e"){
+                Scene.load(new EffectTest());
             }
             if(Debug.debugMode){
                 if(ev.key === "1"){

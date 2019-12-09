@@ -110,6 +110,7 @@ export namespace Sound{
     export const MAGIC      = new Sound("sound/MAGIC.mp3");
     /**story. */
     export const moji       = new Sound("sound/moji.mp3");
+    export const lazer      = new Sound("sound/lazer.mp3");
     /**踏破. */
     export const lvup       = new Sound("sound/lvup.mp3");
     export const pet_die    = new Sound("sound/pet_die.mp3");
