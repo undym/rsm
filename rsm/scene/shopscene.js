@@ -78,25 +78,39 @@ export class ShopScene extends Scene {
             .add(new RatioLayout()
             .add(Place.LIST_INFO, infoLayout)
             .add(Place.LIST_USE_BTN, (() => {
-            const buy = new Btn("買う", () => __awaiter(this, void 0, void 0, function* () {
+            const buy = (num) => {
                 if (!this.choosedGoods) {
-                    return;
+                    return 0;
                 }
                 const goods = this.choosedGoods;
                 if (!goods.isVisible()) {
-                    return;
+                    return 0;
                 }
-                if (PlayData.yen >= goods.price) {
-                    PlayData.yen -= goods.price;
+                let boughtNum = 0;
+                for (let i = 0; i < num; i++) {
+                    if (PlayData.yen >= goods.price) {
+                        PlayData.yen -= goods.price;
+                        goods.buy();
+                        boughtNum++;
+                    }
+                }
+                if (boughtNum > 0) {
                     Sound.KATAN.play();
-                    FX_Str(Font.def, `[${goods.name}]を買った`, Point.CENTER, Color.WHITE);
-                    goods.buy();
+                    FX_Str(Font.def, `[${goods.name}]を${boughtNum}個買った`, Point.CENTER, Color.WHITE);
                 }
+                return num;
+            };
+            const buyPanel = new XLayout()
+                .add(new Btn("x10", () => {
+                buy(10);
+            }))
+                .add(new Btn("購入", () => {
+                buy(1);
             }));
             const no = new Btn("-", () => __awaiter(this, void 0, void 0, function* () { }));
             return new VariableLayout(() => {
                 if (this.choosedGoods && this.choosedGoods.isVisible()) {
-                    return buy;
+                    return buyPanel;
                 }
                 return no;
             });
