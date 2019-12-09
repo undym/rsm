@@ -258,6 +258,8 @@ export class BattleScene extends Scene{
                                 Util.msg.set(`＞${targets[0].name}を選択`);
                                 await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
                                 await this.phaseEnd();
+                            }else{
+                                choosedTec = undefined;
                             }
                         });
                         
@@ -323,7 +325,7 @@ export class BattleScene extends Scene{
     
                         if(item.targetings & Targeting.SELECT){
                             Util.msg.set(`[${item}]のターゲットを選択してください`);
-    
+                            
                             this.setChooseTargetBtn(attacker, async(targets)=>{
                                 list.freeze(true);
                                 await item.use( user, targets );

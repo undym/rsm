@@ -233,6 +233,9 @@ export class BattleScene extends Scene {
                                     yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
                                     yield this.phaseEnd();
                                 }
+                                else {
+                                    choosedTec = undefined;
+                                }
                             }));
                             yield wait(1);
                             return;
