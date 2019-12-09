@@ -132,6 +132,8 @@ export namespace Sound{
     export const walk       = new Sound("sound/walk.mp3");
     /**ダンジョン出入り. */
     export const walk2      = new Sound("sound/walk2.mp3");
+    /**ペット召喚. */
+    export const warp       = new Sound("sound/warp.mp3");
     /**arr. */
     export const ya         = new Sound("sound/ya.mp3");
 }

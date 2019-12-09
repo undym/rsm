@@ -2098,6 +2098,10 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             attacker.pet = Pet.ドゥエルガル.create(1);
+
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("ドゥエルガルが召喚された！"); await wait();
         }
     }
     export const                          ネーレイス:ActiveTec = new class extends ActiveTec{
@@ -2107,6 +2111,10 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             attacker.pet = Pet.ネーレイス.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("ネーレイスが召喚された！"); await wait();
         }
     }
     export const                          ヴァルナ:ActiveTec = new class extends ActiveTec{
@@ -2116,6 +2124,10 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             attacker.pet = Pet.ヴァルナ.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("ヴァルナが召喚された！"); await wait();
         }
     }
     export const                          イリューガー:ActiveTec = new class extends ActiveTec{
@@ -2125,6 +2137,10 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             attacker.pet = Pet.イリューガー.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("イリューガーが召喚された！"); await wait();
         }
     }
     //--------------------------------------------------------------------------

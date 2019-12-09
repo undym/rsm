@@ -120,6 +120,8 @@ Sound.MAX_VOLUME = 10;
     Sound.walk = new Sound("sound/walk.mp3");
     /**ダンジョン出入り. */
     Sound.walk2 = new Sound("sound/walk2.mp3");
+    /**ペット召喚. */
+    Sound.warp = new Sound("sound/warp.mp3");
     /**arr. */
     Sound.ya = new Sound("sound/ya.mp3");
 })(Sound || (Sound = {}));

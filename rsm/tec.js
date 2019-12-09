@@ -2501,6 +2501,10 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 attacker.pet = Pet.ドゥエルガル.create(1);
+                FX_Buff(attacker.imgCenter);
+                Sound.warp.play();
+                Util.msg.set("ドゥエルガルが召喚された！");
+                yield wait();
             });
         }
     };
@@ -2514,6 +2518,10 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 attacker.pet = Pet.ネーレイス.create(1);
+                FX_Buff(attacker.imgCenter);
+                Sound.warp.play();
+                Util.msg.set("ネーレイスが召喚された！");
+                yield wait();
             });
         }
     };
@@ -2527,6 +2535,10 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 attacker.pet = Pet.ヴァルナ.create(1);
+                FX_Buff(attacker.imgCenter);
+                Sound.warp.play();
+                Util.msg.set("ヴァルナが召喚された！");
+                yield wait();
             });
         }
     };
@@ -2540,6 +2552,10 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 attacker.pet = Pet.イリューガー.create(1);
+                FX_Buff(attacker.imgCenter);
+                Sound.warp.play();
+                Util.msg.set("イリューガーが召喚された！");
+                yield wait();
             });
         }
     };
