@@ -183,7 +183,7 @@ export class BattleScene extends Scene {
             }
             Util.msg.set(`${attacker.name}の行動`, Color.ORANGE);
             const pForce = new PhaseStartForce();
-            attacker.phaseStart(pForce);
+            yield attacker.phaseStart(pForce);
             for (const u of Unit.all) {
                 u.judgeDead();
             }
