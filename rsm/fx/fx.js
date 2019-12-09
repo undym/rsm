@@ -557,7 +557,7 @@ export const FX_LVUP = (img, bounds, transparence, reverse) => {
             const rad = Math.atan2(e.y - bounds.cy, e.x - bounds.cx);
             e.vx = Math.cos(rad) * Graphics.dotW * 0.6;
             e.vy = Math.sin(rad) * Graphics.dotH * 0.6;
-            e.lifeTime = (10 + Math.random() * 80) | 0;
+            e.lifeTime = (3 + Math.random() * 80) | 0;
             elms.push(e);
         }
     }
@@ -765,11 +765,11 @@ export const FX_機械 = (attacker, target) => {
         });
     };
     FX.add(count => {
-        const over = 20;
+        const over = 12;
         const rnd = 0.01;
         const colors = [Color.CYAN, Color.YELLOW, Color.WHITE];
         for (let i = 0; i < 3; i++) {
-            addLazer(attacker.x + randomFloat(-rnd, rnd), attacker.y + randomFloat(-rnd, rnd), 3 + Math.random() * 10, colors[i % colors.length]);
+            addLazer(attacker.x + randomFloat(-rnd, rnd), attacker.y + randomFloat(-rnd, rnd), 3 + Math.random() * 7, colors[i % colors.length]);
         }
         return count < over;
     });

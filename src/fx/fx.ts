@@ -689,7 +689,7 @@ export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolea
             e.vx = Math.cos(rad) * Graphics.dotW * 0.6;
             e.vy = Math.sin(rad) * Graphics.dotH * 0.6;
 
-            e.lifeTime = (10 + Math.random() * 80)|0;
+            e.lifeTime = (3 + Math.random() * 80)|0;
 
             elms.push(e);
         }
@@ -940,7 +940,7 @@ export const FX_機械 = (attacker:Point, target:Point)=>{
     };
     
     FX.add(count=>{
-        const over = 20;
+        const over = 12;
         const rnd = 0.01;
         const colors = [Color.CYAN, Color.YELLOW, Color.WHITE];
 
@@ -948,7 +948,7 @@ export const FX_機械 = (attacker:Point, target:Point)=>{
             addLazer(
                 attacker.x + randomFloat(-rnd, rnd),
                 attacker.y + randomFloat(-rnd, rnd),
-                3 + Math.random() * 10,
+                3 + Math.random() * 7,
                 colors[ i % colors.length ],
             );
         }
