@@ -293,11 +293,11 @@ Job.DEF_LVUP_EXP = 10;
                 appearLv: 22, img: new Img("img/unit/unit4.png"),
                 lvupExp: Job.DEF_LVUP_EXP,
                 growthPrms: () => [[Prm.GUN, 1]],
-                learningTecs: () => [Tec.撃つ, Tec.乱射],
+                learningTecs: () => [Tec.撃つ, Tec.スコープ, Tec.弐丁拳銃, Tec.あがらない雨],
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.殴る, Tec.殴る, Tec.弐丁拳銃];
         }
     };
     /**TODO. */
@@ -405,17 +405,6 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
         }
     };
-    // export const                         サマナー:Job = new class extends Job{
-    //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
-    //                             appearLv:125, img:new Img("img/unit/unit18.png"),
-    //                             lvupExp:Job.DEF_LVUP_EXP * 3,
-    //                             growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.MAX_TP, 1]],
-    //                             learningTecs:()=>[],
-    //     });}
-    //     setEnemyInner(e:EUnit){
-    //         e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
-    //     }
-    // };
     Job.精霊使い = new class extends Job {
         constructor() {
             super({ uniqueName: "精霊使い", info: "",
@@ -496,6 +485,30 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.マーメイド, Tec.ホムンクルス, Tec.フランケンシュタイン, Tec.死体除去, Tec.殴る, Tec.殴る, Tec.念, Tec.数珠];
         }
     };
+    Job.密猟ハンター = new class extends Job {
+        constructor() {
+            super({ uniqueName: "密猟ハンター", info: "",
+                appearLv: 140, img: new Img("img/unit/unit29.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_HP, 1], [Prm.GUN, 1], [Prm.ARR, 1]],
+                learningTecs: () => [Tec.捕獲],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.撃つ, Tec.射る, Tec.ヤクシャ, Tec.殴る, Tec.殴る, Tec.スコープ, Tec.あがらない雨];
+        }
+    };
+    // export const                         サマナー:Job = new class extends Job{
+    //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
+    //                             appearLv:125, img:new Img("img/unit/unit18.png"),
+    //                             lvupExp:Job.DEF_LVUP_EXP * 3,
+    //                             growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.MAX_TP, 1]],
+    //                             learningTecs:()=>[],
+    //     });}
+    //     setEnemyInner(e:EUnit){
+    //         e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+    //     }
+    // };
     //--------------------------------------------------
     //
     //獣

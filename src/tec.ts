@@ -1254,7 +1254,7 @@ export namespace Tec{
     //銃Active
     //
     //--------------------------------------------------------------------------
-    /**ガンマン. */
+    /**カウボーイ. */
     export const                          撃つ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"撃つ", info:"ランダムに銃攻撃1～2回",
                     　        sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
@@ -1262,13 +1262,28 @@ export namespace Tec{
         });}
         rndAttackNum():number{return randomInt(1,2,"[]");}
     }
-    /**ガンマン. */
+    /**未設定. */
     export const                          乱射:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"乱射", info:"ランダムに3～6回銃攻撃",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
                               mul:1, num:4, hit:0.8, ep:1,
         });}
         rndAttackNum():number{return randomInt(3,6,"[]");}
+    }
+    /**カウボーイ. */
+    export const                          弐丁拳銃:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"弐丁拳銃", info:"一体に1～3回銃攻撃",
+                              sort:TecSort.銃, type:TecType.銃, targetings:Targeting.SELECT,
+                              mul:1, num:3, hit:0.8, tp:1,
+        });}
+        rndAttackNum():number{return randomInt(1,3,"[]");}
+    }
+    /**カウボーイ. */
+    export const                          あがらない雨:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"あがらない雨", info:"敵全体に銃攻撃",
+                              sort:TecSort.銃, type:TecType.銃, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:0.8, ep:1,
+        });}
     }
     //--------------------------------------------------------------------------
     //
@@ -1660,6 +1675,17 @@ export namespace Tec{
             }
         }
     };
+    /**カウボーイ. */
+    export const                         スコープ:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"スコープ", info:"銃・弓・機械攻撃命中率+10%",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.機械, TecType.銃, TecType.弓)){
+                dmg.hit.mul *= 1.1;
+            }
+        }
+    };
     /**シーフ. */
     export const                         回避UP:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"回避UP", info:"格闘・銃・弓攻撃回避UP",
@@ -1796,6 +1822,22 @@ export namespace Tec{
             Unit.setCondition(target, Condition.命中低下, 5); await wait();
         }
     }
+    //--------------------------------------------------------------------------
+    //
+    //弱体Passive
+    //
+    //--------------------------------------------------------------------------
+    /**密猟ハンター. */
+    export const                         捕獲:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"捕獲", info:"銃・弓攻撃時、相手が獣ジョブでHP30%未満の場合、＜鎖1＞化させる",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃, TecType.弓) && target.job.beast && target.hp < target.prm(Prm.MAX_HP).total * 0.3){
+                Unit.setCondition( target, Condition.鎖, 1 );
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //回復Active

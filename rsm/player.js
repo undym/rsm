@@ -207,6 +207,7 @@ const setDefJobChangeList = (map, u) => {
     add(Job.格闘家, [Job.訓練生二年生]);
     add(Job.シーフ, [Job.訓練生二年生]);
     add(Job.考古学者, [Job.シーフ, Job.ダウザー]);
+    add(Job.密猟ハンター, [Job.考古学者, Job.カウボーイ]);
     add(Job.剣士, [Job.訓練生]);
     add(Job.忍者, [Job.剣士, Job.シーフ]);
     if (u.player.sex === "♂") {
@@ -214,6 +215,7 @@ const setDefJobChangeList = (map, u) => {
     }
     add(Job.魔法使い, [Job.訓練生]);
     add(Job.ウィザード, [Job.魔法使い]);
+    add(Job.アルケミスト, [Job.ウィザード, Job.考古学者]);
     add(Job.天使, [Job.訓練生]);
     add(Job.テンプルナイト, [Job.天使, Job.訓練生二年生]);
     add(Job.ガーディアン, [Job.天使, Job.精霊使い]);
