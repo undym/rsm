@@ -1708,7 +1708,7 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (!target.existsCondition(Condition.練)) {
+                if (!target.hasCondition(Condition.練)) {
                     Sound.up.play();
                     Unit.setCondition(target, Condition.練, 1);
                     yield wait();
@@ -1939,7 +1939,7 @@ ActiveTec._valueOf = new Map();
         }
         phaseEnd(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (unit.existsCondition(Condition.毒)) {
+                if (unit.hasCondition(Condition.毒)) {
                     const value = unit.getConditionValue(Condition.毒);
                     Unit.healHP(unit, value);
                     unit.removeCondition(Condition.毒);
@@ -2223,6 +2223,7 @@ ActiveTec._valueOf = new Map();
                 Unit.healHP(target, target.prm(Prm.MAX_HP).total);
                 Unit.healMP(target, target.prm(Prm.MAX_MP).total);
                 Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                target.clearConditions();
                 Sound.KAIFUKU.play();
                 this.effect(attacker, target, new Dmg());
                 Util.msg.set(`${target.name}は全回復した！`, Color.GREEN.bright);
@@ -2256,7 +2257,7 @@ ActiveTec._valueOf = new Map();
                 Sound.up.play();
                 Util.msg.set("ステータス増加！！");
                 yield wait();
-                if (!target.existsCondition(Condition.回避.type)) {
+                if (!target.hasCondition(Condition.回避.type)) {
                     Sound.up.play();
                     Unit.setCondition(target, Condition.回避, 3);
                     yield wait();
@@ -2392,11 +2393,13 @@ ActiveTec._valueOf = new Map();
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && Math.random() < 0.5) {
-                    attacker.hp -= 5;
-                    target.hp += 5;
+                    const value = 5;
+                    attacker.hp -= value;
+                    target.hp += value;
                     Sound.drain.play();
                     FX_吸収(target.imgCenter, attacker.imgCenter);
                     Util.msg.set("＞血技の技巧");
+                    Util.msg.set(`HPを${value}吸収した`);
                     yield wait();
                 }
             });

@@ -300,7 +300,7 @@ export class DrawUnitDetail extends InnerLayout {
 }
 const createConditionStr = (unit, types) => {
     return types
-        .filter(type => unit.existsCondition(type))
+        .filter(type => unit.hasCondition(type))
         .map(type => unit.getConditionSet(type))
         .map(set => `<${set.condition}${set.value | 0}>`)
         .join("");

@@ -402,7 +402,7 @@ export abstract class Unit{
     //Condition
     //
     //---------------------------------------------------------
-    existsCondition(condition:Condition|ConditionType){
+    hasCondition(condition:Condition|ConditionType){
         if(condition instanceof Condition){
             return this.conditions[condition.type.ordinal].condition === condition;
         }

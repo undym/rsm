@@ -346,34 +346,37 @@ export namespace DungeonEvent{
     export const             FOSSIL:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("FOSSIL");}
         createImg = ()=> new Img("img/stratum.png");
-        happenInner = ()=>{Util.msg.set("何かありそうだ...");};
+        happenInner = ()=>{Util.msg.set("掘れそうだ...");};
         createBtnLayout = ()=> createDefLayout()
-                                .set(AdvanceBtn.index, new Btn("進む", async()=>{
-                                    Sound.PUNCH.play();
-                                    Util.msg.set("つまづいた！", Color.RED); await wait();
+                                .set(AdvanceBtn.index, 
+                                    new Btn("進む", async()=>{
+                                        Sound.PUNCH.play();
+                                        Util.msg.set("つまづいた！", Color.RED); await wait();
 
-                                    for(let p of Unit.players){
-                                        if(!p.exists || p.dead){continue;}
+                                        for(let p of Unit.players){
+                                            if(!p.exists || p.dead){continue;}
 
-                                        const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
-                                        await p.doDmg(dmg);
-                                        await p.judgeDead();
+                                            FX_格闘( p.imgCenter );
+                                            const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
+                                            await p.doDmg(dmg);
+                                            await p.judgeDead();
+                                        }
                                     }
-                                }).dontMove())
-                                .set(ReturnBtn.index, (()=>{
-                                    if(Item.つるはし.remainingUseNum > 0){
-                                        return new Btn("発掘", async()=>{
+                                ).dontMove())
+                                .set(ReturnBtn.index, 
+                                    new Btn("発掘", async()=>{
+                                        if(Item.つるはし.remainingUseNum > 0){
                                             Item.つるはし.remainingUseNum--;
                                             
                                             let rank = Dungeon.now.rank / 2;
                                             await openBox( ItemDrop.FOSSIL, rank, CollectingSkill.発掘 );
-
+    
                                             DungeonEvent.empty.happen();
-                                        });
-                                    }else{
-                                        return ReturnBtn.ins;
-                                    }
-                                })())
+                                        }else{
+                                            Util.msg.set("つるはしがない");
+                                        }
+                                    })
+                                )
                                 ;
     };
     export const             LAKE:DungeonEvent = new class extends DungeonEvent{

@@ -336,7 +336,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"ぱとバット", info:"＜眠＞から目覚めやすくなる",
                                 pos:EqPos.武, lv:0});}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
-            if(unit.existsCondition(Condition.眠)){
+            if(unit.hasCondition(Condition.眠)){
                 unit.addConditionValue(Condition.眠, -1);
             }
         }

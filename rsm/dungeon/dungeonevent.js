@@ -344,7 +344,7 @@ class EventImg {
         constructor() {
             super("FOSSIL");
             this.createImg = () => new Img("img/stratum.png");
-            this.happenInner = () => { Util.msg.set("何かありそうだ..."); };
+            this.happenInner = () => { Util.msg.set("掘れそうだ..."); };
             this.createBtnLayout = () => createDefLayout()
                 .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
                 Sound.PUNCH.play();
@@ -354,24 +354,23 @@ class EventImg {
                     if (!p.exists || p.dead) {
                         continue;
                     }
+                    FX_格闘(p.imgCenter);
                     const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 10 });
                     yield p.doDmg(dmg);
                     yield p.judgeDead();
                 }
             })).dontMove())
-                .set(ReturnBtn.index, (() => {
+                .set(ReturnBtn.index, new Btn("発掘", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.つるはし.remainingUseNum > 0) {
-                    return new Btn("発掘", () => __awaiter(this, void 0, void 0, function* () {
-                        Item.つるはし.remainingUseNum--;
-                        let rank = Dungeon.now.rank / 2;
-                        yield openBox(ItemDrop.FOSSIL, rank, CollectingSkill.発掘);
-                        DungeonEvent.empty.happen();
-                    }));
+                    Item.つるはし.remainingUseNum--;
+                    let rank = Dungeon.now.rank / 2;
+                    yield openBox(ItemDrop.FOSSIL, rank, CollectingSkill.発掘);
+                    DungeonEvent.empty.happen();
                 }
                 else {
-                    return ReturnBtn.ins;
+                    Util.msg.set("つるはしがない");
                 }
-            })());
+            })));
         }
     };
     DungeonEvent.LAKE = new class extends DungeonEvent {

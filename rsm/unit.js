@@ -375,7 +375,7 @@ export class Unit {
     //Condition
     //
     //---------------------------------------------------------
-    existsCondition(condition) {
+    hasCondition(condition) {
         if (condition instanceof Condition) {
             return this.conditions[condition.type.ordinal].condition === condition;
         }
