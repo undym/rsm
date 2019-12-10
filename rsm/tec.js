@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM } from "./fx/fx.js";
+import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾 } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -1575,7 +1575,7 @@ ActiveTec._valueOf = new Map();
     Tec.林式ミサイルう = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "林式ミサイルう", info: "次の行動時、一体に機械攻撃x3",
-                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
                 mul: 3, num: 1, hit: 1.1, item: () => [[Item.林式ミサイル, 1]],
             });
             this.inner = new class extends ActiveTec {
@@ -1586,6 +1586,7 @@ ActiveTec._valueOf = new Map();
                     });
                 }
                 sound() { Sound.bom2.play(); }
+                effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
             };
         }
         run(attacker, target) {
@@ -1620,7 +1621,7 @@ ActiveTec._valueOf = new Map();
     Tec.エボリ製悪魔のミサイル = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "エボリ製悪魔のミサイル", info: "次の行動時、一体に機械攻撃x6",
-                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
                 mul: 3, num: 1, hit: 1.1, item: () => [[Item.エボリ製悪魔のミサイル, 1]],
             });
             this.inner = new class extends ActiveTec {
@@ -1631,6 +1632,7 @@ ActiveTec._valueOf = new Map();
                     });
                 }
                 sound() { Sound.bom2.play(); }
+                effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
             };
         }
         run(attacker, target) {
@@ -1665,7 +1667,7 @@ ActiveTec._valueOf = new Map();
     Tec.メフィスト製悪魔のミサイル = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "メフィスト製悪魔のミサイル", info: "次の行動時、一体に機械攻撃x9",
-                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
                 mul: 9, num: 1, hit: 1.1, item: () => [[Item.メフィスト製悪魔のミサイル, 1]],
             });
             this.inner = new class extends ActiveTec {
@@ -1676,6 +1678,7 @@ ActiveTec._valueOf = new Map();
                     });
                 }
                 sound() { Sound.bom2.play(); }
+                effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
             };
         }
         run(attacker, target) {
@@ -1803,6 +1806,15 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.弓, type: TecType.弓, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 0.8, tp: 2, item: () => [[Item.降雨の矢, 4]],
             });
+            this.inner = new class extends ActiveTec {
+                constructor() {
+                    super({ uniqueName: "ナーガinner", info: "",
+                        sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                        mul: 1, num: 1, hit: 0.8,
+                    });
+                }
+                effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
+            };
         }
         use(attacker, fakeTargets) {
             const _super = Object.create(null, {
@@ -1825,7 +1837,7 @@ ActiveTec._valueOf = new Map();
                                 const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
                                 realTargets.filter(t => t.exists && !t.dead)
                                     .forEach(t => {
-                                    Tec.射る.run(attacker, t);
+                                    tec.inner.run(attacker, t);
                                 });
                                 attacker.removeInvisibleCondition(this);
                             });
@@ -1860,6 +1872,15 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELF,
                 mul: 1, num: 1, hit: 0.8, tp: 2, item: () => [[Item.歌舞の矢, 6]],
             });
+            this.inner = new class extends ActiveTec {
+                constructor() {
+                    super({ uniqueName: "キンナラinner", info: "",
+                        sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                        mul: 1, num: 1, hit: 0.8,
+                    });
+                }
+                effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
+            };
         }
         use(attacker, fakeTargets) {
             const _super = Object.create(null, {
@@ -1882,7 +1903,7 @@ ActiveTec._valueOf = new Map();
                                 const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
                                 realTargets.filter(t => t.exists && !t.dead)
                                     .forEach(t => {
-                                    Tec.射る.run(attacker, t);
+                                    tec.inner.run(attacker, t);
                                 });
                                 attacker.removeInvisibleCondition(this);
                             });
@@ -1901,27 +1922,6 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () { });
         }
     };
-    // export const                          ヤクシャ:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"ヤクシャ", info:"一体に弓攻撃2回　夜叉の矢",
-    //                           type:TecType.弓, targetings:Targeting.SELECT,
-    //                           mul:1, num:2, hit:0.9, tp:2, item:()=>[[Item.夜叉の矢, 1]],
-    //     });}
-    // }
-    // export const                          フェニックスアロー:ActiveTec = new class extends ActiveTec{
-    //     constructor(){super({ uniqueName:"フェニックスアロー", info:"一体に弓攻撃　攻撃後光依存で回復",
-    //                           type:TecType.弓, targetings:Targeting.SELECT,
-    //                           mul:1, num:1, hit:0.9, mp:3, tp:2,
-    //     });}
-    //     async runInner(attacker:Unit, target:Unit, dmg:Dmg){
-    //         super.runInner(attacker, target, dmg);
-    //         const value = attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total / 2;
-    //         if(dmg.result.isHit){
-    //             Unit.healHP(attacker, value);
-    //         }else{
-    //             Unit.healHP(attacker, value / 3);
-    //         }
-    //     }
-    // }
     //--------------------------------------------------------------------------
     //
     //弓Passive

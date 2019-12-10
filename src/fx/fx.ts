@@ -640,6 +640,22 @@ export const FX_ナーガ = (attacker:Point, target:Point)=>{
 };
 FXTest.add(FX_ナーガ.name, () => FX_ナーガ( FXTest.attacker, FXTest.target ));
 
+
+export const FX_ナーガ着弾 = (attacker:Point, target:Point)=>{
+    const rnd = target.x - attacker.x;
+    const x = attacker.x + rnd * Math.random();
+    const center = new Point(x, 0);
+    FX.add((count)=>{
+        const over = 20;
+        
+        const color = new Color(1, 0, 0, 1 - count / over);
+        Graphics.line(target, center, color);
+        return count < over;
+    });
+};
+FXTest.add(FX_ナーガ着弾.name, () => FX_ナーガ着弾( FXTest.attacker, FXTest.target ));
+
+
 export const FX_LVUP = (img:Img, bounds:Rect, transparence:Color, reverse:boolean)=>{
     const imgData = img.ctx.getImageData(0, 0, img.pixelW, img.pixelH);
     const data = imgData.data;
