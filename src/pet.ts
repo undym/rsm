@@ -144,5 +144,44 @@ export namespace Pet{
             };
         }
     };
+    export const             マーメイド:PetFactory = new class extends PetFactory{
+        constructor(){super("マーメイド", new Img("img/pet/pet6.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
+                }
+            };
+        }
+    };
+    export const             ホムンクルス:PetFactory = new class extends PetFactory{
+        constructor(){super("ホムンクルス", new Img("img/pet/pet7.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
+                }
+            };
+        }
+    };
+    export const             フランケンシュタイン:PetFactory = new class extends PetFactory{
+        constructor(){super("フランケンシュタイン", new Img("img/pet/pet8.png", {transparence:Color.BLACK}));}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.サイクロン]);
+                }
+            };
+        }
+    };
 }
 

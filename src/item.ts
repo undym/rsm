@@ -879,10 +879,6 @@ export namespace Item{
     //弾
     //
     //-----------------------------------------------------------------
-    // export const                         散弾:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
-    //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
-    // };
     export const                         降雨の矢:Item = new class extends Item{
         constructor(){super({uniqueName:"降雨の矢", info:"ナーガに使用",
                                 type:ItemType.弾, rank:7, drop:ItemDrop.NO,
@@ -914,32 +910,52 @@ export namespace Item{
                                 consumable:true})}
     };
     export const                         絵画母なる星の緑の丘:Item = new class extends Item{
-        constructor(){super({uniqueName:"絵画母なる星の緑の丘", info:"",
+        constructor(){super({uniqueName:"絵画母なる星の緑の丘", info:"ドゥエルガルに使用",
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,
                                 consumable:true})}
         toString(){return "絵画『母なる星の緑の丘』"}
     };
     export const                         絵画シェイクスピアの涙:Item = new class extends Item{
-        constructor(){super({uniqueName:"絵画シェイクスピアの涙", info:"",
+        constructor(){super({uniqueName:"絵画シェイクスピアの涙", info:"ネーレイスに使用",
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,
                                 consumable:true})}
         toString(){return "絵画『シェイクスピアの涙』"}
     };
     export const                         絵画彼女の髪:Item = new class extends Item{
-        constructor(){super({uniqueName:"絵画彼女の髪", info:"",
+        constructor(){super({uniqueName:"絵画彼女の髪", info:"ヴァルナに使用",
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,
                                 consumable:true})}
         toString(){return "絵画『彼女の髪』"}
     };
     export const                         絵画我が情熱の日:Item = new class extends Item{
-        constructor(){super({uniqueName:"絵画我が情熱の日", info:"",
+        constructor(){super({uniqueName:"絵画我が情熱の日", info:"イリューガーに使用",
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,
                                 consumable:true})}
         toString(){return "絵画『我が情熱の日』"}
     };
     export const                         聖水:Item = new class extends Item{
-        constructor(){super({uniqueName:"聖水", info:"",
+        constructor(){super({uniqueName:"聖水", info:"ガブリエル・ラファエル・ウリエルに使用",
                                 type:ItemType.弾, rank:9, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         Dフラスコ:Item = new class extends Item{
+        constructor(){super({uniqueName:"Dフラスコ", info:"死体除去に使用",
+                                type:ItemType.弾, rank:8, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         マーメイド:Item = new class extends Item{
+        constructor(){super({uniqueName:"マーメイド", info:"マーメイドに使用",
+                                type:ItemType.弾, rank:7, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         ホムンクルス:Item = new class extends Item{
+        constructor(){super({uniqueName:"ホムンクルス", info:"ホムンクルスに使用",
+                                type:ItemType.弾, rank:7, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         フランケンシュタイン:Item = new class extends Item{
+        constructor(){super({uniqueName:"フランケンシュタイン", info:"フランケンシュタイン",
+                                type:ItemType.弾, rank:7, drop:ItemDrop.NO,
                                 consumable:true})}
     };
     //-----------------------------------------------------------------

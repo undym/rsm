@@ -975,10 +975,6 @@ Item.DEF_NUM_LIMIT = 9999;
     //弾
     //
     //-----------------------------------------------------------------
-    // export const                         散弾:Item = new class extends Item{
-    //     constructor(){super({uniqueName:"散弾", info:"ショットガンに使用",
-    //                             type:ItemType.弾, rank:3, drop:ItemDrop.BOX})}
-    // };
     Item.降雨の矢 = new class extends Item {
         constructor() {
             super({ uniqueName: "降雨の矢", info: "ナーガに使用",
@@ -1023,7 +1019,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.絵画母なる星の緑の丘 = new class extends Item {
         constructor() {
-            super({ uniqueName: "絵画母なる星の緑の丘", info: "",
+            super({ uniqueName: "絵画母なる星の緑の丘", info: "ドゥエルガルに使用",
                 type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
                 consumable: true });
         }
@@ -1031,7 +1027,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.絵画シェイクスピアの涙 = new class extends Item {
         constructor() {
-            super({ uniqueName: "絵画シェイクスピアの涙", info: "",
+            super({ uniqueName: "絵画シェイクスピアの涙", info: "ネーレイスに使用",
                 type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
                 consumable: true });
         }
@@ -1039,7 +1035,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.絵画彼女の髪 = new class extends Item {
         constructor() {
-            super({ uniqueName: "絵画彼女の髪", info: "",
+            super({ uniqueName: "絵画彼女の髪", info: "ヴァルナに使用",
                 type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
                 consumable: true });
         }
@@ -1047,7 +1043,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.絵画我が情熱の日 = new class extends Item {
         constructor() {
-            super({ uniqueName: "絵画我が情熱の日", info: "",
+            super({ uniqueName: "絵画我が情熱の日", info: "イリューガーに使用",
                 type: ItemType.弾, rank: 12, drop: ItemDrop.NO,
                 consumable: true });
         }
@@ -1055,8 +1051,36 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.聖水 = new class extends Item {
         constructor() {
-            super({ uniqueName: "聖水", info: "",
+            super({ uniqueName: "聖水", info: "ガブリエル・ラファエル・ウリエルに使用",
                 type: ItemType.弾, rank: 9, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.Dフラスコ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "Dフラスコ", info: "死体除去に使用",
+                type: ItemType.弾, rank: 8, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.マーメイド = new class extends Item {
+        constructor() {
+            super({ uniqueName: "マーメイド", info: "マーメイドに使用",
+                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.ホムンクルス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ホムンクルス", info: "ホムンクルスに使用",
+                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.フランケンシュタイン = new class extends Item {
+        constructor() {
+            super({ uniqueName: "フランケンシュタイン", info: "フランケンシュタイン",
+                type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
                 consumable: true });
         }
     };

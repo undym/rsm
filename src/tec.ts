@@ -2143,6 +2143,60 @@ export namespace Tec{
             Util.msg.set("イリューガーが召喚された！"); await wait();
         }
     }
+    export const                          マーメイド:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"マーメイド", info:"マーメイドを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.マーメイド, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.マーメイド.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("マーメイドが召喚された！"); await wait();
+        }
+    }
+    export const                          ホムンクルス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ホムンクルス", info:"ホムンクルスを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.ホムンクルス, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.ホムンクルス.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("ホムンクルスが召喚された！"); await wait();
+        }
+    }
+    export const                          フランケンシュタイン:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"フランケンシュタイン", info:"フランケンシュタインを召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.フランケンシュタイン, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            attacker.pet = Pet.フランケンシュタイン.create(1);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("フランケンシュタインが召喚された！"); await wait();
+        }
+    }
+    export const                          死体除去:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"死体除去", info:"死亡した人間型ユニット一体を除去する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:Targeting.SELECT | Targeting.DEAD_ONLY,
+                              mul:1, num:1, hit:1, mp:1, item:()=>[[Item.Dフラスコ, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            if(target instanceof EUnit && target.dead && !target.job.beast){
+                target.exists = false;
+                FX_神格( target.imgCenter );
+                Sound.sin.play();
+
+                Util.msg.set(`${target.name}の死体が消滅した...`); await wait();
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //その他Passive
@@ -2250,6 +2304,67 @@ export namespace Tec{
         constructor(){super({ uniqueName:"ファイアブレス", info:"敵全体に魔法攻撃",
                               sort:TecSort.その他, type:TecType.魔法, targetings:Targeting.ALL,
                               mul:1, num:1, hit:1, mp:6,
+                              flags:["ペット"],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.counter = true;
+            return dmg;
+        }
+    }
+    /**ペット:マーメイド. */
+    export const                          人魚の歌:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"人魚の歌", info:"一体を＜眠1＞化",
+                              sort:TecSort.その他, type:TecType.状態, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:1,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.sin.play();
+            Unit.setCondition( target, Condition.眠, 1 ); await wait();
+        }
+    }
+    /**ペット:マーメイド. */
+    export const                          生命の歌:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"生命の歌", info:"自分以外の味方のHP回復",
+                              sort:TecSort.その他, type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, tp:2,
+                              flags:["ペット"],
+        });}
+        async run(attacker:Unit, target:Unit){
+            if(attacker === target){return;}
+
+            FX_回復( target.imgCenter );
+            Sound.KAIFUKU.play();
+            const value = attacker.prm(Prm.LV).total * 0.5 + 1;
+            Unit.healHP( target, value );
+            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+        }
+    }
+    /**ペット:ホムンクルス. */
+    export const                          ブラッドパンチ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ブラッドパンチ", info:"一体に格闘攻撃 ダメージの半分をHPとして吸収",
+                              sort:TecSort.その他, type:TecType.状態, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:1,
+                              flags:["ペット"],
+        });}
+        async runInner(attacker:Unit, target:Unit, dmg:Dmg){
+            super.runInner(attacker, target, dmg);
+
+            if(dmg.result.isHit){
+                Sound.drain.play();
+                FX_吸収(attacker.imgCenter, target.imgCenter);
+                const result = dmg.result.value;
+                Unit.healHP( attacker, result );
+            }
+        }
+    }
+    /**ペット:フランケンシュタイン. */
+    export const                          サイクロン:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"サイクロン", info:"敵全体に過去攻撃",
+                              sort:TecSort.その他, type:TecType.過去, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, tp:2,
                               flags:["ペット"],
         });}
         createDmg(attacker:Unit, target:Unit){

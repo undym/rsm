@@ -463,6 +463,17 @@ export namespace Job{
             e.tecs = [Tec.怨霊使い, Tec.鎌, Tec.武者鎌, Tec.時雨, Tec.五月雨, Tec.殴る, Tec.殴る, Tec.成仏];
         }
     };
+    export const                         アルケミスト:Job = new class extends Job{
+        constructor(){super({uniqueName:"アルケミスト", info:"",
+                                appearLv:160, img:new Img("img/unit/unit28.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                growthPrms:()=>[[Prm.MAG, 1], [Prm.LIG, 1], [Prm.CHN, 1]],
+                                learningTecs:()=>[Tec.マーメイド, Tec.ホムンクルス, Tec.フランケンシュタイン, Tec.死体除去],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.マーメイド, Tec.ホムンクルス, Tec.フランケンシュタイン, Tec.死体除去, Tec.殴る, Tec.殴る, Tec.念, Tec.数珠];
+        }
+    };
     //--------------------------------------------------
     //
     //獣

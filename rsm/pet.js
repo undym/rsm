@@ -160,4 +160,46 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             };
         }
     };
+    Pet.マーメイド = new class extends PetFactory {
+        constructor() { super("マーメイド", new Img("img/pet/pet6.png", { transparence: Color.BLACK })); }
+        create(hp) {
+            const factory = this;
+            return new class extends Pet {
+                constructor() { super(factory.uniqueName, factory.img, hp); }
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
+                    });
+                }
+            };
+        }
+    };
+    Pet.ホムンクルス = new class extends PetFactory {
+        constructor() { super("ホムンクルス", new Img("img/pet/pet7.png", { transparence: Color.BLACK })); }
+        create(hp) {
+            const factory = this;
+            return new class extends Pet {
+                constructor() { super(factory.uniqueName, factory.img, hp); }
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
+                    });
+                }
+            };
+        }
+    };
+    Pet.フランケンシュタイン = new class extends PetFactory {
+        constructor() { super("フランケンシュタイン", new Img("img/pet/pet8.png", { transparence: Color.BLACK })); }
+        create(hp) {
+            const factory = this;
+            return new class extends Pet {
+                constructor() { super(factory.uniqueName, factory.img, hp); }
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.useRndPetTec(unit, [Tec.サイクロン]);
+                    });
+                }
+            };
+        }
+    };
 })(Pet || (Pet = {}));

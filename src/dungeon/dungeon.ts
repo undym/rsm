@@ -575,7 +575,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.ぱとバット],
                                 trendItems: ()=>[Item.松, Item.桜, Item.クワ, Item.良い土, Item.イズミジュエリー, Item.肉],
         });}
-        isVisible = ()=>Dungeon.精霊寺院.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.精霊寺院跡.dungeonClearCount > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
@@ -912,9 +912,9 @@ export namespace Dungeon{
             }
         }
     };
-    export const                         精霊寺院:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"精霊寺院", info:"",
-                                rank:6, enemyLv:25, au:350, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
+    export const                         精霊寺院跡:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"精霊寺院跡", info:"",
+                                rank:6, enemyLv:25, au:350, btn:[DungeonArea.古マーザン, new Rect(0.1, 0.05, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.エスペラント],
                                 exItems:    ()=>[Item.精霊使いの血],
                                 trendItems: ()=>[Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],
