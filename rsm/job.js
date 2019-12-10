@@ -524,6 +524,19 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.ヴァハ, Tec.撃つ, Tec.大砲, Tec.羊飼いの銃, Tec.殴る, Tec.魔砲, Tec.乱射];
         }
     };
+    Job.ロボット = new class extends Job {
+        constructor() {
+            super({ uniqueName: "ロボット", info: "",
+                appearLv: 124, img: new Img("img/unit/unit32.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.GUN, 2]],
+                learningTecs: () => [Tec.ショック, Tec.メタルボディ, Tec.増幅回路, Tec.バベル],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.ショック, Tec.ショック, Tec.ショック, Tec.ショック, Tec.メタルボディ, Tec.増幅回路, Tec.バベル];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

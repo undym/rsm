@@ -968,6 +968,11 @@ export namespace Item{
                                 type:ItemType.弾, rank:6, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         パワータンク:Item = new class extends Item{
+        constructor(){super({uniqueName:"パワータンク", info:"バベルに使用",
+                                type:ItemType.弾, rank:6, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
     //-----------------------------------------------------------------
     //
     //鍵

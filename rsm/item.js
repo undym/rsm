@@ -1098,6 +1098,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.パワータンク = new class extends Item {
+        constructor() {
+            super({ uniqueName: "パワータンク", info: "バベルに使用",
+                type: ItemType.弾, rank: 6, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //鍵

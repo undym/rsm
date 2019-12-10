@@ -1515,7 +1515,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "レーザー", info: "一体とその両脇に機械攻撃",
                 sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
-                mul: 1, num: 1, hit: 1, tp: 1, item: () => [[Item.バッテリー, 1]],
+                mul: 1, num: 1, hit: 1.1, tp: 1, item: () => [[Item.バッテリー, 1]],
             });
         }
         run(attacker, target) {
@@ -1534,7 +1534,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "メガトン", info: "一体に力x2を加えて機械攻撃",
                 sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
-                mul: 1, num: 1, hit: 1, tp: 3,
+                mul: 1, num: 1, hit: 1.1, tp: 3,
             });
         }
         createDmg(attacker, target) {
@@ -1544,11 +1544,30 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    /**雷鳥. */
     Tec.雷撃 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "雷撃", info: "一体に機械攻撃x1.5",
                 sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
-                mul: 1.5, num: 1, hit: 1, mp: 2,
+                mul: 1.5, num: 1, hit: 1.1, mp: 2,
+            });
+        }
+    };
+    /**機械士. */
+    Tec.ショック = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ショック", info: "一体に機械攻撃",
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1.1,
+            });
+        }
+    };
+    /**機械士. */
+    Tec.バベル = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "バベル", info: "敵全体に機械攻撃",
+                sort: TecSort.銃, type: TecType.機械, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1.1, mp: 1, tp: 1, item: () => [[Item.パワータンク, 1]],
             });
         }
     };
@@ -1567,6 +1586,21 @@ ActiveTec._valueOf = new Map();
         phaseEnd(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 unit.prm(Prm.GUN).battle += unit.prm(Prm.GUN).base * 0.01 + 1;
+            });
+        }
+    };
+    /**機械士. */
+    Tec.増幅回路 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "増幅回路", info: "機械攻撃+20%",
+                sort: TecSort.銃, type: TecType.機械,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.機械)) {
+                    dmg.pow.mul *= 1.2;
+                }
             });
         }
     };
@@ -2051,6 +2085,21 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
                     dmg.pow.mul *= 0.8;
+                }
+            });
+        }
+    };
+    /**ロボット. */
+    Tec.メタルボディ = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "メタルボディ", info: "被銃・弓攻撃-50%",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃, TecType.弓)) {
+                    dmg.pow.mul *= 0.5;
                 }
             });
         }
