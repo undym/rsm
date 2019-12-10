@@ -954,8 +954,18 @@ export namespace Item{
                                 consumable:true})}
     };
     export const                         フランケンシュタイン:Item = new class extends Item{
-        constructor(){super({uniqueName:"フランケンシュタイン", info:"フランケンシュタイン",
+        constructor(){super({uniqueName:"フランケンシュタイン", info:"フランケンシュタインに使用",
                                 type:ItemType.弾, rank:7, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         魔弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"魔弾", info:"羊飼いの銃に使用",
+                                type:ItemType.弾, rank:6, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         砲弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"砲弾", info:"大砲に使用",
+                                type:ItemType.弾, rank:6, drop:ItemDrop.NO,
                                 consumable:true})}
     };
     //-----------------------------------------------------------------

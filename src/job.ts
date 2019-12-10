@@ -477,12 +477,23 @@ export namespace Job{
     export const                         医師:Job = new class extends Job{
         constructor(){super({uniqueName:"医師", info:"",
                                 appearLv:140, img:new Img("img/unit/unit30.png"),
-                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
                                 growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.LIG, 1]],
                                 learningTecs:()=>[Tec.衛生, Tec.解毒, Tec.良き占い],
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.衛生, Tec.数珠, Tec.良き占い, Tec.天籟, Tec.殴る, Tec.MP自動回復, Tec.エリス];
+        }
+    };
+    export const                         魔砲士:Job = new class extends Job{
+        constructor(){super({uniqueName:"魔砲士", info:"",
+                                appearLv:64, img:new Img("img/unit/unit31.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.MAG, 1], [Prm.GUN, 1]],
+                                learningTecs:()=>[Tec.大砲, Tec.羊飼いの銃, Tec.魔砲, Tec.乱射],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.ヴァハ, Tec.撃つ, Tec.大砲, Tec.羊飼いの銃, Tec.殴る, Tec.魔砲, Tec.乱射];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

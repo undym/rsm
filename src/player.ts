@@ -257,6 +257,7 @@ const setDefJobChangeList = (map:Map<Job,true>, u:PUnit):void=>{
     add(Job.天使, [Job.訓練生]);
         add(Job.テンプルナイト, [Job.天使, Job.訓練生二年生]);
         add(Job.ガーディアン, [Job.天使, Job.精霊使い]);
+        add(Job.医師, [Job.天使]);
     add(Job.毒使い, [Job.訓練生]);
         add(Job.落武者, [Job.毒使い, Job.侍, Job.霊術戦士]);
     add(Job.鎖使い, [Job.訓練生]);

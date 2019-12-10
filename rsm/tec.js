@@ -1428,20 +1428,19 @@ ActiveTec._valueOf = new Map();
         }
         rndAttackNum() { return randomInt(1, 2, "[]"); }
     };
-    /**未設定. */
+    /**魔砲士. */
     Tec.乱射 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "乱射", info: "ランダムに3～6回銃攻撃",
+            super({ uniqueName: "乱射", info: "ランダムに3回銃攻撃",
                 sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
-                mul: 1, num: 4, hit: 0.8, ep: 1,
+                mul: 1, num: 3, hit: 0.8, tp: 3,
             });
         }
-        rndAttackNum() { return randomInt(3, 6, "[]"); }
     };
     /**カウボーイ. */
     Tec.弐丁拳銃 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "弐丁拳銃", info: "一体に1～3回銃攻撃",
+            super({ uniqueName: "弐丁拳銃", info: "一体に2～3回銃攻撃",
                 sort: TecSort.銃, type: TecType.銃, targetings: Targeting.SELECT,
                 mul: 1, num: 3, hit: 0.8, tp: 1,
             });
@@ -1457,11 +1456,56 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**魔砲士. */
+    Tec.羊飼いの銃 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "羊飼いの銃", info: "魔値x2を加えてランダムに銃攻撃1～2回",
+                sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
+                mul: 1, num: 1, hit: 0.8, mp: 3, item: () => [[Item.魔弾, 2]],
+            });
+        }
+        rndAttackNum() { return randomInt(1, 2, "[]"); }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.MAG).total * 2;
+            return dmg;
+        }
+    };
+    /**魔砲士. */
+    Tec.大砲 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "羊飼いの銃", info: "ランダムに銃攻撃1～2回x2",
+                sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
+                mul: 2, num: 1, hit: 0.8, tp: 1, item: () => [[Item.砲弾, 2]],
+            });
+        }
+        rndAttackNum() { return randomInt(1, 2, "[]"); }
+    };
     //--------------------------------------------------------------------------
     //
     //銃Passive
     //
     //--------------------------------------------------------------------------
+    /**魔砲士. */
+    Tec.魔砲 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "魔砲", info: "銃攻撃に現在MP値を加える 行動開始時MP-2",
+                sort: TecSort.銃, type: TecType.機械,
+            });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.mp -= 2;
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
+                    dmg.pow.add += attacker.mp;
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //機械Active

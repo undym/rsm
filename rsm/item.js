@@ -1079,8 +1079,22 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.フランケンシュタイン = new class extends Item {
         constructor() {
-            super({ uniqueName: "フランケンシュタイン", info: "フランケンシュタイン",
+            super({ uniqueName: "フランケンシュタイン", info: "フランケンシュタインに使用",
                 type: ItemType.弾, rank: 7, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.魔弾 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "魔弾", info: "羊飼いの銃に使用",
+                type: ItemType.弾, rank: 6, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.砲弾 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "砲弾", info: "大砲に使用",
+                type: ItemType.弾, rank: 6, drop: ItemDrop.NO,
                 consumable: true });
         }
     };
