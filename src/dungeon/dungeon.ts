@@ -232,23 +232,23 @@ export abstract class Dungeon{
         return num === 0 ? 1 : num;
     }
 
-    setEnemy(num:number = 0){
+    async setEnemy(num:number = 0){
         if(num === 0){
             num = this.rndEnemyNum();
         }
         for(let i = 0; i < num; i++){
             const e = Unit.enemies[i];
-            this.setEnemyInner( e );
+            await this.setEnemyInner( e );
             e.name += String.fromCharCode("A".charCodeAt(0) + i);
         }
     }
 
-    setEnemyInner(e:EUnit){
-        this.rndJob().setEnemy(e, (Math.random() * 0.5 + 0.75) * this.enemyLv);
+    async setEnemyInner(e:EUnit){
+        await this.rndJob().setEnemy(e, (Math.random() * 0.5 + 0.75) * this.enemyLv);
     }
 
-    setBoss(){
-        this.setEnemy( Unit.enemies.length );
+    async setBoss(){
+        await this.setEnemy( Unit.enemies.length );
         for(const e of Unit.enemies){
             e.prm(Prm.MAX_HP).base *= 3;
             e.ep = Unit.DEF_MAX_EP;
@@ -257,11 +257,12 @@ export abstract class Dungeon{
         this.setBossInner();
 
         for(let e of Unit.enemies){
+            await e.equip();
             e.hp = e.prm(Prm.MAX_HP).total;
         }
     }
 
-    setEx(){
+    async setEx(){
         for(const e of Unit.enemies){
             const _killCount = this.exKillCount < 10 ? this.exKillCount : 10;
             const lv = this.originalEnemyLv * (1 + _killCount * 0.1);
@@ -275,6 +276,7 @@ export abstract class Dungeon{
         this.setExInner();
         
         for(let e of Unit.enemies){
+            await e.equip();
             e.hp = e.prm(Prm.MAX_HP).total;
         }
     }

@@ -1,3 +1,11 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { EUnit, Prm } from "./unit.js";
 import { Tec } from "./tec.js";
 import { EqPos, Eq } from "./eq.js";
@@ -74,33 +82,35 @@ export class Job {
     toString() { return this.args.uniqueName; }
     get maxLv() { return 20; }
     setEnemy(e, lv) {
-        for (const prm of Prm.values) {
-            const set = e.prm(prm);
-            set.base = 4 * Math.random() + lv * Math.random();
-            set.battle = 0;
-            set.eq = 0;
-        }
-        e.name = this.toString();
-        e.job = this;
-        e.img = this.img;
-        e.exists = true;
-        e.dead = false;
-        e.ai = EUnit.DEF_AI;
-        e.prm(Prm.LV).base = lv;
-        e.prm(Prm.EXP).base = lv + 1;
-        e.yen = lv + 1;
-        e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
-        e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
-        e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
-        e.ep = 0;
-        for (const pos of EqPos.values) {
-            e.setEq(pos, Eq.rnd(pos, lv));
-        }
-        e.clearConditions();
-        this.setEnemyInner(e);
-        e.equip();
-        e.hp = e.prm(Prm.MAX_HP).total;
-        e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const prm of Prm.values) {
+                const set = e.prm(prm);
+                set.base = 4 * Math.random() + lv * Math.random();
+                set.battle = 0;
+                set.eq = 0;
+            }
+            e.name = this.toString();
+            e.job = this;
+            e.img = this.img;
+            e.exists = true;
+            e.dead = false;
+            e.ai = EUnit.DEF_AI;
+            e.prm(Prm.LV).base = lv;
+            e.prm(Prm.EXP).base = lv + 1;
+            e.yen = lv + 1;
+            e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
+            e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
+            e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
+            e.ep = 0;
+            for (const pos of EqPos.values) {
+                e.setEq(pos, Eq.rnd(pos, lv));
+            }
+            e.clearConditions();
+            this.setEnemyInner(e);
+            yield e.equip();
+            e.hp = e.prm(Prm.MAX_HP).total;
+            e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
+        });
     }
     setEnemyInner(e) { }
 }

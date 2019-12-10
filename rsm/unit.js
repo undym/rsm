@@ -308,12 +308,12 @@ export class Unit {
     //
     //---------------------------------------------------------
     equip() {
-        for (const prm of Prm.values) {
-            this.prm(prm).eq = 0;
-        }
-        (() => __awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const prm of Prm.values) {
+                this.prm(prm).eq = 0;
+            }
             yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return f.equip(this); }));
-        }))();
+        });
     }
     battleStart() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.battleStart(this); })); });

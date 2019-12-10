@@ -357,13 +357,11 @@ export abstract class Unit{
     //force
     //
     //---------------------------------------------------------
-    equip(){
+    async equip(){
         for(const prm of Prm.values){
             this.prm(prm).eq = 0;
         }
-        (async()=>{
-            await this.force(async f=> f.equip(this));
-        })();
+        await this.force(async f=> f.equip(this));
     }
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
     async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}

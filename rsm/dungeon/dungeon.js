@@ -219,42 +219,52 @@ export class Dungeon {
         return num === 0 ? 1 : num;
     }
     setEnemy(num = 0) {
-        if (num === 0) {
-            num = this.rndEnemyNum();
-        }
-        for (let i = 0; i < num; i++) {
-            const e = Unit.enemies[i];
-            this.setEnemyInner(e);
-            e.name += String.fromCharCode("A".charCodeAt(0) + i);
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            if (num === 0) {
+                num = this.rndEnemyNum();
+            }
+            for (let i = 0; i < num; i++) {
+                const e = Unit.enemies[i];
+                yield this.setEnemyInner(e);
+                e.name += String.fromCharCode("A".charCodeAt(0) + i);
+            }
+        });
     }
     setEnemyInner(e) {
-        this.rndJob().setEnemy(e, (Math.random() * 0.5 + 0.75) * this.enemyLv);
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.rndJob().setEnemy(e, (Math.random() * 0.5 + 0.75) * this.enemyLv);
+        });
     }
     setBoss() {
-        this.setEnemy(Unit.enemies.length);
-        for (const e of Unit.enemies) {
-            e.prm(Prm.MAX_HP).base *= 3;
-            e.ep = Unit.DEF_MAX_EP;
-        }
-        this.setBossInner();
-        for (let e of Unit.enemies) {
-            e.hp = e.prm(Prm.MAX_HP).total;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.setEnemy(Unit.enemies.length);
+            for (const e of Unit.enemies) {
+                e.prm(Prm.MAX_HP).base *= 3;
+                e.ep = Unit.DEF_MAX_EP;
+            }
+            this.setBossInner();
+            for (let e of Unit.enemies) {
+                yield e.equip();
+                e.hp = e.prm(Prm.MAX_HP).total;
+            }
+        });
     }
     setEx() {
-        for (const e of Unit.enemies) {
-            const _killCount = this.exKillCount < 10 ? this.exKillCount : 10;
-            const lv = this.originalEnemyLv * (1 + _killCount * 0.1);
-            const job = this.rndJob();
-            job.setEnemy(e, lv);
-            e.prm(Prm.MAX_HP).base *= 3;
-            e.ep = Unit.DEF_MAX_EP;
-        }
-        this.setExInner();
-        for (let e of Unit.enemies) {
-            e.hp = e.prm(Prm.MAX_HP).total;
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const e of Unit.enemies) {
+                const _killCount = this.exKillCount < 10 ? this.exKillCount : 10;
+                const lv = this.originalEnemyLv * (1 + _killCount * 0.1);
+                const job = this.rndJob();
+                job.setEnemy(e, lv);
+                e.prm(Prm.MAX_HP).base *= 3;
+                e.ep = Unit.DEF_MAX_EP;
+            }
+            this.setExInner();
+            for (let e of Unit.enemies) {
+                yield e.equip();
+                e.hp = e.prm(Prm.MAX_HP).total;
+            }
+        });
     }
     dungeonClearEvent() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -416,7 +416,7 @@ export namespace DungeonEvent{
         constructor(){super("BATTLE");}
         happenInner = async()=>{
             Util.msg.set("敵が現れた！");
-            Dungeon.now.setEnemy();
+            await Dungeon.now.setEnemy();
             Battle.setup( BattleType.NORMAL, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
@@ -438,7 +438,7 @@ export namespace DungeonEvent{
         constructor(){super("BOSS_BATTLE");}
         happenInner = async()=>{
             Util.msg.set(`[${Dungeon.now}]のボスが現れた！`, Color.WHITE.bright);
-            Dungeon.now.setBoss();
+            await Dungeon.now.setBoss();
             Battle.setup( BattleType.BOSS, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
@@ -460,7 +460,7 @@ export namespace DungeonEvent{
         constructor(){super("EX_BATTLE");}
         happenInner = async()=>{
             Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
-            Dungeon.now.setEx();
+            await Dungeon.now.setEx();
             Battle.setup( BattleType.EX, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:

@@ -100,7 +100,7 @@ export abstract class Job{
     
     get maxLv(){return 20;}
     
-    setEnemy(e:EUnit, lv:number){
+    async setEnemy(e:EUnit, lv:number){
 
         for(const prm of Prm.values){
             const set = e.prm(prm);
@@ -134,7 +134,7 @@ export abstract class Job{
         
         this.setEnemyInner(e);
 
-        e.equip();
+        await e.equip();
 
         e.hp = e.prm(Prm.MAX_HP).total;
         e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
