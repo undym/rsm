@@ -1105,6 +1105,27 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.林式ミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "林式ミサイル", info: "林式ミサイルうに使用",
+                type: ItemType.弾, rank: 5, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.エボリ製悪魔のミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "エボリ製悪魔のミサイル", info: "エボリ製悪魔のミサイルに使用",
+                type: ItemType.弾, rank: 5, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.メフィスト製悪魔のミサイル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "メフィスト製悪魔のミサイル", info: "メフィスト製悪魔のミサイルに使用",
+                type: ItemType.弾, rank: 5, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //鍵

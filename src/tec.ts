@@ -195,7 +195,7 @@ export namespace TecType{
         constructor(){super("機械");}
         createDmg(attacker:Unit, target:Unit):Dmg{
             return new Dmg({
-                pow:attacker.prm(Prm.GUN).total * 0.5 + attacker.prm(Prm.LV).total * 1,
+                pow:attacker.prm(Prm.GUN).total * 0.4 + attacker.prm(Prm.LV).total * 1,
                 def:target.prm(Prm.ARR).total,
             });
         }
@@ -1361,19 +1361,130 @@ export namespace Tec{
                               mul:1.5, num:1, hit:1.1, mp:2,
         });}
     }
-    /**機械士. */
+    /**ロボット. */
     export const                          ショック:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ショック", info:"一体に機械攻撃",
                     　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1.1,
         });}
     }
-    /**機械士. */
+    /**ロボット. */
     export const                          バベル:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"バベル", info:"敵全体に機械攻撃",
                     　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.ALL,
                               mul:1, num:1, hit:1.1, mp:1, tp:1, item:()=>[[Item.パワータンク, 1]],
         });}
+    }
+    /**ミサイリスト. */
+    export const                          林式ミサイルう:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"林式ミサイルう", info:"次の行動時、一体に機械攻撃x3",
+                              sort:TecSort.弓, type:TecType.弓, targetings:Targeting.SELECT,
+                              mul:3, num:1, hit:1.1, item:()=>[[Item.林式ミサイル, 1]],
+        });}
+        
+        inner:ActiveTec = new class extends ActiveTec{
+            constructor(){super({ uniqueName:"林式ミサイルうinner", info:"",
+                        　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
+                                  mul:3, num:1, hit:1.1,
+            });}
+            sound(){Sound.bom2.play();}
+        }
+
+        async run(attacker:Unit, target:Unit){
+            const tec = this;
+            attacker.addInvisibleCondition(new class extends InvisibleCondition{
+                readonly uniqueName = tec.uniqueName;
+                async phaseStart(u:Unit){
+                    if(target.dead){
+                        attacker.removeInvisibleCondition(this);
+                        return;
+                    }
+                    Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
+
+                    tec.inner.run(attacker, target);
+
+                    attacker.removeInvisibleCondition(this);
+                }
+            });
+
+            FX_ナーガ(attacker.imgCenter, target.imgCenter);
+            Sound.ya.play();
+            Util.msg.set(`${attacker.name}はミサイルを打ち上げた`); await wait();
+        }
+    }
+    /**ミサイリスト. */
+    export const                          エボリ製悪魔のミサイル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"エボリ製悪魔のミサイル", info:"次の行動時、一体に機械攻撃x6",
+                              sort:TecSort.弓, type:TecType.弓, targetings:Targeting.SELECT,
+                              mul:3, num:1, hit:1.1, item:()=>[[Item.エボリ製悪魔のミサイル, 1]],
+        });}
+        
+        inner:ActiveTec = new class extends ActiveTec{
+            constructor(){super({ uniqueName:"エボリ製悪魔のミサイルinner", info:"",
+                        　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
+                                  mul:6, num:1, hit:1.1,
+            });}
+            sound(){Sound.bom2.play();}
+        }
+
+        async run(attacker:Unit, target:Unit){
+            const tec = this;
+            attacker.addInvisibleCondition(new class extends InvisibleCondition{
+                readonly uniqueName = tec.uniqueName;
+                async phaseStart(u:Unit){
+                    if(target.dead){
+                        attacker.removeInvisibleCondition(this);
+                        return;
+                    }
+                    Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
+
+                    tec.inner.run(attacker, target);
+
+                    attacker.removeInvisibleCondition(this);
+                }
+            });
+
+            FX_ナーガ(attacker.imgCenter, target.imgCenter);
+            Sound.ya.play();
+            Util.msg.set(`${attacker.name}はミサイルを打ち上げた`); await wait();
+        }
+    }
+    /**ミサイリスト. */
+    export const                          メフィスト製悪魔のミサイル:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"メフィスト製悪魔のミサイル", info:"次の行動時、一体に機械攻撃x9",
+                              sort:TecSort.弓, type:TecType.弓, targetings:Targeting.SELECT,
+                              mul:9, num:1, hit:1.1, item:()=>[[Item.メフィスト製悪魔のミサイル, 1]],
+        });}
+        
+        inner:ActiveTec = new class extends ActiveTec{
+            constructor(){super({ uniqueName:"メフィスト製悪魔のミサイルinner", info:"",
+                        　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
+                                  mul:6, num:1, hit:1.1,
+            });}
+            sound(){Sound.bom2.play();}
+        }
+
+        async run(attacker:Unit, target:Unit){
+            const tec = this;
+            attacker.addInvisibleCondition(new class extends InvisibleCondition{
+                readonly uniqueName = tec.uniqueName;
+                async phaseStart(u:Unit){
+                    if(target.dead){
+                        attacker.removeInvisibleCondition(this);
+                        return;
+                    }
+                    Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
+
+                    tec.inner.run(attacker, target);
+
+                    attacker.removeInvisibleCondition(this);
+                }
+            });
+
+            FX_ナーガ(attacker.imgCenter, target.imgCenter);
+            Sound.ya.play();
+            Util.msg.set(`${attacker.name}はミサイルを打ち上げた`); await wait();
+        }
     }
     //--------------------------------------------------------------------------
     //
@@ -1392,6 +1503,17 @@ export namespace Tec{
     /**機械士. */
     export const                         増幅回路:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"増幅回路", info:"機械攻撃+20%",
+                                sort:TecSort.銃, type:TecType.機械,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.機械)){
+                dmg.pow.mul *= 1.2;
+            }
+        }
+    };
+    /**機械士. */
+    export const                         トマホーク:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"トマホーク", info:"機械攻撃+20%",
                                 sort:TecSort.銃, type:TecType.機械,
         });}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
@@ -1481,8 +1603,8 @@ export namespace Tec{
     /**クピド. */
     export const                          キンナラ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"キンナラ", info:"次の行動時、ランダムに6回弓攻撃",
-                              sort:TecSort.弓, type:TecType.弓, targetings:Targeting.RANDOM,
-                              mul:1, num:6, hit:0.8, tp:2, item:()=>[[Item.歌舞の矢, 6]],
+                              sort:TecSort.弓, type:TecType.弓, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:0.8, tp:2, item:()=>[[Item.歌舞の矢, 6]],
         });}
         async use(attacker:Unit, fakeTargets:Unit[]){
             const canUse = this.checkCost(attacker);

@@ -227,8 +227,10 @@ const setDefJobChangeList = (map, u) => {
     add(Job.ダウザー, [Job.訓練生]);
     add(Job.カウボーイ, [Job.訓練生]);
     add(Job.機械士, [Job.カウボーイ]);
+    add(Job.ロボット, [Job.機械士]);
+    add(Job.ミサイリスト, [Job.機械士, Job.魔砲士]);
     add(Job.アーチャー, [Job.訓練生]);
-    add(Job.機械士, [Job.クピド]);
+    add(Job.クピド, [Job.アーチャー, Job.格闘家]);
 };
 const setBeastJobChangeList = (map, u) => {
     const add = (addJob, checkJobs) => {

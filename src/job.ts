@@ -305,7 +305,6 @@ export namespace Job{
             e.tecs = [Tec.撃つ, Tec.撃つ, Tec.撃つ, Tec.殴る, Tec.殴る, Tec.弐丁拳銃];
         }
     };
-    /**TODO. */
     export const                         機械士:Job = new class extends Job{
         constructor(){super({uniqueName:"機械士", info:"",
                                 appearLv:75, img:new Img("img/unit/unit12.png"),
@@ -505,6 +504,17 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.ショック, Tec.ショック, Tec.ショック, Tec.ショック, Tec.メタルボディ, Tec.増幅回路, Tec.バベル];
+        }
+    };
+    export const                         ミサイリスト:Job = new class extends Job{
+        constructor(){super({uniqueName:"ミサイリスト", info:"",
+                                appearLv:214, img:new Img("img/unit/unit33.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 3,
+                                growthPrms:()=>[[Prm.DRK, 1], [Prm.PST, 1], [Prm.GUN, 1]],
+                                learningTecs:()=>[Tec.林式ミサイルう, Tec.トマホーク, Tec.エボリ製悪魔のミサイル, Tec.メフィスト製悪魔のミサイル],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.ショック, Tec.撃つ, Tec.撃つ, Tec.林式ミサイルう, Tec.トマホーク, Tec.エボリ製悪魔のミサイル, Tec.メフィスト製悪魔のミサイル];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

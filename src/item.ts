@@ -973,6 +973,21 @@ export namespace Item{
                                 type:ItemType.弾, rank:6, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         林式ミサイル:Item = new class extends Item{
+        constructor(){super({uniqueName:"林式ミサイル", info:"林式ミサイルうに使用",
+                                type:ItemType.弾, rank:5, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         エボリ製悪魔のミサイル:Item = new class extends Item{
+        constructor(){super({uniqueName:"エボリ製悪魔のミサイル", info:"エボリ製悪魔のミサイルに使用",
+                                type:ItemType.弾, rank:5, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         メフィスト製悪魔のミサイル:Item = new class extends Item{
+        constructor(){super({uniqueName:"メフィスト製悪魔のミサイル", info:"メフィスト製悪魔のミサイルに使用",
+                                type:ItemType.弾, rank:5, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
     //-----------------------------------------------------------------
     //
     //鍵
