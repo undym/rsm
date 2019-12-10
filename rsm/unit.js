@@ -514,7 +514,7 @@ export class Unit {
     /**
      * @party 本人を含める.
      */
-    searchUnits(who) {
+    searchUnits(...who) {
         const top = who.some(w => w === "top");
         const bottom = who.some(w => w === "bottom");
         const ftf = who.some(w => w === "faceToFace");

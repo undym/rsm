@@ -542,7 +542,7 @@ export abstract class Unit{
     /**
      * @party 本人を含める.
      */
-    searchUnits(who:("top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
+    searchUnits(...who:("top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
         const top    = who.some(w=> w === "top");
         const bottom = who.some(w=> w === "bottom");
         const ftf    = who.some(w=> w === "faceToFace");

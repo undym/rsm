@@ -826,7 +826,7 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             super.run( attacker, target );
 
-            for(const u of target.searchUnits(["top","bottom"])){
+            for(const u of target.searchUnits("top","bottom")){
                 super.run( attacker, u );
             }
         }
@@ -1303,7 +1303,7 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             super.run( attacker, target );
 
-            for(const u of target.searchUnits(["top","bottom"])){
+            for(const u of target.searchUnits("top","bottom")){
                 super.run( attacker, u );
             }
         }
@@ -1860,7 +1860,7 @@ export namespace Tec{
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
         }
     }
-    /**ノーム. */
+    /**ノーム.医師. */
     export const                          良き占い:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"良き占い", info:"味方全体を光依存で回復",
                               sort:TecSort.回復, type:TecType.回復, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
@@ -1981,6 +1981,41 @@ export namespace Tec{
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
         }
     }
+    /**医師. */
+    export const                          解毒:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"解毒", info:"一体の＜毒＞を解除",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:3,
+        });}
+        async run(attacker:Unit, target:Unit){
+            if(target.hasCondition(Condition.毒)){
+                Sound.KAIFUKU.play();
+                FX_Buff(target.imgCenter);
+                target.removeCondition(Condition.毒);
+                Util.msg.set(`${target.name}の毒が解除された`, Color.GREEN); await wait();
+            }
+        }
+    }
+    /**医師. */
+    export const                          エリス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"エリス", info:"一体を10%のHPで蘇生",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.SELECT | Targeting.DEAD_ONLY | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:10, tp:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.KAIFUKU.play();
+            FX_Buff(target.imgCenter);
+            if(target.dead){
+                target.dead = false;
+                target.hp = 1;
+
+                Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.1 );
+                Util.msg.set(`${target.name}は蘇った！`, Color.GREEN.bright); await wait();
+            }else{
+                Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.1 );
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //回復Passive
@@ -1995,20 +2030,18 @@ export namespace Tec{
             Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
         }
     };
-    // export const                         衛生:PassiveTec = new class extends PassiveTec{
-    //     constructor(){super({uniqueName:"衛生", info:"行動開始時味方のHP+5%",
-    //                             type:TecType.回復,
-    //     });}
-    //     phaseStart(unit:Unit){
-    //         const members = unit.getParty(/*withHimSelf*/true);
-    //         const lim = unit.prm(Prm.LIG).total * 10;
-    //         for(const u of members){
-    //             const value = u.prm(Prm.MAX_HP).total * 0.05 + 1;
-    //             const v = value < lim ? value : lim;
-    //             Unit.healHP(u, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
-    //         }
-    //     }
-    // };
+    /**医師. */
+    export const                         衛生:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"衛生", info:"行動開始時味方全体のHP+5%",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        async phaseStart(unit:Unit){
+            Sound.KAIFUKU.play();
+            for(const u of unit.searchUnits("party")){
+                Unit.healHP(u, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+            }
+        }
+    };
     // export const                         体力機関:PassiveTec = new class extends PassiveTec{
     //     constructor(){super({uniqueName:"体力機関", info:"戦闘開始時最大HP･HP+10%",
     //                             type:TecType.回復,

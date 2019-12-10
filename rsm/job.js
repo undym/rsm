@@ -498,6 +498,19 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.撃つ, Tec.射る, Tec.ヤクシャ, Tec.殴る, Tec.殴る, Tec.スコープ, Tec.あがらない雨];
         }
     };
+    Job.医師 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "医師", info: "",
+                appearLv: 140, img: new Img("img/unit/unit30.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_MP, 1], [Prm.LIG, 1]],
+                learningTecs: () => [Tec.衛生, Tec.解毒, Tec.良き占い],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.衛生, Tec.数珠, Tec.良き占い, Tec.天籟, Tec.殴る, Tec.MP自動回復, Tec.エリス];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),
