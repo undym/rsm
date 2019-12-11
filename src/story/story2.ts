@@ -152,7 +152,6 @@ export namespace Story2{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第21話『神の声』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
-    /**4000階の階段を合成して出現した6665階をクリア. */
     export const runMain22 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
         const f_cube = new Img("img/face/p_cube.jpg");

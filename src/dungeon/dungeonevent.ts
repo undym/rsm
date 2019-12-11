@@ -345,7 +345,7 @@ export namespace DungeonEvent{
     };
     export const             FOSSIL:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("FOSSIL");}
-        createImg = ()=> new Img("img/stratum.png");
+        createImg = ()=> new Img("img/kaizuka.png");
         happenInner = ()=>{Util.msg.set("掘れそうだ...");};
         createBtnLayout = ()=> createDefLayout()
                                 .set(AdvanceBtn.index, 
@@ -361,6 +361,8 @@ export namespace DungeonEvent{
                                             await p.doDmg(dmg);
                                             await p.judgeDead();
                                         }
+
+                                        DungeonEvent.empty.happen();
                                     }
                                 ).dontMove())
                                 .set(ReturnBtn.index, 

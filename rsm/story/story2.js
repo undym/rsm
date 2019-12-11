@@ -150,7 +150,6 @@ export var Story2;
         Sound.moji.play();
         yield cwait();
     });
-    /**4000階の階段を合成して出現した6665階をクリア. */
     Story2.runMain22 = () => __awaiter(this, void 0, void 0, function* () {
         const f_empty = new Img("img/face/p_rs.jpg");
         const f_cube = new Img("img/face/p_cube.jpg");

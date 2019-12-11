@@ -343,7 +343,7 @@ class EventImg {
     DungeonEvent.FOSSIL = new class extends DungeonEvent {
         constructor() {
             super("FOSSIL");
-            this.createImg = () => new Img("img/stratum.png");
+            this.createImg = () => new Img("img/kaizuka.png");
             this.happenInner = () => { Util.msg.set("掘れそうだ..."); };
             this.createBtnLayout = () => createDefLayout()
                 .set(AdvanceBtn.index, new Btn("進む", () => __awaiter(this, void 0, void 0, function* () {
@@ -359,6 +359,7 @@ class EventImg {
                     yield p.doDmg(dmg);
                     yield p.judgeDead();
                 }
+                DungeonEvent.empty.happen();
             })).dontMove())
                 .set(ReturnBtn.index, new Btn("発掘", () => __awaiter(this, void 0, void 0, function* () {
                 if (Item.つるはし.remainingUseNum > 0) {
