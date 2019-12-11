@@ -562,6 +562,19 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.弐丁拳銃, Tec.撃つ, Tec.撃つ, Tec.防御, Tec.原子爆弾, Tec.水素爆弾, Tec.重力子爆弾, Tec.lucifer製量子爆弾];
         }
     };
+    Job.僧兵 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "僧兵", info: "",
+                appearLv: 77, img: new Img("img/unit/unit34.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_HP, 1], [Prm.LIG, 1],],
+                learningTecs: () => [Tec.天籟, Tec.数珠, Tec.光命, Tec.五体投地],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.良き占い, Tec.天籟, Tec.数珠, Tec.光命, Tec.五体投地];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

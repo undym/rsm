@@ -882,9 +882,9 @@ export namespace Tec{
     //神格Active
     //
     //--------------------------------------------------------------------------
-    /**天使. */
+    /**天使.僧兵. */
     export const                          天籟:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"天籟", info:"一体に神格攻撃　自分を＜雲＞（魔法・暗黒・過去・弓軽減）化",
+        constructor(){super({ uniqueName:"天籟", info:"一体に神格攻撃 自分を＜雲＞（魔法・暗黒・過去・弓軽減）化",
                               sort:TecSort.神格, type:TecType.神格, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1, mp:1,
         });}
@@ -892,6 +892,18 @@ export namespace Tec{
             await super.run(attacker, target);
 
             Unit.setCondition(attacker, Condition.雲, 1);
+        }
+    }
+    /**僧兵. */
+    export const                          光命:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"光命", info:"一体に神格攻撃 相手の暗黒値分ダメージを加える",
+                              sort:TecSort.神格, type:TecType.神格, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:4,
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.abs.base += target.prm(Prm.DRK).total;
+            return dmg;
         }
     }
     // export const                          光の護封剣:ActiveTec = new class extends ActiveTec{
@@ -2266,6 +2278,44 @@ export namespace Tec{
                 Util.msg.set(`${target.name}は蘇った！`, Color.GREEN.bright); await wait();
             }else{
                 Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.1 );
+            }
+        }
+    }
+    /**僧兵. */
+    export const                          五体投地:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"五体投地", info:"味方の死者を2ターン後に蘇生",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.ALL | Targeting.DEAD_ONLY | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:7,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.sin.play();
+            FX_神格(target.imgCenter);
+
+            if(target.dead){
+                const tec = this;
+                let turnCount = 2;
+                target.addInvisibleCondition(new class extends InvisibleCondition{
+                    readonly uniqueName = tec.uniqueName;
+                    async phaseStart(u:Unit){
+                        u.removeInvisibleCondition(this);
+                    }
+                    async deadPhaseStart(u:Unit){
+                        if(!u.dead){
+                            u.removeInvisibleCondition(this);
+                            return;
+                        }
+
+                        if(--turnCount <= 0){
+                            u.dead = false;
+                            u.hp = u.prm(Prm.MAX_HP).total * 0.3;
+                            FX_回復( u.imgCenter );
+                            Util.msg.set(`${u.name}は生き返った！`); await wait();
+                            u.removeInvisibleCondition(this);
+                        }else{
+                            Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`); await wait();
+                        }
+                    }
+                });
             }
         }
     }

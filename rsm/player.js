@@ -229,6 +229,7 @@ const setDefJobChangeList = (map, u) => {
     add(Job.機械士, [Job.カウボーイ]);
     add(Job.ロボット, [Job.機械士]);
     add(Job.ミサイリスト, [Job.機械士, Job.魔砲士]);
+    add(Job.軍人, [Job.ミサイリスト, Job.考古学者]);
     add(Job.アーチャー, [Job.訓練生]);
     add(Job.クピド, [Job.アーチャー, Job.格闘家]);
 };
