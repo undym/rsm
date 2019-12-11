@@ -203,6 +203,7 @@ export abstract class Dungeon{
             if(Math.random() < set.prob){
                 const num = 1;
                 set.item.add(num);
+                Sound.rare.play();
                 Util.msg.set(`${set.item}を${num}個拾った(${set.item.num})`, Color.GREEN.wave( Color.YELLOW ));
             }
         }
