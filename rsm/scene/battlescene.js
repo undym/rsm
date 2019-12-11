@@ -159,12 +159,18 @@ export class BattleScene extends Scene {
             for (let u of Unit.all) {
                 yield u.judgeDead();
             }
-            if (Unit.players.every(u => !u.exists || u.dead)) {
-                yield lose();
-                return;
-            }
-            if (Unit.enemies.every(u => !u.exists || u.dead)) {
-                yield win();
+            const judgeBattleEnd = () => __awaiter(this, void 0, void 0, function* () {
+                if (Unit.players.every(u => !u.exists || u.dead)) {
+                    yield lose();
+                    return true;
+                }
+                if (Unit.enemies.every(u => !u.exists || u.dead)) {
+                    yield win();
+                    return true;
+                }
+                return false;
+            });
+            if (yield judgeBattleEnd()) {
                 return;
             }
             Battle.phase = (Battle.phase + 1) % Unit.all.length;
@@ -189,6 +195,9 @@ export class BattleScene extends Scene {
             }
             if (attacker.dead) {
                 yield this.phaseEnd();
+                return;
+            }
+            if (yield judgeBattleEnd()) {
                 return;
             }
             if (pForce.phaseSkip) {

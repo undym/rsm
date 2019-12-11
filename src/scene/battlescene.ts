@@ -165,12 +165,19 @@ export class BattleScene extends Scene{
             await u.judgeDead();
         }
 
-        if(Unit.players.every(u=> !u.exists || u.dead)){
-            await lose();
-            return;
-        }
-        if(Unit.enemies.every(u=> !u.exists || u.dead)){
-            await win();
+        const judgeBattleEnd = async()=>{
+            if(Unit.players.every(u=> !u.exists || u.dead)){
+                await lose();
+                return true;
+            }
+            if(Unit.enemies.every(u=> !u.exists || u.dead)){
+                await win();
+                return true;
+            }
+            return false;
+        };
+
+        if(await judgeBattleEnd()){
             return;
         }
 
@@ -199,8 +206,13 @@ export class BattleScene extends Scene{
         for(const u of Unit.all){
             u.judgeDead();
         }
+        
         if(attacker.dead){
             await this.phaseEnd();
+            return;
+        }
+        
+        if(await judgeBattleEnd()){
             return;
         }
         

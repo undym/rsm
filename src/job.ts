@@ -517,6 +517,17 @@ export namespace Job{
             e.tecs = [Tec.ショック, Tec.撃つ, Tec.撃つ, Tec.林式ミサイルう, Tec.トマホーク, Tec.エボリ製悪魔のミサイル, Tec.メフィスト製悪魔のミサイル];
         }
     };
+    export const                         軍人:Job = new class extends Job{
+        constructor(){super({uniqueName:"軍人", info:"",
+                                appearLv:314, img:new Img("img/unit/unit34.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 4,
+                                growthPrms:()=>[[Prm.DRK, 1], [Prm.PST, 1], [Prm.GUN, 1]],
+                                learningTecs:()=>[Tec.原子爆弾, Tec.水素爆弾, Tec.重力子爆弾, Tec.lucifer製量子爆弾],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.弐丁拳銃, Tec.撃つ, Tec.撃つ, Tec.防御, Tec.原子爆弾, Tec.水素爆弾, Tec.重力子爆弾, Tec.lucifer製量子爆弾];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

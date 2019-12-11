@@ -1258,7 +1258,7 @@ export namespace Tec{
     export const                          撃つ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"撃つ", info:"ランダムに銃攻撃1～2回",
                     　        sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
-                              mul:1, num:1, hit:0.8,
+                              mul:0.9, num:1, hit:0.8,
         });}
         rndAttackNum():number{return randomInt(1,2,"[]");}
     }
@@ -1266,29 +1266,28 @@ export namespace Tec{
     export const                          乱射:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"乱射", info:"ランダムに3回銃攻撃",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
-                              mul:1, num:3, hit:0.8, tp:3,
+                              mul:0.9, num:3, hit:0.8, tp:3,
         });}
     }
     /**カウボーイ. */
     export const                          弐丁拳銃:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"弐丁拳銃", info:"一体に2～3回銃攻撃",
+        constructor(){super({ uniqueName:"弐丁拳銃", info:"一体に2回銃攻撃",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.SELECT,
-                              mul:1, num:3, hit:0.8, tp:1,
+                              mul:0.9, num:2, hit:0.8, tp:1,
         });}
-        rndAttackNum():number{return randomInt(1,3,"[]");}
     }
     /**カウボーイ. */
     export const                          あがらない雨:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"あがらない雨", info:"敵全体に銃攻撃",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.ALL,
-                              mul:1, num:1, hit:0.8, ep:1,
+                              mul:0.9, num:1, hit:0.8, ep:1,
         });}
     }
     /**魔砲士. */
     export const                          羊飼いの銃:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"羊飼いの銃", info:"魔値x2を加えてランダムに銃攻撃1～2回",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
-                              mul:1, num:1, hit:0.8, mp:3, item:()=>[[Item.魔弾, 2]],
+                              mul:0.9, num:1, hit:0.8, mp:3, item:()=>[[Item.魔弾, 2]],
         });}
         rndAttackNum():number{return randomInt(1,2,"[]");}
         createDmg(attacker:Unit, target:Unit){
@@ -1299,11 +1298,10 @@ export namespace Tec{
     }
     /**魔砲士. */
     export const                          大砲:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"羊飼いの銃", info:"ランダムに銃攻撃1～2回x2",
+        constructor(){super({ uniqueName:"羊飼いの銃", info:"一体に銃攻撃x2",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
                               mul:2, num:1, hit:0.8, tp:1, item:()=>[[Item.砲弾, 2]],
         });}
-        rndAttackNum():number{return randomInt(1,2,"[]");}
     }
     //--------------------------------------------------------------------------
     //
@@ -1377,7 +1375,7 @@ export namespace Tec{
     }
     /**ミサイリスト. */
     export const                          林式ミサイルう:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"林式ミサイルう", info:"次の行動時、一体に機械攻撃x3",
+        constructor(){super({ uniqueName:"林式ミサイルう", info:"次の行動時、一体に力値を加えた機械攻撃x6",
                               sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                               mul:3, num:1, hit:1.1, item:()=>[[Item.林式ミサイル, 1]],
         });}
@@ -1385,8 +1383,13 @@ export namespace Tec{
         inner:ActiveTec = new class extends ActiveTec{
             constructor(){super({ uniqueName:"林式ミサイルうinner", info:"",
                         　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
-                                  mul:3, num:1, hit:1.1,
+                                  mul:6, num:1, hit:1.1,
             });}
+            createDmg(attacker:Unit, target:Unit){
+                const dmg = super.createDmg(attacker, target);
+                dmg.pow.base += attacker.prm(Prm.STR).total;
+                return dmg;
+            }
             sound(){Sound.bom2.play();}
             effect(attacker:Unit, target:Unit, dmg:Dmg){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
@@ -1415,7 +1418,7 @@ export namespace Tec{
     }
     /**ミサイリスト. */
     export const                          エボリ製悪魔のミサイル:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"エボリ製悪魔のミサイル", info:"次の行動時、一体に機械攻撃x6",
+        constructor(){super({ uniqueName:"エボリ製悪魔のミサイル", info:"次の行動時、一体に鎖値を加えた機械攻撃x6",
                               sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                               mul:3, num:1, hit:1.1, item:()=>[[Item.エボリ製悪魔のミサイル, 1]],
         });}
@@ -1425,6 +1428,11 @@ export namespace Tec{
                                   sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                                   mul:6, num:1, hit:1.1,
             });}
+            createDmg(attacker:Unit, target:Unit){
+                const dmg = super.createDmg(attacker, target);
+                dmg.pow.base += attacker.prm(Prm.CHN).total;
+                return dmg;
+            }
             sound(){Sound.bom2.play();}
             effect(attacker:Unit, target:Unit, dmg:Dmg){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
@@ -1453,7 +1461,7 @@ export namespace Tec{
     }
     /**ミサイリスト. */
     export const                          メフィスト製悪魔のミサイル:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"メフィスト製悪魔のミサイル", info:"次の行動時、一体に機械攻撃x9",
+        constructor(){super({ uniqueName:"メフィスト製悪魔のミサイル", info:"次の行動時、一体に過去値を加えた機械攻撃x6",
                               sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                               mul:9, num:1, hit:1.1, item:()=>[[Item.メフィスト製悪魔のミサイル, 1]],
         });}
@@ -1463,6 +1471,11 @@ export namespace Tec{
                         　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.SELECT,
                                   mul:6, num:1, hit:1.1,
             });}
+            createDmg(attacker:Unit, target:Unit){
+                const dmg = super.createDmg(attacker, target);
+                dmg.pow.base += attacker.prm(Prm.PST).total;
+                return dmg;
+            }
             sound(){Sound.bom2.play();}
             effect(attacker:Unit, target:Unit, dmg:Dmg){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
@@ -1487,6 +1500,54 @@ export namespace Tec{
             FX_ナーガ(attacker.imgCenter, target.imgCenter);
             Sound.ya.play();
             Util.msg.set(`${attacker.name}はミサイルを打ち上げた`); await wait();
+        }
+    }
+    /**軍人. */
+    export const                          原子爆弾:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"原子爆弾", info:"敵全体に魔値を加えた機械攻撃",
+                    　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1.1, item:()=>[[Item.原子爆弾, 1]],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.MAG).total;
+            return dmg;
+        }
+    }
+    /**軍人. */
+    export const                          水素爆弾:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"水素爆弾", info:"敵全体に光値を加えた機械攻撃",
+                    　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1.1, item:()=>[[Item.水素爆弾, 1]],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.LIG).total;
+            return dmg;
+        }
+    }
+    /**軍人. */
+    export const                          重力子爆弾:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"重力子爆弾", info:"敵全体に闇値を加えた機械攻撃",
+                    　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1.1, item:()=>[[Item.重力子爆弾, 1]],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.DRK).total;
+            return dmg;
+        }
+    }
+    /**軍人. */
+    export const                          lucifer製量子爆弾:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"lucifer製量子爆弾", info:"敵全体に弓値を加えた機械攻撃",
+                    　        sort:TecSort.銃, type:TecType.機械, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1.1, item:()=>[[Item.lucifer製量子爆弾, 1]],
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.ARR).total;
+            return dmg;
         }
     }
     //--------------------------------------------------------------------------

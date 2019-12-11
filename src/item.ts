@@ -988,6 +988,26 @@ export namespace Item{
                                 type:ItemType.弾, rank:5, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         原子爆弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"原子爆弾", info:"原子爆弾に使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         水素爆弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"水素爆弾", info:"水素爆弾に使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         重力子爆弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"重力子爆弾", info:"重力子爆弾に使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         lucifer製量子爆弾:Item = new class extends Item{
+        constructor(){super({uniqueName:"lucifer製量子爆弾", info:"lucifer製量子爆弾に使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
     //-----------------------------------------------------------------
     //
     //鍵
