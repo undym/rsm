@@ -2476,7 +2476,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:5, item:()=>[[Item.絵画母なる星の緑の丘, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.ドゥエルガル.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.ドゥエルガル.create(hp);
 
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2489,7 +2490,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:5, item:()=>[[Item.絵画シェイクスピアの涙, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.ネーレイス.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.ネーレイス.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2502,7 +2504,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:10, item:()=>[[Item.絵画彼女の髪, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.ヴァルナ.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.ヴァルナ.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2515,7 +2518,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:10, item:()=>[[Item.絵画我が情熱の日, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.イリューガー.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.イリューガー.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2528,7 +2532,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:10, item:()=>[[Item.マーメイド, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.マーメイド.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.マーメイド.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2541,7 +2546,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:10, item:()=>[[Item.ホムンクルス, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.ホムンクルス.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.ホムンクルス.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
@@ -2554,7 +2560,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:10, item:()=>[[Item.フランケンシュタイン, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            attacker.pet = Pet.フランケンシュタイン.create(1);
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.フランケンシュタイン.create(hp);
             
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();

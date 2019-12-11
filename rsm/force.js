@@ -55,6 +55,7 @@ export class PhaseStartForce {
     }
 }
 export class Dmg {
+    /** */
     constructor(args) {
         /**calc()で出された結果のbak. */
         this.result = { value: 0, isHit: false };

@@ -42,22 +42,15 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 26, 21);
+Version.NOW = new Version(0, 26, 22);
 Version.updateInfo = [
-    "(0.26.8)importttest",
-    "(0.26.9)importttest",
-    "(0.26.10)importttest",
-    "(0.26.11)importttest",
-    "(0.26.12)セーブデータ少し最適化",
-    "(0.26.13)セーブデータ少し最適化",
-    "(0.26.14)タッチテスト",
-    "(0.26.15)タッチテスト",
     "(0.26.16)タッチテスト",
     "(0.26.17)こまごま",
     "(0.26.18)バグ修正",
     "(0.26.19)バグ修正、ジョブ追加",
     "(0.26.20)ジョブ追加、アイテム追加",
     "(0.26.21)バグ修正",
+    "(0.26.22)バグ修正",
 ];
 let saveDataVersion;
 export class SaveData {

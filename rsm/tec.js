@@ -2980,7 +2980,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.ドゥエルガル.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.ドゥエルガル.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("ドゥエルガルが召喚された！");
@@ -2997,7 +2998,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.ネーレイス.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.ネーレイス.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("ネーレイスが召喚された！");
@@ -3014,7 +3016,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.ヴァルナ.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.ヴァルナ.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("ヴァルナが召喚された！");
@@ -3031,7 +3034,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.イリューガー.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.イリューガー.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("イリューガーが召喚された！");
@@ -3048,7 +3052,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.マーメイド.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.マーメイド.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("マーメイドが召喚された！");
@@ -3065,7 +3070,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.ホムンクルス.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.ホムンクルス.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("ホムンクルスが召喚された！");
@@ -3082,7 +3088,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                attacker.pet = Pet.フランケンシュタイン.create(1);
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.フランケンシュタイン.create(hp);
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("フランケンシュタインが召喚された！");
