@@ -35,7 +35,20 @@ export class DungeonArea{
         return res;
     }
 
-    constructor(readonly uniqueName:string, private imgSrc:string, private _areaMoveBtns:()=>[DungeonArea, Rect, ()=>boolean][]){
+    get areaItems():{item:Item, prob:number}[]{
+        const res:{item:Item, prob:number}[] = [];
+        for(const set of this._areaItems()){
+            res.push({item:set[0], prob:set[1]});
+        }
+        return res;
+    }
+
+    constructor(
+        readonly uniqueName:string, 
+        private imgSrc:string, 
+        private _areaMoveBtns:()=>[DungeonArea, Rect, ()=>boolean][],
+        private _areaItems:()=>[Item, number][],
+    ){
         DungeonArea._valueOf.set(uniqueName, this);
     }
 
@@ -46,23 +59,38 @@ export namespace DungeonArea{
     export const 中央島 =    new DungeonArea("中央島", "img/map1.jpg",
                                 ()=>[
                                     [DungeonArea.黒地域,     new Rect(0.7, 0.45, 0.3, 0.1), ()=>Dungeon.黒平原.isVisible()],
-                                    [DungeonArea.古マーザン, new Rect(0.0, 0.4, 0.3, 0.1), ()=>Dungeon.古マーザン森.isVisible()],
-                                ]
+                                    [DungeonArea.古マーザン, new Rect(0.0, 0.4, 0.3, 0.1),   ()=>Dungeon.古マーザン森.isVisible()],
+                                ],
+                                ()=>[
+                                    [Item.肉まん, 0.002],
+                                    [Item.地球塔粉末, 0.002],
+                                ],
                             );
     export const 黒地域 =    new DungeonArea("黒地域", "img/map2.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
-                                ]
+                                ],
+                                ()=>[
+                                    [Item.タンホイザーの砂飯, 0.002],
+                                    [Item.黒色火薬, 0.002],
+                                    [Item.B火薬, 0.002],
+                                ],
                             );
     export const 月 =       new DungeonArea("月", "img/map4.jpg",
-        ()=>[
-            // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
-        ]
-    );
+                                ()=>[
+                                    // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+                                ],
+                                ()=>[
+                                    [Item.月の石, 0.002],
+                                ],
+                            );
     export const 古マーザン =    new DungeonArea("古マーザン", "img/map3.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.7, 0.25, 0.3, 0.1), ()=>Dungeon.古マーザン森.isVisible()],
-                                ]
+                                ],
+                                ()=>[
+                                    [Item.マーザン, 0.002],
+                                ],
                             );
 }
 
@@ -171,6 +199,14 @@ export abstract class Dungeon{
     //
     //-----------------------------------------------------------------
     rndEvent():DungeonEvent{
+        for(const set of DungeonArea.now.areaItems){
+            if(Math.random() < set.prob){
+                const num = 1;
+                set.item.add(num);
+                Util.msg.set(`${set.item}を${num}個拾った(${set.item.num})`, Color.GREEN.wave( Color.YELLOW ));
+            }
+        }
+
         if(Math.random() < 0.002){
             if(this.treasureKey === 0){
                 if(Math.random() < 0.8) {return DungeonEvent.GET_TREASURE_KEY;}

@@ -1637,6 +1637,18 @@ export namespace Item{
         constructor(){super({uniqueName:"白金", info:"",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
+    export const                         サングラス:Item = new class extends Item{
+        constructor(){super({uniqueName:"サングラス", info:"",
+                                type:ItemType.素材, rank:6, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         重力:Item = new class extends Item{
+        constructor(){super({uniqueName:"重力", info:"",
+                                type:ItemType.素材, rank:7, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         ジスカルド:Item = new class extends Item{
+        constructor(){super({uniqueName:"ジスカルド", info:"",
+                                type:ItemType.素材, rank:8, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
     export const                         オムナイト:Item = new class extends Item{
         constructor(){super({uniqueName:"オムナイト", info:"おおむかし うみに すんでいた こだい ポケモン。10ぽんの あしを くねらせて およぐ。",
                                 type:ItemType.素材, rank:9, drop:ItemDrop.BOX | ItemDrop.FOSSIL | ItemDrop.FISHING})}
@@ -1723,10 +1735,6 @@ export namespace Item{
         constructor(){super({uniqueName:"巨人の肉片君", info:"ペルセポネの肉片、食べるとお腹+20",
                                 type:ItemType.素材, rank:8, drop:ItemDrop.BOX | ItemDrop.FOSSIL})}
     };
-    export const                         地球塔粉末:Item = new class extends Item{
-        constructor(){super({uniqueName:"地球塔粉末", info:"",
-                                type:ItemType.素材, rank:9, drop:ItemDrop.BOX | ItemDrop.FOSSIL})}
-    };
     export const                         真空蛇:Item = new class extends Item{
         constructor(){super({uniqueName:"真空蛇", info:"真空中で生息可能な謎の蛇、小さいものでも全長250kmを越える",
                                 type:ItemType.素材, rank:9, drop:ItemDrop.BOX | ItemDrop.FOSSIL})}
@@ -1790,6 +1798,10 @@ export namespace Item{
     };
     export const                         精霊の涙:Item = new class extends Item{
         constructor(){super({uniqueName:"精霊の涙", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE})}
+    };
+    export const                         王子の素:Item = new class extends Item{
+        constructor(){super({uniqueName:"王子の素", info:"",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE})}
     };
     export const                         テント樹液:Item = new class extends Item{
@@ -1933,7 +1945,35 @@ export namespace Item{
     };
     //-----------------------------------------------------------------
     //
-    //
+    //エリア素材
     //
     //-----------------------------------------------------------------
+    export const                         月の石:Item = new class extends Item{
+        constructor(){super({uniqueName:"月の石", info:"月地域で稀にとれる石",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
+    };
+    export const                         肉まん:Item = new class extends Item{
+        constructor(){super({uniqueName:"肉まん", info:"中央島地域で稀にとれる肉まん",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
+    };
+    export const                         地球塔粉末:Item = new class extends Item{
+        constructor(){super({uniqueName:"地球塔粉末", info:"中央島地域で稀にとれる地球塔粉末",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.NO})}
+    };
+    export const                         タンホイザーの砂飯:Item = new class extends Item{
+        constructor(){super({uniqueName:"タンホイザーの砂飯", info:"黒地域で稀にとれる料理、全員のお腹を4回復",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
+    };
+    export const                         黒色火薬:Item = new class extends Item{
+        constructor(){super({uniqueName:"黒色火薬", info:"黒地域で稀にとれる火薬",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.NO})}
+    };
+    export const                         B火薬:Item = new class extends Item{
+        constructor(){super({uniqueName:"B火薬", info:"黒地域で稀にとれる火薬",
+                                type:ItemType.素材, rank:5, drop:ItemDrop.NO})}
+    };
+    export const                         マーザン:Item = new class extends Item{
+        constructor(){super({uniqueName:"マーザン", info:"古マーザン地域でまれにとれるマーザン",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
+    };
 }

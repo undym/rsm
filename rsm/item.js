@@ -1980,6 +1980,24 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 5, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.サングラス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "サングラス", info: "",
+                type: ItemType.素材, rank: 6, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.重力 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "重力", info: "",
+                type: ItemType.素材, rank: 7, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.ジスカルド = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ジスカルド", info: "",
+                type: ItemType.素材, rank: 8, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.オムナイト = new class extends Item {
         constructor() {
             super({ uniqueName: "オムナイト", info: "おおむかし うみに すんでいた こだい ポケモン。10ぽんの あしを くねらせて およぐ。",
@@ -2104,12 +2122,6 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 8, drop: ItemDrop.BOX | ItemDrop.FOSSIL });
         }
     };
-    Item.地球塔粉末 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "地球塔粉末", info: "",
-                type: ItemType.素材, rank: 9, drop: ItemDrop.BOX | ItemDrop.FOSSIL });
-        }
-    };
     Item.真空蛇 = new class extends Item {
         constructor() {
             super({ uniqueName: "真空蛇", info: "真空中で生息可能な謎の蛇、小さいものでも全長250kmを越える",
@@ -2202,6 +2214,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.精霊の涙 = new class extends Item {
         constructor() {
             super({ uniqueName: "精霊の涙", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.LAKE });
+        }
+    };
+    Item.王子の素 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "王子の素", info: "",
                 type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.LAKE });
         }
     };
@@ -2412,7 +2430,49 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
-    //
+    //エリア素材
     //
     //-----------------------------------------------------------------
+    Item.月の石 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "月の石", info: "月地域で稀にとれる石",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.NO });
+        }
+    };
+    Item.肉まん = new class extends Item {
+        constructor() {
+            super({ uniqueName: "肉まん", info: "中央島地域で稀にとれる肉まん",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.NO });
+        }
+    };
+    Item.地球塔粉末 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "地球塔粉末", info: "中央島地域で稀にとれる地球塔粉末",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.NO });
+        }
+    };
+    Item.タンホイザーの砂飯 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "タンホイザーの砂飯", info: "黒地域で稀にとれる料理、全員のお腹を4回復",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.NO });
+        }
+    };
+    Item.黒色火薬 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "黒色火薬", info: "黒地域で稀にとれる火薬",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.NO });
+        }
+    };
+    Item.B火薬 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "B火薬", info: "黒地域で稀にとれる火薬",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.NO });
+        }
+    };
+    Item.マーザン = new class extends Item {
+        constructor() {
+            super({ uniqueName: "マーザン", info: "古マーザン地域でまれにとれるマーザン",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.NO });
+        }
+    };
 })(Item || (Item = {}));

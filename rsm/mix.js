@@ -379,6 +379,90 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.エレタクレヨン, 5], [Item.カンバス, 5], [Item.烈火, 10]],
         isVisible: () => Item.リュサンデールの絵筆.totalGetCount > 0,
     });
+    const Dフラスコ = new Mix({
+        uniqueName: "Dフラスコ", limit: Mix.LIMIT_INF,
+        result: () => [Item.Dフラスコ, 1],
+        materials: () => [[Item.マーザン, 1], [Item.ガラス, 5],],
+        isVisible: () => Item.マーザン.totalGetCount > 0,
+    });
+    const マーメイド = new Mix({
+        uniqueName: "マーメイド", limit: Mix.LIMIT_INF,
+        result: () => [Item.マーメイド, 1],
+        materials: () => [[Item.マーザン, 1], [Item.呪い水, 4], [Item.少女の心を持ったおっさん, 1],],
+        isVisible: () => Item.マーザン.totalGetCount > 0,
+    });
+    const ホムンクルス = new Mix({
+        uniqueName: "ホムンクルス", limit: Mix.LIMIT_INF,
+        result: () => [Item.ホムンクルス, 1],
+        materials: () => [[Item.マーザン, 1], [Item.精霊の涙, 2], [Item.王子の素, 2],],
+        isVisible: () => Item.マーザン.totalGetCount > 0,
+    });
+    const フランケンシュタイン = new Mix({
+        uniqueName: "フランケンシュタイン", limit: Mix.LIMIT_INF,
+        result: () => [Item.フランケンシュタイン, 1],
+        materials: () => [[Item.マーザン, 1], [Item.思い出そのもの, 2], [Item.針金, 6],],
+        isVisible: () => Item.マーザン.totalGetCount > 0,
+    });
+    const 魔弾 = new Mix({
+        uniqueName: "魔弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.魔弾, 2],
+        materials: () => [[Item.地球塔粉末, 1], [Item.ロウ, 10],],
+        isVisible: () => ルインドアースLv11.count > 0,
+    });
+    const 砲弾 = new Mix({
+        uniqueName: "砲弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.砲弾, 1],
+        materials: () => [[Item.地球塔粉末, 1], [Item.ロウ, 10],],
+        isVisible: () => ルインドアースLv11.count > 0,
+    });
+    const パワータンク = new Mix({
+        uniqueName: "パワータンク", limit: Mix.LIMIT_INF,
+        result: () => [Item.パワータンク, 4],
+        materials: () => [[Item.月の石, 1], [Item.アステロイド, 10], [Item.発砲ツル, 10],],
+        isVisible: () => Item.月の石.totalGetCount > 0,
+    });
+    const 林式ミサイル = new Mix({
+        uniqueName: "林式ミサイル", limit: Mix.LIMIT_INF,
+        result: () => [Item.林式ミサイル, 1],
+        materials: () => [[Item.黒色火薬, 1], [Item.サングラス, 3],],
+        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+    });
+    const エボリ製悪魔のミサイル = new Mix({
+        uniqueName: "エボリ製悪魔のミサイル", limit: Mix.LIMIT_INF,
+        result: () => [Item.エボリ製悪魔のミサイル, 1],
+        materials: () => [[Item.黒色火薬, 1], [Item.太陽の欠片, 3],],
+        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+    });
+    const メフィスト製悪魔のミサイル = new Mix({
+        uniqueName: "メフィスト製悪魔のミサイル", limit: Mix.LIMIT_INF,
+        result: () => [Item.メフィスト製悪魔のミサイル, 1],
+        materials: () => [[Item.黒色火薬, 1], [Item.うんち, 3],],
+        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+    });
+    const 原子爆弾 = new Mix({
+        uniqueName: "原子爆弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.原子爆弾, 4],
+        materials: () => [[Item.B火薬, 1], [Item.太陽の欠片, 4],],
+        isVisible: () => Item.B火薬.totalGetCount > 0,
+    });
+    const 水素爆弾 = new Mix({
+        uniqueName: "水素爆弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.水素爆弾, 4],
+        materials: () => [[Item.B火薬, 1], [Item.水, 20],],
+        isVisible: () => Item.B火薬.totalGetCount > 0,
+    });
+    const 重力子爆弾 = new Mix({
+        uniqueName: "重力子爆弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.重力子爆弾, 4],
+        materials: () => [[Item.B火薬, 1], [Item.重力, 2],],
+        isVisible: () => Item.B火薬.totalGetCount > 0,
+    });
+    const lucifer製量子爆弾 = new Mix({
+        uniqueName: "lucifer製量子爆弾", limit: Mix.LIMIT_INF,
+        result: () => [Item.lucifer製量子爆弾, 4],
+        materials: () => [[Item.B火薬, 1], [Item.重力, 1], [Item.ジスカルド, 1],],
+        isVisible: () => Item.B火薬.totalGetCount > 0,
+    });
     const 杉材 = new Mix({
         uniqueName: "杉材", limit: Mix.LIMIT_INF,
         result: () => [Item.杉材, 1],
