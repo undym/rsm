@@ -203,16 +203,9 @@ export namespace Condition{
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 const value = dmg.calc().value;
-                target.addInvisibleCondition(new class extends InvisibleCondition{
-                    readonly uniqueName = "吸収";
-                    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-                        Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
-                        Unit.healHP( target, value );
-                        target.removeInvisibleCondition(this);
-                    }
-                });
                 
-                Util.msg.set("＞吸収");
+                Unit.healHP( target, value );
+                Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
 
                 dmg.pow.add -= dmg.pow.base;
 

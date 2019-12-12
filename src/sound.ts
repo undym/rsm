@@ -1,4 +1,4 @@
-import { Util } from "./util.js";
+import { choice } from "./undym/random.js";
 
 
 export class Sound{
@@ -35,17 +35,26 @@ export class Sound{
     }
 
     private buffer:AudioBuffer;
+    private src:AudioBufferSourceNode;
+    private loaded = false;
+    private state:"play"|"loop"|"stop" = "stop";
 
-    constructor(private path:string){
+    constructor(private path:string, private lazyLoad = false){
         Sound._values.push(this);
     }
     
     load(){
+        this.loaded = true;
+
         const request = new XMLHttpRequest();
         request.onload = ()=>{
             var audioData = request.response;
             Sound.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
+                if(this.lazyLoad){
+                    if(this.state === "play"){this.play();}
+                    if(this.state === "loop"){this.play(true);}
+                }
             },e=>{
                 return "Error with decoding audio data " + this.path;
             });
@@ -56,9 +65,16 @@ export class Sound{
         
     }
 
-    play(){
+    play(loop:boolean = false){
+        this.state = loop ? "loop" : "play";
+
         if(Sound.ac.state !== "running"){
             Sound.ac.resume();
+        }
+
+        if(!this.loaded){
+            this.load();
+            return;
         }
         if(!this.buffer){return;}
 
@@ -66,8 +82,18 @@ export class Sound{
         src.buffer = this.buffer;
         src.connect(Sound.ac.destination);
         src.connect(Sound.gain);
-        
+        src.loop = loop;
+
         src.start(0);
+        this.src = src;
+    }
+
+    stop(){
+        this.state = "stop";
+
+        if(this.src){
+            this.src.stop();
+        }
     }
 }
 
@@ -136,4 +162,32 @@ export namespace Sound{
     export const warp       = new Sound("sound/warp.mp3");
     /**arr. */
     export const ya         = new Sound("sound/ya.mp3");
+}
+
+
+export namespace Music{
+    const _values:Sound[] = [];
+    export function values():ReadonlyArray<Sound>{
+        return _values;
+    }
+    const dungeonMusics:Sound[] = [];
+    const bossMusics:Sound[] = [];
+    function createMusic(type:"dungeon"|"boss", src:string, lazy:boolean):Sound{
+        const s = new Sound(src, lazy);
+        _values.push(s);
+
+             if(type === "dungeon"){dungeonMusics.push(s);}
+        else if(type === "boss")   {bossMusics.push(s);}
+
+        return s;
+    }
+
+    export function rndDungeonMusic(){return choice( dungeonMusics );}
+
+    export function stop(){
+        Music.values().forEach(m=> m.stop());
+    }
+
+    export const kimi = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/true);
+    // export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
 }

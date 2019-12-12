@@ -1,6 +1,10 @@
+import { choice } from "./undym/random.js";
 export class Sound {
-    constructor(path) {
+    constructor(path, lazyLoad = false) {
         this.path = path;
+        this.lazyLoad = lazyLoad;
+        this.loaded = false;
+        this.state = "stop";
         Sound._values.push(this);
     }
     static get values() { return this._values; }
@@ -30,11 +34,20 @@ export class Sound {
         // Sound.gain.gain.value = 0;
     }
     load() {
+        this.loaded = true;
         const request = new XMLHttpRequest();
         request.onload = () => {
             var audioData = request.response;
             Sound.ac.decodeAudioData(audioData, buffer => {
                 this.buffer = buffer;
+                if (this.lazyLoad) {
+                    if (this.state === "play") {
+                        this.play();
+                    }
+                    if (this.state === "loop") {
+                        this.play(true);
+                    }
+                }
             }, e => {
                 return "Error with decoding audio data " + this.path;
             });
@@ -43,9 +56,14 @@ export class Sound {
         request.responseType = 'arraybuffer';
         request.send();
     }
-    play() {
+    play(loop = false) {
+        this.state = loop ? "loop" : "play";
         if (Sound.ac.state !== "running") {
             Sound.ac.resume();
+        }
+        if (!this.loaded) {
+            this.load();
+            return;
         }
         if (!this.buffer) {
             return;
@@ -54,7 +72,15 @@ export class Sound {
         src.buffer = this.buffer;
         src.connect(Sound.ac.destination);
         src.connect(Sound.gain);
+        src.loop = loop;
         src.start(0);
+        this.src = src;
+    }
+    stop() {
+        this.state = "stop";
+        if (this.src) {
+            this.src.stop();
+        }
     }
 }
 Sound._values = [];
@@ -125,3 +151,32 @@ Sound.MAX_VOLUME = 10;
     /**arr. */
     Sound.ya = new Sound("sound/ya.mp3");
 })(Sound || (Sound = {}));
+export var Music;
+(function (Music) {
+    const _values = [];
+    function values() {
+        return _values;
+    }
+    Music.values = values;
+    const dungeonMusics = [];
+    const bossMusics = [];
+    function createMusic(type, src, lazy) {
+        const s = new Sound(src, lazy);
+        _values.push(s);
+        if (type === "dungeon") {
+            dungeonMusics.push(s);
+        }
+        else if (type === "boss") {
+            bossMusics.push(s);
+        }
+        return s;
+    }
+    function rndDungeonMusic() { return choice(dungeonMusics); }
+    Music.rndDungeonMusic = rndDungeonMusic;
+    function stop() {
+        Music.values().forEach(m => m.stop());
+    }
+    Music.stop = stop;
+    Music.kimi = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/ true);
+    // export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
+})(Music || (Music = {}));

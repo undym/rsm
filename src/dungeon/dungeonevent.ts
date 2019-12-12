@@ -20,7 +20,7 @@ import { Num } from "../mix.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
 import { CollectingSkill } from "../collectingskill.js";
-import { Sound } from "../sound.js";
+import { Sound, Music } from "../sound.js";
 
 
 export abstract class DungeonEvent{
@@ -490,7 +490,8 @@ export namespace DungeonEvent{
     export const             ESCAPE_DUNGEON:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("ESCAPE_DUNGEON");}
         happenInner = async()=>{
-
+            Music.stop();
+            
             Util.msg.set(`${Dungeon.now.toString()}を脱出します...`); await cwait(); await wait();
             Sound.walk2.play();
             

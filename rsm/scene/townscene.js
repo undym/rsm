@@ -33,7 +33,7 @@ import { MeisouScene } from "./meisouscene.js";
 import { Mix } from "../mix.js";
 import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
-import { Sound } from "../sound.js";
+import { Sound, Music } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
 let choosedDungeon;
 export class TownScene extends Scene {
@@ -102,6 +102,7 @@ export class TownScene extends Scene {
                 Sound.walk2.play();
                 FX_DungeonName(choosedDungeon.toString(), Place.DUNGEON_DATA);
                 choosedDungeon = undefined;
+                Music.rndDungeonMusic().play(true);
                 Scene.load(DungeonScene.ins);
             });
             return new VariableLayout(() => choosedDungeon ? btn : ILayout.empty);

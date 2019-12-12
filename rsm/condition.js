@@ -194,21 +194,9 @@ Condition._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
                     const value = dmg.calc().value;
-                    target.addInvisibleCondition(new class extends InvisibleCondition {
-                        constructor() {
-                            super(...arguments);
-                            this.uniqueName = "吸収";
-                        }
-                        afterBeAtk(action, attacker, target, dmg) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
-                                yield wait();
-                                Unit.healHP(target, value);
-                                target.removeInvisibleCondition(this);
-                            });
-                        }
-                    });
-                    Util.msg.set("＞吸収");
+                    Unit.healHP(target, value);
+                    Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
+                    yield wait();
                     dmg.pow.add -= dmg.pow.base;
                     target.addConditionValue(this, -1);
                 }

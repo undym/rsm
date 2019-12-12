@@ -26,7 +26,7 @@ import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
 import { choice } from "../undym/random.js";
 import { CollectingSkill } from "../collectingskill.js";
-import { Sound } from "../sound.js";
+import { Sound, Music } from "../sound.js";
 export class DungeonEvent {
     constructor(name) {
         this.name = name;
@@ -486,6 +486,7 @@ class EventImg {
         constructor() {
             super("ESCAPE_DUNGEON");
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                Music.stop();
                 Util.msg.set(`${Dungeon.now.toString()}を脱出します...`);
                 yield cwait();
                 yield wait();

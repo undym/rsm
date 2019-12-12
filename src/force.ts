@@ -56,6 +56,7 @@ export class Dmg{
     /**追加ダメージ値を返す。 */
     additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
     /** */
+    
 
     constructor(args?:{
         pow?:number,
