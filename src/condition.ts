@@ -207,7 +207,7 @@ export namespace Condition{
                 Unit.healHP( target, value );
                 Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
 
-                dmg.pow.add -= dmg.pow.base;
+                dmg.pow.mul = 0;
 
                 target.addConditionValue(this, -1);
             }

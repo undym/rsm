@@ -1,6 +1,117 @@
 import { choice } from "./undym/random.js";
 
 
+// export class Sound2{
+
+//     static readonly MIN_VOLUME = -10;
+//     static readonly MAX_VOLUME = 10;
+
+//     private static _volume:number;
+//     /**-10～10.Int. */
+//     static get volume()         {return this._volume;}
+//     /**-10～10.Int. */
+//     static set volume(v:number) {
+//         v = v|0;
+//         if(v > this.MAX_VOLUME){v = this.MAX_VOLUME;}
+//         if(v < this.MIN_VOLUME){v = this.MIN_VOLUME;}
+//         this._volume = v;
+//         Sound2.gain.gain.value = v / 10;
+//     }
+
+//     private static ac:AudioContext;
+//     private static gain:GainNode;
+
+//     /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
+//     static init(){
+//         const w:any = window;
+//         const AC = (w.AudioContext || w.webkitAudioContext);
+//         this.ac = new AC();
+//         this.gain = this.ac.createGain();
+//         this.gain.connect(this.ac.destination);
+//         this.volume = 0;
+//         // Sound.gain.gain.value = 0;
+//     }
+
+//     static load(node:SoundNode, ondecoded?:()=>void){
+//         node.loaded = true;
+
+//         const request = new XMLHttpRequest();
+//         request.onload = ()=>{
+//             var audioData = request.response;
+//             Sound2.ac.decodeAudioData(audioData, buffer=>{
+//                 node.buffer = buffer;
+//                 if(ondecoded){
+//                     ondecoded();
+//                 }
+//             },e=>{
+//                 return "Error with decoding audio data: " + node.path;
+//             });
+//         };
+//         request.open("GET", node.path, true);
+//         request.responseType = 'arraybuffer';
+//         request.send();
+        
+//     }
+
+//     static play(
+//         node:SoundNode, 
+//         options?:{
+//             loop?:boolean,
+//         },
+//     ){
+//         if(Sound2.ac.state !== "running"){
+//             Sound2.ac.resume();
+//         }
+
+//         if(!node.loaded){
+//             this.load(node, ()=>{
+//                 this.play(node, options);
+//             });
+//             return;
+//         }
+//         if(!node.buffer){return;}
+
+//         const src = Sound2.ac.createBufferSource();
+//         src.buffer = node.buffer;
+//         src.connect(Sound2.ac.destination);
+//         src.connect(Sound2.gain);
+
+//         if(options && options.loop){
+//             src.loop = true;
+//         }
+
+//         src.start(0);
+//         node.src = src;
+//     }
+
+//     static stop(node:SoundNode){
+//         node.src.stop();
+//     }
+// }
+
+
+// export class SoundNode{
+//     buffer:AudioBuffer;
+//     src:AudioBufferSourceNode;
+//     loaded = false;
+
+//     constructor(readonly path:string){
+
+//     }
+
+//     play(
+//         options?:{
+//             loop?:boolean,
+//         },
+//     ){
+//         Sound2.play(this, options);
+//     }
+
+//     stop(){
+//         Sound2.stop(this);
+//     }
+// }
+
 export class Sound{
     private static _values:Sound[] = [];
     static get values():ReadonlyArray<Sound>{return this._values;}
@@ -26,7 +137,7 @@ export class Sound{
     /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
     static init(){
         const w:any = window;
-        const AC = (w.AudioContext || w.webkitAudioContext);;
+        const AC = (w.AudioContext || w.webkitAudioContext);
         this.ac = new AC();
         this.gain = this.ac.createGain();
         this.gain.connect(this.ac.destination);
@@ -37,13 +148,12 @@ export class Sound{
     private buffer:AudioBuffer;
     private src:AudioBufferSourceNode;
     private loaded = false;
-    private state:"play"|"loop"|"stop" = "stop";
-
-    constructor(private path:string, private lazyLoad = false){
+    
+    constructor(readonly path:string, readonly lazyLoad = false){
         Sound._values.push(this);
     }
     
-    load(){
+    load(ondecoded?:()=>void){
         this.loaded = true;
 
         const request = new XMLHttpRequest();
@@ -51,9 +161,8 @@ export class Sound{
             var audioData = request.response;
             Sound.ac.decodeAudioData(audioData, buffer=>{
                 this.buffer = buffer;
-                if(this.lazyLoad){
-                    if(this.state === "play"){this.play();}
-                    if(this.state === "loop"){this.play(true);}
+                if(ondecoded){
+                    ondecoded();
                 }
             },e=>{
                 return "Error with decoding audio data " + this.path;
@@ -65,32 +174,39 @@ export class Sound{
         
     }
 
-    play(loop:boolean = false){
-        this.state = loop ? "loop" : "play";
+    play(options?:{
+        loop?:boolean,
+    }){
 
         if(Sound.ac.state !== "running"){
             Sound.ac.resume();
         }
 
         if(!this.loaded){
-            this.load();
+            this.load(()=>{
+                this.play(options);
+            });
             return;
         }
         if(!this.buffer){return;}
+
+        if(this.src && this.src.loop){//ループがついているsrcを見失うと止められなくなるので
+            this.src.stop();
+        }
 
         const src = Sound.ac.createBufferSource();
         src.buffer = this.buffer;
         src.connect(Sound.ac.destination);
         src.connect(Sound.gain);
-        src.loop = loop;
+        if(options && options.loop){
+            src.loop = true;
+        }
 
         src.start(0);
         this.src = src;
     }
 
     stop(){
-        this.state = "stop";
-
         if(this.src){
             this.src.stop();
         }
@@ -170,24 +286,36 @@ export namespace Music{
     export function values():ReadonlyArray<Sound>{
         return _values;
     }
-    const dungeonMusics:Sound[] = [];
-    const bossMusics:Sound[] = [];
+    const _dungeonMusics:Sound[] = [];
+    export function getDungeonMusics():ReadonlyArray<Sound>{return _dungeonMusics;}
+    const _bossMusics:Sound[] = [];
+    export function getBossMusics():ReadonlyArray<Sound>{return _bossMusics;}
+    
     function createMusic(type:"dungeon"|"boss", src:string, lazy:boolean):Sound{
         const s = new Sound(src, lazy);
         _values.push(s);
 
-             if(type === "dungeon"){dungeonMusics.push(s);}
-        else if(type === "boss")   {bossMusics.push(s);}
+             if(type === "dungeon"){_dungeonMusics.push(s);}
+        else if(type === "boss")   {_bossMusics.push(s);}
 
         return s;
     }
-
-    export function rndDungeonMusic(){return choice( dungeonMusics );}
 
     export function stop(){
         Music.values().forEach(m=> m.stop());
     }
 
-    export const kimi = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/true);
-    // export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
+    export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
+    export const kimi       = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/true);
+    export const hesoumi    = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/true);
+    export const satori     = createMusic("dungeon", "sound/music/satori.mp3", /*lazy*/true);
+    export const satori2    = createMusic("dungeon", "sound/music/satori2.mp3", /*lazy*/true);
+    export const satori3    = createMusic("dungeon", "sound/music/satori3.mp3", /*lazy*/true);
+    export const usakuma    = createMusic("dungeon", "sound/music/usakuma.mp3", /*lazy*/true);
+    export const iknewme    = createMusic("dungeon", "sound/music/iknewme.mp3", /*lazy*/true);
+
+    export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/true);
+    export const tatakai2   = createMusic("boss",    "sound/music/tatakai2.mp3", /*lazy*/true);
+    export const ma         = createMusic("boss",    "sound/music/ma.mp3", /*lazy*/true);
+    export const ruin       = createMusic("boss",    "sound/music/ruin.mp3", /*lazy*/true);
 }

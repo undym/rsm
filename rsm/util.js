@@ -5,6 +5,7 @@ import { Graphics } from "./graphics/graphics.js";
 import { Scene } from "./undym/scene.js";
 import { TownScene } from "./scene/townscene.js";
 import DungeonScene from "./scene/dungeonscene.js";
+import { Dungeon } from "./dungeon/dungeon.js";
 export class Debug {
 }
 Debug.DEBUG = true;
@@ -88,5 +89,11 @@ export class SceneType {
 }
 SceneType._valueOf = new Map();
 SceneType.TOWN = new SceneType("TOWN", () => Scene.load(TownScene.ins));
-SceneType.DUNGEON = new SceneType("DUNGEON", () => Scene.load(DungeonScene.ins));
-SceneType.BATTLE = new SceneType("BATTLE", () => Scene.load(DungeonScene.ins));
+SceneType.DUNGEON = new SceneType("DUNGEON", () => {
+    Dungeon.now.playMusic("dungeon");
+    Scene.load(DungeonScene.ins);
+});
+SceneType.BATTLE = new SceneType("BATTLE", () => {
+    Dungeon.now.playMusic("dungeon");
+    Scene.load(DungeonScene.ins);
+});

@@ -1487,7 +1487,7 @@ ActiveTec._valueOf = new Map();
     /**魔砲士. */
     Tec.大砲 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "羊飼いの銃", info: "一体に銃攻撃x2",
+            super({ uniqueName: "大砲", info: "一体に銃攻撃x2",
                 sort: TecSort.銃, type: TecType.銃, targetings: Targeting.RANDOM,
                 mul: 2, num: 1, hit: 0.8, tp: 1, item: () => [[Item.砲弾, 1]],
             });

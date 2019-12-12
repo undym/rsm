@@ -197,7 +197,7 @@ Condition._valueOf = new Map();
                     Unit.healHP(target, value);
                     Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
                     yield wait();
-                    dmg.pow.add -= dmg.pow.base;
+                    dmg.pow.mul = 0;
                     target.addConditionValue(this, -1);
                 }
             });

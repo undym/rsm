@@ -1310,7 +1310,7 @@ export namespace Tec{
     }
     /**魔砲士. */
     export const                          大砲:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"羊飼いの銃", info:"一体に銃攻撃x2",
+        constructor(){super({ uniqueName:"大砲", info:"一体に銃攻撃x2",
                               sort:TecSort.銃, type:TecType.銃, targetings:Targeting.RANDOM,
                               mul:2, num:1, hit:0.8, tp:1, item:()=>[[Item.砲弾, 1]],
         });}

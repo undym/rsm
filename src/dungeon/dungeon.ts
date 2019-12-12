@@ -15,7 +15,7 @@ import { choice } from "../undym/random.js";
 import { Img } from "../graphics/texture.js";
 import { Story1 } from "../story/story1.js";
 import { Story0 } from "../story/story0.js";
-import { Sound } from "../sound.js";
+import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 
 
@@ -108,7 +108,8 @@ export abstract class Dungeon{
 
     static now:Dungeon;
     static auNow:number = 0;
-
+    /**前回playMusic()をしてからrndEvent()を呼び出した回数。 */
+    private static musicCount = 0;
     //-----------------------------------------------------------------
     //
     //
@@ -157,6 +158,7 @@ export abstract class Dungeon{
         }
         return DungeonEvent.empty;
     }
+
     //-----------------------------------------------------------------
     //
     //
@@ -198,7 +200,33 @@ export abstract class Dungeon{
     //
     //
     //-----------------------------------------------------------------
+    musics(type:"dungeon"|"boss"):ReadonlyArray<Sound>{
+        if(type === "dungeon"){return Music.getDungeonMusics();}
+        if(type === "boss")   {return Music.getBossMusics();}
+        return [];
+    }
+    /**ランダムな曲を流す. */
+    playMusic(type:"dungeon"|"boss"){
+        Dungeon.musicCount = 0;
+
+        Music.stop();
+
+        const _musics = this.musics(type);
+        if(_musics){
+            const m = choice( _musics );
+            const pathSplit = m.path.split("/");
+            const fileName = pathSplit.length > 0 ? pathSplit[ pathSplit.length - 1 ] : "";
+            Util.msg.set("|> "+fileName, Color.L_GRAY.bright);
+
+            m.play({loop:true});
+        }
+    }
+
     rndEvent():DungeonEvent{
+        if(Dungeon.musicCount++ >= 200 && Math.random() < 0.05){
+            this.playMusic("dungeon");
+        }
+
         for(const set of DungeonArea.now.areaItems){
             if(Math.random() < set.prob){
                 const num = 1;

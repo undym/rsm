@@ -439,8 +439,11 @@ export namespace DungeonEvent{
     export const             BOSS_BATTLE:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("BOSS_BATTLE");}
         happenInner = async()=>{
+            Dungeon.now.playMusic("boss");
+
             Util.msg.set(`[${Dungeon.now}]のボスが現れた！`, Color.WHITE.bright);
             await Dungeon.now.setBoss();
+
             Battle.setup( BattleType.BOSS, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
@@ -461,6 +464,8 @@ export namespace DungeonEvent{
     export const             EX_BATTLE:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("EX_BATTLE");}
         happenInner = async()=>{
+            Dungeon.now.playMusic("boss");
+
             Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
             await Dungeon.now.setEx();
             Battle.setup( BattleType.EX, async(result)=>{
@@ -472,7 +477,8 @@ export namespace DungeonEvent{
                             const item = choice( Dungeon.now.exItems );
                             item.add(1); await wait();
                         }
-                        
+
+                        Dungeon.now.playMusic("dungeon");
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:
@@ -491,7 +497,7 @@ export namespace DungeonEvent{
         constructor(){super("ESCAPE_DUNGEON");}
         happenInner = async()=>{
             Music.stop();
-            
+
             Util.msg.set(`${Dungeon.now.toString()}を脱出します...`); await cwait(); await wait();
             Sound.walk2.play();
             

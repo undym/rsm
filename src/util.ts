@@ -130,6 +130,12 @@ export class SceneType{
     }
 
     static TOWN = new SceneType("TOWN", ()=>Scene.load( TownScene.ins ));
-    static DUNGEON = new SceneType("DUNGEON", ()=>Scene.load( DungeonScene.ins ));
-    static BATTLE = new SceneType("BATTLE", ()=>Scene.load( DungeonScene.ins ));
+    static DUNGEON = new SceneType("DUNGEON", ()=>{
+        Dungeon.now.playMusic("dungeon");
+        Scene.load( DungeonScene.ins );
+    });
+    static BATTLE = new SceneType("BATTLE", ()=>{
+        Dungeon.now.playMusic("dungeon");
+        Scene.load( DungeonScene.ins );
+    });
 }

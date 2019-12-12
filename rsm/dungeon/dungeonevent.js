@@ -432,6 +432,7 @@ class EventImg {
         constructor() {
             super("BOSS_BATTLE");
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                Dungeon.now.playMusic("boss");
                 Util.msg.set(`[${Dungeon.now}]のボスが現れた！`, Color.WHITE.bright);
                 yield Dungeon.now.setBoss();
                 Battle.setup(BattleType.BOSS, (result) => __awaiter(this, void 0, void 0, function* () {
@@ -456,6 +457,7 @@ class EventImg {
         constructor() {
             super("EX_BATTLE");
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
+                Dungeon.now.playMusic("boss");
                 Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
                 yield Dungeon.now.setEx();
                 Battle.setup(BattleType.EX, (result) => __awaiter(this, void 0, void 0, function* () {
@@ -467,6 +469,7 @@ class EventImg {
                                 item.add(1);
                                 yield wait();
                             }
+                            Dungeon.now.playMusic("dungeon");
                             Scene.load(DungeonScene.ins);
                             break;
                         case BattleResult.LOSE:

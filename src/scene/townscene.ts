@@ -32,6 +32,7 @@ import { MemberChangeScene } from "./memberchangescene.js";
 import { Player } from "../player.js";
 import { Pet } from "../pet.js";
 import { EqPos } from "../eq.js";
+import { choice } from "../undym/random.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -105,7 +106,7 @@ export class TownScene extends Scene{
             
                         choosedDungeon = undefined;
 
-                        Music.rndDungeonMusic().play(true);
+                        Dungeon.now.playMusic("dungeon");
     
                         Scene.load( DungeonScene.ins );
                     });
