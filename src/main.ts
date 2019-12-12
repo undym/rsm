@@ -255,6 +255,10 @@ const title = ()=>{
     Graphics.getRenderTarget().canvas.addEventListener("touchend", listener);
     Graphics.getRenderTarget().canvas.addEventListener("click", listener);
 
+
+
+    const font = new Font(Graphics.pixelH * 0.15, Font.ITALIC);
+
     const loop = ()=>{
         if(gameStarted){return;}
 
@@ -268,6 +272,7 @@ const title = ()=>{
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
         
+        font.draw("RigingSky", new Point(0, 1), Color.WHITE, "lowerLeft");
 
         Input.update();
         setTimeout(loop, 1000 / 60);
