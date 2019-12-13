@@ -158,6 +158,7 @@ export class Dungeon {
     }
     /**ランダムな曲を流す. */
     playMusic(type) {
+        Music.stop();
         Dungeon.musicCount = 0;
         Music.stop();
         const _musics = this.musics(type);

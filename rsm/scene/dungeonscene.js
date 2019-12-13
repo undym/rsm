@@ -51,11 +51,6 @@ export default class DungeonScene extends Scene {
                 return btnLayout;
             });
         })());
-        const save = new Rect(Place.E_BOX.x, Place.E_BOX.y, Place.E_BOX.w, Place.E_BOX.h / 8);
-        super.add(save, new Btn("セーブ", () => {
-            SaveData.save();
-            Sound.save.play();
-        }));
         super.add(Place.E_BOX, new YLayout()
             .add(new Btn("セーブ", () => {
             SaveData.save();
@@ -75,7 +70,7 @@ export default class DungeonScene extends Scene {
             .add(ILayout.empty)
             .add(ILayout.empty));
         if (Debug.debugMode) {
-            super.add(new Rect(save.x, save.yh, save.w, 1 - save.yh), new VariableLayout(() => {
+            super.add(new Rect(Place.E_BOX.x, Place.E_BOX.y + 0.4, Place.E_BOX.w, 1 - (Place.E_BOX.yh + 0.4)), new VariableLayout(() => {
                 if (this.debug_eventList) {
                     return this.debug_eventList;
                 }

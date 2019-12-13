@@ -207,6 +207,7 @@ export abstract class Dungeon{
     }
     /**ランダムな曲を流す. */
     playMusic(type:"dungeon"|"boss"){
+        Music.stop();
         Dungeon.musicCount = 0;
 
         Music.stop();
