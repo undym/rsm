@@ -169,7 +169,7 @@ export class Sound {
             return;
         }
         if (this.src && this.src.loop) { //ループがついているsrcを見失うと止められなくなるので
-            this.src.stop();
+            this.stop();
         }
         const src = Sound.context.createBufferSource();
         src.buffer = this.buffer;
@@ -190,7 +190,12 @@ export class Sound {
     stop() {
         if (this.src && this.playing) {
             this.playing = false;
-            this.src.stop();
+            try {
+                this.src.stop();
+            }
+            catch (err) {
+                console.log(err);
+            }
         }
     }
 }
