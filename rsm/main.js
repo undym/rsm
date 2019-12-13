@@ -11,7 +11,7 @@ import { Scene } from "./undym/scene.js";
 import { Util, SceneType, Debug } from "./util.js";
 import { Input } from "./undym/input.js";
 import { Unit } from "./unit.js";
-import { FX } from "./fx/fx.js";
+import { FX, EffectTest } from "./fx/fx.js";
 import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color, Point } from "./undym/type.js";
@@ -23,7 +23,6 @@ import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
 import { Sound } from "./sound.js";
-import { EffectTest } from "./scene/optionscene.js";
 {
     const run = document.getElementById("runreload");
     run.onclick = () => {
@@ -109,7 +108,11 @@ const setInput = () => {
                 Debug.debugMode = !Debug.debugMode;
             }
             if (ev.key === "e") {
-                Scene.load(new EffectTest());
+                Scene.load(new EffectTest({
+                    onreturn: () => {
+                        Scene.load(TownScene.ins);
+                    },
+                }));
             }
             if (Debug.debugMode) {
                 if (ev.key === "1") {
@@ -185,7 +188,7 @@ const title = () => {
         }
         gameStarted = true;
         Sound.init();
-        for (const sound of Sound.values.filter(s => !s.lazyLoad)) {
+        for (const sound of Sound.values().filter(s => !s.lazyLoad)) {
             sound.load();
         }
         const runNewGame = () => {

@@ -2,6 +2,10 @@ import { Rect, Color, Point, Size } from "../undym/type.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { Texture, Img } from "../graphics/texture.js";
 import { randomFloat } from "../undym/random.js";
+import { ILayout } from "../undym/layout.js";
+import { List } from "../widget/list.js";
+import { Btn } from "../widget/btn.js";
+import { Scene } from "../undym/scene.js";
 
 
 
@@ -64,6 +68,47 @@ export class FXTest{
     static values():ReadonlyArray<{name:string, run:()=>void}>{
         return this.effects;
     }
+}
+
+
+export class EffectTest extends Scene{
+
+    constructor(
+        private args:{
+            onreturn:()=>void,
+        },
+    ){
+        super();
+    }
+    async init(){
+        let list = new List();
+        super.clear();
+        super.add(new Rect(0, 0.1, 0.2, 0.8), list);
+        super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
+            {
+                let w = 5 / Graphics.pixelW;
+                let h = 5 / Graphics.pixelH;
+                Graphics.fillRect( new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h ), Color.RED );
+            }
+            {
+                let w = 5 / Graphics.pixelW;
+                let h = 5 / Graphics.pixelH;
+                Graphics.fillRect( new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h ), Color.CYAN );
+            }
+        }}));
+        super.add(new Rect(0.8, 0.8, 0.2, 0.2), new Btn(()=>"<<",()=>{
+            // Scene.load( TownScene.ins );
+            this.args.onreturn();
+        }));
+
+        for(let v of FXTest.values()){
+            list.add({
+                right:()=> v.name,
+                push:()=> v.run(),
+            });
+        }
+    }
+    
 }
 
 

@@ -166,7 +166,7 @@ export class Font {
     }
     static get def() {
         if (!this.DEF) {
-            const size = Graphics.pixelH / 35;
+            const size = Graphics.pixelH / 30;
             this.DEF = new Font(size);
         }
         return this.DEF;

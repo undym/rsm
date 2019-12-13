@@ -9,7 +9,6 @@ import DungeonScene from "./dungeonscene.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { DrawUnitDetail, DrawSTBoxes, DrawPlayInfo, DrawYen, DrawUnits } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
-import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -33,6 +32,7 @@ import { Player } from "../player.js";
 import { Pet } from "../pet.js";
 import { EqPos } from "../eq.js";
 import { choice } from "../undym/random.js";
+import { OptionScene } from "./optionscene.js";
 
 
 let choosedDungeon:Dungeon|undefined;
@@ -299,7 +299,9 @@ class TownBtn{
                 center:()=>"OPTION",
                 push:elm=>{
                     Sound.system.play();
-                    this._ins = createOptionBtn();
+                    Scene.load(new OptionScene({
+                        onreturn:()=> Scene.load(TownScene.ins),
+                    }))
                 },
             });
             // l.add({

@@ -623,8 +623,8 @@ const storagePlayData = (type:ioType, json:any)=>{
         });
     }
 
-
-    ioInt(type, json, "SoundVolume", Sound.volume, load=> Sound.volume = load);
+    ioInt(type, json, "SoundVolume", Sound.getVolume("sound"), load=> Sound.setVolume("sound", load));
+    ioInt(type, json, "MusicVolume", Sound.getVolume("music"), load=> Sound.setVolume("music", load));
 };
 
 const storageCollectingSkill = (type:ioType, json:any):void=>{

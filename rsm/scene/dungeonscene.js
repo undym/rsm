@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Scene } from "../undym/scene.js";
-import { ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
+import { YLayout, ILayout, VariableLayout, InnerLayout } from "../undym/layout.js";
 import { Rect } from "../undym/type.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { Place, Util, SceneType, Debug } from "../util.js";
@@ -17,6 +17,7 @@ import { Btn } from "../widget/btn.js";
 import { Sound } from "../sound.js";
 import { SaveData } from "../savedata.js";
 import { List } from "../widget/list.js";
+import { OptionScene } from "./optionscene.js";
 export default class DungeonScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new DungeonScene()); }
     constructor() {
@@ -55,6 +56,24 @@ export default class DungeonScene extends Scene {
             SaveData.save();
             Sound.save.play();
         }));
+        super.add(Place.E_BOX, new YLayout()
+            .add(new Btn("セーブ", () => {
+            SaveData.save();
+            Sound.save.play();
+        }))
+            .add(new Btn("OPTION", () => {
+            Scene.load(new OptionScene({
+                onreturn: () => {
+                    Scene.load(this);
+                },
+            }));
+        }))
+            .add(ILayout.empty)
+            .add(ILayout.empty)
+            .add(ILayout.empty)
+            .add(ILayout.empty)
+            .add(ILayout.empty)
+            .add(ILayout.empty));
         if (Debug.debugMode) {
             super.add(new Rect(save.x, save.yh, save.w, 1 - save.yh), new VariableLayout(() => {
                 if (this.debug_eventList) {

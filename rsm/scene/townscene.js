@@ -16,7 +16,6 @@ import DungeonScene from "./dungeonscene.js";
 import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { DrawUnitDetail, DrawSTBoxes, DrawYen } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
-import { createOptionBtn } from "./optionscene.js";
 import { ItemScene } from "./itemscene.js";
 import { Targeting } from "../force.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -35,6 +34,7 @@ import { JobChangeScene } from "./jobchangescene.js";
 import { SaveData } from "../savedata.js";
 import { Sound } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
+import { OptionScene } from "./optionscene.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -274,7 +274,9 @@ class TownBtn {
             center: () => "OPTION",
             push: elm => {
                 Sound.system.play();
-                this._ins = createOptionBtn();
+                Scene.load(new OptionScene({
+                    onreturn: () => Scene.load(TownScene.ins),
+                }));
             },
         });
         // l.add({

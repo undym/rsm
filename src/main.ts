@@ -4,7 +4,7 @@ import { Scene, wait } from "./undym/scene.js";
 import {Util, SceneType, Debug, PlayData} from "./util.js";
 import { Input } from "./undym/input.js";
 import { Unit } from "./unit.js";
-import { FX, FXTest } from "./fx/fx.js";
+import { FX, FXTest, EffectTest } from "./fx/fx.js";
 import { Dungeon, DungeonArea } from "./dungeon/dungeon.js";
 import { Player } from "./player.js";
 import { Rect, Color, Point } from "./undym/type.js";
@@ -20,7 +20,6 @@ import { PartySkill } from "./partyskill.js";
 import { randomInt, randomFloat } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { CollectingSkill } from "./collectingskill.js";
-import { EffectTest } from "./scene/optionscene.js";
 
 
 {
@@ -131,7 +130,11 @@ const setInput = ()=>{
                 Debug.debugMode = !Debug.debugMode;
             }
             if(ev.key === "e"){
-                Scene.load(new EffectTest());
+                Scene.load(new EffectTest({
+                    onreturn:()=>{
+                        Scene.load(TownScene.ins);
+                    },
+                }));
             }
             if(Debug.debugMode){
                 if(ev.key === "1"){
@@ -225,7 +228,7 @@ const title = ()=>{
 
         Sound.init();
 
-        for(const sound of Sound.values.filter(s=> !s.lazyLoad)){
+        for(const sound of Sound.values().filter(s=> !s.lazyLoad)){
             sound.load();
         }
 
@@ -279,6 +282,5 @@ const title = ()=>{
     };
     loop();
 
-    
 };
 

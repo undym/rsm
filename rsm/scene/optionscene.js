@@ -8,14 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Scene } from "../undym/scene.js";
 import { Place, Util, Debug, PlayData } from "../util.js";
-import { Rect, Color } from "../undym/type.js";
-import { ILayout, RatioLayout } from "../undym/layout.js";
-import { Btn } from "../widget/btn.js";
-import { TownScene } from "./townscene.js";
 import { List } from "../widget/list.js";
-import { FXTest } from "../fx/fx.js";
+import { EffectTest } from "../fx/fx.js";
 import { Item, ItemType } from "../item.js";
-import { Graphics } from "../graphics/graphics.js";
 import { ActiveTec, PassiveTec } from "../tec.js";
 import { Player } from "../player.js";
 import { SaveData } from "../savedata.js";
@@ -23,23 +18,27 @@ import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
 import { Sound } from "../sound.js";
 import { Dungeon } from "../dungeon/dungeon.js";
-const list = new List(6);
-let returnAction = () => { };
-export const createOptionBtn = () => {
-    // const w = 4;
-    // const h = 3;
-    // const l = new FlowLayout(w,h);
-    setOptionBtn();
-    const listH = 1 - Place.LIST_BTN_H;
-    return new RatioLayout()
-        .add(new Rect(0, 0, 1, listH), list)
-        .add(new Rect(0, listH, 1, 1 - listH), new Btn("<<", () => {
-        returnAction();
-    }));
-    ;
-};
-const setOptionBtn = () => {
-    const removeElements = () => {
+import { DrawYen, DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
+export class OptionScene extends Scene {
+    constructor(args) {
+        super();
+        this.args = args;
+        this.list = new List(6);
+    }
+    init() {
+        super.clear();
+        super.add(Place.DUNGEON_DATA, Util.msg);
+        super.add(Place.YEN, DrawYen.ins);
+        super.add(Place.BTN, this.list);
+        super.add(Place.P_BOX, DrawSTBoxes.players);
+        super.add(Place.MAIN, DrawUnitDetail.ins);
+        this.setDefList();
+    }
+    runReturn() {
+        this.removeElements();
+        this.args.onreturn();
+    }
+    removeElements() {
         for (const id of ["export", "importText", "inputParent", "runImport"]) {
             for (;;) {
                 const e = document.getElementById(id);
@@ -51,325 +50,629 @@ const setOptionBtn = () => {
                 }
             }
         }
-    };
-    list.clear();
-    list.add({
-        center: () => "データ削除",
-        push: elm => {
-            setSaveDataDeleteBtn();
-        },
-    });
-    list.add({
-        center: () => "-",
-        push: elm => {
-        },
-    });
-    list.add({
-        center: () => "音量↑",
-        push: elm => {
-            Sound.volume++;
-            Util.msg.set(`${Sound.volume}`);
-            Sound.save.play();
-        },
-    });
-    list.add({
-        center: () => "音量↓",
-        push: elm => {
-            Sound.volume--;
-            Util.msg.set(`${Sound.volume}`);
-            Sound.save.play();
-        },
-    });
-    list.add({
-        center: () => "export",
-        push: elm => {
-            removeElements();
-            const encoded = new TextEncoder().encode(SaveData.export());
-            let save = "";
-            for (const e of encoded) {
-                save += e.toString(36) + "+";
-            }
-            save = save.substring(0, save.length - 1);
-            const a = document.createElement("textarea");
-            a.id = "export";
-            a.readOnly = true;
-            a.value = save;
-            a.style.position = "fixed";
-            a.style.top = "0vh";
-            a.style.left = "50vw";
-            a.style.width = "50vw";
-            a.style.height = "30vh";
-            a.onclick = ev => {
-                a.setSelectionRange(0, save.length);
-            };
-            document.body.appendChild(a);
-            a.focus();
-            a.setSelectionRange(0, save.length);
-        },
-    });
-    list.add({
-        center: () => "import",
-        push: (() => {
-            let readText;
-            const a = document.createElement("textarea");
-            a.id = "importText";
-            a.readOnly = true;
-            a.style.position = "fixed";
-            a.style.top = "0vh";
-            a.style.left = "50vw";
-            a.style.width = "50vw";
-            a.style.height = "30vh";
-            const xhr = new XMLHttpRequest();
-            xhr.onload = req => {
-                const res = xhr.responseText;
-                a.readOnly = false;
-                a.innerText = res;
-                a.readOnly = true;
-                readText = res;
-            };
-            const inputParent = document.createElement("div");
-            inputParent.id = "inputParent";
-            inputParent.style.position = "fixed";
-            inputParent.style.top = "30vh";
-            inputParent.style.left = "50vw";
-            inputParent.style.width = "50vw";
-            inputParent.style.height = "20vh";
-            inputParent.style.background = "gray";
-            const b = document.createElement("input");
-            b.id = "chooseImportFile";
-            b.type = "file";
-            b.style.position = "fixed";
-            b.style.top = "30vh";
-            b.style.left = "50vw";
-            b.style.width = "50vw";
-            b.style.height = "20vh";
-            b.style.fontSize = "4rem";
-            b.addEventListener("change", ev => {
-                xhr.abort();
-                if (b.files && b.files[0]) {
-                    const blob = new Blob([b.files[0]]);
-                    const url = URL.createObjectURL(blob);
-                    xhr.open("GET", url);
-                    xhr.send();
-                }
-            });
-            inputParent.appendChild(b);
-            const runImport = document.createElement("button");
-            runImport.id = "runImport";
-            runImport.style.position = "fixed";
-            runImport.style.top = "50vh";
-            runImport.style.left = "50vw";
-            runImport.style.width = "50vw";
-            runImport.style.height = "20vh";
-            runImport.style.fontSize = "4rem";
-            runImport.innerText = "実行";
-            runImport.onclick = ev => {
-                if (!readText) {
-                    Util.msg.set("ファイルが選択されていません");
-                    return;
-                }
-                const split = readText.split("+");
-                const arr = new Uint8Array(split.length);
-                for (let i = 0; i < arr.length; i++) {
-                    arr[i] = Number.parseInt(split[i], 36);
-                }
-                const decoded = new TextDecoder().decode(arr);
-                if (SaveData.load(decoded)) {
-                    Util.msg.set("import成功");
-                    removeElements();
-                }
-            };
-            return (elm) => __awaiter(this, void 0, void 0, function* () {
-                removeElements();
-                document.body.appendChild(a);
-                document.body.appendChild(inputParent);
-                document.body.appendChild(runImport);
-            });
-        })(),
-    });
-    if (Debug.debugMode) {
-        list.add({
-            center: () => "Debug",
+    }
+    setDefList() {
+        this.list.clear();
+        this.list.add({
+            center: () => "データ削除",
             push: elm => {
-                setDebugBtn();
+                this.setReadyDeleteSaveData();
+            },
+        });
+        this.list.add({
+            center: () => "-",
+            push: elm => {
+            },
+        });
+        const addVolume = (type, v) => {
+            Sound.setVolume(type, Sound.getVolume(type) + v);
+            Util.msg.set(`${Sound.getVolume(type)}`);
+        };
+        this.list.add({
+            center: () => "効果音+",
+            push: elm => {
+                addVolume("sound", 1);
+                Sound.save.play();
+            },
+        });
+        this.list.add({
+            center: () => "効果音-",
+            push: elm => {
+                addVolume("sound", -1);
+                Sound.save.play();
+            },
+        });
+        this.list.add({
+            center: () => "音楽+",
+            push: elm => {
+                addVolume("music", 1);
+            },
+        });
+        this.list.add({
+            center: () => "音楽-",
+            push: elm => {
+                addVolume("music", -1);
+            },
+        });
+        this.list.add({
+            center: () => "export",
+            push: elm => {
+                this.removeElements();
+                const encoded = new TextEncoder().encode(SaveData.export());
+                let save = "";
+                for (const e of encoded) {
+                    save += e.toString(36) + "+";
+                }
+                save = save.substring(0, save.length - 1);
+                const a = document.createElement("textarea");
+                a.id = "export";
+                a.readOnly = true;
+                a.value = save;
+                a.style.position = "fixed";
+                a.style.top = "0vh";
+                a.style.left = "50vw";
+                a.style.width = "50vw";
+                a.style.height = "30vh";
+                a.onclick = ev => {
+                    a.setSelectionRange(0, save.length);
+                };
+                document.body.appendChild(a);
+                a.focus();
+                a.setSelectionRange(0, save.length);
+            },
+        });
+        this.list.add({
+            center: () => "import",
+            push: (() => {
+                this.removeElements();
+                let readText;
+                const a = document.createElement("textarea");
+                a.id = "importText";
+                a.readOnly = true;
+                a.style.position = "fixed";
+                a.style.top = "0vh";
+                a.style.left = "50vw";
+                a.style.width = "50vw";
+                a.style.height = "30vh";
+                const xhr = new XMLHttpRequest();
+                xhr.onload = req => {
+                    const res = xhr.responseText;
+                    a.readOnly = false;
+                    a.innerText = res;
+                    a.readOnly = true;
+                    readText = res;
+                };
+                const inputParent = document.createElement("div");
+                inputParent.id = "inputParent";
+                inputParent.style.position = "fixed";
+                inputParent.style.top = "30vh";
+                inputParent.style.left = "50vw";
+                inputParent.style.width = "50vw";
+                inputParent.style.height = "20vh";
+                inputParent.style.background = "gray";
+                const b = document.createElement("input");
+                b.id = "chooseImportFile";
+                b.type = "file";
+                b.style.position = "fixed";
+                b.style.top = "30vh";
+                b.style.left = "50vw";
+                b.style.width = "50vw";
+                b.style.height = "20vh";
+                b.style.fontSize = "4rem";
+                b.addEventListener("change", ev => {
+                    xhr.abort();
+                    if (b.files && b.files[0]) {
+                        const blob = new Blob([b.files[0]]);
+                        const url = URL.createObjectURL(blob);
+                        xhr.open("GET", url);
+                        xhr.send();
+                    }
+                });
+                inputParent.appendChild(b);
+                const runImport = document.createElement("button");
+                runImport.id = "runImport";
+                runImport.style.position = "fixed";
+                runImport.style.top = "50vh";
+                runImport.style.left = "50vw";
+                runImport.style.width = "50vw";
+                runImport.style.height = "20vh";
+                runImport.style.fontSize = "4rem";
+                runImport.innerText = "実行";
+                runImport.onclick = ev => {
+                    if (!readText) {
+                        Util.msg.set("ファイルが選択されていません");
+                        return;
+                    }
+                    const split = readText.split("+");
+                    const arr = new Uint8Array(split.length);
+                    for (let i = 0; i < arr.length; i++) {
+                        arr[i] = Number.parseInt(split[i], 36);
+                    }
+                    const decoded = new TextDecoder().decode(arr);
+                    if (SaveData.load(decoded)) {
+                        Util.msg.set("import成功");
+                        this.removeElements();
+                    }
+                };
+                return (elm) => __awaiter(this, void 0, void 0, function* () {
+                    this.removeElements();
+                    document.body.appendChild(a);
+                    document.body.appendChild(inputParent);
+                    document.body.appendChild(runImport);
+                });
+            })(),
+        });
+        if (Debug.debugMode) {
+            this.list.add({
+                center: () => "Debug",
+                push: elm => {
+                    this.setDebug();
+                },
+            });
+        }
+        this.list.add({
+            center: () => "<<",
+            push: elm => {
+                this.runReturn();
             },
         });
     }
-    returnAction = () => {
-        removeElements();
-        Scene.load(TownScene.ins);
-    };
-};
-const setSaveDataDeleteBtn = () => {
-    Util.msg.set("セーブデータを削除しますか？");
-    list.clear();
-    list.add({
-        center: () => "はい",
-        push: elm => {
-            Util.msg.set("＞はい");
-            setSaveDataDeleteBtn2();
-        },
-    });
-    list.add({
-        center: () => "いいえ",
-        push: elm => {
-            Util.msg.set("＞いいえ");
-            setOptionBtn();
-        },
-    });
-    returnAction = () => {
-        Util.msg.set("やめた");
-        setOptionBtn();
-    };
-};
-const setSaveDataDeleteBtn2 = () => {
-    list.clear();
-    list.add({
-        center: () => "削除実行",
-        push: elm => {
-            SaveData.delete();
-            window.location.reload(true);
-        },
-    });
-    // l.add(new Btn("削除実行", ()=>{
-    //     SaveData.delete();
-    //     window.location.href = window.location.href;
-    // }))
-    returnAction = () => {
-        Util.msg.set("やめた");
-        setOptionBtn();
-    };
-};
-const setDebugBtn = () => {
-    list.clear();
-    list.add({
-        center: () => "EffectTest",
-        push: elm => {
-            Scene.load(new EffectTest());
-        },
-    });
-    list.add({
-        center: () => "アイテム入手",
-        push: elm => {
-            for (let item of Item.values) {
-                item.num = item.numLimit;
-            }
-            Util.msg.set("アイテム入手");
-        },
-    });
-    list.add({
-        center: () => "素材入手",
-        push: elm => {
-            for (let item of ItemType.素材.values) {
-                item.num = item.numLimit;
-            }
-            Util.msg.set("素材入手");
-        },
-    });
-    list.add({
-        center: () => "技習得",
-        push: elm => {
-            for (let p of Player.values) {
-                for (let tec of ActiveTec.values) {
-                    p.ins.setMasteredTec(tec, true);
-                }
-                for (let tec of PassiveTec.values) {
-                    p.ins.setMasteredTec(tec, true);
-                }
-            }
-            Util.msg.set("技習得");
-        },
-    });
-    list.add({
-        center: () => "装備入手",
-        push: elm => {
-            for (const eq of EqEar.values) {
-                eq.num += 1;
-            }
-            for (const eq of Eq.values) {
-                eq.num += 1;
-            }
-            Util.msg.set("装備入手");
-        },
-    });
-    list.add({
-        center: () => "パーティースキル入手",
-        push: elm => {
-            for (const skill of PartySkill.values) {
-                skill.has = true;
-            }
-            Util.msg.set("パーティースキル入手");
-        },
-    });
-    list.add({
-        center: () => "金",
-        push: elm => {
-            const value = 99999;
-            PlayData.yen += value;
-            Util.msg.set(`yen+${value}`);
-        },
-    });
-    list.add({
-        center: () => "鍵",
-        push: elm => {
-            for (const d of Dungeon.values) {
-                d.treasureKey += 10;
-            }
-            Item.丸い鍵.add(10);
-            Item.三角鍵.add(10);
-        },
-    });
-    list.add({
-        center: () => "BP",
-        push: elm => {
-            const value = 9999;
-            for (const p of Player.values) {
-                p.ins.bp += value;
-            }
-            Util.msg.set(`bp+${value}`);
-        },
-    });
-    list.add({
-        center: () => "Option",
-        push: elm => {
-            setOptionBtn();
-        },
-    });
-    returnAction = () => {
-        Scene.load(TownScene.ins);
-    };
-};
-export class EffectTest extends Scene {
-    init() {
-        const _super = Object.create(null, {
-            clear: { get: () => super.clear },
-            add: { get: () => super.add }
+    setReadyDeleteSaveData() {
+        Util.msg.set("セーブデータを削除しますか？");
+        this.list.clear();
+        this.list.add({
+            center: () => "はい",
+            push: elm => {
+                Util.msg.set("＞はい");
+                this.setReadyDeleteSaveData2();
+            },
         });
-        return __awaiter(this, void 0, void 0, function* () {
-            let list = new List();
-            _super.clear.call(this);
-            _super.add.call(this, new Rect(0, 0.1, 0.2, 0.8), list);
-            _super.add.call(this, Rect.FULL, ILayout.create({ draw: (bounds) => {
-                    {
-                        let w = 5 / Graphics.pixelW;
-                        let h = 5 / Graphics.pixelH;
-                        Graphics.fillRect(new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h), Color.RED);
+        this.list.add({
+            center: () => "いいえ",
+            push: elm => {
+                Util.msg.set("＞いいえ");
+                this.setDefList();
+            },
+        });
+        this.list.add({
+            center: () => "<<",
+            push: elm => {
+                Util.msg.set("やめた");
+                this.setDefList();
+            },
+        });
+    }
+    setReadyDeleteSaveData2() {
+        this.list.clear();
+        this.list.add({
+            center: () => "削除実行",
+            push: elm => {
+                SaveData.delete();
+                window.location.reload(true);
+            },
+        });
+        this.list.add({
+            center: () => "<<",
+            push: elm => {
+                Util.msg.set("やめた");
+                this.setDefList();
+            },
+        });
+    }
+    setDebug() {
+        this.list.clear();
+        this.list.add({
+            center: () => "EffectTest",
+            push: elm => {
+                Scene.load(new EffectTest({
+                    onreturn: () => {
+                        Scene.load(new OptionScene(this.args));
+                    },
+                }));
+            },
+        });
+        this.list.add({
+            center: () => "アイテム入手",
+            push: elm => {
+                for (let item of Item.values) {
+                    item.num = item.numLimit;
+                }
+                Util.msg.set("アイテム入手");
+            },
+        });
+        this.list.add({
+            center: () => "素材入手",
+            push: elm => {
+                for (let item of ItemType.素材.values) {
+                    item.num = item.numLimit;
+                }
+                Util.msg.set("素材入手");
+            },
+        });
+        this.list.add({
+            center: () => "技習得",
+            push: elm => {
+                for (let p of Player.values) {
+                    for (let tec of ActiveTec.values) {
+                        p.ins.setMasteredTec(tec, true);
                     }
-                    {
-                        let w = 5 / Graphics.pixelW;
-                        let h = 5 / Graphics.pixelH;
-                        Graphics.fillRect(new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h), Color.CYAN);
+                    for (let tec of PassiveTec.values) {
+                        p.ins.setMasteredTec(tec, true);
                     }
-                } }));
-            _super.add.call(this, new Rect(0.8, 0.8, 0.2, 0.2), new Btn(() => "<-", () => {
-                Scene.load(TownScene.ins);
-            }));
-            for (let v of FXTest.values()) {
-                list.add({
-                    right: () => v.name,
-                    push: () => v.run(),
-                });
-            }
+                }
+                Util.msg.set("技習得");
+            },
+        });
+        this.list.add({
+            center: () => "装備入手",
+            push: elm => {
+                for (const eq of EqEar.values) {
+                    eq.num += 1;
+                }
+                for (const eq of Eq.values) {
+                    eq.num += 1;
+                }
+                Util.msg.set("装備入手");
+            },
+        });
+        this.list.add({
+            center: () => "パーティースキル入手",
+            push: elm => {
+                for (const skill of PartySkill.values) {
+                    skill.has = true;
+                }
+                Util.msg.set("パーティースキル入手");
+            },
+        });
+        this.list.add({
+            center: () => "金",
+            push: elm => {
+                const value = 99999;
+                PlayData.yen += value;
+                Util.msg.set(`yen+${value}`);
+            },
+        });
+        this.list.add({
+            center: () => "鍵",
+            push: elm => {
+                for (const d of Dungeon.values) {
+                    d.treasureKey += 10;
+                }
+                Item.丸い鍵.add(10);
+                Item.三角鍵.add(10);
+            },
+        });
+        this.list.add({
+            center: () => "BP",
+            push: elm => {
+                const value = 9999;
+                for (const p of Player.values) {
+                    p.ins.bp += value;
+                }
+                Util.msg.set(`bp+${value}`);
+            },
+        });
+        this.list.add({
+            center: () => "Option",
+            push: elm => {
+                this.setDefList();
+            },
+        });
+        this.list.add({
+            center: () => "戻る",
+            push: elm => {
+                this.runReturn();
+            },
         });
     }
 }
+// const list = new List(6);
+// let returnAction:()=>void = ()=>{};
+// export const createOptionBtn = ()=>{
+//     setOptionBtn();
+//     const listH = 1 - Place.LIST_BTN_H;
+//     return new RatioLayout()
+//         .add(new Rect(0, 0, 1, listH), list)
+//         .add(new Rect(0, listH, 1, 1-listH), new Btn("<<", ()=>{
+//             returnAction();
+//         }))
+//         ;
+//     ;
+// };
+// const setOptionBtn = ()=>{
+//     const removeElements = ()=>{
+//         for(const id of ["export", "importText", "inputParent", "runImport"]){
+//             for(;;){
+//                 const e = document.getElementById(id);
+//                 if(e){document.body.removeChild(e);}
+//                 else {break;}
+//             }
+//         }
+//     };
+//     list.clear();
+//     list.add({
+//         center:()=>"データ削除",
+//         push:elm=>{
+//             setSaveDataDeleteBtn();
+//         },
+//     });
+//     list.add({
+//         center:()=>"-",
+//         push:elm=>{
+//         },
+//     });
+//     list.add({
+//         center:()=>"音量↑",
+//         push:elm=>{
+//             Sound.volume++;
+//             Util.msg.set(`${Sound.volume}`);
+//             Sound.save.play();
+//         },
+//     });
+//     list.add({
+//         center:()=>"音量↓",
+//         push:elm=>{
+//             Sound.volume--;
+//             Util.msg.set(`${Sound.volume}`);
+//             Sound.save.play();
+//         },
+//     });
+//     list.add({
+//         center:()=>"export",
+//         push:elm=>{
+//             removeElements();
+//             const encoded = new TextEncoder().encode( SaveData.export() );
+//             let save = "";
+//             for(const e of encoded){
+//                 save += e.toString(36) + "+";
+//             }
+//             save = save.substring(0, save.length-1);
+//             const a = document.createElement("textarea");
+//             a.id = "export";
+//             a.readOnly = true;
+//             a.value = save;
+//             a.style.position = "fixed";
+//             a.style.top = "0vh";
+//             a.style.left = "50vw";
+//             a.style.width = "50vw";
+//             a.style.height = "30vh";
+//             a.onclick = ev=>{
+//                 a.setSelectionRange(0, save.length);
+//             };
+//             document.body.appendChild(a);
+//             a.focus();
+//             a.setSelectionRange(0, save.length);
+//         },
+//     });
+//     list.add({
+//         center:()=>"import",
+//         push:(()=>{
+//             let readText:string|undefined;
+//             const a = document.createElement("textarea");
+//             a.id = "importText";
+//             a.readOnly = true;
+//             a.style.position = "fixed";
+//             a.style.top = "0vh";
+//             a.style.left = "50vw";
+//             a.style.width = "50vw";
+//             a.style.height = "30vh";
+//             const xhr = new XMLHttpRequest();
+//             xhr.onload = req=>{
+//                 const res = xhr.responseText;
+//                 a.readOnly = false;
+//                 a.innerText = res;
+//                 a.readOnly = true;
+//                 readText = res;
+//             };
+//             const inputParent = document.createElement("div");
+//             inputParent.id = "inputParent";
+//             inputParent.style.position = "fixed";
+//             inputParent.style.top = "30vh";
+//             inputParent.style.left = "50vw";
+//             inputParent.style.width = "50vw";
+//             inputParent.style.height = "20vh";
+//             inputParent.style.background = "gray";
+//             const b = document.createElement("input");
+//             b.id = "chooseImportFile";
+//             b.type = "file";
+//             b.style.position = "fixed";
+//             b.style.top = "30vh";
+//             b.style.left = "50vw";
+//             b.style.width = "50vw";
+//             b.style.height = "20vh";
+//             b.style.fontSize = "4rem";
+//             b.addEventListener("change", ev=>{
+//                 xhr.abort();
+//                 if(b.files && b.files[0]){
+//                     const blob = new Blob([b.files[0]]);
+//                     const url = URL.createObjectURL(blob);
+//                     xhr.open("GET", url);
+//                     xhr.send();
+//                 }
+//             });
+//             inputParent.appendChild(b);
+//             const runImport = document.createElement("button");
+//             runImport.id = "runImport";
+//             runImport.style.position = "fixed";
+//             runImport.style.top = "50vh";
+//             runImport.style.left = "50vw";
+//             runImport.style.width = "50vw";
+//             runImport.style.height = "20vh";
+//             runImport.style.fontSize = "4rem";
+//             runImport.innerText = "実行";
+//             runImport.onclick = ev=>{
+//                 if(!readText){
+//                     Util.msg.set("ファイルが選択されていません");
+//                     return;
+//                 }
+//                 const split = readText.split("+");
+//                 const arr = new Uint8Array( split.length );
+//                 for(let i = 0; i < arr.length; i++){
+//                     arr[i] = Number.parseInt( split[i], 36 );
+//                 }
+//                 const decoded = new TextDecoder().decode(arr);
+//                 if(SaveData.load(decoded)){
+//                     Util.msg.set("import成功");
+//                     removeElements();
+//                 }
+//             };
+//             return async(elm:ListElm)=>{
+//                 removeElements();
+//                 document.body.appendChild(a);
+//                 document.body.appendChild(inputParent);
+//                 document.body.appendChild(runImport);
+//             };
+//         })(),
+//     });
+//     if(Debug.debugMode){
+//         list.add({
+//             center:()=>"Debug",
+//             push:elm=>{
+//                 setDebugBtn();
+//             },
+//         })
+//     }
+//     returnAction = ()=>{
+//         removeElements();
+//         Scene.load( TownScene.ins );
+//     };
+// };
+// const setSaveDataDeleteBtn = ()=>{
+//     Util.msg.set("セーブデータを削除しますか？");
+//     list.clear();
+//     list.add({
+//         center:()=>"はい",
+//         push:elm=>{
+//             Util.msg.set("＞はい");
+//             setSaveDataDeleteBtn2();
+//         },
+//     });
+//     list.add({
+//         center:()=>"いいえ",
+//         push:elm=>{
+//             Util.msg.set("＞いいえ");
+//             setOptionBtn();
+//         },
+//     });
+//     returnAction = ()=>{
+//         Util.msg.set("やめた");
+//         setOptionBtn();
+//     };
+// };
+// const setSaveDataDeleteBtn2 = ()=>{
+//     list.clear();
+//     list.add({
+//         center:()=>"削除実行",
+//         push:elm=>{
+//             SaveData.delete();
+//             window.location.reload(true);
+//         },
+//     });
+//     // l.add(new Btn("削除実行", ()=>{
+//     //     SaveData.delete();
+//     //     window.location.href = window.location.href;
+//     // }))
+//     returnAction = ()=>{
+//         Util.msg.set("やめた");
+//         setOptionBtn();
+//     };
+// };
+// const setDebugBtn = ()=>{
+//     list.clear();
+//     list.add({
+//         center:()=>"EffectTest",
+//         push:elm=>{
+//             Scene.load(new EffectTest());
+//         },
+//     });
+//     list.add({
+//         center:()=>"アイテム入手",
+//         push:elm=>{
+//             for(let item of Item.values){
+//                 item.num = item.numLimit;
+//             }
+//             Util.msg.set("アイテム入手");
+//         },
+//     });
+//     list.add({
+//         center:()=>"素材入手",
+//         push:elm=>{
+//             for(let item of ItemType.素材.values){
+//                 item.num = item.numLimit;
+//             }
+//             Util.msg.set("素材入手");
+//         },
+//     });
+//     list.add({
+//         center:()=>"技習得",
+//         push:elm=>{
+//             for(let p of Player.values){
+//                 for(let tec of ActiveTec.values){
+//                     p.ins.setMasteredTec(tec, true);
+//                 }   
+//                 for(let tec of PassiveTec.values){
+//                     p.ins.setMasteredTec(tec, true);
+//                 }   
+//             }
+//             Util.msg.set("技習得");
+//         },
+//     });
+//     list.add({
+//         center:()=>"装備入手",
+//         push:elm=>{
+//             for(const eq of EqEar.values){
+//                 eq.num += 1;
+//             }
+//             for(const eq of Eq.values){
+//                 eq.num += 1;
+//             }
+//             Util.msg.set("装備入手");
+//         },
+//     });
+//     list.add({
+//         center:()=>"パーティースキル入手",
+//         push:elm=>{
+//             for(const skill of PartySkill.values){
+//                 skill.has = true;
+//             }
+//             Util.msg.set("パーティースキル入手");
+//         },
+//     });
+//     list.add({
+//         center:()=>"金",
+//         push:elm=>{
+//             const value = 99999;
+//             PlayData.yen += value;
+//             Util.msg.set(`yen+${value}`);
+//         },
+//     });
+//     list.add({
+//         center:()=>"鍵",
+//         push:elm=>{
+//             for(const d of Dungeon.values){
+//                 d.treasureKey += 10;
+//             }
+//             Item.丸い鍵.add(10);
+//             Item.三角鍵.add(10);
+//         },
+//     });
+//     list.add({
+//         center:()=>"BP",
+//         push:elm=>{
+//             const value = 9999;
+//             for(const p of Player.values){
+//                 p.ins.bp += value;
+//             }
+//             Util.msg.set(`bp+${value}`);
+//         },
+//     });
+//     list.add({
+//         center:()=>"Option",
+//         push:elm=>{
+//             setOptionBtn();
+//         },
+//     });
+//     returnAction = ()=>{
+//         Scene.load( TownScene.ins );
+//     };
+// };

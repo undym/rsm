@@ -350,7 +350,7 @@ export abstract class Dungeon{
             Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`); await cwait();
             Sound.rare.play();
             const value = (this.dungeonClearCount / 10)|0;
-            Item.ささやかな贈り物.add(value);       await wait();
+            Item.ささやかな贈り物.add(value); await wait();
         }
     }
     

@@ -9,6 +9,7 @@ import { Btn } from "../widget/btn.js";
 import { Sound } from "../sound.js";
 import { SaveData } from "../savedata.js";
 import { List } from "../widget/list.js";
+import { OptionScene } from "./optionscene.js";
 
 
 
@@ -62,6 +63,30 @@ export default class DungeonScene extends Scene{
                 SaveData.save();
                 Sound.save.play();
             })
+        );
+        super.add(Place.E_BOX,
+            new YLayout()
+                .add(
+                    new Btn("セーブ", ()=>{
+                        SaveData.save();
+                        Sound.save.play();
+                    })
+                )
+                .add(
+                    new Btn("OPTION", ()=>{
+                        Scene.load(new OptionScene({
+                            onreturn:()=>{
+                                Scene.load( this );
+                            },
+                        }))
+                    })
+                )
+                .add(ILayout.empty)
+                .add(ILayout.empty)
+                .add(ILayout.empty)
+                .add(ILayout.empty)
+                .add(ILayout.empty)
+                .add(ILayout.empty)
         );
 
         if(Debug.debugMode){

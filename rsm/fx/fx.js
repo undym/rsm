@@ -1,7 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { Rect, Color, Point } from "../undym/type.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { Img } from "../graphics/texture.js";
 import { randomFloat } from "../undym/random.js";
+import { ILayout } from "../undym/layout.js";
+import { List } from "../widget/list.js";
+import { Btn } from "../widget/btn.js";
+import { Scene } from "../undym/scene.js";
 export class FX {
     /**countは0スタート。 */
     static add(effect) {
@@ -46,6 +58,45 @@ export class FXTest {
 }
 // private static effects:[string,()=>void][] = [];
 FXTest.effects = [];
+export class EffectTest extends Scene {
+    constructor(args) {
+        super();
+        this.args = args;
+    }
+    init() {
+        const _super = Object.create(null, {
+            clear: { get: () => super.clear },
+            add: { get: () => super.add }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            let list = new List();
+            _super.clear.call(this);
+            _super.add.call(this, new Rect(0, 0.1, 0.2, 0.8), list);
+            _super.add.call(this, Rect.FULL, ILayout.create({ draw: (bounds) => {
+                    {
+                        let w = 5 / Graphics.pixelW;
+                        let h = 5 / Graphics.pixelH;
+                        Graphics.fillRect(new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h), Color.RED);
+                    }
+                    {
+                        let w = 5 / Graphics.pixelW;
+                        let h = 5 / Graphics.pixelH;
+                        Graphics.fillRect(new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h), Color.CYAN);
+                    }
+                } }));
+            _super.add.call(this, new Rect(0.8, 0.8, 0.2, 0.2), new Btn(() => "<<", () => {
+                // Scene.load( TownScene.ins );
+                this.args.onreturn();
+            }));
+            for (let v of FXTest.values()) {
+                list.add({
+                    right: () => v.name,
+                    push: () => v.run(),
+                });
+            }
+        });
+    }
+}
 export const FX_Advance = (bounds) => {
     FX.add((count) => {
         const over = 3;
