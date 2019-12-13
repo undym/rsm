@@ -222,7 +222,7 @@ const title = () => {
         updateMsgs.forEach((s, i) => {
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
-        font.draw("RigingSky", new Point(0, 1), Color.WHITE, "lowerLeft");
+        font.draw("RigingStar", new Point(0, 1), Color.WHITE, "lowerLeft");
         Input.update();
         setTimeout(loop, 1000 / 60);
     };
