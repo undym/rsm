@@ -1,4 +1,5 @@
 import { choice } from "./undym/random.js";
+import { Util } from "./util.js";
 
 
 // export class Sound2{
@@ -174,6 +175,7 @@ export class Sound{
     private buffer:AudioBuffer;
     private src:AudioBufferSourceNode;
     private loaded = false;
+    private playing = false;
     
     constructor(readonly path:string, readonly gainType:"sound"|"music", readonly lazyLoad = false){
     }
@@ -230,10 +232,12 @@ export class Sound{
 
         src.start(0);
         this.src = src;
+        this.playing = true;
     }
 
     stop(){
-        if(this.src){
+        if(this.src && this.playing){
+            this.playing = false;
             this.src.stop();
         }
     }

@@ -42,7 +42,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 26, 27);
+Version.NOW = new Version(0, 26, 28);
 Version.updateInfo = [
     "(0.26.16)タッチテスト",
     "(0.26.17)こまごま",
@@ -56,6 +56,7 @@ Version.updateInfo = [
     "(0.26.25)一部アイテム入手時のメッセージ修正",
     "(0.26.26)タイトル画面修正",
     "(0.26.27)音の調整",
+    "(0.26.28)音の調整",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -71,7 +72,7 @@ export class SaveData {
         this.io("save", json);
         window.localStorage.setItem(this.data, JSON.stringify(json));
         Util.msg.set("セーブしました", Color.CYAN.bright);
-        console.log(JSON.stringify(json, undefined, 4));
+        // console.log(JSON.stringify(json, undefined, 4));
         // console.log(JSON.stringify(json));
     }
     /**jsonStr指定でインポート. */

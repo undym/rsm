@@ -17,7 +17,7 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,26,27);
+    static readonly NOW = new Version(0,26,28);
     static readonly updateInfo =    [
                                         "(0.26.16)タッチテスト",
                                         "(0.26.17)こまごま",
@@ -31,6 +31,7 @@ export class Version{
                                         "(0.26.25)一部アイテム入手時のメッセージ修正",
                                         "(0.26.26)タイトル画面修正",
                                         "(0.26.27)音の調整",
+                                        "(0.26.28)音の調整",
                                     ];
 
     private values:number[];
@@ -92,7 +93,7 @@ export class SaveData{
         window.localStorage.setItem(this.data, JSON.stringify(json));
         Util.msg.set("セーブしました", Color.CYAN.bright);
 
-        console.log(JSON.stringify(json, undefined, 4));
+        // console.log(JSON.stringify(json, undefined, 4));
         // console.log(JSON.stringify(json));
     }
     /**jsonStr指定でインポート. */

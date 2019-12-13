@@ -95,6 +95,7 @@ export class Sound {
         this.gainType = gainType;
         this.lazyLoad = lazyLoad;
         this.loaded = false;
+        this.playing = false;
     }
     static get context() { return this._context; }
     static getVolume(type) {
@@ -184,9 +185,11 @@ export class Sound {
         }
         src.start(0);
         this.src = src;
+        this.playing = true;
     }
     stop() {
-        if (this.src) {
+        if (this.src && this.playing) {
+            this.playing = false;
             this.src.stop();
         }
     }

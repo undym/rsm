@@ -506,6 +506,7 @@ class EventImg {
             super("CLEAR_DUNGEON");
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
                 BattleScene.ins.background = bounds => { };
+                Music.stop();
                 let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
                 yen = yen | 0;
                 Sound.lvup.play();

@@ -512,6 +512,7 @@ export namespace DungeonEvent{
         constructor(){super("CLEAR_DUNGEON");}
         happenInner = async()=>{
             BattleScene.ins.background = bounds=>{};
+            Music.stop();
 
             let yen = Dungeon.now.au * (Dungeon.now.enemyLv / 10 + 1) * (1 + Dungeon.now.dungeonClearCount * 0.02);
             yen = yen|0;
