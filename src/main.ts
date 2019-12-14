@@ -22,20 +22,20 @@ import { Sound } from "./sound.js";
 import { CollectingSkill } from "./collectingskill.js";
 
 
-{
-    const run = document.getElementById("runreload") as HTMLButtonElement;
-    run.onclick = ()=>{
-        window.location.reload(true);
-    };
-    const reload = document.getElementById("reloadbutton") as HTMLButtonElement;
-    reload.onclick = ()=>{
-        if(run.style.visibility === "visible"){
-            run.style.visibility = "hidden";
-        }else{
-            run.style.visibility = "visible";
-        }
-    };
-}
+// {
+//     const run = document.getElementById("runreload") as HTMLButtonElement;
+//     run.onclick = ()=>{
+//         window.location.reload(true);
+//     };
+//     const reload = document.getElementById("reloadbutton") as HTMLButtonElement;
+//     reload.onclick = ()=>{
+//         if(run.style.visibility === "visible"){
+//             run.style.visibility = "hidden";
+//         }else{
+//             run.style.visibility = "visible";
+//         }
+//     };
+// }
 
 window.onload = ()=>{
     {

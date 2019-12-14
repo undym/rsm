@@ -53,7 +53,8 @@ export class Place {
         const imgScreenRatioH = u.img.ratioH * zoomMul;
         return new Rect(Place.P_BOX.x - imgScreenRatioW - Graphics.dotH, Place.P_BOX.y + Place.BOX_H / Unit.players.length * (i + 0.5) - imgScreenRatioH / 2, imgScreenRatioW, imgScreenRatioH);
     }
-    static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
+    // static get YEN(){return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1-Place.P_BOX.xw - Graphics.dotW * 3, 0.03);}
+    static get YEN() { return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0, 1 - Place.P_BOX.xw - Graphics.dotW * 3, 0.03); }
     static get BTN() { return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH); }
     static get LIST_MAIN() { return new Rect(0, 0, Place.MAIN.xw, 1); }
     static get LIST_TYPE() { return new Rect(Place.BTN.x, Place.BTN.y, Place.BTN.w, 1 - Place.BTN.y - Place.LIST_BTN_H); }

@@ -23,21 +23,20 @@ import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
 import { Sound } from "./sound.js";
-{
-    const run = document.getElementById("runreload");
-    run.onclick = () => {
-        window.location.reload(true);
-    };
-    const reload = document.getElementById("reloadbutton");
-    reload.onclick = () => {
-        if (run.style.visibility === "visible") {
-            run.style.visibility = "hidden";
-        }
-        else {
-            run.style.visibility = "visible";
-        }
-    };
-}
+// {
+//     const run = document.getElementById("runreload") as HTMLButtonElement;
+//     run.onclick = ()=>{
+//         window.location.reload(true);
+//     };
+//     const reload = document.getElementById("reloadbutton") as HTMLButtonElement;
+//     reload.onclick = ()=>{
+//         if(run.style.visibility === "visible"){
+//             run.style.visibility = "hidden";
+//         }else{
+//             run.style.visibility = "visible";
+//         }
+//     };
+// }
 window.onload = () => {
     {
         const loading = document.getElementById("loading");

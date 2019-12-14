@@ -84,7 +84,8 @@ export class Place{
                 );
     }
     
-    static get YEN(){return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1-Place.P_BOX.xw - Graphics.dotW * 3, 0.03);}
+    // static get YEN(){return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0.03, 1-Place.P_BOX.xw - Graphics.dotW * 3, 0.03);}
+    static get YEN(){return new Rect(Place.P_BOX.xw + Graphics.dotW * 2, 0, 1-Place.P_BOX.xw - Graphics.dotW * 3, 0.03);}
     static get BTN(){return new Rect(Place.YEN.x, Place.YEN.yh + Graphics.dotH, Place.YEN.w, 1 - Place.YEN.yh - Graphics.dotH);}
 
     static get LIST_MAIN(){return new Rect(0, 0, Place.MAIN.xw, 1);}
