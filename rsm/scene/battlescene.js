@@ -112,12 +112,19 @@ export class BattleScene extends Scene {
         super.add(Place.E_BOX, DrawSTBoxes.enemies);
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
-        super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
-                if (!Battle.getPhaseUnit().exists) {
-                    return;
-                }
-                Graphics.fillRect(Battle.getPhaseUnit().boxBounds, new Color(0, 1, 1, 0.2));
-            } }));
+        {
+            const phaseUnitBoxColor = new Color(0, 1, 1, 0.2);
+            super.add(Rect.FULL, ILayout.create({ draw: (bounds) => {
+                    if (!Battle.getPhaseUnit().exists) {
+                        return;
+                    }
+                    Graphics.fillRect(Battle.getPhaseUnit().boxBounds, phaseUnitBoxColor);
+                    const width = 5 + Math.sin(Date.now() / 200) * 4;
+                    Graphics.setLineWidth(width, () => {
+                        Graphics.drawRect(Battle.getPhaseUnit().imgBounds, Color.YELLOW.bright());
+                    });
+                } }));
+        }
         super.add(Rect.FULL, new VariableLayout(() => chooseTargetLayout));
         super.add(Rect.FULL, ILayout.create({ ctrl: (bounds) => __awaiter(this, void 0, void 0, function* () {
                 if (Battle.start) {

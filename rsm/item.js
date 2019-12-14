@@ -1003,6 +1003,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.月夜の矢 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "月夜の矢", info: "キャンドラに使用",
+                type: ItemType.弾, rank: 9, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     Item.手裏剣 = new class extends Item {
         constructor() {
             super({ uniqueName: "手裏剣", info: "手裏剣に使用",

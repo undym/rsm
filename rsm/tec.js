@@ -799,6 +799,65 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**鬼. */
+    Tec.渾身 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "渾身", info: "格闘攻撃時、稀にダメージ+50%",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && Math.random() < 0.5) {
+                    Util.msg.set("＞渾身");
+                    dmg.pow.mul *= 1.5;
+                }
+            });
+        }
+    };
+    /**鬼. */
+    Tec.痛恨 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "痛恨", info: "格闘攻撃時、稀にダメージ+100%",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && Math.random() < 0.5) {
+                    Util.msg.set("＞痛恨");
+                    dmg.pow.mul *= 2;
+                }
+            });
+        }
+    };
+    /**鬼. */
+    Tec.修羅 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "修羅", info: "戦闘開始時、力+50% ＜防↓4＞化",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.prm(Prm.STR).battle += (unit.prm(Prm.STR).base + unit.prm(Prm.STR).eq) * 0.5;
+                Unit.setCondition(unit, Condition.防御低下, 4);
+            });
+        }
+    };
+    /**鬼. */
+    Tec.我を忘れる = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "我を忘れる", info: "戦闘開始時、＜暴＞（勝手に格闘攻撃）化",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(unit, Condition.暴走, 3, true);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //槍Active
@@ -2005,6 +2064,15 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () { });
         }
     };
+    /**月弓子. */
+    Tec.キャンドラ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "キャンドラ", info: "一体に弓攻撃x10",
+                sort: TecSort.弓, type: TecType.弓, targetings: Targeting.SELECT,
+                mul: 1, num: 10, hit: 0.8, ep: 1, item: () => [[Item.月夜の矢, 1]],
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //弓Passive
@@ -2020,6 +2088,59 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
                     dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    Tec.中庸の悟り = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "中庸の悟り", info: "弓攻撃時、MP+3・TP+1",
+                sort: TecSort.弓, type: TecType.弓,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
+                    Unit.healMP(attacker, 3);
+                    Unit.healTP(attacker, 1);
+                }
+            });
+        }
+    };
+    Tec.摩喉羅我 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "摩喉羅我", info: "弓攻撃に暗黒を加算、行動開始時HP-5%",
+                sort: TecSort.弓, type: TecType.弓,
+            });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = unit.prm(Prm.MAX_HP).total * 0.05;
+                FX_RotateStr(Font.def, `${value}`, unit.imgCenter, Color.WHITE);
+                unit.hp -= value;
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
+                    dmg.pow.add += attacker.prm(Prm.DRK).total;
+                }
+            });
+        }
+    };
+    Tec.乾闥婆 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "乾闥婆", info: "弓攻撃時、相手の弓値の5%を吸収",
+                sort: TecSort.弓, type: TecType.弓,
+            });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.弓)) {
+                    const value = target.prm(Prm.ARR).total * 0.05;
+                    target.prm(Prm.ARR).battle -= value;
+                    attacker.prm(Prm.ARR).battle += value;
+                    FX_RotateStr(Font.def, `弓+${value}`, attacker.imgCenter, Color.WHITE);
                 }
             });
         }

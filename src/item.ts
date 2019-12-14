@@ -899,6 +899,11 @@ export namespace Item{
                                 type:ItemType.弾, rank:9, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         月夜の矢:Item = new class extends Item{
+        constructor(){super({uniqueName:"月夜の矢", info:"キャンドラに使用",
+                                type:ItemType.弾, rank:9, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
     export const                         手裏剣:Item = new class extends Item{
         constructor(){super({uniqueName:"手裏剣", info:"手裏剣に使用",
                                 type:ItemType.弾, rank:10, drop:ItemDrop.NO,

@@ -575,6 +575,32 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.良き占い, Tec.天籟, Tec.数珠, Tec.光命, Tec.五体投地];
         }
     };
+    Job.鬼 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "鬼", info: "",
+                appearLv: 277, img: new Img("img/unit/unit35.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 4,
+                growthPrms: () => [[Prm.STR, 2],],
+                learningTecs: () => [Tec.渾身, Tec.修羅, Tec.痛恨, Tec.我を忘れる],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.閻魔の笏, Tec.渾身, Tec.修羅, Tec.痛恨, Tec.我を忘れる];
+        }
+    };
+    Job.月弓子 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "月弓子", info: "",
+                appearLv: 277, img: new Img("img/unit/unit36.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 4,
+                growthPrms: () => [[Prm.ARR, 2],],
+                learningTecs: () => [Tec.摩喉羅我, Tec.中庸の悟り, Tec.乾闥婆, Tec.キャンドラ],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.射る, Tec.射る, Tec.ガルダ, Tec.キンナラ, Tec.摩喉羅我, Tec.中庸の悟り, Tec.乾闥婆, Tec.キャンドラ];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

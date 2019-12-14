@@ -1,4 +1,4 @@
-import { Force, Dmg, Action, PhaseStartForce } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, Targeting } from "./force.js";
 import { Tec, TecType, ActiveTec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
@@ -135,6 +135,18 @@ export namespace Condition{
 
                 attacker.addConditionValue(this, -1);
             }
+        }
+    };
+    export const             暴走:Condition = new class extends Condition{
+        constructor(){super("暴走", ConditionType.GOOD_LV1);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            pForce.phaseSkip = true;
+
+            Util.msg.set(`${unit.name}は暴走している...`); await wait();
+            const targets = Targeting.filter( Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum() );
+            await Tec.殴る.use(unit, targets);
+
+            unit.addConditionValue(this, -1);
         }
     };
     // export const             狙:Condition = new class extends Condition{

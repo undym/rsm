@@ -6,8 +6,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Force, Dmg } from "./force.js";
-import { TecType, ActiveTec } from "./tec.js";
+import { Force, Dmg, Targeting } from "./force.js";
+import { Tec, TecType, ActiveTec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
@@ -126,6 +126,19 @@ Condition._valueOf = new Map();
                     dmg.pow.base = 0;
                     attacker.addConditionValue(this, -1);
                 }
+            });
+        }
+    };
+    Condition.暴走 = new class extends Condition {
+        constructor() { super("暴走", ConditionType.GOOD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                pForce.phaseSkip = true;
+                Util.msg.set(`${unit.name}は暴走している...`);
+                yield wait();
+                const targets = Targeting.filter(Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum());
+                yield Tec.殴る.use(unit, targets);
+                unit.addConditionValue(this, -1);
             });
         }
     };
