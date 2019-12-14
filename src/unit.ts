@@ -540,9 +540,12 @@ export abstract class Unit{
     //     return [];
     // }
     /**
+     * !existsとdeadは含めない.
      * @party 本人を含める.
+     * @withDead deadを含める.
      */
-    searchUnits(...who:("top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
+    searchUnits(...who:("withDead"|"top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
+        const withDead   = who.some(w=> w === "withDead");
         const top    = who.some(w=> w === "top");
         const bottom = who.some(w=> w === "bottom");
         const ftf    = who.some(w=> w === "faceToFace");
@@ -558,14 +561,17 @@ export abstract class Unit{
             const index = searchIndex(units);
             if(top    && index > 0)                {map.set(units[index-1], true);}
             if(bottom && index < units.length - 1) {map.set(units[index-1], true);}
-            if(ftf && others[index].exists)        {map.set(others[index], true);}
+            if(ftf)                                {map.set(others[index], true);}
             if(party)                              {units.forEach(u=> map.set(u, true));}
             
-            const res:Unit[] = [];
+            let res:Unit[] = [];
             for(const key of map.keys()){
                 res.push(key);
             }
-            return res;
+            if(!withDead){
+                res = res.filter(u=> !u.dead);
+            }
+            return res.filter(u=> u.exists);
         }
         if(this instanceof PUnit){
             return search(Unit.players, Unit.enemies);

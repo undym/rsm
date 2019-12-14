@@ -192,6 +192,49 @@ Player._valueOf = new Map();
             setDefJobChangeList(map, this.ins);
         }
     };
+    // export const             ジスロフ = new class extends Player{
+    //     constructor(){super("ジスロフ", "♂");}
+    //     createInner(p:PUnit){
+    //         p.job = Job.カウボーイ;
+    //         p.img = new Img("img/unit/p_luka.png");
+    //         p.prm(Prm.MAX_HP).base = 35;
+    //         p.prm(Prm.MAX_MP).base = 1;
+    //         p.prm(Prm.MAX_TP).base = 2;
+    //         p.prm(Prm.GUN).base = 25;
+    //         p.tecs = [
+    //             Tec.撃つ,
+    //             Tec.殴る,
+    //             Tec.empty,
+    //             Tec.empty,
+    //             Tec.empty,
+    //         ];
+    //     }
+    //     setJobChangeList(map:Map<Job,true>){
+    //         setDefJobChangeList(map, this.ins);
+    //     }
+    // };
+    // export const             ナナ = new class extends Player{
+    //     constructor(){super("ナナ", "♂");}
+    //     createInner(p:PUnit){
+    //         p.job = Job.僧兵;
+    //         p.img = new Img("img/unit/p_luka.png");
+    //         p.prm(Prm.MAX_HP).base = 35;
+    //         p.prm(Prm.MAX_MP).base = 1;
+    //         p.prm(Prm.MAX_TP).base = 2;
+    //         p.prm(Prm.GUN).base = 25;
+    //         p.tecs = [
+    //             Tec.撃つ,
+    //             Tec.殴る,
+    //             Tec.empty,
+    //             Tec.empty,
+    //             Tec.empty,
+    //         ];
+    //     }
+    //     setJobChangeList(map:Map<Job,true>){
+    // map.set(Job.僧兵, true);
+    //         setDefJobChangeList(map, this.ins);
+    //     }
+    // };
 })(Player || (Player = {}));
 const setDefJobChangeList = (map, u) => {
     const add = (addJob, checkJobs) => {
@@ -205,6 +248,7 @@ const setDefJobChangeList = (map, u) => {
     map.set(Job.訓練生, true);
     add(Job.訓練生二年生, [Job.訓練生]);
     add(Job.格闘家, [Job.訓練生二年生]);
+    add(Job.体術士, [Job.格闘家, Job.テンプルナイト, Job.ホークマン]);
     add(Job.シーフ, [Job.訓練生二年生]);
     add(Job.考古学者, [Job.シーフ, Job.ダウザー]);
     add(Job.密猟ハンター, [Job.考古学者, Job.カウボーイ]);
@@ -212,6 +256,7 @@ const setDefJobChangeList = (map, u) => {
     add(Job.忍者, [Job.剣士, Job.シーフ]);
     if (u.player.sex === "♂") {
         add(Job.侍, [Job.剣士, Job.格闘家]);
+        add(Job.勇者, [Job.訓練生二年生, Job.忍者, Job.テンプルナイト, Job.侍, Job.ガーディアン, Job.ホークマン]);
     }
     add(Job.魔法使い, [Job.訓練生]);
     add(Job.ウィザード, [Job.魔法使い]);
@@ -226,6 +271,8 @@ const setDefJobChangeList = (map, u) => {
     add(Job.スネイカー, [Job.鎖使い]);
     add(Job.ダウザー, [Job.訓練生]);
     add(Job.カウボーイ, [Job.訓練生]);
+    add(Job.魔砲士, [Job.カウボーイ, Job.魔法使い]);
+    add(Job.霊弾の射手, [Job.魔砲士, Job.霊術戦士]);
     add(Job.機械士, [Job.カウボーイ]);
     add(Job.ロボット, [Job.機械士]);
     add(Job.ミサイリスト, [Job.機械士, Job.魔砲士]);

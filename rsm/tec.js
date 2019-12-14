@@ -10,9 +10,9 @@ import { Unit, Prm, PUnit, EUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
-import { Condition, InvisibleCondition } from "./condition.js";
+import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾 } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾 } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -940,7 +940,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 _super.run.call(this, attacker, target);
-                for (const u of target.searchUnits("top", "bottom")) {
+                for (const u of target.searchUnits("top", "bottom").filter(u => !u.dead)) {
                     _super.run.call(this, attacker, u);
                 }
             });
@@ -1573,6 +1573,75 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
                     dmg.pow.add += attacker.mp;
+                }
+            });
+        }
+    };
+    /**霊弾の射手. */
+    Tec.霊砲 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "霊砲", info: "銃攻撃に怨霊値の5%を加える 銃攻撃時、怨霊-5% 怨霊使いのセットが必要 霊弾-1(持っていなかった場合、発動しない)",
+                sort: TecSort.銃, type: TecType.銃,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃) && Item.霊弾.remainingUseNum > 0 && attacker.tecs.some(tec => tec === Tec.怨霊使い)) {
+                    Item.霊弾.remainingUseNum--;
+                    const value = attacker.ghost * 0.05;
+                    dmg.pow.add += value;
+                    attacker.ghost -= value;
+                }
+            });
+        }
+    };
+    /**霊弾の射手. */
+    Tec.銃痕 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "銃痕", info: "銃攻撃時、相手の弓の5%を吸収",
+                sort: TecSort.銃, type: TecType.銃,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
+                    const value = target.prm(Prm.ARR).total * 0.05;
+                    dmg.pow.add += value;
+                    target.prm(Prm.ARR).battle -= value;
+                }
+            });
+        }
+    };
+    /**霊弾の射手. */
+    Tec.暗黒砲 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "暗黒砲", info: "銃攻撃に暗黒値を加算 銃攻撃時、HP-5%",
+                sort: TecSort.銃, type: TecType.銃,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
+                    dmg.pow.add += attacker.prm(Prm.GUN).total;
+                    const value = attacker.prm(Prm.MAX_HP).total * 0.05;
+                    FX_Str(Font.def, "" + value, attacker.imgCenter, Color.WHITE);
+                    attacker.hp -= value;
+                }
+            });
+        }
+    };
+    /**霊弾の射手. */
+    Tec.ブラッドブレッド = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "ブラッドブレッド", info: "銃攻撃後、与えたダメージの1%をHPとして吸収",
+                sort: TecSort.銃, type: TecType.銃,
+            });
+        }
+        afterDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
+                    const value = dmg.result.value * 0.01;
+                    Unit.healHP(attacker, value);
                 }
             });
         }
@@ -2377,6 +2446,42 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**勇者. */
+    Tec.さよならみんな = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "さよならみんな", info: "味方全体を＜約＞化 自分の状態解除 自分のHP=0",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                mul: 1, num: 1, hit: 1, mp: 5,
+            });
+        }
+        toString() { return "さよなら、みんな"; }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                const canUse = this.checkCost(attacker);
+                if (canUse) {
+                    FX_PetDie(attacker.imgCenter);
+                    Sound.sin.play();
+                }
+                _super.use.call(this, attacker, targets);
+                if (canUse) {
+                    Sound.KAIFUKU.play();
+                    for (const type of ConditionType.goodConditions()) {
+                        attacker.removeCondition(type);
+                    }
+                    attacker.hp = 0;
+                }
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                FX_回復(target.imgCenter);
+                Unit.setCondition(target, Condition.約束, 1);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -2489,6 +2594,114 @@ ActiveTec._valueOf = new Map();
                     me.hp /= 2;
                     Util.msg.set(`${me.name}は${deadUnit.name}をかばった！`);
                     yield wait();
+                }
+            });
+        }
+    };
+    /**体術士. */
+    Tec.合気道 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "合気道", info: "格闘反撃時、過去値を加算",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && dmg.counter) {
+                    dmg.abs.add += attacker.prm(Prm.PST).total;
+                }
+            });
+        }
+    };
+    /**体術士. */
+    Tec.太極拳 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "太極拳", info: "＜盾＞状態時、格闘攻撃を受けると反射",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && target.hasCondition(Condition.盾) && !dmg.counter) {
+                    target.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = "反射";
+                        }
+                        beforeBeAtk(action, attacker, target, dmg) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                const result = dmg.calc();
+                                if (result.isHit) {
+                                    Util.msg.set("＞反射");
+                                    yield wait();
+                                    const dmg = new Dmg({ absPow: result.value });
+                                    yield attacker.doDmg(dmg);
+                                }
+                                ;
+                                target.removeInvisibleCondition(this);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    };
+    /**体術士. */
+    Tec.身体器 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "身体器", info: "戦闘開始時、最大HP・現在HP+20%",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const value = unit.prm(Prm.MAX_HP).total * 0.2;
+                unit.prm(Prm.MAX_HP).battle += value;
+                Unit.healHP(unit, value);
+            });
+        }
+    };
+    /**勇者. */
+    Tec.結束の陣形 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "結束の陣形", info: "戦闘開始時、自分以外の味方の最大HP・現在HP+10%",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const targets = unit.searchUnits("party").filter(u => u !== unit);
+                for (const t of targets) {
+                    const value = t.prm(Prm.MAX_HP).total * 0.1;
+                    t.prm(Prm.MAX_HP).battle += value;
+                    Unit.healHP(t, value);
+                    t.hp += value;
+                }
+            });
+        }
+    };
+    /**勇者. */
+    Tec.勇気 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "勇気", info: "格闘・槍・怨霊・銃・弓攻撃時、稀にクリティカルⅡ～Ⅳ発動",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.槍, TecType.怨霊, TecType.銃, TecType.弓)) {
+                    if (Math.random() < 0.2) {
+                        Util.msg.set("＞クリティカルⅡ");
+                        dmg.pow.mul *= 1.5;
+                    }
+                    if (Math.random() < 0.2) {
+                        Util.msg.set("＞クリティカルⅢ");
+                        dmg.pow.mul *= 1.5;
+                    }
+                    if (Math.random() < 0.2) {
+                        Util.msg.set("＞クリティカルⅣ");
+                        dmg.pow.mul *= 1.5;
+                    }
                 }
             });
         }
@@ -2897,6 +3110,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**体術士. */
+    Tec.三法印 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "三法印", info: "自分のHPMPTPを20%回復する",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.KAIFUKU.play();
+                FX_回復(target.imgCenter);
+                Unit.healHP(target, target.prm(Prm.MAX_HP).total * 0.2);
+                Unit.healMP(target, target.prm(Prm.MAX_MP).total * 0.2);
+                Unit.healTP(target, target.prm(Prm.MAX_TP).total * 0.2);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //回復Passive
@@ -3013,6 +3244,22 @@ ActiveTec._valueOf = new Map();
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+            });
+        }
+    };
+    /**勇者. */
+    Tec.友情の陣形 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "友情の陣形", info: "行動開始時、自分を除く味方のTP+1",
+                sort: TecSort.回復, type: TecType.回復,
+            });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const targets = unit.searchUnits("party").filter(u => u !== unit && !u.dead);
+                for (const t of targets) {
+                    Unit.healTP(t, 1);
+                }
             });
         }
     };

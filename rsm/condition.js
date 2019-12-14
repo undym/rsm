@@ -239,6 +239,20 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.約束 = new class extends Condition {
+        constructor() { super("約束", ConditionType.GOOD_LV3); }
+        toString() { return "約"; }
+        whenDead(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (!unit.dead) {
+                    return;
+                }
+                unit.dead = false;
+                Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.45);
+                unit.addConditionValue(this, -1);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //BAD_LV1

@@ -512,9 +512,12 @@ export class Unit {
     //     return [];
     // }
     /**
+     * !existsとdeadは含めない.
      * @party 本人を含める.
+     * @withDead deadを含める.
      */
     searchUnits(...who) {
+        const withDead = who.some(w => w === "withDead");
         const top = who.some(w => w === "top");
         const bottom = who.some(w => w === "bottom");
         const ftf = who.some(w => w === "faceToFace");
@@ -536,17 +539,20 @@ export class Unit {
             if (bottom && index < units.length - 1) {
                 map.set(units[index - 1], true);
             }
-            if (ftf && others[index].exists) {
+            if (ftf) {
                 map.set(others[index], true);
             }
             if (party) {
                 units.forEach(u => map.set(u, true));
             }
-            const res = [];
+            let res = [];
             for (const key of map.keys()) {
                 res.push(key);
             }
-            return res;
+            if (!withDead) {
+                res = res.filter(u => !u.dead);
+            }
+            return res.filter(u => u.exists);
         };
         if (this instanceof PUnit) {
             return search(Unit.players, Unit.enemies);

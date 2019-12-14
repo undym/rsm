@@ -869,7 +869,7 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             super.run( attacker, target );
 
-            for(const u of target.searchUnits("top","bottom")){
+            for(const u of target.searchUnits("top","bottom").filter(u=> !u.dead)){
                 super.run( attacker, u );
             }
         }
@@ -1374,6 +1374,60 @@ export namespace Tec{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.銃)){
                 dmg.pow.add += attacker.mp;
+            }
+        }
+    };
+    /**霊弾の射手. */
+    export const                         霊砲:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"霊砲", info:"銃攻撃に怨霊値の5%を加える 銃攻撃時、怨霊-5% 怨霊使いのセットが必要 霊弾-1(持っていなかった場合、発動しない)",
+                                sort:TecSort.銃, type:TecType.銃,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃) && Item.霊弾.remainingUseNum > 0 && attacker.tecs.some(tec=> tec === Tec.怨霊使い)){
+                Item.霊弾.remainingUseNum--;
+                const value = attacker.ghost * 0.05;
+                dmg.pow.add += value;
+                attacker.ghost -= value;
+            }
+        }
+    };
+    /**霊弾の射手. */
+    export const                         銃痕:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"銃痕", info:"銃攻撃時、相手の弓の5%を吸収",
+                                sort:TecSort.銃, type:TecType.銃,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃)){
+                const value = target.prm(Prm.ARR).total * 0.05;
+                dmg.pow.add += value;
+                target.prm(Prm.ARR).battle -= value;
+            }
+        }
+    };
+    /**霊弾の射手. */
+    export const                         暗黒砲:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"暗黒砲", info:"銃攻撃に暗黒値を加算 銃攻撃時、HP-5%",
+                                sort:TecSort.銃, type:TecType.銃,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃)){
+                dmg.pow.add += attacker.prm(Prm.GUN).total;
+                
+                const value = attacker.prm(Prm.MAX_HP).total * 0.05;
+                FX_Str(Font.def, ""+value, attacker.imgCenter, Color.WHITE);
+                attacker.hp -= value;
+            }
+        }
+    };
+    /**霊弾の射手. */
+    export const                         ブラッドブレッド:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"ブラッドブレッド", info:"銃攻撃後、与えたダメージの1%をHPとして吸収",
+                                sort:TecSort.銃, type:TecType.銃,
+        });}
+        async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.銃)){
+                const value = dmg.result.value * 0.01;
+                Unit.healHP( attacker, value );
             }
         }
     };
@@ -2001,6 +2055,33 @@ export namespace Tec{
             Unit.setCondition( target, Condition.雲, 3 );
         }
     }
+    /**勇者. */
+    export const                          さよならみんな:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"さよならみんな", info:"味方全体を＜約＞化 自分の状態解除 自分のHP=0",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.ALL | Targeting.FRIEND_ONLY,
+                              mul:1, num:1, hit:1, mp:5,
+        });}
+        toString(){return "さよなら、みんな";}
+        async use(attacker:Unit, targets:Unit[]){
+            const canUse = this.checkCost(attacker);
+            if(canUse){
+                FX_PetDie( attacker.imgCenter );
+                Sound.sin.play();
+            }
+            super.use( attacker, targets );
+            if(canUse){
+                Sound.KAIFUKU.play();
+                for(const type of ConditionType.goodConditions()){
+                    attacker.removeCondition(type);
+                }
+                attacker.hp = 0;
+            }
+        }
+        async run(attacker:Unit, target:Unit){
+            FX_回復( target.imgCenter );
+            Unit.setCondition( target, Condition.約束, 1 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //強化Passive
@@ -2088,6 +2169,88 @@ export namespace Tec{
             }
         }
     };
+    /**体術士. */
+    export const                         合気道:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"合気道", info:"格闘反撃時、過去値を加算",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && dmg.counter){
+                dmg.abs.add += attacker.prm(Prm.PST).total;
+            }
+        }
+    };
+    /**体術士. */
+    export const                         太極拳:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"太極拳", info:"＜盾＞状態時、格闘攻撃を受けると反射",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && target.hasCondition(Condition.盾) && !dmg.counter){
+                target.addInvisibleCondition(new class extends InvisibleCondition{
+                    readonly uniqueName = "反射";
+                    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+                        const result = dmg.calc();
+                        if(result.isHit){
+                            Util.msg.set("＞反射"); await wait();
+                            const dmg = new Dmg({absPow:result.value});
+                            await attacker.doDmg(dmg);
+                        };
+                        target.removeInvisibleCondition(this);
+                    }
+                });
+            }
+        }
+    };
+    /**体術士. */
+    export const                         身体器:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"身体器", info:"戦闘開始時、最大HP・現在HP+20%",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async battleStart(unit:Unit){
+            const value = unit.prm(Prm.MAX_HP).total * 0.2;
+            unit.prm(Prm.MAX_HP).battle += value;
+            Unit.healHP( unit, value );
+        }
+    };
+    /**勇者. */
+    export const                         結束の陣形:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"結束の陣形", info:"戦闘開始時、自分以外の味方の最大HP・現在HP+10%",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async battleStart(unit:Unit){
+            const targets = unit.searchUnits("party").filter(u=> u !== unit);
+            for(const t of targets){
+                const value = t.prm(Prm.MAX_HP).total * 0.1;
+                t.prm(Prm.MAX_HP).battle += value;
+                Unit.healHP( t, value );
+                t.hp += value;
+            }
+        }
+    };
+    /**勇者. */
+    export const                         勇気:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"勇気", info:"格闘・槍・怨霊・銃・弓攻撃時、稀にクリティカルⅡ～Ⅳ発動",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.槍, TecType.怨霊, TecType.銃, TecType.弓)){
+                if(Math.random() < 0.2){
+                    Util.msg.set("＞クリティカルⅡ");
+                    dmg.pow.mul *= 1.5;
+                }
+                if(Math.random() < 0.2){
+                    Util.msg.set("＞クリティカルⅢ");
+                    dmg.pow.mul *= 1.5;
+                }
+                if(Math.random() < 0.2){
+                    Util.msg.set("＞クリティカルⅣ");
+                    dmg.pow.mul *= 1.5;
+                }
+            }
+        }
+    };
+    
     
     //--------------------------------------------------------------------------
     //
@@ -2408,6 +2571,20 @@ export namespace Tec{
             }
         }
     }
+    /**体術士. */
+    export const                          三法印:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"三法印", info:"自分のHPMPTPを20%回復する",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.KAIFUKU.play();
+            FX_回復( target.imgCenter );
+            Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.2 );
+            Unit.healMP( target, target.prm(Prm.MAX_MP).total * 0.2 );
+            Unit.healTP( target, target.prm(Prm.MAX_TP).total * 0.2 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //回復Passive
@@ -2497,6 +2674,18 @@ export namespace Tec{
         });}
         async phaseStart(unit:Unit){
             Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+        }
+    };
+    /**勇者. */
+    export const                         友情の陣形:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"友情の陣形", info:"行動開始時、自分を除く味方のTP+1",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        async phaseStart(unit:Unit){
+            const targets = unit.searchUnits("party").filter(u=> u !== unit && !u.dead);
+            for(const t of targets){
+                Unit.healTP( t, 1 );
+            }
         }
     };
     //--------------------------------------------------------------------------

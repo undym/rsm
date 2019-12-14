@@ -1105,6 +1105,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.霊弾 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "霊弾", info: "-霊砲-に使用",
+                type: ItemType.弾, rank: 6, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
     Item.パワータンク = new class extends Item {
         constructor() {
             super({ uniqueName: "パワータンク", info: "バベルに使用",

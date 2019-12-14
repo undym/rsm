@@ -565,7 +565,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.僧兵 = new class extends Job {
         constructor() {
             super({ uniqueName: "僧兵", info: "",
-                appearLv: 77, img: new Img("img/unit/unit34.png"),
+                appearLv: 77, img: new Img("img/unit/unit35.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 3,
                 growthPrms: () => [[Prm.MAX_HP, 1], [Prm.LIG, 1],],
                 learningTecs: () => [Tec.天籟, Tec.数珠, Tec.光命, Tec.五体投地],
@@ -578,7 +578,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.鬼 = new class extends Job {
         constructor() {
             super({ uniqueName: "鬼", info: "",
-                appearLv: 277, img: new Img("img/unit/unit35.png"),
+                appearLv: 277, img: new Img("img/unit/unit36.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 4,
                 growthPrms: () => [[Prm.STR, 2],],
                 learningTecs: () => [Tec.渾身, Tec.修羅, Tec.痛恨, Tec.我を忘れる],
@@ -591,7 +591,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.月弓子 = new class extends Job {
         constructor() {
             super({ uniqueName: "月弓子", info: "",
-                appearLv: 277, img: new Img("img/unit/unit36.png"),
+                appearLv: 277, img: new Img("img/unit/unit37.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 4,
                 growthPrms: () => [[Prm.ARR, 2],],
                 learningTecs: () => [Tec.摩喉羅我, Tec.中庸の悟り, Tec.乾闥婆, Tec.キャンドラ],
@@ -599,6 +599,46 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.射る, Tec.射る, Tec.ガルダ, Tec.キンナラ, Tec.摩喉羅我, Tec.中庸の悟り, Tec.乾闥婆, Tec.キャンドラ];
+        }
+    };
+    Job.霊弾の射手 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "霊弾の射手", info: "",
+                appearLv: 200, img: new Img("img/unit/unit38.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 4,
+                growthPrms: () => [[Prm.DRK, 1], [Prm.GUN, 1],],
+                learningTecs: () => [Tec.霊砲, Tec.銃痕, Tec.暗黒砲, Tec.ブラッドブレッド],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.あがらない雨, Tec.乱射, Tec.撃つ, Tec.撃つ, Tec.弐丁拳銃, Tec.霊砲, Tec.銃痕, Tec.暗黒砲, Tec.ブラッドブレッド];
+        }
+    };
+    Job.体術士 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "体術士", info: "",
+                appearLv: 240, img: new Img("img/unit/unit39.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_HP, 2], [Prm.STR, 1],],
+                learningTecs: () => [Tec.合気道, Tec.太極拳, Tec.三法印, Tec.身体器],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.大いなる動き, Tec.殴る, Tec.殴る, Tec.印, Tec.防御, Tec.防御, Tec.合気道, Tec.太極拳, Tec.三法印, Tec.身体器];
+            e.setCondition(Condition.盾, 3);
+        }
+    };
+    Job.勇者 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "勇者", info: "",
+                appearLv: 150, img: new Img("img/unit/unit40.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 4,
+                growthPrms: () => [[Prm.MAX_HP, 4],],
+                learningTecs: () => [Tec.友情の陣形, Tec.勇気, Tec.結束の陣形, Tec.さよならみんな],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.大いなる動き, Tec.殴る, Tec.五月雨, Tec.時雨, Tec.タックル, Tec.防御, Tec.友情の陣形, Tec.勇気, Tec.結束の陣形, Tec.さよならみんな];
         }
     };
     // export const                         サマナー:Job = new class extends Job{
