@@ -386,10 +386,10 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     Util.msg.set(`ジョブ経験+${jobExp}`, Color.YELLOW.bright);
     Sound.exp.play();
     yield wait();
-    for (let p of Unit.players.filter(p => p.exists)) {
+    for (let p of Unit.players.filter(p => p.exists && !p.dead)) {
         yield p.addExp(exp);
     }
-    for (let p of Unit.players.filter(p => p.exists)) {
+    for (let p of Unit.players.filter(p => p.exists && !p.dead)) {
         yield p.addJobExp(jobExp);
     }
     const yen = (partySkill.yen.base * partySkill.yen.mul) | 0;

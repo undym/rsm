@@ -428,10 +428,10 @@ const win = async()=>{
     Sound.exp.play();
     await wait();
 
-    for(let p of Unit.players.filter(p=> p.exists)){
+    for(let p of Unit.players.filter(p=> p.exists && !p.dead)){
         await p.addExp( exp );
     }
-    for(let p of Unit.players.filter(p=> p.exists)){
+    for(let p of Unit.players.filter(p=> p.exists && !p.dead)){
         await p.addJobExp(jobExp);
     }
 
