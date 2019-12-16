@@ -11,10 +11,10 @@ import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
-import { Targeting } from "./force.js";
+import { Dmg, Targeting } from "./force.js";
 import { Job } from "./job.js";
-import { FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie } from "./fx/fx.js";
-import { ConditionType, Condition } from "./condition.js";
+import { FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
+import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font } from "./graphics/graphics.js";
@@ -217,7 +217,7 @@ export class Unit {
                 return;
             }
             const result = dmg.calc();
-            const font = new Font(80, Font.BOLD);
+            const font = new Font(Font.def.size * 2, Font.BOLD);
             const point = {
                 x: this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
                 y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
@@ -230,6 +230,7 @@ export class Unit {
                 });
                 FX_RotateStr(font, `${value}`, point, Color.WHITE);
             };
+            this.beDamage(dmg);
             if (result.isHit) {
                 const _doDmg = (value) => __awaiter(this, void 0, void 0, function* () {
                     effect(value);
@@ -329,6 +330,9 @@ export class Unit {
     }
     beforeBeAtk(action, attacker, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeBeAtk(action, attacker, this, dmg); })); });
+    }
+    beDamage(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beDamage(this, dmg); })); });
     }
     afterDoAtk(action, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterDoAtk(action, this, target, dmg); })); });
@@ -743,6 +747,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
+    /** */
     Unit.healHP = (target, value) => {
         if (!target.exists || target.dead) {
             return;
@@ -752,6 +757,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
         target.hp += value;
     };
+    /** */
     Unit.healMP = (target, value) => {
         if (!target.exists || target.dead) {
             return;
@@ -760,6 +766,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         target.mp += value;
         FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
     };
+    /** */
     Unit.healTP = (target, value) => {
         if (!target.exists || target.dead) {
             return;
@@ -768,5 +775,32 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         target.tp += value;
         const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
         FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
+    };
+    /** */
+    Unit.set反射 = (unit) => {
+        unit.addInvisibleCondition(new class extends InvisibleCondition {
+            constructor() {
+                super(...arguments);
+                this.uniqueName = "反射";
+            }
+            beforeBeAtk(action, attacker, target, dmg) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    const result = dmg.calc();
+                    if (result.isHit) {
+                        FX_反射(target.imgCenter, attacker.imgCenter);
+                        Util.msg.set("＞反射");
+                        const refDmg = new Dmg({
+                            absPow: result.value,
+                            types: ["反射", "反撃"],
+                        });
+                        yield attacker.doDmg(refDmg);
+                        yield wait();
+                        dmg.pow.mul = 0;
+                    }
+                    ;
+                    target.removeInvisibleCondition(this);
+                });
+            }
+        });
     };
 })(Unit || (Unit = {}));

@@ -260,8 +260,6 @@ const title = ()=>{
 
 
 
-    const font = new Font(Graphics.pixelH * 0.15, Font.ITALIC);
-
     const loop = ()=>{
         if(gameStarted){return;}
 
@@ -275,7 +273,7 @@ const title = ()=>{
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
         
-        font.draw("RigingStar", new Point(0, 1), Color.WHITE, "lowerLeft");
+        Font.def.draw("RigingStarMobile", new Point(0, 1), Color.WHITE, "lowerLeft");
 
         Input.update();
         setTimeout(loop, 1000 / 60);

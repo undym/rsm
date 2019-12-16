@@ -139,21 +139,35 @@ export class Sound {
     }
     load(ondecoded) {
         this.loaded = true;
-        const request = new XMLHttpRequest();
-        request.onload = () => {
-            var audioData = request.response;
-            Sound.context.decodeAudioData(audioData, buffer => {
-                this.buffer = buffer;
-                if (ondecoded) {
-                    ondecoded();
-                }
-            }, e => {
-                return "Error with decoding audio data " + this.path;
+        // const request = new XMLHttpRequest();
+        // request.onload = ()=>{
+        //     var audioData = request.response;
+        //     Sound.context.decodeAudioData(audioData, buffer=>{
+        //         this.buffer = buffer;
+        //         if(ondecoded){
+        //             ondecoded();
+        //         }
+        //     },e=>{
+        //         return "Error with decoding audio data " + this.path;
+        //     });
+        // };
+        // request.open("GET", this.path, true);
+        // request.responseType = 'arraybuffer';
+        // request.send();
+        fetch(this.path, { method: "GET" })
+            .then(res => {
+            res.arrayBuffer()
+                .then(audioData => {
+                Sound.context.decodeAudioData(audioData, buffer => {
+                    this.buffer = buffer;
+                    if (ondecoded) {
+                        ondecoded();
+                    }
+                }, e => {
+                    console.log("Error with decoding audio data " + this.path);
+                });
             });
-        };
-        request.open("GET", this.path, true);
-        request.responseType = 'arraybuffer';
-        request.send();
+        });
     }
     play(options) {
         if (Sound.context.state !== "running") {

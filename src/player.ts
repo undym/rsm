@@ -298,7 +298,7 @@ const setDefJobChangeList = (map:Map<Job,true>, u:PUnit):void=>{
         add(Job.忍者, [Job.剣士, Job.シーフ]);
         if(u.player.sex === "♂"){
             add(Job.侍, [Job.剣士, Job.格闘家]);
-                add(Job.勇者, [Job.訓練生二年生, Job.忍者, Job.テンプルナイト, Job.侍, Job.ガーディアン, Job.ホークマン]);
+                add(Job.勇者, [Job.忍者, Job.テンプルナイト, Job.侍, Job.ガーディアン, Job.ホークマン]);
         }
     add(Job.魔法使い, [Job.訓練生]);
         add(Job.ウィザード, [Job.魔法使い]);
@@ -338,8 +338,10 @@ const setBeastJobChangeList = (map:Map<Job,true>, u:PUnit)=>{
     add(Job.アメーバ, [Job.ドラゴン]);
         add(Job.鬼火, [Job.アメーバ]);
         add(Job.チルナノーグ, [Job.アメーバ]);
+        add(Job.アングラ, [Job.アメーバ, Job.魔獣ドンゴ]);
     add(Job.ノーム, [Job.ドラゴン]);
         add(Job.妖精, [Job.ノーム]);
+            add(Job.アイス, [Job.ノーム, Job.チルナノーグ]);
     add(Job.カリストコウモリ, [Job.ドラゴン]);
         add(Job.雷鳥, [Job.カリストコウモリ]);
             add(Job.魔獣ドンゴ, [Job.雷鳥]);

@@ -9,6 +9,8 @@ export class Force{
     async deadPhaseStart(unit:Unit){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    /**ダメージを受ける直前、calc()された後に通る. */
+    async beDamage(unit:Unit, dmg:Dmg){}
     async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
@@ -27,6 +29,7 @@ export class PhaseStartForce{
     phaseSkip:boolean = false;
 }
 
+export type DmgType = "毒"|"反射"|"反撃"|"ペット"|"罠";
 
 export class Dmg{
     //0     1
@@ -51,12 +54,19 @@ export class Dmg{
     abs:{base:number, add:number, mul:number};
     /**calc()で出された結果のbak. */
     result = {value:0, isHit:false};
-    /** */
-    counter = false;
     /**追加ダメージ値を返す。 */
     additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
     /** */
-    
+    types:DmgType[] = [];
+    /**一つでも持っていたらtrue. */
+    hasType(...checkTypes:DmgType[]):boolean{
+        for(const t of this.types){
+            for(const c of checkTypes){
+                if(t === c){return true;}
+            }
+        }
+        return false;
+    }
 
     constructor(args?:{
         pow?:number,
@@ -65,7 +75,7 @@ export class Dmg{
         def?:number,
         absPow?:number,
         absMul?:number,
-        counter?:boolean,
+        types?:DmgType[],
     }){
         this.clear();
 
@@ -76,7 +86,7 @@ export class Dmg{
             if(args.def)    {this.def.base = args.def;}
             if(args.absPow) {this.abs.base = args.absPow;}
             if(args.absMul) {this.abs.mul  = args.absMul;}
-            if(args.counter){this.counter  = args.counter;}
+            if(args.types)  {this.types = args.types;}
         }
     }
 
@@ -105,9 +115,9 @@ export class Dmg{
         this.result.value = 0;
         this.result.isHit = false;
 
-        this.counter = false;
-
         this.additionalAttacks = [];
+
+        this.types = [];
     }
 
     calc():{value:number, isHit:boolean}{

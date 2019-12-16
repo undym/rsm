@@ -188,6 +188,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.サクラ材, 5], [Item.クワ, 3]],
         isVisible: () => ルインドアースLv14.count > 0,
     });
+    const ルインドアースLv16 = new Mix({
+        uniqueName: "ルインドアースLv16", limit: 1, info: "",
+        materials: () => [[Item.アリラン型岩石, 10]],
+        isVisible: () => ルインドアースLv15.count > 0,
+    });
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
         materials: () => [[Item.ヒノキ, 1], [Item.草, 5]],

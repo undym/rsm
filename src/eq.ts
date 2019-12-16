@@ -3,7 +3,7 @@ import { Unit, Prm, PUnit } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
 import { ActiveTec, TecType, Tec } from "./tec.js";
-import { Condition } from "./condition.js";
+import { Condition, InvisibleCondition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { Battle } from "./battle.js";
 import { choice } from "./undym/random.js";
@@ -11,6 +11,7 @@ import { wait } from "./undym/scene.js";
 import { SaveData } from "./savedata.js";
 import { Player } from "./player.js";
 import { Sound } from "./sound.js";
+import { FX_反射 } from "./fx/fx.js";
 
 
 export class EqPos{
@@ -303,7 +304,7 @@ export namespace Eq{
     }
     /**クラウンボトル財宝. */
     export const                         呪縛の弓矢:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓攻撃時、稀に相手を＜鎖＞化",
+        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓攻撃時、稀に相手を＜鎖1＞化",
                                 pos:EqPos.武, lv:95});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any( TecType.弓 ) && dmg.result.isHit && Math.random() < 0.5){
@@ -374,6 +375,16 @@ export namespace Eq{
             unit.prm(Prm.MAG).eq += 30;
         }
     }
+    /**塔6665階EX. */
+    export const                         侍の盾:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"侍の盾", info:"＜練＞状態の相手から格闘・槍・鎖術・暗黒攻撃を受けた際、反射する",
+                                pos:EqPos.盾, lv:142});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && attacker.hasCondition(Condition.練) && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.暗黒)){
+                Unit.set反射( target );
+            }
+        }   
+    }
     //--------------------------------------------------------------------------
     //
     //体
@@ -402,7 +413,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"いばらの鎧", info:"被格闘攻撃時、稀に格闘反撃",
                                 pos:EqPos.体, lv:55});}
         async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && Math.random() < 0.4){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.hasType("反撃") && Math.random() < 0.4){
                 await Tec.格闘カウンター.run(target, attacker);
             }
         }
@@ -532,7 +543,7 @@ export namespace Eq{
         constructor(){super({uniqueName:"妖魔の手", info:"被魔法・過去攻撃時、稀に魔法反撃",
                                 pos:EqPos.手, lv:65});}
         async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.counter && Math.random() < 0.7){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.hasType("反撃") && Math.random() < 0.7){
                 await Tec.魔法カウンター.run(target, attacker);
             }
         }
@@ -596,7 +607,7 @@ export namespace Eq{
     }
     export const                         機工の指輪:Eq = new class extends Eq{
         constructor(){super({uniqueName:"機工の指輪", info:"銃攻撃+20%",
-                                pos:EqPos.指, lv:1});}
+                                pos:EqPos.指, lv:0});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.銃)){
                 dmg.pow.mul *= 1.2;
@@ -635,9 +646,19 @@ export namespace Eq{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(
                    action instanceof ActiveTec 
-                && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.some(f=> f === "ペット"))
+                && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || dmg.hasType("ペット"))
             ){
                 dmg.pow.mul *= 1.2;
+            }
+        }
+    }
+    /**塔6665階財宝. */
+    export const                         霊宝天尊:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"霊宝天尊", info:"数珠・良き占いの回復量+50% 神格攻撃+25%",
+                                pos:EqPos.指, lv:0});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.神格)){
+                dmg.pow.mul *= 1.25;
             }
         }
     }

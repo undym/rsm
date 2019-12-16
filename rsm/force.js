@@ -25,6 +25,10 @@ export class Force {
     beforeBeAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
+    /**ダメージを受ける直前、calc()された後に通る. */
+    beDamage(unit, dmg) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
     afterDoAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
@@ -55,14 +59,13 @@ export class PhaseStartForce {
     }
 }
 export class Dmg {
-    /** */
     constructor(args) {
         /**calc()で出された結果のbak. */
         this.result = { value: 0, isHit: false };
-        /** */
-        this.counter = false;
         /**追加ダメージ値を返す。 */
         this.additionalAttacks = [];
+        /** */
+        this.types = [];
         this.clear();
         if (args) {
             if (args.pow) {
@@ -83,8 +86,8 @@ export class Dmg {
             if (args.absMul) {
                 this.abs.mul = args.absMul;
             }
-            if (args.counter) {
-                this.counter = args.counter;
+            if (args.types) {
+                this.types = args.types;
             }
         }
     }
@@ -99,6 +102,17 @@ export class Dmg {
     static calcDmgElm(elm) {
         let res = (elm.base + elm.add) * elm.mul;
         return res > 0 ? res : 0;
+    }
+    /**一つでも持っていたらtrue. */
+    hasType(...checkTypes) {
+        for (const t of this.types) {
+            for (const c of checkTypes) {
+                if (t === c) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     clear() {
         this.pow = {
@@ -123,8 +137,8 @@ export class Dmg {
         };
         this.result.value = 0;
         this.result.isHit = false;
-        this.counter = false;
         this.additionalAttacks = [];
+        this.types = [];
     }
     calc() {
         const _pow = Dmg.calcDmgElm(this.pow);

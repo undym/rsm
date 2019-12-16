@@ -203,8 +203,8 @@ export namespace Condition{
     export const             回避:Condition = new class extends Condition{
         constructor(){super("回避", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec){
-                dmg.hit.mul *= 0.5;
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.銃, TecType.弓, TecType.怨霊)){
+                dmg.hit.mul = 0;
 
                 target.addConditionValue(this, -1);
             }
@@ -305,24 +305,17 @@ export namespace Condition{
     export const             毒:Condition = new class extends Condition{
         constructor(){super("毒", ConditionType.BAD_LV1);}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
-            {
-                const value = unit.getConditionValue(this);
-                if(value < unit.prm(Prm.DRK).total + 1){
-                    unit.removeCondition(this);
-                    Util.msg.set(`${unit.name}の<毒>が解除された`); await wait();
-                    return;
-                }
-            }
             
-            {
-                const value = unit.getConditionValue(this);
-                let dmg = new Dmg({absPow:value});
-    
-                Util.msg.set("＞毒", Color.RED);
-    
-                await unit.doDmg(dmg); await wait();
-    
-                unit.setCondition(this, value * 0.666);
+            const value = unit.getConditionValue(this);
+
+            Util.msg.set("＞毒", Color.RED);
+
+            await unit.doDmg(new Dmg({absPow:value, types:["毒"]})); await wait();
+
+            unit.setCondition(this, value * 0.666);
+            if(unit.getConditionValue(this) < unit.prm(Prm.DRK).total + 1){
+                unit.removeCondition(this);
+                Util.msg.set(`${unit.name}の＜毒＞が解除された`); await wait();
             }
         }
     };
@@ -373,6 +366,24 @@ export namespace Condition{
     //BAD_LV3
     //
     //--------------------------------------------------------------------------
+    /** */
+    export const             病気:Condition = new class extends Condition{
+        constructor(){super("病気", ConditionType.BAD_LV3);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            Util.msg.set("＞病気", Color.RED);
+            const value = unit.getConditionValue(this);
+
+            for(const t of unit.searchUnits("party")){
+                await t.doDmg(new Dmg({absPow:value, types:["毒"]})); await wait();
+            }
+
+            unit.setCondition(this, value * 0.666);
+            if(unit.getConditionValue(this) < unit.prm(Prm.DRK).total + 1){
+                unit.removeCondition(this);
+                Util.msg.set(`${unit.name}の＜病気＞が解除された`); await wait();
+            }
+        }
+    };
 }
 
 

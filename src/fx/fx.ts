@@ -655,17 +655,87 @@ FXTest.add(FX_回復.name, () => FX_回復( FXTest.target ));
 
 
 export const FX_吸収 = (attacker:Point, target:Point)=>{
+    const size = 0.005;
+
+    const drawElm = (x:number, y:number, _size:number)=>{
+        Graphics.setLineWidth(1, ()=>{     
+            Graphics.line(
+                new Point(x - _size, y),
+                new Point(x + _size, y),
+                Color.RED
+            );
+            Graphics.line(
+                new Point(x, y - _size),
+                new Point(x, y + _size),
+                Color.RED
+            );
+        });
+
+    };
+
+    const addLine = (p1:Point, p2:Point)=>{
+        FX.add(count=>{
+            const over = 10;
+            Graphics.line(p1, p2, new Color(1,0,0, 1.0 - count / over));
+            return count < over;
+        });
+    };
+
+    const addFX = (x:number, y:number)=>{
+
+        const over = 8;
+        const createPoint = (count:number):Point=>{
+            return new Point(
+                (x * (over - count) + attacker.x * count) / over,
+                (y * (over - count) + attacker.y * count) / over
+            );
+        };
+
+        FX.add(count=>{
+            const p = createPoint(count);
+            if(count > 0){
+                addLine(p, createPoint(count-1));
+            }
+            drawElm(p.x, p.y, size);
+            return count < over;
+        });
+    };
+
+
+    const elms:{x:number, y:number, vx:number, vy:number}[] = [];
+    for(let i = 0; i < 10; i++){
+        const vec = Math.random() * 0.009;
+        const rad = Math.PI * 2 * Math.random();
+        elms.push({
+            x:target.x,
+            y:target.y,
+            vx:Math.cos(rad) * vec,
+            vy:Math.sin(rad) * vec,
+        });
+    }
+    const vMin = 0.0002;
+
     FX.add((count)=>{
-        const over = 20;
-        const color = new Color(1, 0, 0, 0.3);
-        for(let i = 0; i < 3; i++){    
-            const shake = ()=> -0.02 + 0.04 * Math.random();
-            const over2 = over - 1;
-            const x = (target.x * (over2 - count) + attacker.x * count) / over2 + shake();
-            const y = (target.y * (over2 - count) + attacker.y * count) / over2 + shake();
-            Graphics.fillOval(new Point(x,y), 0.02, color.bright());
+        let exists = false;
+        for(const e of elms){
+            if(Math.abs(e.vx) > vMin || Math.abs(e.vy) > vMin){
+                exists = true;
+
+                drawElm(e.x, e.y, size);
+
+                addLine(new Point(e.x, e.y), new Point(e.x + e.vx, e.y + e.vy));
+
+                e.x += e.vx;
+                e.y += e.vy;
+                e.vx *= 0.9;
+                e.vy *= 0.9;
+
+                if(Math.abs(e.vx) <= vMin && Math.abs(e.vy) <= vMin){
+                    addFX(e.x, e.y);
+                }
+            }
         }
-        return count < over;
+        return exists;
     });
 };
 FXTest.add(FX_吸収.name, () => FX_吸収( FXTest.attacker, FXTest.target ));
@@ -927,6 +997,40 @@ export const FX_Buff = (center:Point)=>{
 FXTest.add(FX_Buff.name, ()=> FX_Buff( FXTest.target ));
 
 
+export const FX_Debuff = (center:Point)=>{
+    
+    const elms:{x:number, y:number, h:number, vy:number, lifeTime:number}[] = [];
+
+    for(let i = 0; i < 40; i++){
+        elms.push({
+            x: center.x - 0.03 + Math.random() * 0.06,
+            y: center.y - Math.random() * 0.04,
+            h: 0.01 + Math.random() * 0.06,
+            vy: Math.random() * 0.002,
+            lifeTime: 5 + Math.random() * 35,
+        });
+    }
+
+    FX.add(count=>{
+        let exists = false;
+        for(const e of elms){
+            if(count >= e.lifeTime){continue;}
+            exists = true;
+
+            const h = e.h * (1.0 - count / e.lifeTime) / 2;
+            Graphics.line(
+                new Point(e.x, e.y - h),
+                new Point(e.x, e.y + h),
+                Math.random() < 0.3 ? Color.WHITE : Color.D_RED,
+            );
+
+            e.y += e.vy;
+        }
+        return exists;
+    });
+};
+FXTest.add(FX_Debuff.name, ()=> FX_Debuff( FXTest.target ));
+
 export const FX_機械 = (attacker:Point, target:Point)=>{
     const PI2 = Math.PI * 2;
 
@@ -1037,6 +1141,142 @@ export const FX_BOM = (center:Point)=>{
     });
 };
 FXTest.add(FX_BOM.name, ()=> FX_BOM( FXTest.target ));
+
+
+export const FX_反射 = (orner:Point, refTarget:Point)=>{
+    const over = 25;
+    const ctx = Graphics.context;
+    const gradient = (()=>{
+        const x = Graphics.pixelW * orner.x;
+        const y = Graphics.pixelH * orner.y;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, Graphics.pixelW * 0.05);
+        g.addColorStop(0, Color.BLACK.toString());
+        g.addColorStop(0.8, Color.D_GRAY.toString());
+        g.addColorStop(1, Color.L_GRAY.toString());
+        return g;
+    })();
+    //盾
+    FX.add(count=>{
+        if(count % 3 === 0){return true;}
+        const PI2 = Math.PI * 2;
+        const vertex = 8;
+        const cossin:{cos:number, sin:number}[] = [];
+        for(let i = 0; i < vertex+1; i++){
+            const rad = PI2 * i / vertex + count * 0.05;
+            cossin.push({
+                cos:Math.cos(rad),
+                sin:Math.sin(rad),
+            });
+        }
+
+        const xr = 0.05;
+        const yr = Graphics.pixelW * xr / Graphics.pixelH;
+        const points:Point[] = [];
+        for(let i = 0; i < cossin.length; i++){
+            const x = (orner.x + cossin[i].cos * xr) * Graphics.pixelW;
+            const y = (orner.y + cossin[i].sin * yr) * Graphics.pixelH;
+            points.push(new Point(x,y));
+        }
+        points.push(points[0]);
+        // Graphics.lines(points, Color.L_GRAY);
+        Graphics.setLineWidth(Graphics.pixelW * 0.01, ()=>{    
+            ctx.beginPath();
+
+            ctx.moveTo(points[0].x, points[0].y);
+            for(const p of points){
+                ctx.lineTo(p.x, p.y);
+            }
+
+            ctx.closePath();
+            ctx.strokeStyle = gradient;
+            ctx.stroke();
+        });
+        return count < over;
+    });
+    //反射1 バリアの周り
+    {
+        FX.add((count)=>{
+            if(count % 2){
+                const points:{x:number, y:number}[] = [];
+                const loop = 20;
+                for(let i = 1; i < loop-1; i++){
+                    let x = (orner.x * (loop - i) + orner.x * i) / loop;
+                    let y = (orner.y * (loop - i) + orner.y * i) / loop;
+    
+                    const rad = i * 0.6 + count * 1.2;
+                    const r = 0.05;
+                    x = x + Math.sin(rad ^ Number.MAX_SAFE_INTEGER) * r;
+                    y = y + Math.sin(rad) * r;
+    
+                    points.push({x:x, y:y});
+                }
+    
+                points.unshift(orner);
+                // points.push(refTarget);
+    
+                for(let i3 = 0; i3 < points.length-1; i3++){
+                    Graphics.setLineWidth(1 + (points.length - i3) / 2, () => {
+                       Graphics.line( points[i3], points[i3+1], Color.WHITE );
+                    });
+                }
+            }
+    
+    
+            return count < over;
+        });
+    }
+    //反射2 ビーム
+    {
+        FX.add((count)=>{
+            if(!(count % 2)){
+                const points:{x:number, y:number}[] = [];
+                const loop = 20;
+                for(let i = 1; i < loop-1; i++){
+                    let x = (refTarget.x * (loop - i) + orner.x * i) / loop;
+                    let y = (refTarget.y * (loop - i) + orner.y * i) / loop;
+    
+                    const rad = i * 0.6 + count * 1.2;
+                    const r = 0.05;
+                    x = x + Math.sin(rad ^ Number.MAX_SAFE_INTEGER) * r;
+                    y = y + Math.sin(rad) * r;
+    
+                    points.push({x:x, y:y});
+                }
+    
+                points.unshift(refTarget);
+                points.push(orner);
+    
+                for(let i3 = 0; i3 < points.length-1; i3++){
+                    Graphics.setLineWidth(1 + (points.length - i3) / 2, () => {
+                       Graphics.line( points[i3], points[i3+1], Color.WHITE );
+                    });
+                }
+            }
+    
+    
+            return count < over;
+        });
+    }
+    FX.add(count=>{
+        if(count % 5 === 0){return true;}
+
+        const xr = 0.05;
+        const yr = Graphics.pixelW * xr / Graphics.pixelH;
+        const num = (2 + Math.random() * 10)|0;
+        const points:Point[] = [];
+        for(let i = 0; i < num; i++){
+            points.push(new Point(
+                refTarget.x + randomFloat(-xr, xr),
+                refTarget.y + randomFloat(-yr, yr),
+            ));
+        }
+        Graphics.setLineWidth(Graphics.pixelW * 0.01, ()=>{
+            Graphics.lines( points, Color.WHITE );
+        });
+        return count < over;
+    });
+};
+FXTest.add(FX_反射.name, ()=> FX_反射( FXTest.target, FXTest.attacker ));
 
 
 const FX_NO_USED = (center:Point)=>{

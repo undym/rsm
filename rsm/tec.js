@@ -12,13 +12,14 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, Targeting } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾 } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";
+import { EqPos, Eq } from "./eq.js";
 export class TecSort {
     constructor(name) {
         this.name = name;
@@ -307,7 +308,6 @@ export class ActiveTec extends Tec {
     rndAttackNum() { return this.args.num; }
     get hit() { return this.args.hit; }
     get targetings() { return this.args.targetings; }
-    get flags() { return this.args.flags ? this.args.flags : []; }
     //--------------------------------------------------------------------------
     //
     //
@@ -415,6 +415,26 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**訓練生. */
+    Tec.掌覇 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "掌覇", info: "一体とその下のキャラクターに格闘攻撃",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 1.5, num: 1, hit: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                _super.run.call(this, attacker, target);
+                for (const u of target.searchUnits("bottom").filter(u => !u.dead)) {
+                    _super.run.call(this, attacker, u);
+                }
+            });
+        }
+    };
     /**剣士. */
     Tec.斬る = new class extends ActiveTec {
         constructor() {
@@ -443,6 +463,33 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**訓練生二年生. */
+    Tec.静かなる動き = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "静かなる動き", info: "一体に相手の力値を加算して格闘攻撃 対象の強化状態解除",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.add += target.prm(Prm.STR).total;
+            return dmg;
+        }
+        runInner(attacker, target, dmg) {
+            const _super = Object.create(null, {
+                runInner: { get: () => super.runInner }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.runInner.call(this, attacker, target, dmg);
+                if (dmg.result.isHit) {
+                    for (const type of ConditionType.goodConditions()) {
+                        target.removeCondition(type);
+                    }
+                }
+            });
+        }
+    };
     /**剣士. */
     Tec.閻魔の笏 = new class extends ActiveTec {
         constructor() {
@@ -465,19 +512,15 @@ ActiveTec._valueOf = new Map();
     /**ドラゴン. */
     Tec.龍撃 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "龍撃", info: "一体に格闘攻撃　相手の防御値を半減して計算",
+            super({ uniqueName: "龍撃", info: "一体に格闘攻撃　相手の防御値を無視",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, tp: 1,
             });
         }
-        runInner(attacker, target, dmg) {
-            const _super = Object.create(null, {
-                runInner: { get: () => super.runInner }
-            });
-            return __awaiter(this, void 0, void 0, function* () {
-                dmg.def.mul *= 0.5;
-                yield _super.runInner.call(this, attacker, target, dmg);
-            });
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.def.mul = 0;
+            return dmg;
         }
     };
     /**ドラゴン. */
@@ -618,7 +661,7 @@ ActiveTec._valueOf = new Map();
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
-            dmg.counter = true;
+            dmg.types.push("反撃");
             return dmg;
         }
     };
@@ -705,7 +748,7 @@ ActiveTec._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof Tec && action.type.any(TecType.格闘) && !dmg.counter) {
+                if (action instanceof Tec && action.type.any(TecType.格闘) && !dmg.hasType("反撃")) {
                     Util.msg.set("＞カウンター");
                     yield wait();
                     yield Tec.格闘カウンター.run(target, attacker);
@@ -775,7 +818,7 @@ ActiveTec._valueOf = new Map();
         }
         memberAfterDoAtk(me, action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && attacker.tecs.some(tec => tec === Tec.格闘連携)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.hasType("反撃") && attacker.tecs.some(tec => tec === Tec.格闘連携)) {
                     Util.msg.set(`${me.name}の連携攻撃`);
                     yield wait();
                     yield Tec.格闘カウンター.run(me, target);
@@ -962,7 +1005,7 @@ ActiveTec._valueOf = new Map();
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
-            dmg.counter = true;
+            dmg.types.push("反撃");
             return dmg;
         }
     };
@@ -995,7 +1038,7 @@ ActiveTec._valueOf = new Map();
         }
         memberAfterDoAtk(me, action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.counter && attacker.tecs.some(tec => tec === Tec.魔道連携)) {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.hasType("反撃") && attacker.tecs.some(tec => tec === Tec.魔道連携)) {
                     Util.msg.set(`${me.name}の連携攻撃`);
                     yield wait();
                     yield Tec.魔法カウンター.run(me, target);
@@ -1129,7 +1172,7 @@ ActiveTec._valueOf = new Map();
                 Util.msg.set("＞反動");
                 const cdmg = new Dmg({
                     absPow: target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
-                    counter: true,
+                    types: ["反撃"],
                 });
                 FX_格闘(attacker.imgCenter);
                 yield attacker.doDmg(cdmg);
@@ -1481,6 +1524,15 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**アイス. ＜凍結＞未実装.*/
+    Tec.コールドブレス = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "コールドブレス", info: "一体に過去攻撃x2",
+                sort: TecSort.過去, type: TecType.過去, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1.2, mp: 5, tp: 1,
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //過去Passive
@@ -1615,7 +1667,7 @@ ActiveTec._valueOf = new Map();
     /**霊弾の射手. */
     Tec.暗黒砲 = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "暗黒砲", info: "銃攻撃に暗黒値を加算 銃攻撃時、HP-5%",
+            super({ uniqueName: "暗黒砲", info: "銃攻撃に闇値を加算 銃攻撃時、HP-5% 闇値-10%",
                 sort: TecSort.銃, type: TecType.銃,
             });
         }
@@ -1626,6 +1678,7 @@ ActiveTec._valueOf = new Map();
                     const value = attacker.prm(Prm.MAX_HP).total * 0.05;
                     FX_Str(Font.def, "" + value, attacker.imgCenter, Color.WHITE);
                     attacker.hp -= value;
+                    attacker.prm(Prm.DRK).battle -= attacker.prm(Prm.DRK).total * 0.1;
                 }
             });
         }
@@ -2298,7 +2351,7 @@ ActiveTec._valueOf = new Map();
     /**シーフ. */
     Tec.風 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "風", info: "味方全員を＜回避2＞（回避UP）状態にする",
+            super({ uniqueName: "風", info: "味方全員を＜回避2＞（一部攻撃を回避）状態にする",
                 sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
@@ -2493,12 +2546,26 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.強化, type: TecType.状態,
             });
         }
-        phaseEnd(unit) {
+        beDamage(unit, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (unit.hasCondition(Condition.毒)) {
-                    const value = unit.getConditionValue(Condition.毒);
+                if (dmg.hasType("毒")) {
+                    const value = dmg.result.value;
                     Unit.healHP(unit, value);
-                    unit.removeCondition(Condition.毒);
+                }
+            });
+        }
+    };
+    Tec.トラップガーダー = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "トラップガーダー", info: "罠ダメージを無効化する",
+                sort: TecSort.強化, type: TecType.状態,
+            });
+        }
+        beDamage(unit, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (dmg.hasType("罠")) {
+                    dmg.pow.mul = 0;
+                    dmg.abs.mul = 0;
                 }
             });
         }
@@ -2607,7 +2674,7 @@ ActiveTec._valueOf = new Map();
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && dmg.counter) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && dmg.hasType("反撃")) {
                     dmg.abs.add += attacker.prm(Prm.PST).total;
                 }
             });
@@ -2622,26 +2689,8 @@ ActiveTec._valueOf = new Map();
         }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && target.hasCondition(Condition.盾) && !dmg.counter) {
-                    target.addInvisibleCondition(new class extends InvisibleCondition {
-                        constructor() {
-                            super(...arguments);
-                            this.uniqueName = "反射";
-                        }
-                        beforeBeAtk(action, attacker, target, dmg) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                const result = dmg.calc();
-                                if (result.isHit) {
-                                    Util.msg.set("＞反射");
-                                    yield wait();
-                                    const dmg = new Dmg({ absPow: result.value });
-                                    yield attacker.doDmg(dmg);
-                                }
-                                ;
-                                target.removeInvisibleCondition(this);
-                            });
-                        }
-                    });
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && target.hasCondition(Condition.盾) && !dmg.hasType("反射")) {
+                    Unit.set反射(target);
                 }
             });
         }
@@ -2827,6 +2876,63 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**アングラ. */
+    Tec.感染 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "感染", info: "一体を＜病気＞(行動開始時、味方全体にダメージ)化",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 3,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                FX_Poison(target.imgCenter);
+                Unit.setCondition(target, Condition.病気, attacker.prm(Prm.DRK).total * 2 + 1);
+                yield wait();
+            });
+        }
+    };
+    /**ブルージェリー. */
+    Tec.罪 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "罪", info: "一体を＜攻↓5＞状態にする",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                FX_Debuff(target.imgCenter);
+                Unit.setCondition(target, Condition.攻撃低下, 5);
+                yield wait();
+            });
+        }
+    };
+    /**ブルージェリー. */
+    Tec.心 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "心", info: "一体の攻撃力と自分の攻撃力を相殺する",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                FX_Debuff(target.imgCenter);
+                FX_Debuff(attacker.imgCenter);
+                const astr = attacker.prm(Prm.STR).total;
+                const tstr = target.prm(Prm.STR).total;
+                let value = astr < tstr ? astr : tstr;
+                attacker.prm(Prm.STR).battle -= value;
+                target.prm(Prm.STR).battle -= value;
+                Util.msg.set(`${attacker.name}と${target.name}の力が相殺された`);
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //弱体Passive
@@ -2863,7 +2969,10 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 const dmg = this.createDmg(attacker, target);
-                const value = dmg.calc().value;
+                let value = dmg.calc().value;
+                if (attacker.getEq(EqPos.指) === Eq.霊宝天尊) {
+                    value *= 1.5;
+                }
                 Unit.healHP(target, value);
                 Sound.KAIFUKU.play();
                 this.effect(attacker, target, new Dmg());
@@ -2883,6 +2992,21 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 Tec.数珠.run(attacker, target);
+            });
+        }
+    };
+    /**未習得技. */
+    Tec.無我 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "無我", info: "自分のTPを2回復",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, mp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healTP(target, 2);
+                yield wait();
             });
         }
     };
@@ -2948,7 +3072,7 @@ ActiveTec._valueOf = new Map();
     /**忍者. */
     Tec.ジライヤ = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "ジライヤ", info: "自分のHPMPTP回復　ステータス+30%　＜風3＞化",
+            super({ uniqueName: "ジライヤ", info: "自分のHPMPTP回復　ステータス+30%　＜回避3＞化",
                 sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
@@ -3484,6 +3608,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    Tec.溶ける = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "溶ける", info: "自分のHPを10%を削り、その倍の値をダメージとして一体に与える",
+                sort: TecSort.その他, type: TecType.その他, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 4,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.awa.play();
+                const value = attacker.prm(Prm.MAX_HP).total * 0.1;
+                attacker.hp -= value;
+                const dmg = new Dmg({ absPow: value * 2 });
+                yield target.doDmg(dmg);
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //その他Passive
@@ -3500,7 +3642,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "キュア", info: "味方一体のHP回復",
                 sort: TecSort.その他, type: TecType.回復, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, mp: 4,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3519,7 +3660,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ラクサスキュア", info: "味方一体のTP+1",
                 sort: TecSort.その他, type: TecType.回復, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, mp: 4,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3538,7 +3678,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "イスキュア", info: "味方全体のHP回復",
                 sort: TecSort.その他, type: TecType.回復, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, mp: 4,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3553,13 +3692,12 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "パンチ", info: "一体に格闘攻撃",
                 sort: TecSort.その他, type: TecType.格闘, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, mp: 1,
-                flags: ["ペット"],
             });
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.counter = true;
+            dmg.types.push("反撃", "ペット");
             return dmg;
         }
     };
@@ -3569,7 +3707,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "シルフ", info: "一体を＜回避＞化",
                 sort: TecSort.その他, type: TecType.格闘, targetings: Targeting.SELECT | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, mp: 3,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3585,7 +3722,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "レヴィーナの歌声", info: "一体を＜眠＞化",
                 sort: TecSort.その他, type: TecType.格闘, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, mp: 3,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3601,14 +3737,13 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ヴァルナパンチ", info: "一体に格闘攻撃",
                 sort: TecSort.その他, type: TecType.格闘, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, mp: 3,
-                flags: ["ペット"],
             });
         }
         toString() { return "殴る"; }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.counter = true;
+            dmg.types.push("反撃", "ペット");
             return dmg;
         }
     };
@@ -3618,13 +3753,12 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ファイアブレス", info: "敵全体に魔法攻撃",
                 sort: TecSort.その他, type: TecType.魔法, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, mp: 6,
-                flags: ["ペット"],
             });
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.counter = true;
+            dmg.types.push("反撃", "ペット");
             return dmg;
         }
     };
@@ -3634,7 +3768,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "人魚の歌", info: "一体を＜眠1＞化",
                 sort: TecSort.その他, type: TecType.状態, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, tp: 1,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3651,7 +3784,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "生命の歌", info: "自分以外の味方のHP回復",
                 sort: TecSort.その他, type: TecType.回復, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
                 mul: 1, num: 1, hit: 1, tp: 2,
-                flags: ["ペット"],
             });
         }
         run(attacker, target) {
@@ -3674,7 +3806,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ブラッドパンチ", info: "一体に格闘攻撃 ダメージの半分をHPとして吸収",
                 sort: TecSort.その他, type: TecType.状態, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, tp: 1,
-                flags: ["ペット"],
             });
         }
         runInner(attacker, target, dmg) {
@@ -3698,13 +3829,12 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "サイクロン", info: "敵全体に過去攻撃",
                 sort: TecSort.その他, type: TecType.過去, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, tp: 2,
-                flags: ["ペット"],
             });
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.counter = true;
+            dmg.types.push("反撃", "ペット");
             return dmg;
         }
     };

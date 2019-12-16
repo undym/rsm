@@ -225,7 +225,6 @@ export class BattleScene extends Scene{
         
         if(pForce.phaseSkip){
             await wait();
-            Util.msg.set(`${attacker.name}は行動できない...`); await wait();
             await this.phaseEnd();
             return;
         }

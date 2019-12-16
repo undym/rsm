@@ -209,8 +209,6 @@ export class BattleScene extends Scene {
             }
             if (pForce.phaseSkip) {
                 yield wait();
-                Util.msg.set(`${attacker.name}は行動できない...`);
-                yield wait();
                 yield this.phaseEnd();
                 return;
             }

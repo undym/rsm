@@ -297,7 +297,7 @@ EqEar._valueOf = new Map();
     /**クラウンボトル財宝. */
     Eq.呪縛の弓矢 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "呪縛の弓矢", info: "弓攻撃時、稀に相手を＜鎖＞化",
+            super({ uniqueName: "呪縛の弓矢", info: "弓攻撃時、稀に相手を＜鎖1＞化",
                 pos: EqPos.武, lv: 95 });
         }
         afterDoAtk(action, attacker, target, dmg) {
@@ -397,6 +397,20 @@ EqEar._valueOf = new Map();
             unit.prm(Prm.MAG).eq += 30;
         }
     };
+    /**塔6665階EX. */
+    Eq.侍の盾 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "侍の盾", info: "＜練＞状態の相手から格闘・槍・鎖術・暗黒攻撃を受けた際、反射する",
+                pos: EqPos.盾, lv: 142 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && attacker.hasCondition(Condition.練) && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.暗黒)) {
+                    Unit.set反射(target);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //体
@@ -438,7 +452,7 @@ EqEar._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.counter && Math.random() < 0.4) {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.hasType("反撃") && Math.random() < 0.4) {
                     yield Tec.格闘カウンター.run(target, attacker);
                 }
             });
@@ -620,7 +634,7 @@ EqEar._valueOf = new Map();
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.counter && Math.random() < 0.7) {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.hasType("反撃") && Math.random() < 0.7) {
                     yield Tec.魔法カウンター.run(target, attacker);
                 }
             });
@@ -710,7 +724,7 @@ EqEar._valueOf = new Map();
     Eq.機工の指輪 = new class extends Eq {
         constructor() {
             super({ uniqueName: "機工の指輪", info: "銃攻撃+20%",
-                pos: EqPos.指, lv: 1 });
+                pos: EqPos.指, lv: 0 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -766,8 +780,22 @@ EqEar._valueOf = new Map();
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec
-                    && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || action.flags.some(f => f === "ペット"))) {
+                    && (action.type.any(TecType.魔法, TecType.神格, TecType.過去) || dmg.hasType("ペット"))) {
                     dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    /**塔6665階財宝. */
+    Eq.霊宝天尊 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "霊宝天尊", info: "数珠・良き占いの回復量+50% 神格攻撃+25%",
+                pos: EqPos.指, lv: 0 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.神格)) {
+                    dmg.pow.mul *= 1.25;
                 }
             });
         }

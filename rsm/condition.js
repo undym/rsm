@@ -194,8 +194,8 @@ Condition._valueOf = new Map();
         constructor() { super("回避", ConditionType.GOOD_LV2); }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec) {
-                    dmg.hit.mul *= 0.5;
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.銃, TecType.弓, TecType.怨霊)) {
+                    dmg.hit.mul = 0;
                     target.addConditionValue(this, -1);
                 }
             });
@@ -308,22 +308,15 @@ Condition._valueOf = new Map();
         constructor() { super("毒", ConditionType.BAD_LV1); }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
-                {
-                    const value = unit.getConditionValue(this);
-                    if (value < unit.prm(Prm.DRK).total + 1) {
-                        unit.removeCondition(this);
-                        Util.msg.set(`${unit.name}の<毒>が解除された`);
-                        yield wait();
-                        return;
-                    }
-                }
-                {
-                    const value = unit.getConditionValue(this);
-                    let dmg = new Dmg({ absPow: value });
-                    Util.msg.set("＞毒", Color.RED);
-                    yield unit.doDmg(dmg);
+                const value = unit.getConditionValue(this);
+                Util.msg.set("＞毒", Color.RED);
+                yield unit.doDmg(new Dmg({ absPow: value, types: ["毒"] }));
+                yield wait();
+                unit.setCondition(this, value * 0.666);
+                if (unit.getConditionValue(this) < unit.prm(Prm.DRK).total + 1) {
+                    unit.removeCondition(this);
+                    Util.msg.set(`${unit.name}の＜毒＞が解除された`);
                     yield wait();
-                    unit.setCondition(this, value * 0.666);
                 }
             });
         }
@@ -383,6 +376,26 @@ Condition._valueOf = new Map();
     //BAD_LV3
     //
     //--------------------------------------------------------------------------
+    /** */
+    Condition.病気 = new class extends Condition {
+        constructor() { super("病気", ConditionType.BAD_LV3); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Util.msg.set("＞病気", Color.RED);
+                const value = unit.getConditionValue(this);
+                for (const t of unit.searchUnits("party")) {
+                    yield t.doDmg(new Dmg({ absPow: value, types: ["毒"] }));
+                    yield wait();
+                }
+                unit.setCondition(this, value * 0.666);
+                if (unit.getConditionValue(this) < unit.prm(Prm.DRK).total + 1) {
+                    unit.removeCondition(this);
+                    Util.msg.set(`${unit.name}の＜病気＞が解除された`);
+                    yield wait();
+                }
+            });
+        }
+    };
 })(Condition || (Condition = {}));
 export class InvisibleCondition extends Force {
 }

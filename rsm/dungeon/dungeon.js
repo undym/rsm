@@ -671,6 +671,7 @@ Dungeon.musicCount = 0;
                 treasures: () => [Eq.ミサイリストスーツ],
                 exItems: () => [Eq.ぱとバット],
                 trendItems: () => [Item.松, Item.桜, Item.クワ, Item.良い土, Item.イズミジュエリー, Item.肉],
+                beast: true,
             });
             this.isVisible = () => Dungeon.精霊寺院跡.dungeonClearCount > 0;
             this.setBossInner = () => {
@@ -702,34 +703,42 @@ Dungeon.musicCount = 0;
             });
         }
     };
-    // export const                         塔6665階:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"塔6665階", info:"",
-    //                             rank:5, enemyLv:27, au:250, btn:[DungeonArea.中央島, new Rect(0.35, 0.25, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[Item.粘土],
-    //     });}
-    //     isVisible = ()=>Dungeon.塔4000階.dungeonClearCount > 1;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "太古の亜人";
-    //         e.prm(Prm.MAX_HP).base = 1000;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "幻影ユキエモン";
-    //         e.img = new Img("img/unit/yukiemon.png");
-    //         e.prm(Prm.MAX_HP).base = 1050;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story2.runMain22();
-    //         }
-    //     }
-    // };
+    Dungeon.塔6665階 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "塔6665階", info: "",
+                rank: 5, enemyLv: 27, au: 250, btn: [DungeonArea.中央島, new Rect(0.35, 0.25, 0.3, 0.1)],
+                treasures: () => [Eq.霊宝天尊],
+                exItems: () => [Eq.侍の盾],
+                trendItems: () => [Item.粘土, Item.桜, Item.かんな, Item.アリラン型岩石, Item.ドンゴの鱗, Item.ドンゴの骨],
+                beast: true,
+            });
+            this.isVisible = () => Dungeon.塔4000階.dungeonClearCount > 1;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "殺意ホログラフ";
+                e.prm(Prm.MAX_HP).base = 1500;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "幻影フィガロ";
+                e.img = new Img("img/unit/figaro.png");
+                e.prm(Prm.MAX_HP).base = 1500;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    yield Story2.runMain22();
+                }
+            });
+        }
+    };
     // export const                         塔6666階:Dungeon = new class extends Dungeon{
     //     constructor(){super({uniqueName:"塔6666階", info:"",
     //                             rank:5, enemyLv:27, au:240, btn:[DungeonArea.中央島, new Rect(0.35, 0.4, 0.3, 0.1)],

@@ -5,7 +5,7 @@ import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
 import { Dmg, Force, Action, Targeting, PhaseStartForce } from "./force.js";
 import { Job } from "./job.js";
-import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie } from "./fx/fx.js";
+import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
@@ -268,7 +268,7 @@ export abstract class Unit{
         if(!this.exists || this.dead){return;}
 
         const result = dmg.calc();
-        const font = new Font(80, Font.BOLD);
+        const font = new Font(Font.def.size * 2, Font.BOLD);
         const point =   {
                         x:this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
                         y:this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
@@ -281,6 +281,9 @@ export abstract class Unit{
             });
             FX_RotateStr(font, `${value}`, point, Color.WHITE);
         };
+
+
+        this.beDamage(dmg);
 
 
         if(result.isHit){
@@ -368,6 +371,7 @@ export abstract class Unit{
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
     async beforeDoAtk(action:Action, target:Unit, dmg:Dmg)  {await this.force(async f=> await f.beforeDoAtk(action, this, target, dmg));}
     async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
+    async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(this, dmg));}
     async afterDoAtk(action:Action, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.afterDoAtk(action, this, target, dmg));}
     async afterBeAtk(action:Action, attacker:Unit, dmg:Dmg) {await this.force(async f=> await f.afterBeAtk(action, attacker, this, dmg));}
     async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
@@ -806,7 +810,7 @@ export namespace Unit{
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
-
+    /** */
     export const healHP = (target:Unit, value:number)=>{
         if(!target.exists || target.dead){return;}
 
@@ -816,7 +820,7 @@ export namespace Unit{
         FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
         target.hp += value;
     };
-
+    /** */
     export const healMP = (target:Unit, value:number)=>{
         if(!target.exists || target.dead){return;}
 
@@ -825,7 +829,7 @@ export namespace Unit{
     
         FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
     };
-    
+    /** */
     export const healTP = (target:Unit, value:number)=>{
         if(!target.exists || target.dead){return;}
 
@@ -834,5 +838,26 @@ export namespace Unit{
     
         const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
         FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
+    };
+    /** */
+    export const set反射 = (unit:Unit)=>{
+        unit.addInvisibleCondition(new class extends InvisibleCondition{
+            readonly uniqueName = "反射";
+            async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+                const result = dmg.calc();
+                if(result.isHit){
+                    FX_反射( target.imgCenter, attacker.imgCenter );
+                    Util.msg.set("＞反射");
+                    const refDmg =  new Dmg({
+                                        absPow:result.value,
+                                        types:["反射","反撃"],
+                                    });
+                    await attacker.doDmg(refDmg); await wait();
+
+                    dmg.pow.mul = 0;
+                };
+                target.removeInvisibleCondition(this);
+            }
+        });
     };
 }
