@@ -264,9 +264,9 @@ const createTecInfo = (tec:Tec, unit:PUnit)=>{
                     .addln(()=>{
                         let res = "";
                         if(tec instanceof ActiveTec){
-                            if(tec.mpCost > 0){res += `MP:${tec.mpCost} `}
-                            if(tec.tpCost > 0){res += `TP:${tec.tpCost} `}
-                            if(tec.epCost > 0){res += `EP:${tec.epCost} `}
+                            for(const cost of tec.costs){
+                                res += `${cost.prm}:${cost.value}`;
+                            }
                             for(const set of tec.itemCost){
                                 res += `${set.item}-${set.num}(${set.item.num}) `
                             }
@@ -275,15 +275,5 @@ const createTecInfo = (tec:Tec, unit:PUnit)=>{
                     })
                     .addln(()=>tec.info)
                     ;
-    // if(!unit.isMasteredTec(tec)){
-    //     l.br();
-    //     l.add(()=>"習得ボーナス", ()=>Color.ORANGE);
-    //     const learning = tec.learning;
-    //     if(learning){
-    //         for(const gp of learning.growthPrms){
-    //             l.add(()=>` ${gp.prm}+${gp.value}` ,()=>Color.ORANGE);
-    //         }
-    //     }
-    // }
     return l;
 }

@@ -654,7 +654,7 @@ export class PUnit extends Unit{
             FX_LVUP( this.img, this.imgBounds, Color.BLACK, true );
             Util.msg.set(`${this.name}はLv${this.prm(Prm.LV).base}になった`, Color.ORANGE.bright); await wait();
 
-            const growHP = this.prm(Prm.LV).base / 100 + 1;
+            const growHP = (this.prm(Prm.LV).base + 100) / (100 + (this.prm(Prm.LV).base % 2) * 100);
             this.growPrm( Prm.MAX_HP, growHP );
 
             for(const gp of this.job.growthPrms){
@@ -670,7 +670,7 @@ export class PUnit extends Unit{
     getNextLvExp():number{
         const lv = this.prm(Prm.LV).base;
         const grade = (lv/100+1)|0;
-        return (lv * grade * 5)|0;
+        return (lv * grade * 7)|0;
     }
     //---------------------------------------------------------
     //
@@ -738,8 +738,10 @@ export class PUnit extends Unit{
     //
     //
     //---------------------------------------------------------
+    /**1未満の値は無視される。 */
     private async growPrm(prm:Prm, value:number){
         value = value|0;
+        if(value <= 0){return;}
         this.prm(prm).base += value;
 
         Util.msg.set(`[${prm}]+${value}`, Color.GREEN.bright); await wait();

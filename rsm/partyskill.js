@@ -44,24 +44,18 @@ PartySkill.skills = [];
         constructor() { super({ uniqueName: "empty", info: "" }); }
         toString() { return ""; }
     };
-    PartySkill.センス = new class extends PartySkill {
-        constructor() { super({ uniqueName: "センス", info: "入手経験値x2" }); }
-        win(arg) {
-            arg.exp.mul += 1;
-        }
-    };
-    // export const                         入手BP増加:PartySkill = new class extends PartySkill{
-    //     constructor(){super({uniqueName:"入手BP増加", info:"入手BP+1"});}
+    // export const                         センス:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"センス", info:"入手経験値x2"});}
     //     win(arg:PartySkillWin){
-    //         arg.bp.base += 1;
+    //         arg.exp.mul += 1;
     //     }
     // }
-    PartySkill.金玉 = new class extends PartySkill {
-        constructor() { super({ uniqueName: "金玉", info: "入手金x2" }); }
-        win(arg) {
-            arg.yen.mul += 1;
-        }
-    };
+    // export const                         金玉:PartySkill = new class extends PartySkill{
+    //     constructor(){super({uniqueName:"金玉", info:"入手金x2"});}
+    //     win(arg:PartySkillWin){
+    //         arg.yen.mul += 1;
+    //     }
+    // }
     // export const                         マトリョーシカ:PartySkill = new class extends PartySkill{
     //     constructor(){super({uniqueName:"マトリョーシカ", info:"宝箱アイテムチェーン+0.3"});}
     //     openBox(arg:PartySkillOpenBox, dropType:ItemDrop){

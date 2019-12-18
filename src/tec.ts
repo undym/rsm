@@ -307,9 +307,20 @@ export abstract class ActiveTec extends Tec implements Action{
     //
     //
     //--------------------------------------------------------------------------
-    get mpCost():number{return this.args.mp ? this.args.mp : 0;}
-    get tpCost():number{return this.args.tp ? this.args.tp : 0;}
-    get epCost():number{return this.args.ep ? this.args.ep : 0};
+    // get mpCost():number{return this.args.mp ? this.args.mp : 0;}
+    // get tpCost():number{return this.args.tp ? this.args.tp : 0;}
+    // get epCost():number{return this.args.ep ? this.args.ep : 0;}
+    // get spCost():number{return this.args.sp ? this.args.sp : 0;}
+    get costs():{prm:Prm, value:number}[]{
+        const res:{prm:Prm, value:number}[] = [];
+
+        if(this.args.mp){res.push({prm:Prm.MP, value:this.args.mp});}
+        if(this.args.tp){res.push({prm:Prm.TP, value:this.args.tp});}
+        if(this.args.ep){res.push({prm:Prm.EP, value:this.args.ep});}
+        if(this.args.sp){res.push({prm:Prm.SP, value:this.args.sp});}
+
+        return res;
+    }
     get itemCost():{item:Item, num:number}[]{
         if(this.args.item){
             let res:{item:Item, num:number}[] = [];
@@ -345,6 +356,7 @@ export abstract class ActiveTec extends Tec implements Action{
             mp?:number,
             tp?:number,
             ep?:number,
+            sp?:number,
             item?:()=>[Item,number][],
     }){
         super(args.uniqueName, args.info, args.sort, args.type);
@@ -368,17 +380,18 @@ export abstract class ActiveTec extends Tec implements Action{
             }
         }
 
-        return (
-                       u.mp >= this.mpCost
-                    && u.tp >= this.tpCost
-                    && u.ep >= this.epCost
-               );
+        for(const cost of this.costs){
+            if(cost.value > u.prm(cost.prm).base){
+                return false;
+            }
+        }
+        return true;
     }
 
     payCost(u:Unit):void{
-        u.mp -= this.mpCost;
-        u.tp -= this.tpCost;
-        u.ep -= this.epCost;
+        for(const cost of this.costs){
+            u.prm(cost.prm).base -= cost.value;
+        }
 
         if(u instanceof PUnit){       
             for(const set of this.itemCost){
@@ -1315,6 +1328,7 @@ export namespace Tec{
     }
     //--------------------------------------------------------------------------
     //
+    //-鎖術Active
     //過去Active
     //
     //--------------------------------------------------------------------------
@@ -1339,13 +1353,22 @@ export namespace Tec{
                               mul:1, num:1, hit:1.2, mp:5, tp:1,
         });}
     }
+    /**羅文騎士. */
+    export const                          インフレーション:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"インフレーション", info:"全体に過去攻撃x2",
+                              sort:TecSort.過去, type:TecType.過去, targetings:Targeting.ALL,
+                              mul:2, num:1, hit:1.2, tp:5, sp:1,
+        });}
+    }
     //--------------------------------------------------------------------------
     //
+    //-過去Active
     //過去Passive
     //
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     //
+    //-過去Passive
     //銃Active
     //
     //--------------------------------------------------------------------------
@@ -2123,8 +2146,21 @@ export namespace Tec{
             Unit.setCondition( target, Condition.約束, 1 );
         }
     }
+    /**羅文騎士. */
+    export const                          バリア:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"バリア", info:"自分を＜バリア2＞(多くの攻撃を無効化)化する",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1, mp:5,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.up.play();
+            FX_Buff( target.imgCenter );
+            Unit.setCondition( target, Condition.バリア, 2 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
+    //-強化Active
     //強化Passive
     //
     //--------------------------------------------------------------------------
@@ -2220,6 +2256,18 @@ export namespace Tec{
             }
         }
     };
+    /**羅文騎士. */
+    export const                         ナナ命:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"ナナ命", info:"かばう 戦闘開始時、味方にナナがいる場合、ステータス+10",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        async battleStart(unit:Unit){
+            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).battle += 10);
+        }
+        async whenAnyoneDead(me:Unit, deadUnit:Unit){
+            Tec.かばう.whenAnyoneDead(me, deadUnit);
+        }
+    };
     /**体術士. */
     export const                         合気道:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"合気道", info:"格闘反撃時、過去値を加算",
@@ -2294,6 +2342,7 @@ export namespace Tec{
     
     //--------------------------------------------------------------------------
     //
+    //-強化Passive
     //弱体Active
     //
     //--------------------------------------------------------------------------
@@ -2425,6 +2474,7 @@ export namespace Tec{
     }
     //--------------------------------------------------------------------------
     //
+    //-弱体Active
     //弱体Passive
     //
     //--------------------------------------------------------------------------
@@ -2441,6 +2491,7 @@ export namespace Tec{
     };
     //--------------------------------------------------------------------------
     //
+    //-弱体Passive
     //回復Active
     //
     //--------------------------------------------------------------------------
@@ -2682,8 +2733,29 @@ export namespace Tec{
             Unit.healTP( target, target.prm(Prm.MAX_TP).total * 0.2 );
         }
     }
+    /**羅文騎士. */
+    export const                          羅文彗星:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"羅文彗星", info:"最大HPMPTPx2 HPMPTP回復",
+                              sort:TecSort.回復, type:TecType.回復, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, ep:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            target.prm(Prm.MAX_HP).battle = target.prm(Prm.MAX_HP).base + target.prm(Prm.MAX_HP).eq;
+            target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
+            target.prm(Prm.MAX_TP).battle = target.prm(Prm.MAX_TP).base + target.prm(Prm.MAX_TP).eq;
+            
+            Unit.healHP( target, target.prm(Prm.MAX_HP).total );
+            Unit.healMP( target, target.prm(Prm.MAX_MP).total );
+            Unit.healTP( target, target.prm(Prm.MAX_TP).total );
+
+            this.effect( attacker, target, new Dmg() );
+            Sound.KAIFUKU.play();
+            Util.msg.set("最大HPMPTPx2！"); await wait();
+        }
+    }
     //--------------------------------------------------------------------------
     //
+    //-回復Active
     //回復Passive
     //
     //--------------------------------------------------------------------------

@@ -224,53 +224,56 @@ export namespace Player{
             setDefJobChangeList(map, this.ins);
         }
     };
-    // export const             ジスロフ = new class extends Player{
-    //     constructor(){super("ジスロフ", "♂");}
-    //     createInner(p:PUnit){
-    //         p.job = Job.カウボーイ;
-    //         p.img = new Img("img/unit/p_luka.png");
-    //         p.prm(Prm.MAX_HP).base = 35;
-    //         p.prm(Prm.MAX_MP).base = 1;
-    //         p.prm(Prm.MAX_TP).base = 2;
-    //         p.prm(Prm.GUN).base = 25;
+    export const             ジスロフ = new class extends Player{
+        constructor(){super("ジスロフ", "♂");}
+        createInner(p:PUnit){
+            p.job = Job.羅文騎士;
+            p.img = new Img("img/unit/p_jisrof.png");
+            p.prm(Prm.MAX_HP).base = 99;
+            p.prm(Prm.MAX_MP).base = 5;
+            p.prm(Prm.MAX_TP).base = 5;
+            p.prm(Prm.STR).base = 20;
+            p.prm(Prm.PST).base = 99;
 
-    //         p.tecs = [
-    //             Tec.撃つ,
-    //             Tec.殴る,
-    //             Tec.empty,
-    //             Tec.empty,
-    //             Tec.empty,
-    //         ];
+            p.tecs = [
+                Tec.殴る,
+                Tec.インフレーション,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
 
-    //     }
-    //     setJobChangeList(map:Map<Job,true>){
-    //         setDefJobChangeList(map, this.ins);
-    //     }
-    // };
-    // export const             ナナ = new class extends Player{
-    //     constructor(){super("ナナ", "♂");}
-    //     createInner(p:PUnit){
-    //         p.job = Job.僧兵;
-    //         p.img = new Img("img/unit/p_luka.png");
-    //         p.prm(Prm.MAX_HP).base = 35;
-    //         p.prm(Prm.MAX_MP).base = 1;
-    //         p.prm(Prm.MAX_TP).base = 2;
-    //         p.prm(Prm.GUN).base = 25;
+        }
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.羅文騎士, true);
+        }
+    };
+    export const             ナナ = new class extends Player{
+        constructor(){super("ナナ", "♂");}
+        createInner(p:PUnit){
+            p.job = Job.僧兵;
+            p.img = new Img("img/unit/p_nana.png");
+            p.prm(Prm.MAX_HP).base = 45;
+            p.prm(Prm.MAX_MP).base = 7;
+            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.MAG).base = 2;
+            p.prm(Prm.LIG).base = 20;
+            p.prm(Prm.PST).base = 1;
 
-    //         p.tecs = [
-    //             Tec.撃つ,
-    //             Tec.殴る,
-    //             Tec.empty,
-    //             Tec.empty,
-    //             Tec.empty,
-    //         ];
+            p.tecs = [
+                Tec.天籟,
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
 
-    //     }
-    //     setJobChangeList(map:Map<Job,true>){
-                // map.set(Job.僧兵, true);
-    //         setDefJobChangeList(map, this.ins);
-    //     }
-    // };
+        }
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.僧兵, true);
+            setDefJobChangeList(map, this.ins);
+        }
+    };
 }
 
 

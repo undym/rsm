@@ -288,10 +288,26 @@ export class ActiveTec extends Tec {
     //
     //
     //--------------------------------------------------------------------------
-    get mpCost() { return this.args.mp ? this.args.mp : 0; }
-    get tpCost() { return this.args.tp ? this.args.tp : 0; }
-    get epCost() { return this.args.ep ? this.args.ep : 0; }
-    ;
+    // get mpCost():number{return this.args.mp ? this.args.mp : 0;}
+    // get tpCost():number{return this.args.tp ? this.args.tp : 0;}
+    // get epCost():number{return this.args.ep ? this.args.ep : 0;}
+    // get spCost():number{return this.args.sp ? this.args.sp : 0;}
+    get costs() {
+        const res = [];
+        if (this.args.mp) {
+            res.push({ prm: Prm.MP, value: this.args.mp });
+        }
+        if (this.args.tp) {
+            res.push({ prm: Prm.TP, value: this.args.tp });
+        }
+        if (this.args.ep) {
+            res.push({ prm: Prm.EP, value: this.args.ep });
+        }
+        if (this.args.sp) {
+            res.push({ prm: Prm.SP, value: this.args.sp });
+        }
+        return res;
+    }
     get itemCost() {
         if (this.args.item) {
             let res = [];
@@ -321,14 +337,17 @@ export class ActiveTec extends Tec {
                 }
             }
         }
-        return (u.mp >= this.mpCost
-            && u.tp >= this.tpCost
-            && u.ep >= this.epCost);
+        for (const cost of this.costs) {
+            if (cost.value > u.prm(cost.prm).base) {
+                return false;
+            }
+        }
+        return true;
     }
     payCost(u) {
-        u.mp -= this.mpCost;
-        u.tp -= this.tpCost;
-        u.ep -= this.epCost;
+        for (const cost of this.costs) {
+            u.prm(cost.prm).base -= cost.value;
+        }
         if (u instanceof PUnit) {
             for (const set of this.itemCost) {
                 set.item.remainingUseNum -= set.num;
@@ -1503,6 +1522,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-鎖術Active
     //過去Active
     //
     //--------------------------------------------------------------------------
@@ -1533,13 +1553,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**羅文騎士. */
+    Tec.インフレーション = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "インフレーション", info: "全体に過去攻撃x2",
+                sort: TecSort.過去, type: TecType.過去, targetings: Targeting.ALL,
+                mul: 2, num: 1, hit: 1.2, tp: 5, sp: 1,
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-過去Active
     //過去Passive
     //
     //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     //
+    //-過去Passive
     //銃Active
     //
     //--------------------------------------------------------------------------
@@ -2535,8 +2566,25 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**羅文騎士. */
+    Tec.バリア = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "バリア", info: "自分を＜バリア2＞(多くの攻撃を無効化)化する",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 5,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.up.play();
+                FX_Buff(target.imgCenter);
+                Unit.setCondition(target, Condition.バリア, 2);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-強化Active
     //強化Passive
     //
     //--------------------------------------------------------------------------
@@ -2665,6 +2713,24 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**羅文騎士. */
+    Tec.ナナ命 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "ナナ命", info: "かばう 戦闘開始時、味方にナナがいる場合、ステータス+10",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).battle += 10);
+            });
+        }
+        whenAnyoneDead(me, deadUnit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Tec.かばう.whenAnyoneDead(me, deadUnit);
+            });
+        }
+    };
     /**体術士. */
     Tec.合気道 = new class extends PassiveTec {
         constructor() {
@@ -2757,6 +2823,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-強化Passive
     //弱体Active
     //
     //--------------------------------------------------------------------------
@@ -2935,6 +3002,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-弱体Active
     //弱体Passive
     //
     //--------------------------------------------------------------------------
@@ -2955,6 +3023,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-弱体Passive
     //回復Active
     //
     //--------------------------------------------------------------------------
@@ -3252,8 +3321,32 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**羅文騎士. */
+    Tec.羅文彗星 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "羅文彗星", info: "最大HPMPTPx2 HPMPTP回復",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                target.prm(Prm.MAX_HP).battle = target.prm(Prm.MAX_HP).base + target.prm(Prm.MAX_HP).eq;
+                target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
+                target.prm(Prm.MAX_TP).battle = target.prm(Prm.MAX_TP).base + target.prm(Prm.MAX_TP).eq;
+                Unit.healHP(target, target.prm(Prm.MAX_HP).total);
+                Unit.healMP(target, target.prm(Prm.MAX_MP).total);
+                Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                this.effect(attacker, target, new Dmg());
+                Sound.KAIFUKU.play();
+                Util.msg.set("最大HPMPTPx2！");
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-回復Active
     //回復Passive
     //
     //--------------------------------------------------------------------------

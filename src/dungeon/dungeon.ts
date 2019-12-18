@@ -92,6 +92,13 @@ export namespace DungeonArea{
                                     [Item.マーザン, 0.002],
                                 ],
                             );
+    export const 冥界 =    new DungeonArea("冥界", "img/map5.jpg",
+                                ()=>[
+                                ],
+                                ()=>[
+                                    [Item.冥石, 0.002],
+                                ],
+                            );
 }
 
 
@@ -246,7 +253,7 @@ export abstract class Dungeon{
             }
         }
 
-        if(Dungeon.now.dungeonClearCount > 0 && Math.random() < 0.001){return DungeonEvent.EX_BATTLE;}
+        if(Dungeon.now.dungeonClearCount >= 1 && Math.random() < 0.001){return DungeonEvent.EX_BATTLE;}
         
         if(Math.random() < 0.15){
             if(Dungeon.now.rank >= 2 && Math.random() < 0.04){
@@ -416,7 +423,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.草の服],
                                 trendItems: ()=>[Item.草, Item.水, Item.竹, Item.かんな],
         });}
-        isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
@@ -453,7 +460,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.肉, Item.竹, Item.砂, Item.かんな],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
         });}
-        isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
@@ -483,7 +490,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.粘土, Item.土, Item.ガラス, Item.かんな],
         });}
         toString(){return "予感の街・レ";}
-        isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
@@ -518,7 +525,7 @@ export namespace Dungeon{
                                 trendEvents:()=>[[DungeonEvent.LAKE, 0.05]],
         });}
         toString(){return "水の都・イス";}
-        isVisible = ()=>Dungeon.黒い丘.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.黒い丘.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
@@ -551,7 +558,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.ファーストキス, Item.エレタクレヨン],
         });}
         toString(){return "リ・テの門";}
-        isVisible = ()=>Dungeon.水の都イス.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.水の都イス.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
@@ -579,7 +586,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.コスモガン],
                                 trendItems: ()=>[Item.血粉末, Item.うんち, Item.太陽の欠片],
         });}
-        isVisible = ()=>Dungeon.黒の廃村.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.黒の廃村.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
@@ -607,7 +614,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.猛者の鎧],
                                 trendItems: ()=>[Item.肉, Item.錫, Item.高野槙, Item.桜],
         });}
-        isVisible = ()=>Dungeon.クラウンボトル.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.クラウンボトル.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.機械士.setEnemy(e, e.prm(Prm.LV).base);
@@ -643,7 +650,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.松, Item.桜, Item.クワ, Item.良い土, Item.イズミジュエリー, Item.肉],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.精霊寺院跡.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.精霊寺院跡.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
@@ -675,7 +682,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.粘土, Item.桜, Item.かんな, Item.アリラン型岩石, Item.ドンゴの鱗, Item.ドンゴの骨],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.塔4000階.dungeonClearCount > 1;
+        isVisible = ()=>Dungeon.塔4000階.dungeonClearCount >= 2;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
@@ -696,42 +703,81 @@ export namespace Dungeon{
             }
         }
     };
-    // export const                         塔6666階:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"塔6666階", info:"",
-    //                             rank:5, enemyLv:27, au:240, btn:[DungeonArea.中央島, new Rect(0.35, 0.4, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.ミサイリストスーツ],
-    //                             exItems:    ()=>[Eq.ぱとバット],
-    //                             trendItems: ()=>[Item.松, Item.桜, Item.クワ, Item.良い土, Item.イズミジュエリー, Item.肉],
+    export const                         塔6666階:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔6666階", info:"",
+                                rank:4, enemyLv:28, au:166, btn:[DungeonArea.中央島, new Rect(0.35, 0.15, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.力の指輪],
+                                exItems:    ()=>[Eq.アンチェーンベルト],
+                                trendItems: ()=>[],
+        });}
+        isVisible = ()=>Dungeon.塔6665階.dungeonClearCount >= 1;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.侍.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "6666階門番";
+            e.prm(Prm.MAX_HP).base = 1600;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影バンバ・エンヤ";
+            e.img = new Img("img/unit/yukiemon.png");
+            e.prm(Prm.MAX_HP).base = 2350;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story2.runMain23();
+            }
+            if(this.dungeonClearCount === 2){
+                await Story2.runMain24();
+            }
+        }
+    };
+    // export const                         塔地下二百階の門:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"塔地下二百階の門", info:"",
+    //                             rank:5, enemyLv:30, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
+    //                             treasures:  ()=>[Eq.治癒の指輪],
+    //                             exItems:    ()=>[Eq.アンマシンベルト],
+    //                             trendItems: ()=>[Item.肉],
     //     });}
-    //     isVisible = ()=>Dungeon.精霊寺院跡.dungeonClearCount > 0;
+    //     isVisible = ()=>Dungeon.塔6666階.dungeonClearCount >= 2;
     //     setBossInner = ()=>{
     //         let e = Unit.enemies[0];
-    //         Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "太古の亜人";
-    //         e.prm(Prm.MAX_HP).base = 1000;
+    //         Job.ロボット.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "地下への門番";
+    //         e.prm(Prm.MAX_HP).base = 1800;
     //     };
     //     setExInner = ()=>{
     //         let e = Unit.enemies[0];
-    //         Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "幻影ユキエモン";
+    //         Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "幻影魔王";
     //         e.img = new Img("img/unit/yukiemon.png");
-    //         e.prm(Prm.MAX_HP).base = 1050;
+    //         e.prm(Prm.MAX_HP).base = 2500;
     //     };
     //     async dungeonClearEvent(){
     //         await super.dungeonClearEvent();
     //         if(this.dungeonClearCount === 1){
-    //             await Story2.runMain20();
-    //         }
-    //         if(this.dungeonClearCount === 2){
-    //             await Story2.runMain21();
+    //             await Story2.runMain25();
+    //             //冥界編へ移行
+    //             for(const p of Player.values){
+    //                 p.member = false;
+    //             }
+    //             for(let i = 0; i < Unit.players.length; i++){
+    //                 Unit.setPlayer( i, Player.empty );
+    //             }
+                
+    //             Player.ジスロフ.join();
+    //             Player.ナナ.join();
+
+    //             DungeonArea.now = DungeonArea.冥界;
     //         }
     //     }
     // };
 
+    //-中央島
     ///////////////////////////////////////////////////////////////////////
-    //                                                                   //
-    //                            黒地域                                 //
-    //                                                                   //
+    //黒地域
     ///////////////////////////////////////////////////////////////////////
     export const                         黒平原:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"黒平原", info:"地層+",
@@ -741,7 +787,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.バッタ, Item.クワ, Item.銅, Item.鉄],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
-        isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
@@ -771,7 +817,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
-        isVisible = ()=>Dungeon.黒平原.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.黒平原.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.アーチャー.setEnemy(e, e.prm(Prm.LV).base);
@@ -800,7 +846,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.黒色のまぼろし, Item.エレタの絵の具, Item.桐, Item.鉄, Item.桜],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
-        isVisible = ()=>Dungeon.リテの門.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.リテの門.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.ヴァンパイア.setEnemy(e, e.prm(Prm.LV).base);
@@ -829,7 +875,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.ロウ, Item.桐, Item.銅, Item.鉄],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
-        isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
@@ -851,10 +897,9 @@ export namespace Dungeon{
         }
     };
 
+    //-黒地域
     ///////////////////////////////////////////////////////////////////////
-    //                                                                   //
-    //                               月                                  //
-    //                                                                   //
+    //月
     ///////////////////////////////////////////////////////////////////////
     export const                         テント樹林:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"テント樹林", info:"木+",
@@ -865,7 +910,7 @@ export namespace Dungeon{
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.トトの郊外.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.トトの郊外.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.雷鳥.setEnemy(e, e.prm(Prm.LV).base);
@@ -895,7 +940,7 @@ export namespace Dungeon{
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.テント樹林.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.テント樹林.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.アメーバ.setEnemy(e, e.prm(Prm.LV).base);
@@ -924,7 +969,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.粘土, Item.石, Item.銅, Item.銀, Item.金],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.小人集落周辺.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.小人集落周辺.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.妖精.setEnemy(e, e.prm(Prm.LV).base);
@@ -955,7 +1000,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
                                 beast:true,
         });}
-        isVisible = ()=>Dungeon.聖なる洞窟.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.聖なる洞窟.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.鬼火.setEnemy(e, e.prm(Prm.LV).base);
@@ -978,11 +1023,9 @@ export namespace Dungeon{
             }
         }
     };
-
+    //-月
     ///////////////////////////////////////////////////////////////////////
-    //                                                                   //
-    //                        古マーザン                                  //
-    //                                                                   //
+    //古マーザン
     ///////////////////////////////////////////////////////////////////////
     export const                         古マーザン森:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"古マーザン森", info:"",
@@ -991,7 +1034,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Eq.水晶の指輪],
                                 trendItems: ()=>[],
         });}
-        isVisible = ()=>Dungeon.月狼の森.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.月狼の森.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.天使.setEnemy(e, e.prm(Prm.LV).base);
@@ -1019,7 +1062,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Item.ホークマンの血],
                                 trendItems: ()=>[],
         });}
-        isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
@@ -1050,7 +1093,7 @@ export namespace Dungeon{
                                 exItems:    ()=>[Item.精霊使いの血],
                                 trendItems: ()=>[Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],
         });}
-        isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount > 0;
+        isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.テンプルナイト.setEnemy(e, e.prm(Prm.LV).base);
@@ -1082,5 +1125,35 @@ export namespace Dungeon{
             }
         }
     };
+    //-古マーザン
+    ///////////////////////////////////////////////////////////////////////
+    //冥界
+    ///////////////////////////////////////////////////////////////////////
+    // export const                         冥土の底:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"冥土の底", info:"",
+    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.1, 0.05, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[],
+    //                             trendItems: ()=>[],
+    //     });}
+    //     isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount >= 1;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "底主";
+    //         e.prm(Prm.MAX_HP).base = 400;
+    //     };
+    //     setExInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "霊体ブリザード";
+    //         e.img = new Img("img/unit/bresh.png");
+    //         e.prm(Prm.MAX_HP).base = 700;
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //         }
+    //     }
+    // };
 }
 

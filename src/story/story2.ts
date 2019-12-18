@@ -387,9 +387,118 @@ export namespace Story2{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第23話『ラプソディア召喚』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
+    //塔6666階クリア2回目
+    export const runMain24 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_luka   = new Img("img/face/p_luka.jpg");
+        const f_pea    = new Img("img/face/p_pea.jpg");
+        const f_0      = new Img("img/face/p_0.jpg");//ピンク髪
+        const f_02      = new Img("img/face/p_02.jpg");//にやり
+        const f_03      = new Img("img/face/p_03.jpg");//力み顔
+        const f_1      = new Img("img/face/p_1.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",      "ピアーは突然の出来事に、状況を把握するのに数秒の時間を要した。"],
+                [f_empty,  "",      "自分の腕の中で、ルインが気を失って眠っていた。"],
+                [f_empty,  "",      "lukaとベガはすぐ後にいる･･･。"],
+                [f_empty,  "",      "周囲には太い柱が何本も立ち、壁はなく外から強い風が吹き込んできていた。"],
+                [f_pea,    "ピアー","「ここは･･････」"],
+                [f_empty,  "",      "頭上で物凄い轟音が響き、天井から砂がパラパラと落ちた。"],
+                [f_luka,   "luka",  "「･･･さっきのすぐ下の階よ･･･、ここを通って中枢室に上がったのを覚えているでしょ」"],
+                [f_empty,  "",      "lukaがピアーに言った。"],
+                [f_pea,    "ピアー","「瞬間移動したのか？･･･ルインがやったのか･･･」"],
+                [f_luka,   "luka",  "「たぶんそうね･･･でも、どうしてここなのかしら･･･」"],
+                [f_empty,  "",      "確かに、もっと遠くへ飛べば、すぐ階上の危険からは遠ざかれる･･･ルインにはこれが精一杯だったのだろうか･･･、とピアーは考えた。"],
+                [f_empty,  "",      "その時、下の階段から何者かが上がってくるのが分かった。"],
+                [f_empty,  "",      "ピアー達は急いで身構えた。"],
+                [f_0,      "",      "「･････････」"],
+                [f_luka,   "luka",  "「い、一号！！！！」"],
+                [f_luka,   "luka",  "「良かった･･･もう治ったのね！？」"],
+                [f_empty,  "",      "lukaが走り寄ろうとした時、一号は腰から暗黒剣を引きぬきlukaに向かって振り下ろした。"],
+                [f_luka,   "luka",  "「キャッ！！」"],
+                [f_empty,  "",      "lukaは寸での所で退いた。"],
+                [f_pea,    "ピアー","「なにしとんじゃっ一号！！！！」"],
+                [f_0,      "",      "「残念だったなぁ･･････」"],
+                [f_0,      "",      "「･･････わしが一号じゃのうて」"],
+                [f_pea,    "ピアー","「･･･！？」"],
+                [f_0,      "",      "「もうじき死ぬアンタらに言うてもしゃーないけんど･･･、わしは一号とはちゃうで･･･」"],
+                [f_empty,  "",      "驚くlukaに向かって、男はもう一度剣を振った。"],
+                [f_empty,  "",      "ベガの巨大な尻尾が、素早く男の剣をはじき返した。"],
+                [f_luka,   "luka",  "「あ、貴方･･･だれなの･･･」"],
+                [f_0,      "",      "「名前なんかあらへんわ･･････」"],
+                [f_empty,  "",      "男は不快そうな表情で答えた。"],
+                [f_0,      "",      "「そやな･･･あいつが一号やったら･･････、わしは零号っちゅうことか、あほらし･･･」"],
+                [f_luka,   "luka",  "「･･･ぜ･･･零号･･････」"],
+                [f_0,      "零号",  "「あー･･･うるせぇ･･･うるせぇ･･･」"],
+                [f_0,      "零号",  "「あいつには因子があって、わしにはない？･･････それがどしたっちゅーねん･･･」"],
+                [f_0,      "零号",  "「わしにはあいつが持ってへんこの力がある･･････！！！」"],
+                [f_03,     "零号",  "「この力がなぁ！！！！！！」"],
+                [f_empty,  "",      "零号がそう叫ぶと、零号の髪は赤く染まり、体中に無数の傷跡と赤い体毛が浮かび上がった。"],
+                
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic29.jpg"),
+            [
+                [f_empty,  "",      "その次に零号が振り下ろした剣は、今度こそベガでも返しきれず、巨大なベガの体がドシンと吹き飛ばされた。"],
+                [f_empty,  "",      "すかさずピアーが術を放ったが、零号の剣気がそれを打ち消し、零号はピアーに体当たりをかけて気絶させた。"],
+                [f_luka,   "luka",  "「や、やめて！！」"],
+                [f_empty,  "",      "lukaが引きがねを引くより前に、零号の剣より放たれた暗黒波がlukaを襲った。"],
+                [f_luka,   "luka",  "「キャアアアアアアア！！」"],
+                [f_empty,  "",      "lukaの全身に暗黒のエネルギーが痛みを伴って突き走る･･･。"],
+                [f_empty,  "",      "lukaはバタリと力無く崩れ落ちた。"],
+                [f_02,     "零号",  "「ほうら見てみぃ･･･」"],
+                [f_02,     "零号",  "「わしは一号より強いんじゃ･･･」"],
+                [f_luka,   "luka",  "「ぅ･･･ぅ･･･た･･･すけて･･･」"],
+                [f_empty,  "",      "瀕死で横たわるlukaの上から、零号が見下ろした。"],
+                [f_02,     "零号",  "「･･･うるせぇ･･･うるせぇ･･･」"],
+                [f_03,     "零号",  "「･･････死ねやぁぁぁぁ！！！」"],
+                [f_empty,  "",      "零号が止めを刺そうと剣を思いきり振り下ろそうとしたその時･･･"],
+                [f_empty,  "",      "零号の真横から、白い巨獣が物凄い速さで突っ込み、零号を突き飛ばした。"],
+                [f_empty,  "",      "零号は柱の１本に叩きつけられ、柱は衝撃に耐えきれずに壊れた。"],
+                [f_empty,  "",      "lukaの前に、大きな翼を広げた白い獣が立ち、ゴロゴロと喉を鳴らした。"],
+                [f_empty,  "",      "白翼獣の背には、見覚えのある戦士が乗っていた。"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic30.jpg"),
+            [
+                [f_luka,   "luka",  "「一･･･ご･･･う･･･」"],
+                [f_luka,   "luka",  "「今度こそ･･･本当･･･だよ･･･ね･･･」"],
+                [f_1,      "一号",  "「遅くなってごめん･･･」"],
+                [f_luka,   "luka",  "「良かった･･････一号･･･」"],
+                [f_1,      "一号",  "「ルインの声が聞こえたんだ･･･ここにいるって･･･」"],
+                [f_luka,   "luka",  "「･･･この子･･･雪？」"],
+                [f_empty,  "",      "一号の隣からlukaを覗きこむ白翼獣の鼻を撫で、lukaは言った。"],
+                [f_1,      "一号",  "「そうだよ･･･」"],
+                [f_empty,  "",      "lukaはにっこりと笑い、そして気を失った。"],
+                [f_empty,  "",      "一号は、ピアーとlukaとルインの３人を雪の背に乗せた。"],
+                [f_03,     "零号",  "「ま･･･まてや･･･」"],
+                [f_empty,  "",      "柱の瓦礫の中から、零号がヨロヨロと立ち上がった。"],
+                [f_1,      "一号",  "「･････････」"],
+                [f_empty,  "",      "一号は、零号をチラリと睨み見たが、何も言わず･･･"],
+                [f_empty,  "",      "雪の背にまたがると、ベガと共に、外へと飛び立った。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第24話『0』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    //塔地下200階クリア
 }
 /*
         const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_0      = new Img("img/face/p_0.jpg");//ピンク髪
+        const f_02      = new Img("img/face/p_02.jpg");//にやり
+        const f_03      = new Img("img/face/p_03.jpg");//力み顔
         const f_1      = new Img("img/face/p_1.jpg");
         const f_siki  = new Img("img/face/p_siki.jpg");
         const f_yuki = new Img("img/face/p_yuki2.jpg");
@@ -405,7 +514,7 @@ export namespace Story2{
         const f_yoruko  = new Img("img/face/p_yoruko.jpg");
         const f_jiyuu  = new Img("img/face/p_jiyuu.jpg");
 
-    export const runMain23 = async()=>{
+    export const runMain24 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();

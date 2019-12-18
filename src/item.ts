@@ -1959,31 +1959,35 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         月の石:Item = new class extends Item{
-        constructor(){super({uniqueName:"月の石", info:"月地域で稀にとれる石",
+        constructor(){super({uniqueName:"月の石", info:"月地域で稀に採れる石",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
     };
     export const                         肉まん:Item = new class extends Item{
-        constructor(){super({uniqueName:"肉まん", info:"中央島地域で稀にとれる肉まん",
+        constructor(){super({uniqueName:"肉まん", info:"中央島地域で稀に採れる肉まん",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
     };
     export const                         地球塔粉末:Item = new class extends Item{
-        constructor(){super({uniqueName:"地球塔粉末", info:"中央島地域で稀にとれる地球塔粉末",
+        constructor(){super({uniqueName:"地球塔粉末", info:"中央島地域で稀に採れる地球塔粉末",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.NO})}
     };
     export const                         タンホイザーの砂飯:Item = new class extends Item{
-        constructor(){super({uniqueName:"タンホイザーの砂飯", info:"黒地域で稀にとれる料理、全員のお腹を4回復",
+        constructor(){super({uniqueName:"タンホイザーの砂飯", info:"黒地域で稀に採れる料理、全員のお腹を4回復",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
     };
     export const                         黒色火薬:Item = new class extends Item{
-        constructor(){super({uniqueName:"黒色火薬", info:"黒地域で稀にとれる火薬",
+        constructor(){super({uniqueName:"黒色火薬", info:"黒地域で稀に採れる火薬",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.NO})}
     };
     export const                         B火薬:Item = new class extends Item{
-        constructor(){super({uniqueName:"B火薬", info:"黒地域で稀にとれる火薬",
+        constructor(){super({uniqueName:"B火薬", info:"黒地域で稀に採れる火薬",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.NO})}
     };
     export const                         マーザン:Item = new class extends Item{
-        constructor(){super({uniqueName:"マーザン", info:"古マーザン地域でまれにとれるマーザン",
+        constructor(){super({uniqueName:"マーザン", info:"古マーザン地域で稀に採れるマーザン",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.NO})}
+    };
+    export const                         冥石:Item = new class extends Item{
+        constructor(){super({uniqueName:"冥石", info:"冥界地域で稀に採れる石",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.NO})}
     };
 }

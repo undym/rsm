@@ -216,6 +216,18 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.バリア = new class extends Condition {
+        constructor() { super("バリア", ConditionType.GOOD_LV2); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && !action.type.any(TecType.槍, TecType.怨霊)) {
+                    Util.msg.set("＞バリア");
+                    dmg.pow.mul = 0;
+                    target.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV3

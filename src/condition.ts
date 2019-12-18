@@ -225,6 +225,17 @@ export namespace Condition{
             }
         }
     };
+    export const             バリア:Condition = new class extends Condition{
+        constructor(){super("バリア", ConditionType.GOOD_LV2);}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && !action.type.any(TecType.槍, TecType.怨霊)){
+                Util.msg.set("＞バリア");
+                dmg.pow.mul = 0;
+
+                target.addConditionValue(this, -1);
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV3

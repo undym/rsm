@@ -210,8 +210,16 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     // });
     const 肉のスープ = new Mix({
         uniqueName: "肉のスープ", limit: 10, info: "ルインの最大HP+1",
-        materials: () => [[Item.石, 3], [Item.肉, 3], [Item.水, 3]],
+        materials: () => [[Item.石, 3], [Item.肉, 1], [Item.水, 3]],
         isVisible: () => ルインドアースLv2.count > 0,
+        action: () => {
+            Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const 猫の秘薬 = new Mix({
+        uniqueName: "猫の秘薬", limit: 10, info: "ルインの最大HP+1",
+        materials: () => [[Item.肉, 1], [Item.水, 3]],
+        isVisible: () => ルインドアースLv6.count > 0 && 肉のスープ.count >= 肉のスープ.countLimit,
         action: () => {
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -234,8 +242,16 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const バッタのスープ = new Mix({
         uniqueName: "バッタのスープ", limit: 10, info: "ピアーの最大HP+1",
-        materials: () => [[Item.石, 2], [Item.バッタ, 2], [Item.水, 2]],
+        materials: () => [[Item.肉, 1], [Item.バッタ, 2], [Item.水, 2]],
         isVisible: () => ルインドアースLv2.count > 0,
+        action: () => {
+            Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const ピアー家秘薬 = new Mix({
+        uniqueName: "ピアー家秘薬", limit: 10, info: "ピアーの最大HP+1",
+        materials: () => [[Item.肉, 1], [Item.草, 2]],
+        isVisible: () => ルインドアースLv6.count > 0 && バッタのスープ.count >= バッタのスープ.countLimit,
         action: () => {
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -258,7 +274,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const ウェルダン = new Mix({
         uniqueName: "ウェルダン", limit: 10, info: "一号の闇+1",
-        materials: () => [[Item.肉, 2], [Item.針金, 1]],
+        materials: () => [[Item.肉, 1], [Item.針金, 1]],
         isVisible: () => Dungeon.テント樹林.dungeonClearCount > 0,
         action: () => {
             Player.一号.ins.prm(Prm.DRK).base += 1;
@@ -266,7 +282,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const レア = new Mix({
         uniqueName: "レア", limit: 10, info: "雪の鎖+1",
-        materials: () => [[Item.肉, 2], [Item.草, 2]],
+        materials: () => [[Item.肉, 1], [Item.草, 2]],
         isVisible: () => Dungeon.テント樹林.dungeonClearCount > 0,
         action: () => {
             Player.雪.ins.prm(Prm.CHN).base += 1;
@@ -274,7 +290,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const ガンステーキ = new Mix({
         uniqueName: "ガンステーキ", limit: 10, info: "lukaの銃+1",
-        materials: () => [[Item.肉, 2], [Item.発砲ツル, 1]],
+        materials: () => [[Item.肉, 1], [Item.発砲ツル, 1]],
         isVisible: () => Player.luka.member,
         action: () => {
             Player.luka.ins.prm(Prm.GUN).base += 1;
@@ -282,7 +298,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const 石焼き肉 = new Mix({
         uniqueName: "石焼き肉", limit: 10, info: "ベガの最大HP+1",
-        materials: () => [[Item.肉, 2], [Item.石, 2]],
+        materials: () => [[Item.肉, 1], [Item.石, 2]],
         isVisible: () => Player.ベガ.member,
         action: () => {
             Player.ベガ.ins.prm(Prm.MAX_HP).base += 1;

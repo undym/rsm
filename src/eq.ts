@@ -519,11 +519,21 @@ export namespace Eq{
             }
         }
     }
+    export const                         アンチェーンベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"アンチェーンベルト", info:"鎖術攻撃を稀に無効化",
+                                pos:EqPos.腰, lv:150});}
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.鎖術) && Math.random() < 0.7){
+                Util.msg.set("アンチェーンベルト");
+                dmg.pow.base = 0;
+            }
+        }
+    }
     export const                         アンパストベルト:Eq = new class extends Eq{
         constructor(){super({uniqueName:"アンパストベルト", info:"過去攻撃を稀に無効化",
                                 pos:EqPos.腰, lv:300});}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.33){
+            if(action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.7){
                 Util.msg.set("＞アンパストベルト");
                 dmg.pow.base = 0;
             }
@@ -531,6 +541,7 @@ export namespace Eq{
     }
     //--------------------------------------------------------------------------
     //
+    //-腰
     //手
     //
     //--------------------------------------------------------------------------
@@ -591,6 +602,7 @@ export namespace Eq{
     }
     //--------------------------------------------------------------------------
     //
+    //-手
     //指
     //
     //--------------------------------------------------------------------------
@@ -654,11 +666,21 @@ export namespace Eq{
     }
     /**塔6665階財宝. */
     export const                         霊宝天尊:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"霊宝天尊", info:"数珠・良き占いの回復量+50% 神格攻撃+25%",
+        constructor(){super({uniqueName:"霊宝天尊", info:"数珠・良き占いの回復量+50% 神格攻撃+33%",
                                 pos:EqPos.指, lv:0});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.神格)){
-                dmg.pow.mul *= 1.25;
+                dmg.pow.mul *= 1.33;
+            }
+        }
+    }
+    /**塔6666階財宝. */
+    export const                         力の指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"力の指輪", info:"格闘攻撃+20%",
+                                pos:EqPos.指, lv:30});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.mul *= 1.2;
             }
         }
     }
@@ -675,6 +697,7 @@ export namespace Eq{
     // }
     //--------------------------------------------------------------------------
     //
+    //-指
     //脚
     //
     //--------------------------------------------------------------------------

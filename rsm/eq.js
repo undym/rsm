@@ -601,6 +601,20 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    Eq.アンチェーンベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アンチェーンベルト", info: "鎖術攻撃を稀に無効化",
+                pos: EqPos.腰, lv: 150 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.鎖術) && Math.random() < 0.7) {
+                    Util.msg.set("アンチェーンベルト");
+                    dmg.pow.base = 0;
+                }
+            });
+        }
+    };
     Eq.アンパストベルト = new class extends Eq {
         constructor() {
             super({ uniqueName: "アンパストベルト", info: "過去攻撃を稀に無効化",
@@ -608,7 +622,7 @@ EqEar._valueOf = new Map();
         }
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.33) {
+                if (action instanceof ActiveTec && action.type.any(TecType.過去) && Math.random() < 0.7) {
                     Util.msg.set("＞アンパストベルト");
                     dmg.pow.base = 0;
                 }
@@ -617,6 +631,7 @@ EqEar._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-腰
     //手
     //
     //--------------------------------------------------------------------------
@@ -701,6 +716,7 @@ EqEar._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-手
     //指
     //
     //--------------------------------------------------------------------------
@@ -789,13 +805,27 @@ EqEar._valueOf = new Map();
     /**塔6665階財宝. */
     Eq.霊宝天尊 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "霊宝天尊", info: "数珠・良き占いの回復量+50% 神格攻撃+25%",
+            super({ uniqueName: "霊宝天尊", info: "数珠・良き占いの回復量+50% 神格攻撃+33%",
                 pos: EqPos.指, lv: 0 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.神格)) {
-                    dmg.pow.mul *= 1.25;
+                    dmg.pow.mul *= 1.33;
+                }
+            });
+        }
+    };
+    /**塔6666階財宝. */
+    Eq.力の指輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "力の指輪", info: "格闘攻撃+20%",
+                pos: EqPos.指, lv: 30 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.mul *= 1.2;
                 }
             });
         }
@@ -813,6 +843,7 @@ EqEar._valueOf = new Map();
     // }
     //--------------------------------------------------------------------------
     //
+    //-指
     //脚
     //
     //--------------------------------------------------------------------------

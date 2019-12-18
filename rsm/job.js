@@ -656,6 +656,19 @@ Job.DEF_LVUP_EXP = 10;
     //         e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
     //     }
     // };
+    Job.羅文騎士 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "羅文騎士", info: "",
+                appearLv: 377, img: new Img("img/unit/unit99.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.MAX_HP, 1], [Prm.STR, 1], [Prm.DRK, 1], [Prm.PST, 1],],
+                learningTecs: () => [Tec.バリア, Tec.ナナ命, Tec.羅文彗星],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.衛生, Tec.念力, Tec.聖なる守護, Tec.殴る, Tec.バリア, Tec.ナナ命, Tec.羅文彗星];
+        }
+    };
     //--------------------------------------------------
     //
     //獣

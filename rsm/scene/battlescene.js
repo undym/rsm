@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Scene, wait } from "../undym/scene.js";
 import { Place, Util, PlayData, SceneType } from "../util.js";
 import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawYen, DrawUnits } from "./sceneutil.js";
-import { VariableLayout, ILayout, Layout, Labels, XLayout, Label } from "../undym/layout.js";
-import { Rect, Color } from "../undym/type.js";
+import { VariableLayout, ILayout, Layout, Labels } from "../undym/layout.js";
+import { Rect, Color, Point } from "../undym/type.js";
 import { Unit, PUnit, Prm } from "../unit.js";
 import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec } from "../tec.js";
@@ -42,64 +42,75 @@ export class BattleScene extends Scene {
         super.add(Place.DUNGEON_DATA, (() => {
             const info = new Labels(Font.def)
                 .add(() => `[${this.tecInfo.tec}]`)
-                .addLayout(new XLayout()
-                .add(new Label(Font.def, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.mpCost > 0 ? `MP:${this.tecInfo.tec.mpCost}` : "";
-                }
-                return "";
-            }, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.mpCost <= this.tecInfo.user.mp ? Color.WHITE : Color.GRAY;
-                }
-                return Color.WHITE;
-            }))
-                .add(new Label(Font.def, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.tpCost > 0 ? `TP:${this.tecInfo.tec.tpCost}` : "";
-                }
-                return "";
-            }, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.tpCost <= this.tecInfo.user.tp ? Color.WHITE : Color.GRAY;
-                }
-                return Color.WHITE;
-            }))
-                .add(new Label(Font.def, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.epCost > 0 ? `EP:${this.tecInfo.tec.epCost}` : "";
-                }
-                return "";
-            }, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    return this.tecInfo.tec.epCost <= this.tecInfo.user.ep ? Color.WHITE : Color.GRAY;
-                }
-                return Color.WHITE;
-            }))
-                .add(new Label(Font.def, () => {
-                if (this.tecInfo.tec instanceof ActiveTec && this.tecInfo.tec.itemCost.length > 0) {
-                    let res = "";
-                    for (const set of this.tecInfo.tec.itemCost) {
-                        res += `${set.item}-${set.num}(${set.item.num}) `;
-                    }
-                    return res;
-                }
-                return "";
-            }, () => {
-                if (this.tecInfo.tec instanceof ActiveTec) {
-                    for (const set of this.tecInfo.tec.itemCost) {
-                        if (set.item.num < set.num) {
-                            return Color.GRAY;
+                .addLayout(ILayout.create({ draw: bounds => {
+                    const tec = this.tecInfo.tec;
+                    const user = this.tecInfo.user;
+                    if (tec instanceof ActiveTec) {
+                        let x = bounds.x;
+                        const w = bounds.w * 0.1;
+                        for (const cost of tec.costs) {
+                            Font.def.draw(`${cost.prm}:${cost.value}`, new Point(x, bounds.y), user.prm(cost.prm).base >= cost.value ? Color.WHITE : Color.GRAY);
+                            x += w;
+                        }
+                        for (const set of tec.itemCost) {
+                            Font.def.draw(`${set.item}-${set.num}`, new Point(x, bounds.y), set.item.num >= set.num ? Color.WHITE : Color.GRAY);
+                            x += w;
                         }
                     }
-                    return Color.WHITE;
-                }
-                return Color.WHITE;
-            }))
-                .add(ILayout.empty)
-                .add(ILayout.empty)
-                .add(ILayout.empty)
-                .add(ILayout.empty), () => Font.def.ratioH)
+                } })
+            // new XLayout()
+            //     .add(new Label(Font.def, ()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.mpCost > 0 ? `MP:${this.tecInfo.tec.mpCost}` : "";}
+            //         return "";
+            //     },()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.mpCost <= this.tecInfo.user.mp ? Color.WHITE : Color.GRAY;}
+            //         return Color.WHITE;
+            //     }))
+            //     .add(new Label(Font.def, ()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.tpCost > 0 ? `TP:${this.tecInfo.tec.tpCost}` : "";}
+            //         return "";
+            //     },()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.tpCost <= this.tecInfo.user.tp ? Color.WHITE : Color.GRAY;}
+            //         return Color.WHITE;
+            //     }))
+            //     .add(new Label(Font.def, ()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.epCost > 0 ? `EP:${this.tecInfo.tec.epCost}` : "";}
+            //         return "";
+            //     },()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.epCost <= this.tecInfo.user.ep ? Color.WHITE : Color.GRAY;}
+            //         return Color.WHITE;
+            //     }))
+            //     .add(new Label(Font.def, ()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.spCost > 0 ? `SP:${this.tecInfo.tec.spCost}` : "";}
+            //         return "";
+            //     },()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.spCost <= this.tecInfo.user.sp ? Color.WHITE : Color.GRAY;}
+            //         return Color.WHITE;
+            //     }))
+            //     .add(new Label(Font.def, ()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec && this.tecInfo.tec.itemCost.length > 0){
+            //             let res = "";
+            //             for(const set of this.tecInfo.tec.itemCost){
+            //                 res += `${set.item}-${set.num}(${set.item.num}) `;
+            //             }
+            //             return res;
+            //         }
+            //         return "";
+            //     },()=>{
+            //         if(this.tecInfo.tec instanceof ActiveTec){
+            //             for(const set of this.tecInfo.tec.itemCost){
+            //                 if(set.item.num < set.num){return Color.GRAY;}
+            //             }
+            //             return Color.WHITE;
+            //         }
+            //         return Color.WHITE;
+            //     }))
+            //     .add(ILayout.empty)
+            //     .add(ILayout.empty)
+            //     .add(ILayout.empty)
+            //     .add(ILayout.empty)
+            // ,()=>Font.def.ratioH
+            )
                 .addln(() => this.tecInfo.tec.info);
             return new VariableLayout(() => {
                 return this.tecInfo.tec !== Tec.empty ? info : DrawDungeonData.ins;
