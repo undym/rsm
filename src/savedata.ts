@@ -19,11 +19,6 @@ import { PetFactory } from "./pet.js";
 export class Version{
     static readonly NOW = new Version(0,27,2);
     static readonly updateInfo =    [
-                                        "(0.26.19)バグ修正、ジョブ追加",
-                                        "(0.26.20)ジョブ追加、アイテム追加",
-                                        "(0.26.21)バグ修正",
-                                        "(0.26.22)バグ修正",
-                                        "(0.26.23)音楽テスト",
                                         "(0.26.24)音楽追加",
                                         "(0.26.25)一部アイテム入手時のメッセージ修正",
                                         "(0.26.26)タイトル画面修正",

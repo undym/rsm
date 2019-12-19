@@ -70,6 +70,7 @@ const draw = () => {
     Graphics.fillRect(Rect.FULL, Color.BLACK);
     Scene.now.draw(Rect.FULL);
     FX.draw();
+    // window.requestAnimationFrame(draw);
 };
 const init = () => {
     Util.init();
@@ -206,6 +207,7 @@ const title = () => {
         }
         ctrl();
         setInterval(draw, 1000 / 30);
+        // window.requestAnimationFrame(draw);
         Graphics.getRenderTarget().canvas.removeEventListener("touchend", listener);
         Graphics.getRenderTarget().canvas.removeEventListener("click", listener);
     };

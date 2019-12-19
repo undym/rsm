@@ -176,28 +176,13 @@ export class Sound{
     private src:AudioBufferSourceNode;
     private loaded = false;
     private playing = false;
+    private doStop = false;
     
     constructor(readonly path:string, readonly gainType:"sound"|"music", readonly lazyLoad = false){
     }
     
     load(ondecoded?:()=>void){
         this.loaded = true;
-
-        // const request = new XMLHttpRequest();
-        // request.onload = ()=>{
-        //     var audioData = request.response;
-        //     Sound.context.decodeAudioData(audioData, buffer=>{
-        //         this.buffer = buffer;
-        //         if(ondecoded){
-        //             ondecoded();
-        //         }
-        //     },e=>{
-        //         return "Error with decoding audio data " + this.path;
-        //     });
-        // };
-        // request.open("GET", this.path, true);
-        // request.responseType = 'arraybuffer';
-        // request.send();
         
         fetch(this.path, {method:"GET"})
             .then(res=>{
@@ -222,6 +207,7 @@ export class Sound{
     play(options?:{
         loop?:boolean,
     }){
+        this.doStop = false;
 
         if(Sound.context.state !== "running"){
             Sound.context.resume();
@@ -229,6 +215,7 @@ export class Sound{
 
         if(!this.loaded){
             this.load(()=>{
+                if(this.doStop){return;}
                 this.play(options);
             });
             return;
@@ -254,6 +241,8 @@ export class Sound{
     }
 
     stop(){
+        this.doStop = true;
+
         if(this.src && this.playing){
             this.playing = false;
             try{

@@ -96,6 +96,7 @@ export class Sound {
         this.lazyLoad = lazyLoad;
         this.loaded = false;
         this.playing = false;
+        this.doStop = false;
     }
     static get context() { return this._context; }
     static getVolume(type) {
@@ -139,21 +140,6 @@ export class Sound {
     }
     load(ondecoded) {
         this.loaded = true;
-        // const request = new XMLHttpRequest();
-        // request.onload = ()=>{
-        //     var audioData = request.response;
-        //     Sound.context.decodeAudioData(audioData, buffer=>{
-        //         this.buffer = buffer;
-        //         if(ondecoded){
-        //             ondecoded();
-        //         }
-        //     },e=>{
-        //         return "Error with decoding audio data " + this.path;
-        //     });
-        // };
-        // request.open("GET", this.path, true);
-        // request.responseType = 'arraybuffer';
-        // request.send();
         fetch(this.path, { method: "GET" })
             .then(res => {
             res.arrayBuffer()
@@ -170,11 +156,15 @@ export class Sound {
         });
     }
     play(options) {
+        this.doStop = false;
         if (Sound.context.state !== "running") {
             Sound.context.resume();
         }
         if (!this.loaded) {
             this.load(() => {
+                if (this.doStop) {
+                    return;
+                }
                 this.play(options);
             });
             return;
@@ -202,6 +192,7 @@ export class Sound {
         this.playing = true;
     }
     stop() {
+        this.doStop = true;
         if (this.src && this.playing) {
             this.playing = false;
             try {
