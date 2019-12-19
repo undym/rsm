@@ -554,7 +554,7 @@ export abstract class Unit{
         const bottom = who.some(w=> w === "bottom");
         const ftf    = who.some(w=> w === "faceToFace");
         const party  = who.some(w=> w === "party");
-        const searchIndex = (units:ReadonlyArray<Unit>):number=>{
+        const searchOwnIndex = (units:ReadonlyArray<Unit>):number=>{
             for(let i = 0; i < units.length; i++){
                 if(units[i] === this){return i;}
             }
@@ -562,9 +562,9 @@ export abstract class Unit{
         };
         const search = (units:ReadonlyArray<Unit>, others:ReadonlyArray<Unit>):Unit[]=>{
             const map = new Map<Unit,true>();
-            const index = searchIndex(units);
+            const index = searchOwnIndex(units);
             if(top    && index > 0)                {map.set(units[index-1], true);}
-            if(bottom && index < units.length - 1) {map.set(units[index-1], true);}
+            if(bottom && index < units.length - 1) {map.set(units[index+1], true);}
             if(ftf)                                {map.set(others[index], true);}
             if(party)                              {units.forEach(u=> map.set(u, true));}
             

@@ -491,10 +491,10 @@ export namespace Tec{
                               mul:1.5, num:1, hit:1, tp:1,
         });}
         async run(attacker:Unit, target:Unit){
-            super.run( attacker, target );
+            await super.run( attacker, target );
 
             for(const u of target.searchUnits("bottom").filter(u=> !u.dead)){
-                super.run( attacker, u );
+                await super.run( attacker, u );
             }
         }
     }

@@ -526,7 +526,7 @@ export class Unit {
         const bottom = who.some(w => w === "bottom");
         const ftf = who.some(w => w === "faceToFace");
         const party = who.some(w => w === "party");
-        const searchIndex = (units) => {
+        const searchOwnIndex = (units) => {
             for (let i = 0; i < units.length; i++) {
                 if (units[i] === this) {
                     return i;
@@ -536,12 +536,12 @@ export class Unit {
         };
         const search = (units, others) => {
             const map = new Map();
-            const index = searchIndex(units);
+            const index = searchOwnIndex(units);
             if (top && index > 0) {
                 map.set(units[index - 1], true);
             }
             if (bottom && index < units.length - 1) {
-                map.set(units[index - 1], true);
+                map.set(units[index + 1], true);
             }
             if (ftf) {
                 map.set(others[index], true);

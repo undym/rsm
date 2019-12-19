@@ -447,9 +447,9 @@ ActiveTec._valueOf = new Map();
                 run: { get: () => super.run }
             });
             return __awaiter(this, void 0, void 0, function* () {
-                _super.run.call(this, attacker, target);
+                yield _super.run.call(this, attacker, target);
                 for (const u of target.searchUnits("bottom").filter(u => !u.dead)) {
-                    _super.run.call(this, attacker, u);
+                    yield _super.run.call(this, attacker, u);
                 }
             });
         }

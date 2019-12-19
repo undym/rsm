@@ -57,60 +57,7 @@ export class BattleScene extends Scene {
                             x += w;
                         }
                     }
-                } })
-            // new XLayout()
-            //     .add(new Label(Font.def, ()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.mpCost > 0 ? `MP:${this.tecInfo.tec.mpCost}` : "";}
-            //         return "";
-            //     },()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.mpCost <= this.tecInfo.user.mp ? Color.WHITE : Color.GRAY;}
-            //         return Color.WHITE;
-            //     }))
-            //     .add(new Label(Font.def, ()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.tpCost > 0 ? `TP:${this.tecInfo.tec.tpCost}` : "";}
-            //         return "";
-            //     },()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.tpCost <= this.tecInfo.user.tp ? Color.WHITE : Color.GRAY;}
-            //         return Color.WHITE;
-            //     }))
-            //     .add(new Label(Font.def, ()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.epCost > 0 ? `EP:${this.tecInfo.tec.epCost}` : "";}
-            //         return "";
-            //     },()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.epCost <= this.tecInfo.user.ep ? Color.WHITE : Color.GRAY;}
-            //         return Color.WHITE;
-            //     }))
-            //     .add(new Label(Font.def, ()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.spCost > 0 ? `SP:${this.tecInfo.tec.spCost}` : "";}
-            //         return "";
-            //     },()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){return this.tecInfo.tec.spCost <= this.tecInfo.user.sp ? Color.WHITE : Color.GRAY;}
-            //         return Color.WHITE;
-            //     }))
-            //     .add(new Label(Font.def, ()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec && this.tecInfo.tec.itemCost.length > 0){
-            //             let res = "";
-            //             for(const set of this.tecInfo.tec.itemCost){
-            //                 res += `${set.item}-${set.num}(${set.item.num}) `;
-            //             }
-            //             return res;
-            //         }
-            //         return "";
-            //     },()=>{
-            //         if(this.tecInfo.tec instanceof ActiveTec){
-            //             for(const set of this.tecInfo.tec.itemCost){
-            //                 if(set.item.num < set.num){return Color.GRAY;}
-            //             }
-            //             return Color.WHITE;
-            //         }
-            //         return Color.WHITE;
-            //     }))
-            //     .add(ILayout.empty)
-            //     .add(ILayout.empty)
-            //     .add(ILayout.empty)
-            //     .add(ILayout.empty)
-            // ,()=>Font.def.ratioH
-            )
+                } }))
                 .addln(() => this.tecInfo.tec.info);
             return new VariableLayout(() => {
                 return this.tecInfo.tec !== Tec.empty ? info : DrawDungeonData.ins;
@@ -168,6 +115,7 @@ export class BattleScene extends Scene {
     }
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () {
+            //force
             if (Battle.turn > 0) {
                 const phaseUnit = Battle.getPhaseUnit();
                 if (phaseUnit.exists && !phaseUnit.dead) {
