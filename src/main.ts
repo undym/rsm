@@ -232,7 +232,7 @@ const title = ()=>{
         for(const sound of Sound.values().filter(s=> !s.lazyLoad)){
             sound.load();
         }
-        for(const music of Music.values()){
+        for(const music of Music.values().filter(m=> !m.lazyLoad)){
             music.load();
         }
 
