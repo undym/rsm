@@ -18,7 +18,7 @@ import { XLayout, ILayout, Label } from "./undym/layout.js";
 import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
 import { randomInt, randomFloat } from "./undym/random.js";
-import { Sound } from "./sound.js";
+import { Sound, Music } from "./sound.js";
 import { CollectingSkill } from "./collectingskill.js";
 
 
@@ -231,6 +231,9 @@ const title = ()=>{
 
         for(const sound of Sound.values().filter(s=> !s.lazyLoad)){
             sound.load();
+        }
+        for(const music of Music.values()){
+            music.load();
         }
 
 

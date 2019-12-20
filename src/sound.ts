@@ -177,6 +177,7 @@ export class Sound{
     private loaded = false;
     private playing = false;
     private doStop = false;
+
     
     constructor(readonly path:string, readonly gainType:"sound"|"music", readonly lazyLoad = false){
     }
@@ -356,16 +357,8 @@ export namespace Music{
     }
 
     export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
-    export const kimi       = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/true);
     export const hesoumi    = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/true);
-    export const satori     = createMusic("dungeon", "sound/music/satori.mp3", /*lazy*/true);
-    export const satori2    = createMusic("dungeon", "sound/music/satori2.mp3", /*lazy*/true);
-    export const satori3    = createMusic("dungeon", "sound/music/satori3.mp3", /*lazy*/true);
-    export const usakuma    = createMusic("dungeon", "sound/music/usakuma.mp3", /*lazy*/true);
-    export const iknewme    = createMusic("dungeon", "sound/music/iknewme.mp3", /*lazy*/true);
+    export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
 
-    export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/true);
-    export const tatakai2   = createMusic("boss",    "sound/music/tatakai2.mp3", /*lazy*/true);
-    export const ma         = createMusic("boss",    "sound/music/ma.mp3", /*lazy*/true);
-    export const ruin       = createMusic("boss",    "sound/music/ruin.mp3", /*lazy*/true);
+    export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/false);
 }

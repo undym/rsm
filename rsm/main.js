@@ -22,7 +22,7 @@ import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
-import { Sound } from "./sound.js";
+import { Sound, Music } from "./sound.js";
 // {
 //     const run = document.getElementById("runreload") as HTMLButtonElement;
 //     run.onclick = ()=>{
@@ -190,6 +190,9 @@ const title = () => {
         Sound.init();
         for (const sound of Sound.values().filter(s => !s.lazyLoad)) {
             sound.load();
+        }
+        for (const music of Music.values()) {
+            music.load();
         }
         const runNewGame = () => {
             newGame();

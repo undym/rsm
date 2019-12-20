@@ -312,15 +312,7 @@ export var Music;
     }
     Music.stop = stop;
     Music.ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/ true);
-    Music.kimi = createMusic("dungeon", "sound/music/kimi.mp3", /*lazy*/ true);
     Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ true);
-    Music.satori = createMusic("dungeon", "sound/music/satori.mp3", /*lazy*/ true);
-    Music.satori2 = createMusic("dungeon", "sound/music/satori2.mp3", /*lazy*/ true);
-    Music.satori3 = createMusic("dungeon", "sound/music/satori3.mp3", /*lazy*/ true);
-    Music.usakuma = createMusic("dungeon", "sound/music/usakuma.mp3", /*lazy*/ true);
-    Music.iknewme = createMusic("dungeon", "sound/music/iknewme.mp3", /*lazy*/ true);
-    Music.rs7 = createMusic("boss", "sound/music/rs7.mp3", /*lazy*/ true);
-    Music.tatakai2 = createMusic("boss", "sound/music/tatakai2.mp3", /*lazy*/ true);
-    Music.ma = createMusic("boss", "sound/music/ma.mp3", /*lazy*/ true);
-    Music.ruin = createMusic("boss", "sound/music/ruin.mp3", /*lazy*/ true);
+    Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ true);
+    Music.rs7 = createMusic("boss", "sound/music/rs7.mp3", /*lazy*/ false);
 })(Music || (Music = {}));
