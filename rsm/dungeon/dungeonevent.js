@@ -618,7 +618,7 @@ const openBox = (dropType, rank, collectingSkill) => __awaiter(this, void 0, voi
         item.add(addNum);
         Sound.ITEM_GET.play();
         if (collectingSkill) {
-            yield collectingSkill.lvupCheck(item.rank);
+            yield collectingSkill.judgeLvUP(item.rank);
         }
     }
 });

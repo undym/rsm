@@ -280,6 +280,8 @@ export namespace Sound{
     /**休む. */
     export const camp       = createSound("sound/camp.mp3");
     export const COIN       = createSound("sound/COIN.mp3");
+    /**CollectingSkill上昇. */
+    export const cry        = createSound("sound/cry.mp3");
     /**死神の鎌. */
     export const DARK       = createSound("sound/DARK.mp3");
     export const death      = createSound("sound/death.mp3");

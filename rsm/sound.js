@@ -233,6 +233,8 @@ Sound.gains = [];
     /**休む. */
     Sound.camp = createSound("sound/camp.mp3");
     Sound.COIN = createSound("sound/COIN.mp3");
+    /**CollectingSkill上昇. */
+    Sound.cry = createSound("sound/cry.mp3");
     /**死神の鎌. */
     Sound.DARK = createSound("sound/DARK.mp3");
     Sound.death = createSound("sound/death.mp3");

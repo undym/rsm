@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Util } from "./util.js";
 import { Color } from "./undym/type.js";
 import { wait } from "./undym/scene.js";
+import { Sound } from "./sound.js";
 export class CollectingSkill {
     constructor(uniqueName) {
         this.uniqueName = uniqueName;
@@ -16,12 +17,13 @@ export class CollectingSkill {
         CollectingSkill._values.push(this);
     }
     static get values() { return this._values; }
-    lvupCheck(rank) {
+    judgeLvUP(rank) {
         return __awaiter(this, void 0, void 0, function* () {
             // let prob = 1 - (this.lv / (rank+10));
             const prob = rank / (this.lv + 1);
             if (Math.random() < prob * prob) {
                 this.lv++;
+                Sound.cry.play();
                 Util.msg.set(`≪${this.uniqueName}スキル≫が${this.lv}になった`, Color.YELLOW.bright);
                 yield wait();
             }

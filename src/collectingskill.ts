@@ -1,6 +1,7 @@
 import { Util } from "./util.js";
 import { Color } from "./undym/type.js";
 import { wait } from "./undym/scene.js";
+import { Sound } from "./sound.js";
 
 
 
@@ -17,11 +18,13 @@ export class CollectingSkill{
         CollectingSkill._values.push(this);
     }
 
-    async lvupCheck(rank:number){
+    async judgeLvUP(rank:number){
         // let prob = 1 - (this.lv / (rank+10));
         const prob = rank / (this.lv+1);
         if(Math.random() < prob * prob){
             this.lv++;
+
+            Sound.cry.play();
             Util.msg.set(`≪${this.uniqueName}スキル≫が${this.lv}になった`, Color.YELLOW.bright); await wait();
         }
     }

@@ -645,7 +645,7 @@ const openBox = async(dropType:ItemDrop, rank:number, collectingSkill:Collecting
         item.add( addNum ); Sound.ITEM_GET.play();
 
         if(collectingSkill){
-            await collectingSkill.lvupCheck(item.rank);
+            await collectingSkill.judgeLvUP(item.rank);
         }
     }
 };
