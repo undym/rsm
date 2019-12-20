@@ -398,7 +398,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "チョコチョコ";
-            e.img = new Img("img/unit/choco.png");
+            e.img = new Img("img/unit/ex_choco.png");
             e.prm(Prm.MAX_HP).base = 30;
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
@@ -435,7 +435,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "アイアンチョコチョコ";
-            e.img = new Img("img/unit/choco.png");
+            e.img = new Img("img/unit/ex_choco2.png");
             e.prm(Prm.MAX_HP).base = 50;
             e.prm(Prm.STR).base = 5;
             e.prm(Prm.MAG).base = 5;
@@ -472,7 +472,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊ドロシー";
-            e.img = new Img("img/unit/dorosy.png");
+            e.img = new Img("img/unit/ex_dorosy.png");
             e.prm(Prm.MAX_HP).base = 120;
         };
         async dungeonClearEvent(){
