@@ -978,19 +978,21 @@ export const FX_Buff = (center:Point)=>{
 
     FX.add(count=>{
         let exists = false;
-        for(const e of elms){
-            if(count >= e.lifeTime){continue;}
-            exists = true;
+        Graphics.setLineWidth(2, ()=>{
+            for(const e of elms){
+                if(count >= e.lifeTime){continue;}
+                exists = true;
 
-            const h = e.h * (1.0 - count / e.lifeTime) / 2;
-            Graphics.line(
-                new Point(e.x, e.y - h),
-                new Point(e.x, e.y + h),
-                Math.random() < 0.3 ? Color.WHITE : Color.D_CYAN,
-            );
+                const h = e.h * (1.0 - count / e.lifeTime) / 2;
+                Graphics.line(
+                    new Point(e.x, e.y - h),
+                    new Point(e.x, e.y + h),
+                    Math.random() < 0.3 ? Color.WHITE : Color.D_CYAN,
+                );
 
-            e.y += e.vy;
-        }
+                e.y += e.vy;
+            }
+        });
         return exists;
     });
 };
@@ -1013,19 +1015,22 @@ export const FX_Debuff = (center:Point)=>{
 
     FX.add(count=>{
         let exists = false;
-        for(const e of elms){
-            if(count >= e.lifeTime){continue;}
-            exists = true;
+        
+        Graphics.setLineWidth(2, ()=>{
+            for(const e of elms){
+                if(count >= e.lifeTime){continue;}
+                exists = true;
 
-            const h = e.h * (1.0 - count / e.lifeTime) / 2;
-            Graphics.line(
-                new Point(e.x, e.y - h),
-                new Point(e.x, e.y + h),
-                Math.random() < 0.3 ? Color.WHITE : Color.D_RED,
-            );
+                const h = e.h * (1.0 - count / e.lifeTime) / 2;
+                Graphics.line(
+                    new Point(e.x, e.y - h),
+                    new Point(e.x, e.y + h),
+                    Math.random() < 0.3 ? Color.WHITE : Color.D_RED,
+                );
 
-            e.y += e.vy;
-        }
+                e.y += e.vy;
+            }
+        });
         return exists;
     });
 };

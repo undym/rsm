@@ -485,7 +485,7 @@ ActiveTec._valueOf = new Map();
     /**訓練生二年生. */
     Tec.静かなる動き = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "静かなる動き", info: "一体に相手の力値を加算して格闘攻撃 対象の強化状態解除",
+            super({ uniqueName: "静かなる動き", info: "一体に格闘攻撃 相手の防御値無視 対象の強化状態解除",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
@@ -493,6 +493,7 @@ ActiveTec._valueOf = new Map();
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.add += target.prm(Prm.STR).total;
+            dmg.def.mul = 0;
             return dmg;
         }
         runInner(attacker, target, dmg) {
@@ -2314,6 +2315,7 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (!target.hasCondition(Condition.練)) {
                     Sound.up.play();
+                    FX_Buff(target.imgCenter);
                     Unit.setCondition(target, Condition.練, 1);
                     yield wait();
                 }
@@ -3100,6 +3102,7 @@ ActiveTec._valueOf = new Map();
                 }
                 target.mp = target.prm(Prm.MAX_MP).total;
                 Sound.up.play();
+                FX_Buff(target.imgCenter);
                 Util.msg.set(`MP全回復 & 魔力x2！！`);
                 yield wait();
             });

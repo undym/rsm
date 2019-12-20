@@ -17,6 +17,7 @@ import { Story1 } from "../story/story1.js";
 import { Story0 } from "../story/story0.js";
 import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
+import { Pet } from "../pet.js";
 
 
 export class DungeonArea{
@@ -62,8 +63,8 @@ export namespace DungeonArea{
                                     [DungeonArea.古マーザン, new Rect(0.0, 0.4, 0.3, 0.1),   ()=>Dungeon.古マーザン森.isVisible()],
                                 ],
                                 ()=>[
-                                    [Item.肉まん, 0.002],
-                                    [Item.地球塔粉末, 0.002],
+                                    [Item.肉まん, 0.001],
+                                    [Item.地球塔粉末, 0.001],
                                 ],
                             );
     export const 黒地域 =    new DungeonArea("黒地域", "img/map2.jpg",
@@ -71,9 +72,9 @@ export namespace DungeonArea{
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ],
                                 ()=>[
-                                    [Item.タンホイザーの砂飯, 0.002],
-                                    [Item.黒色火薬, 0.002],
-                                    [Item.B火薬, 0.002],
+                                    [Item.タンホイザーの砂飯, 0.001],
+                                    [Item.黒色火薬, 0.001],
+                                    [Item.B火薬, 0.001],
                                 ],
                             );
     export const 月 =       new DungeonArea("月", "img/map4.jpg",
@@ -81,7 +82,7 @@ export namespace DungeonArea{
                                     // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ],
                                 ()=>[
-                                    [Item.月の石, 0.002],
+                                    [Item.月の石, 0.001],
                                 ],
                             );
     export const 古マーザン =    new DungeonArea("古マーザン", "img/map3.jpg",
@@ -89,14 +90,14 @@ export namespace DungeonArea{
                                     [DungeonArea.中央島, new Rect(0.7, 0.25, 0.3, 0.1), ()=>Dungeon.古マーザン森.isVisible()],
                                 ],
                                 ()=>[
-                                    [Item.マーザン, 0.002],
+                                    [Item.マーザン, 0.001],
                                 ],
                             );
     export const 冥界 =    new DungeonArea("冥界", "img/map5.jpg",
                                 ()=>[
                                 ],
                                 ()=>[
-                                    [Item.冥石, 0.002],
+                                    [Item.冥石, 0.001],
                                 ],
                             );
 }
@@ -521,7 +522,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:14, au:60, btn:[DungeonArea.中央島, new Rect(0.7, 0.8, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.レティシアsガン],
                                 exItems:    ()=>[Eq.月代],
-                                trendItems: ()=>[Item.水, Item.イズミミズ, Item.ジェリーの粘液, Item.精霊の涙],
+                                trendItems: ()=>[Item.水, Item.イズミミズ, Item.ジェリーの粘液, Item.精霊の涙, Item.シェイクスピア分子],
                                 trendEvents:()=>[[DungeonEvent.LAKE, 0.05]],
         });}
         toString(){return "水の都・イス";}
@@ -555,7 +556,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:16, au:200, btn:[DungeonArea.中央島, new Rect(0, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.忍者ソード],
                                 exItems:    ()=>[Eq.反精霊の盾],
-                                trendItems: ()=>[Item.ファーストキス, Item.エレタクレヨン],
+                                trendItems: ()=>[Item.ファーストキス, Item.エレタクレヨン, Item.草, Item.呪詛, Item.火の尻尾],
         });}
         toString(){return "リ・テの門";}
         isVisible = ()=>Dungeon.水の都イス.dungeonClearCount >= 1;
@@ -584,7 +585,7 @@ export namespace Dungeon{
                                 rank:3, enemyLv:20, au:250, btn:[DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.呪縛の弓矢],
                                 exItems:    ()=>[Eq.コスモガン],
-                                trendItems: ()=>[Item.血粉末, Item.うんち, Item.太陽の欠片],
+                                trendItems: ()=>[Item.血粉末, Item.うんち, Item.太陽の欠片, Item.シェイクスピア分子1],
         });}
         isVisible = ()=>Dungeon.黒の廃村.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -708,7 +709,7 @@ export namespace Dungeon{
                                 rank:4, enemyLv:28, au:166, btn:[DungeonArea.中央島, new Rect(0.35, 0.15, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.力の指輪],
                                 exItems:    ()=>[Eq.アンチェーンベルト],
-                                trendItems: ()=>[Item.肉],
+                                trendItems: ()=>[Item.肉, Item.バーミキュライト, Item.バッタ, Item.イズミジュエリー, Item.ヴァイスドラッグ5],
         });}
         isVisible = ()=>Dungeon.塔6665階.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -734,46 +735,47 @@ export namespace Dungeon{
             }
         }
     };
-    // export const                         塔地下二百階の門:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"塔地下二百階の門", info:"",
-    //                             rank:5, enemyLv:30, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.治癒の指輪],
-    //                             exItems:    ()=>[Eq.アンマシンベルト],
-    //                             trendItems: ()=>[Item.肉],
-    //     });}
-    //     isVisible = ()=>Dungeon.塔6666階.dungeonClearCount >= 2;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.ロボット.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "地下への門番";
-    //         e.prm(Prm.MAX_HP).base = 1800;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "幻影魔王";
-    //         e.img = new Img("img/unit/ex_maou.png");
-    //         e.prm(Prm.MAX_HP).base = 2500;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story2.runMain25();
-    //             //冥界編へ移行
-    //             for(const p of Player.values){
-    //                 p.member = false;
-    //             }
-    //             for(let i = 0; i < Unit.players.length; i++){
-    //                 Unit.setPlayer( i, Player.empty );
-    //             }
+    export const                         塔地下二百階の門:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔地下二百階の門", info:"",
+                                rank:5, enemyLv:30, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.アンマシンベルト],
+                                exItems:    ()=>[Eq.ロングドレスの剣],
+                                trendItems: ()=>[Item.肉, Item.燃える髪],
+        });}
+        isVisible = ()=>Dungeon.塔6666階.dungeonClearCount >= 2;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.ロボット.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "地下への門番";
+            e.prm(Prm.MAX_HP).base = 1800;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "幻影魔王";
+            e.img = new Img("img/unit/ex_maou.png");
+            e.prm(Prm.MAX_HP).base = 2500;
+            e.pet = Pet.ネーレイス.create(2);
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story2.runMain25();
+                //冥界編へ移行
+                for(const p of Player.values){
+                    p.member = false;
+                }
+                for(let i = 0; i < Unit.players.length; i++){
+                    Unit.setPlayer( i, Player.empty );
+                }
                 
-    //             Player.ジスロフ.join();
-    //             Player.ナナ.join();
+                Player.ジスロフ.join();
+                Player.ナナ.join();
 
-    //             DungeonArea.now = DungeonArea.冥界;
-    //         }
-    //     }
-    // };
+                DungeonArea.now = DungeonArea.冥界;
+            }
+        }
+    };
 
     //-中央島
     ///////////////////////////////////////////////////////////////////////
@@ -793,7 +795,7 @@ export namespace Dungeon{
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "黒き誘い";
             e.prm(Prm.MAX_HP).base = 130;
-            e.prm(Prm.DRK).base = 15;
+            e.prm(Prm.DRK).base = 10;
         };
         setExInner = ()=>{
             let e = Unit.enemies[0];
@@ -814,7 +816,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:12, au:150, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉の手首飾り],
                                 exItems:    ()=>[Eq.無色の靴],
-                                trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト],
+                                trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト, Item.血清],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
         isVisible = ()=>Dungeon.黒平原.dungeonClearCount >= 1;
@@ -1032,7 +1034,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:21, au:250, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉],
                                 exItems:    ()=>[Eq.水晶の指輪],
-                                trendItems: ()=>[],
+                                trendItems: ()=>[Item.蛍草のエキス, Item.水, Item.シェイクスピア分子2],
         });}
         isVisible = ()=>Dungeon.月狼の森.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -1060,7 +1062,7 @@ export namespace Dungeon{
                                 rank:4, enemyLv:23, au:300, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.水晶の手首飾り],
                                 exItems:    ()=>[Item.ホークマンの血],
-                                trendItems: ()=>[],
+                                trendItems: ()=>[Item.燃える髪, Item.ワクチン],
         });}
         isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -1129,14 +1131,39 @@ export namespace Dungeon{
     ///////////////////////////////////////////////////////////////////////
     //冥界
     ///////////////////////////////////////////////////////////////////////
-    // export const                         冥土の底:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"冥土の底", info:"",
-    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.1, 0.05, 0.3, 0.1)],
+    export const                         冥土の底:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"冥土の底", info:"",
+                                rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.4, 0.2, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.洗浄の腕輪],
+                                exItems:    ()=>[Eq.アングラの泥腕輪],
+                                trendItems: ()=>[Item.肉],
+        });}
+        isVisible = ()=>true;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "底主";
+            e.prm(Prm.MAX_HP).base = 400;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "霊体ブリザード";
+            e.img = new Img("img/unit/ex_bli.png");
+            e.prm(Prm.MAX_HP).base = 700;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+        }
+    };
+    // export const                         ハデスの腹:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"ハデスの腹", info:"",
+    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
     //                             treasures:  ()=>[],
     //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[],
+    //                             trendItems: ()=>[Item.肉],
     //     });}
-    //     isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount >= 1;
+    //     isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
     //     setBossInner = ()=>{
     //         let e = Unit.enemies[0];
     //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
@@ -1147,12 +1174,11 @@ export namespace Dungeon{
     //         let e = Unit.enemies[0];
     //         Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
     //         e.name = "霊体ブリザード";
-    //         e.img = new Img("img/unit/bresh.png");
+    //         e.img = new Img("img/unit/ex_bli.png");
     //         e.prm(Prm.MAX_HP).base = 700;
     //     };
     //     async dungeonClearEvent(){
     //         await super.dungeonClearEvent();
-    //         }
     //     }
     // };
 }

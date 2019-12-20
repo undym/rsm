@@ -352,6 +352,21 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**塔地下200階の門EX. */
+    Eq.ロングドレスの剣 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ロングドレスの剣", info: "格闘攻撃時、現在MP値を加算 MP-10%",
+                pos: EqPos.武, lv: 0 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.add += attacker.mp;
+                    attacker.mp = attacker.mp * 0.9;
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //盾
@@ -629,6 +644,21 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**塔地下200階の門財宝. */
+    Eq.アンマシンベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アンマシンベルト", info: "機械攻撃を稀に無効化",
+                pos: EqPos.腰, lv: 40 });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.機械) && Math.random() < 0.7) {
+                    Util.msg.set("＞アンマシンベルト");
+                    dmg.pow.base = 0;
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-腰
@@ -711,6 +741,31 @@ EqEar._valueOf = new Map();
         phaseStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
                 Unit.healHP(unit, unit.prm(Prm.HP).total * 0.01 + 1);
+            });
+        }
+    };
+    /**冥土の底財宝. */
+    Eq.洗浄の腕輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "洗浄の腕輪", info: "＜毒・病気＞耐性",
+                pos: EqPos.手, lv: 199 });
+        }
+        phaseStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.removeCondition(Condition.毒);
+                unit.removeCondition(Condition.病気);
+            });
+        }
+    };
+    /**冥土の底EX. */
+    Eq.アングラの泥腕輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "アングラの泥腕輪", info: "戦闘開始時＜毒＞化",
+                pos: EqPos.手, lv: 19 });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.setCondition(unit, Condition.毒, unit.prm(Prm.LV).total, true);
             });
         }
     };
@@ -830,6 +885,14 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    // /**塔地下二百階の門財宝. */
+    // export const                         治癒の指輪:Eq = new class extends Eq{
+    //     constructor(){super({uniqueName:"治癒の指輪", info:"行動終了時HP+5%",
+    //                             pos:EqPos.指, lv:98});}
+    //     async phaseEnd(unit:Unit){
+    //         Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.05 + 1 );
+    //     }
+    // }
     // export const                         キャットネイル:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"キャットネイル", info:"攻撃時追加攻撃",
     //                             pos:EqPos.指, lv:50});}

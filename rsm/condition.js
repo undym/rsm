@@ -333,6 +333,9 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.契約 = new class extends Condition {
+        constructor() { super("契約", ConditionType.BAD_LV1); }
+    };
     //--------------------------------------------------------------------------
     //
     //BAD_LV2

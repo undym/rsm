@@ -193,6 +193,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.アリラン型岩石, 10]],
         isVisible: () => ルインドアースLv15.count > 0,
     });
+    const ルインドアースLv17 = new Mix({
+        uniqueName: "ルインドアースLv17", limit: 1, info: "",
+        materials: () => [[Item.クヌギ, 6], [Item.バーミキュライト, 20]],
+        isVisible: () => ルインドアースLv15.count > 0,
+    });
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
         materials: () => [[Item.ヒノキ, 1], [Item.草, 5]],
@@ -210,7 +215,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     // });
     const 肉のスープ = new Mix({
         uniqueName: "肉のスープ", limit: 10, info: "ルインの最大HP+1",
-        materials: () => [[Item.石, 3], [Item.肉, 1], [Item.水, 3]],
+        materials: () => [[Item.石, 2], [Item.肉, 1], [Item.水, 1]],
         isVisible: () => ルインドアースLv2.count > 0,
         action: () => {
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
@@ -242,7 +247,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const バッタのスープ = new Mix({
         uniqueName: "バッタのスープ", limit: 10, info: "ピアーの最大HP+1",
-        materials: () => [[Item.肉, 1], [Item.バッタ, 2], [Item.水, 2]],
+        materials: () => [[Item.肉, 1], [Item.バッタ, 2], [Item.水, 1]],
         isVisible: () => ルインドアースLv2.count > 0,
         action: () => {
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;

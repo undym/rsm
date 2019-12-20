@@ -160,14 +160,14 @@ export namespace Job{
         });}
         get maxLv(){return super.maxLv + 1;}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.タックル, Tec.掌覇, Tec.練気, Tec.静かなる動き];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.タックル, Tec.掌覇, Tec.練気, Tec.静かなる動き];
         }
     };
     export const                         訓練生二年生:Job = new class extends Job{
         constructor(){super({uniqueName:"訓練生二年生", info:"",
                                 appearLv:30, img:new Img("img/unit/unit1.png"),
                                 lvupExp:Job.DEF_LVUP_EXP,
-                                growthPrms:()=>[[Prm.MAX_HP, 1]],
+                                growthPrms:()=>[[Prm.MAX_HP, 2]],
                                 learningTecs:()=>[Tec.癒しの風, Tec.我慢, Tec.何もしない, Tec.静かなる動き],
         });}
         get maxLv(){return super.maxLv + 1;}

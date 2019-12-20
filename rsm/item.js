@@ -19,7 +19,7 @@ import { Num } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Tec } from "./tec.js";
-import { Condition } from "./condition.js";
+import { Condition, ConditionType } from "./condition.js";
 import { Sound } from "./sound.js";
 import { Job } from "./job.js";
 export class ItemType {
@@ -581,7 +581,7 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     Item.ヴァイスドラッグ = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ", info: "HP+20MP+2",
+            super({ uniqueName: "ヴァイスドラッグ", info: "HP+20 MP+2",
                 type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 20);
@@ -592,7 +592,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ヴァイスドラッグ2 = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ2", info: "HP+30MP+3",
+            super({ uniqueName: "ヴァイスドラッグ2", info: "HP+30 MP+3",
                 type: ItemType.MP回復, rank: 2, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 30);
@@ -604,7 +604,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ヴァイスドラッグ3 = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ3", info: "HP+50MP+5",
+            super({ uniqueName: "ヴァイスドラッグ3", info: "HP+50 MP+5",
                 type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 50);
@@ -616,7 +616,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ヴァイスドラッグ4 = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ4", info: "HP+100MP+10",
+            super({ uniqueName: "ヴァイスドラッグ4", info: "HP+100 MP+10",
                 type: ItemType.MP回復, rank: 6, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 100);
@@ -628,7 +628,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ヴァイスドラッグ5 = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ5", info: "HP+200MP+20",
+            super({ uniqueName: "ヴァイスドラッグ5", info: "HP+200 MP+20",
                 type: ItemType.MP回復, rank: 7, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 200);
@@ -640,7 +640,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.ヴァイスドラッグ6 = new class extends Item {
         constructor() {
-            super({ uniqueName: "ヴァイスドラッグ6", info: "HP+400MP+40",
+            super({ uniqueName: "ヴァイスドラッグ6", info: "HP+400 MP+40",
                 type: ItemType.MP回復, rank: 8, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     yield itemHealHP(target, 400);
@@ -671,11 +671,58 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.レンチ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "レンチ", info: "＜鎖＞状態を解除する",
+                type: ItemType.状態, rank: 2, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.鎖); }),
+            });
+        }
+    };
     Item.石溶け水 = new class extends Item {
         constructor() {
             super({ uniqueName: "石溶け水", info: "＜石＞状態を解除する",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.石); }),
+            });
+        }
+    };
+    Item.ワクチン = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ワクチン", info: "＜病気＞状態を解除する",
+                type: ItemType.状態, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.病気); }),
+            });
+        }
+    };
+    Item.攻撃力回復薬 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "攻撃力回復薬", info: "＜攻撃低下＞状態を解除する",
+                type: ItemType.状態, rank: 4, drop: ItemDrop.BOX | ItemDrop.LAKE,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.攻撃低下); }),
+            });
+        }
+    };
+    Item.防御力回復薬 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "防御力回復薬", info: "＜防御低下＞状態を解除する",
+                type: ItemType.状態, rank: 4, drop: ItemDrop.BOX | ItemDrop.LAKE,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.防御低下); }),
+            });
+        }
+    };
+    Item.パーフェクトパフォーマンス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "パーフェクトパフォーマンス", info: "＜暴走・契約＞以外の強化・弱体状態を解除する",
+                type: ItemType.状態, rank: 6, drop: ItemDrop.BOX | ItemDrop.LAKE,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    for (const type of ConditionType.values) {
+                        const c = target.getCondition(type);
+                        if (c !== Condition.暴走 && c !== Condition.契約) {
+                            target.removeCondition(type);
+                        }
+                    }
+                }),
             });
         }
     };

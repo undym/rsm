@@ -493,6 +493,119 @@ export namespace Story2{
         Util.msg.set("第24話『0』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
     //塔地下200階クリア
+    export const runMain25 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_jisrof2  = new Img("img/face/p_jis2.jpg");//泣き顔
+        const f_nana  = new Img("img/face/p_nana.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",      "･･･しっかりしろ･･････"],
+                [f_empty,  "",      "･･････目を醒ましてくれ･･･！！"],
+                [f_empty,  "",      "･･･ナナ･････････"],
+                [f_empty,  "",      "･･･ナナ･･････！！"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic31.jpg"),
+            [
+                [f_nana,   "ナナ",    "「･･･こ･･･ここは･･･？」"],
+                [f_jisrof2,"ジスロフ","「よ･･･良かった･･･ナナ･･･」"],
+                [f_nana,   "ナナ",    "「･･･涙出てるよ･･･ジスロフ･･･？」"],
+                [f_jisrof2,"ジスロフ","「･･････もう１週間も目を醒まさなかったんだ」"],
+                [f_nana,   "ナナ",    "「え、僕そんなに眠ってた･･･？」"],
+                [f_jisrof2,"ジスロフ","「ああ･･･」"],
+                [f_jisrof, "ジスロフ","「憶えてるか？･･･あの世界の事を･･･」"],
+                [f_nana,   "ナナ",    "「え･･･」"],
+                [f_jisrof, "ジスロフ","「臥竜の妄想に囚われ、俺達は臥竜の意識の中にいた」"],
+                [f_nana,   "ナナ",    "「･･･が、臥竜･･････」"],
+                [f_nana,   "ナナ",    "「はっ･･･、プ、プリンスとおしゃまは！？･･･」"],
+                [f_jisrof, "ジスロフ","「ここにはいない･･･。あの世界にいたプリンスとおしゃまが本物かどうかも定かではない」"],
+                [f_jisrof, "ジスロフ","「臥竜の妄想が創り出した産物だったかもしれないから」"],
+                [f_nana,   "ナナ",    "「･･････僕達は･･･どうなったの？」"],
+                [f_jisrof, "ジスロフ","「臥竜は、冥符王朝の高官によって覚醒させられたんだ」"],
+                [f_jisrof, "ジスロフ","「臥竜が目覚めると共に、俺達は妄想からはじき出された･･･」"],
+                [f_nana,   "ナナ",    "「･･･そうか･･････」"],
+                [f_nana,   "ナナ",    "「ここは･･･冥界だね･･･」"],
+                [f_jisrof, "ジスロフ","「ああ･･･」"],
+                [f_nana,   "ナナ",    "「あの世界にいた時･･･声が聞こえた･･･」"],
+                [f_jisrof, "ジスロフ","「え？」"],
+                [f_nana,   "ナナ",    "「･･･死神の声･･･」"],
+                [f_jisrof, "ジスロフ","「俺も聞いたよ」"],
+                [f_nana,   "ナナ",    "「･･････僕達を無事ここに戻してくれたのは死神さんかもしれないね･･･」"],
+                [f_jisrof, "ジスロフ","「そうだな･･･そうかもしれない」"],
+                [f_empty,  "",        "二人は冥界の空を見上げた。"],
+                [f_nana,   "ナナ",    "「･･･ジスロフ、空の色がおかしいよ･･･、以前の冥土の底とは違う･･･」"],
+                [f_jisrof, "ジスロフ","「ナナが眠っている間も、ずっとこうだった」"],
+                [f_jisrof, "ジスロフ","「冥界全体が変質しているんだ」"],
+                [f_nana,   "ナナ",    "「どういうこと？」"],
+                [f_jisrof, "ジスロフ","「冥界の王が変わったからだ･･･」"],
+                [f_nana,   "ナナ",    "「！･･････」"],
+                [f_empty,  "",        "ナナは、その言葉を聞いてようやく妄想世界での全ての出来事を思い出した。"],
+                [f_empty,  "",        "臥竜が、自分が目覚めてしまう事で死神が現冥界王の資格を失う事を恐れ、覚醒を拒んだ事･･･"],
+                [f_empty,  "",        "冥界王朝の者が現れ、臥竜の覚醒を強いた事･･･"],
+                [f_empty,  "",        "臥竜の目覚めによって、死神が無に帰してしまった事･･･"],
+                [f_nana,   "ナナ",    "「死神･･･さん･･･」"],
+                [f_empty,  "",        "ナナの目からすっと一筋の涙が流れた。"],
+                [f_jisrof, "ジスロフ","「以前の冥界とは違う･･･」"],
+                [f_jisrof, "ジスロフ","「これからは俺達の周囲の死も、新たな死の法によって裁かれる」"],
+                [f_jisrof, "ジスロフ","「もう死神の守護は受けられないんだ･･･」"],
+
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第25話『冥界王の目覚め』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    //冥土の底クリア
+    export const runMain26 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_nana  = new Img("img/face/p_nana.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic32.jpg"),
+            [
+                [f_empty,  "",        "かつて多くの魂で賑わっていた冥土の底も、ジスロフ達が目覚めた時にはただの荒地と化していた。"],
+                [f_empty,  "",        "冥界王朝の変革は、冥界全土において様々な変化をもたらした。"],
+                [f_empty,  "",        "魂は肉体化し、それまで無縁だった痛みや空腹がリアルに迫るようになった。"],
+                [f_empty,  "",        "親睦的なクグワ達は、狂気に触れ野獣と化し、残った魂人達を襲い続けていた。"],
+                [f_jisrof, "ジスロフ","「ここで調達できる食料も、今日が限界だろう･･･」"],
+                [f_jisrof, "ジスロフ","「気温も下がってきているようだ･･･」"],
+                [f_nana,   "ナナ",    "「･･･僕はまだ平気だよ」"],
+                [f_jisrof, "ジスロフ","「無理しなくていいナナ･･･」"],
+                [f_empty,  "",        "少しでもジスロフの負担にならないようにと強気をはるナナの姿を、ジスロフは優しい眼差しで見つめ、そっと自分の上着をナナの肩に羽織らせた。"],
+                [f_jisrof, "ジスロフ","「･･･冥界の変質は、俺達に肉体を与えた･･･」"],
+                [f_jisrof, "ジスロフ","「死が無なら、俺達はまだ常界に戻れるのかもしれない」"],
+                [f_nana,   "ナナ",    "「！･･･そうかもしれないよ、ジスロフ」"],
+                [f_nana,   "ナナ",    "「･･･でも･･･、出口とかってあるのかな･･･」"],
+                [f_jisrof, "ジスロフ","「俺にも分からない･･･。しかし、冥界王朝の場所なら分かる」"],
+                [f_empty,  "",        "そう言って、ジスロフは空を見上げた。"],
+                [f_nana,   "ナナ",    "「そうか、雲の流れ･･･」"],
+                [f_empty,  "",        "変質前は雲１つ無かった空に、今では禍々しい黒い雲が物凄い速さで移動している。"],
+                [f_empty,  "",        "その流れは、ある一点から放射状に移動していた。"],
+                [f_jisrof, "ジスロフ","「ああ･･･この雲を吐き出している場所が、おそらく冥界王朝･･･」"],
+                [f_empty,  "",        "ジスロフ達は冥土の底に別れを告げ、暗雲のはじまる場所を目指し旅立った。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第26話『暗雲の始まる場所』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
 }
 /*
         const f_empty  = new Img("img/face/p_rs.jpg");
@@ -508,13 +621,16 @@ export namespace Story2{
         const f_vega = new Img("img/face/p_vega.jpg");
         const f_pea    = new Img("img/face/p_pea.jpg");
         const f_ruin   = new Img("img/face/p_ruin.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_jisrof2  = new Img("img/face/p_jis2.jpg");//泣き顔
+        const f_nana  = new Img("img/face/p_nana.jpg");
         const f_oranpia  = new Img("img/face/p_oranpia.jpg");
         const f_dora  = new Img("img/face/p_dora.jpg");
         const f_exe  = new Img("img/face/p_exe.jpg");
         const f_yoruko  = new Img("img/face/p_yoruko.jpg");
         const f_jiyuu  = new Img("img/face/p_jiyuu.jpg");
 
-    export const runMain24 = async()=>{
+    export const runMain26 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();
@@ -522,7 +638,7 @@ export namespace Story2{
         await s.set(
             new Img("img/story/s_pic21.jpg"),
             [
-                [f_empty,  "",      ""],
+                [f_empty,  "",        ""],
             ]
         );
 

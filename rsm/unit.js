@@ -388,6 +388,7 @@ export class Unit {
         }
         return false;
     }
+    /**指定の状態を解除.その状態でなければ何もしない. */
     removeCondition(condition) {
         if (condition instanceof Condition) {
             const set = this.conditions[condition.type.ordinal];

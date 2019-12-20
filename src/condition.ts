@@ -330,6 +330,9 @@ export namespace Condition{
             }
         }
     };
+    export const             契約:Condition = new class extends Condition{
+        constructor(){super("契約", ConditionType.BAD_LV1);}
+    };
     //--------------------------------------------------------------------------
     //
     //BAD_LV2

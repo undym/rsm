@@ -13,7 +13,7 @@ import { SaveData } from "./savedata.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Battle } from "./battle.js";
 import { Tec } from "./tec.js";
-import { Condition } from "./condition.js";
+import { Condition, ConditionType } from "./condition.js";
 import { Sound } from "./sound.js";
 import { Job } from "./job.js";
 
@@ -543,7 +543,7 @@ export namespace Item{
     //
     //-----------------------------------------------------------------
     export const                         ヴァイスドラッグ:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ", info:"HP+20MP+2",
+        constructor(){super({uniqueName:"ヴァイスドラッグ", info:"HP+20 MP+2",
                                 type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 20);
@@ -552,7 +552,7 @@ export namespace Item{
         })}
     };
     export const                         ヴァイスドラッグ2:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ2", info:"HP+30MP+3",
+        constructor(){super({uniqueName:"ヴァイスドラッグ2", info:"HP+30 MP+3",
                                 type:ItemType.MP回復, rank:2, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 30);
@@ -562,7 +562,7 @@ export namespace Item{
         toString(){return "ヴァイスドラッグⅡ";}
     };
     export const                         ヴァイスドラッグ3:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ3", info:"HP+50MP+5",
+        constructor(){super({uniqueName:"ヴァイスドラッグ3", info:"HP+50 MP+5",
                                 type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 50);
@@ -572,7 +572,7 @@ export namespace Item{
         toString(){return "ヴァイスドラッグⅢ";}
     };
     export const                         ヴァイスドラッグ4:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ4", info:"HP+100MP+10",
+        constructor(){super({uniqueName:"ヴァイスドラッグ4", info:"HP+100 MP+10",
                                 type:ItemType.MP回復, rank:6, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 100);
@@ -582,7 +582,7 @@ export namespace Item{
         toString(){return "ヴァイスドラッグⅣ";}
     };
     export const                         ヴァイスドラッグ5:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ5", info:"HP+200MP+20",
+        constructor(){super({uniqueName:"ヴァイスドラッグ5", info:"HP+200 MP+20",
                                 type:ItemType.MP回復, rank:7, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 200);
@@ -592,7 +592,7 @@ export namespace Item{
         toString(){return "ヴァイスドラッグⅤ";}
     };
     export const                         ヴァイスドラッグ6:Item = new class extends Item{
-        constructor(){super({uniqueName:"ヴァイスドラッグ6", info:"HP+400MP+40",
+        constructor(){super({uniqueName:"ヴァイスドラッグ6", info:"HP+400 MP+40",
                                 type:ItemType.MP回復, rank:8, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     await itemHealHP(target, 400);
@@ -618,10 +618,47 @@ export namespace Item{
                                 use:async(user,target)=>target.removeCondition(Condition.眠),
         })}
     };
+    export const                         レンチ:Item = new class extends Item{
+        constructor(){super({uniqueName:"レンチ", info:"＜鎖＞状態を解除する",
+                                type:ItemType.状態, rank:2, drop:ItemDrop.BOX,
+                                use:async(user,target)=>target.removeCondition(Condition.鎖),
+        })}
+    };
     export const                         石溶け水:Item = new class extends Item{
         constructor(){super({uniqueName:"石溶け水", info:"＜石＞状態を解除する",
                                 type:ItemType.状態, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE,
                                 use:async(user,target)=>target.removeCondition(Condition.石),
+        })}
+    };
+    export const                         ワクチン:Item = new class extends Item{
+        constructor(){super({uniqueName:"ワクチン", info:"＜病気＞状態を解除する",
+                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>target.removeCondition(Condition.病気),
+        })}
+    };
+    export const                         攻撃力回復薬:Item = new class extends Item{
+        constructor(){super({uniqueName:"攻撃力回復薬", info:"＜攻撃低下＞状態を解除する",
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>target.removeCondition(Condition.攻撃低下),
+        })}
+    };
+    export const                         防御力回復薬:Item = new class extends Item{
+        constructor(){super({uniqueName:"防御力回復薬", info:"＜防御低下＞状態を解除する",
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>target.removeCondition(Condition.防御低下),
+        })}
+    };
+    export const                         パーフェクトパフォーマンス:Item = new class extends Item{
+        constructor(){super({uniqueName:"パーフェクトパフォーマンス", info:"＜暴走・契約＞以外の強化・弱体状態を解除する",
+                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>{
+                                    for(const type of ConditionType.values){
+                                        const c = target.getCondition(type);
+                                        if(c !== Condition.暴走 && c !== Condition.契約){
+                                            target.removeCondition(type);
+                                        }
+                                    }
+                                },
         })}
     };
     export const                         火の尻尾:Item = new class extends Item{
