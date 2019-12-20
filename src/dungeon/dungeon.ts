@@ -501,7 +501,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影リリア";
-            e.img = new Img("img/unit/riria.png");
+            e.img = new Img("img/unit/ex_riria.png");
             e.prm(Prm.MAX_HP).base = 120;
         };
         async dungeonClearEvent(){
@@ -536,7 +536,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ハインリヒ";
-            e.img = new Img("img/unit/haine.png");
+            e.img = new Img("img/unit/ex_haine.png");
             e.prm(Prm.MAX_HP).base = 250;
         };
         async dungeonClearEvent(){
@@ -569,7 +569,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊運命兄さん";
-            e.img = new Img("img/unit/unmei.png");
+            e.img = new Img("img/unit/ex_unmei.png");
             e.prm(Prm.MAX_HP).base = 280;
         };
         async dungeonClearEvent(){
@@ -597,7 +597,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊ガニュメート";
-            e.img = new Img("img/unit/unmei.png");
+            e.img = new Img("img/unit/ex_ganyu.png");
             e.prm(Prm.MAX_HP).base = 350;
         };
         async dungeonClearEvent(){
@@ -625,7 +625,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.格闘家.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影トレジャー";
-            e.img = new Img("img/unit/trager.png");
+            e.img = new Img("img/unit/ex_trager.png");
             e.prm(Prm.MAX_HP).base = 500;
         };
         async dungeonClearEvent(){
@@ -661,7 +661,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ユキエモン";
-            e.img = new Img("img/unit/yukiemon.png");
+            e.img = new Img("img/unit/ex_yukiemon.png");
             e.prm(Prm.MAX_HP).base = 1050;
         };
         async dungeonClearEvent(){
@@ -693,7 +693,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影フィガロ";
-            e.img = new Img("img/unit/figaro.png");
+            e.img = new Img("img/unit/ex_figaro.png");
             e.prm(Prm.MAX_HP).base = 1500;
         };
         async dungeonClearEvent(){
@@ -708,7 +708,7 @@ export namespace Dungeon{
                                 rank:4, enemyLv:28, au:166, btn:[DungeonArea.中央島, new Rect(0.35, 0.15, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.力の指輪],
                                 exItems:    ()=>[Eq.アンチェーンベルト],
-                                trendItems: ()=>[],
+                                trendItems: ()=>[Item.肉],
         });}
         isVisible = ()=>Dungeon.塔6665階.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -721,7 +721,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影バンバ・エンヤ";
-            e.img = new Img("img/unit/yukiemon.png");
+            e.img = new Img("img/unit/ex_banba.png");
             e.prm(Prm.MAX_HP).base = 2350;
         };
         async dungeonClearEvent(){
@@ -752,7 +752,7 @@ export namespace Dungeon{
     //         let e = Unit.enemies[0];
     //         Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
     //         e.name = "幻影魔王";
-    //         e.img = new Img("img/unit/yukiemon.png");
+    //         e.img = new Img("img/unit/ex_maou.png");
     //         e.prm(Prm.MAX_HP).base = 2500;
     //     };
     //     async dungeonClearEvent(){
@@ -799,7 +799,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影オーロラ";
-            e.img = new Img("img/unit/orora.png");
+            e.img = new Img("img/unit/ex_orora.png");
             e.prm(Prm.MAX_HP).base = 150;
         };
         async dungeonClearEvent(){
@@ -828,7 +828,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ジレンマ";
-            e.img = new Img("img/unit/jirenma.png");
+            e.img = new Img("img/unit/ex_jirenma.png");
             e.prm(Prm.MAX_HP).base = 250;
         };
         async dungeonClearEvent(){
@@ -857,7 +857,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊VBS";
-            e.img = new Img("img/unit/vbs2.png");
+            e.img = new Img("img/unit/ex_vbs2.png");
             e.prm(Prm.MAX_HP).base = 330;
         };
         async dungeonClearEvent(){
@@ -886,7 +886,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "ティル王";
-            e.img = new Img("img/unit/tilou.png");
+            e.img = new Img("img/unit/ex_tilou.png");
             e.prm(Prm.MAX_HP).base = 350;
         };
         async dungeonClearEvent(){
@@ -921,7 +921,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ニュース";
-            e.img = new Img("img/unit/news.png");
+            e.img = new Img("img/unit/ex_news.png");
             e.prm(Prm.MAX_HP).base = 250;
         };
         async dungeonClearEvent(){
@@ -951,7 +951,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影パンドラ";
-            e.img = new Img("img/unit/pandora.png");
+            e.img = new Img("img/unit/ex_pandora.png");
             e.prm(Prm.MAX_HP).base = 300;
         };
         async dungeonClearEvent(){
@@ -980,7 +980,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影オルガ";
-            e.img = new Img("img/unit/orga.png");
+            e.img = new Img("img/unit/ex_orga.png");
             e.prm(Prm.MAX_HP).base = 600;
         };
         async dungeonClearEvent(){
@@ -1011,7 +1011,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体オルガ";
-            e.img = new Img("img/unit/orga.png");
+            e.img = new Img("img/unit/ex_orga2.png");
             e.prm(Prm.MAX_HP).base = 800;
         };
         async dungeonClearEvent(){
@@ -1045,7 +1045,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.天使.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影キキツキ";
-            e.img = new Img("img/unit/kiki.png");
+            e.img = new Img("img/unit/ex_kiki.png");
             e.prm(Prm.MAX_HP).base = 700;
         };
         async dungeonClearEvent(){
@@ -1073,7 +1073,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "魔鳥ぱと";
-            e.img = new Img("img/unit/hato.png");
+            e.img = new Img("img/unit/ex_hato.png");
             e.prm(Prm.MAX_HP).base = 800;
         };
         async dungeonClearEvent(){
@@ -1104,7 +1104,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "新王ブレッシュ";
-            e.img = new Img("img/unit/bresh.png");
+            e.img = new Img("img/unit/ex_bresh.png");
             e.prm(Prm.MAX_HP).base = 800;
         };
         async dungeonClearEvent(){
