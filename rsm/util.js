@@ -116,4 +116,5 @@ export var Flag;
         return res;
     };
     Flag_1.story_Kabe0 = create("story_Kabe0");
+    Flag_1.yuki_beastOnly = create("yuki_beastOnly");
 })(Flag || (Flag = {}));

@@ -631,6 +631,7 @@ export class PUnit extends Unit{
     private jobLvs = new Map<Job,{lv:number, exp:number}>();
     private masteredTecs = new Map<Tec,boolean>();
 
+    
     constructor(readonly player:Player){
         super();
 

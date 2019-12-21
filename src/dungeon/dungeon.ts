@@ -8,7 +8,7 @@ import { Tec } from "../tec.js";
 import { Item } from "../item.js";
 import { Num } from "../mix.js";
 import { Eq } from "../eq.js";
-import { Util } from "../util.js";
+import { Util, Flag } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
@@ -734,6 +734,12 @@ export namespace Dungeon{
             }
             if(this.dungeonClearCount === 2){
                 await Story2.runMain24();
+
+                Player.一号.join();
+                Player.雪.join();
+                Player.雪.ins.job = Job.ペガサス;
+                Flag.yuki_beastOnly.done = true;
+
             }
         }
     };

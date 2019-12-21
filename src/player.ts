@@ -4,6 +4,7 @@ import { Job } from "./job.js";
 import { Eq } from "./eq.js";
 import { Img } from "./graphics/texture.js";
 import { SaveData } from "./savedata.js";
+import { Flag } from "./util.js";
 
 
 
@@ -151,10 +152,16 @@ export namespace Player{
         }
     };
     export const             雪 = new class extends Player{
+        private uma:Img;
+        private hito:Img;
+
         constructor(){super("雪", "♂");}
         createInner(p:PUnit){
+            this.uma = Job.ペガサス.img;
+            this.hito = new Img("img/unit/p_yuki.png");
+
             p.job = Job.鎖使い;
-            p.img = new Img("img/unit/p_yuki.png");
+            p.img = this.hito;
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -172,8 +179,22 @@ export namespace Player{
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
         setJobChangeList(map:Map<Job,true>){
-            map.set(Job.鎖使い, true);
-            setDefJobChangeList(map, this.ins);
+            if(Flag.yuki_beastOnly){
+                map.set(Job.ペガサス, true);
+                setBeastJobChangeList(map, this.ins);
+            }else{
+                map.set(Job.鎖使い, true);
+                setDefJobChangeList(map, this.ins);
+            }
+        }
+        get ins(){
+            const _ins = super.ins;
+            if(Flag.yuki_beastOnly){
+                _ins.img = this.uma;
+            }else{
+                _ins.img = this.hito;
+            }
+            return _ins;
         }
     };
     export const             ベガ = new class extends Player{

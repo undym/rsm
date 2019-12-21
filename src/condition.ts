@@ -95,7 +95,7 @@ export namespace Condition{
     export const             練:Condition = new class extends Condition{
         constructor(){super("練", ConditionType.GOOD_LV1);}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type === TecType.格闘){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
                 
                 Util.msg.set("＞練");
                 dmg.pow.mul *= (1 + attacker.getConditionValue(this) * 0.5)

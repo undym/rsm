@@ -12,7 +12,7 @@ import { Job } from "../job.js";
 import { Unit, Prm } from "../unit.js";
 import { Item } from "../item.js";
 import { Eq } from "../eq.js";
-import { Util } from "../util.js";
+import { Util, Flag } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
 import { Player } from "../player.js";
 import { choice } from "../undym/random.js";
@@ -780,6 +780,10 @@ Dungeon.musicCount = 0;
                 }
                 if (this.dungeonClearCount === 2) {
                     yield Story2.runMain24();
+                    Player.一号.join();
+                    Player.雪.join();
+                    Player.雪.ins.job = Job.ペガサス;
+                    Flag.yuki_beastOnly.done = true;
                 }
             });
         }
