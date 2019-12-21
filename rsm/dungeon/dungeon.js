@@ -331,7 +331,7 @@ export class Dungeon {
                 Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`);
                 yield cwait();
                 Sound.rare.play();
-                const value = 5 + (this.dungeonClearCount / 10) | 0;
+                const value = 4 + (this.dungeonClearCount / 10) | 0;
                 Item.ささやかな贈り物.add(value);
                 yield wait();
             }

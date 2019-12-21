@@ -103,6 +103,8 @@ export class OptionScene extends Scene {
             center: () => "export",
             push: elm => {
                 this.removeElements();
+                Util.msg.set("セーブデータを出力します");
+                Util.msg.set("文字列をどうにかコピーしてどうにかファイルに保存してください");
                 const encoded = new TextEncoder().encode(SaveData.export());
                 let save = "";
                 for (const e of encoded) {
@@ -130,6 +132,7 @@ export class OptionScene extends Scene {
             center: () => "import",
             push: (() => {
                 this.removeElements();
+                Util.msg.set("出力されたセーブデータを入力します");
                 let readText;
                 const a = document.createElement("textarea");
                 a.id = "importText";
