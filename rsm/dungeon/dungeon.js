@@ -259,6 +259,9 @@ export class Dungeon {
                 if (tmp.beast && !this.args.beast) {
                     continue;
                 }
+                if (tmp.ghost && !this.args.ghost) {
+                    continue;
+                }
                 return tmp;
             }
         }
@@ -1097,7 +1100,7 @@ Dungeon.musicCount = 0;
                 rank: 3, enemyLv: 10, au: 250, btn: [DungeonArea.月, new Rect(0.70, 0.6, 0.3, 0.1)],
                 treasures: () => [Eq.魔法使いのミトン],
                 exItems: () => [Eq.弓弓弓弓],
-                trendItems: () => [Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                trendItems: () => [Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油, Item.ロウ],
                 beast: true,
             });
             this.isVisible = () => Dungeon.聖なる洞窟.dungeonClearCount >= 1;
@@ -1138,7 +1141,7 @@ Dungeon.musicCount = 0;
                 rank: 2, enemyLv: 21, au: 250, btn: [DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
                 treasures: () => [Eq.魔ヶ玉],
                 exItems: () => [Eq.水晶の指輪],
-                trendItems: () => [Item.蛍草のエキス, Item.水, Item.シェイクスピア分子2],
+                trendItems: () => [Item.蛍草のエキス, Item.水, Item.シェイクスピア分子2, Item.シェイクスピア分子1],
             });
             this.isVisible = () => Dungeon.月狼の森.dungeonClearCount >= 1;
             this.setBossInner = () => {
@@ -1173,7 +1176,7 @@ Dungeon.musicCount = 0;
                 rank: 4, enemyLv: 23, au: 300, btn: [DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                 treasures: () => [Eq.水晶の手首飾り],
                 exItems: () => [Item.ホークマンの血],
-                trendItems: () => [Item.燃える髪, Item.ワクチン],
+                trendItems: () => [Item.燃える髪, Item.ワクチン, Item.太陽の欠片, Item.うんち],
             });
             this.isVisible = () => Dungeon.古マーザン森.dungeonClearCount >= 1;
             this.setBossInner = () => {
@@ -1211,7 +1214,7 @@ Dungeon.musicCount = 0;
                 rank: 6, enemyLv: 25, au: 350, btn: [DungeonArea.古マーザン, new Rect(0.1, 0.05, 0.3, 0.1)],
                 treasures: () => [Eq.エスペラント],
                 exItems: () => [Item.精霊使いの血],
-                trendItems: () => [Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス],
+                trendItems: () => [Item.エレタの絵の具, Item.エレタクレヨン, Item.カンバス, Item.清龍, Item.烈火, Item.あらくれ剣],
             });
             this.isVisible = () => Dungeon.魔鳥の岩壁.dungeonClearCount >= 1;
             this.setBossInner = () => {
@@ -1259,7 +1262,8 @@ Dungeon.musicCount = 0;
                 rank: 0, enemyLv: 0, au: 222, btn: [DungeonArea.冥界, new Rect(0.4, 0.2, 0.3, 0.1)],
                 treasures: () => [Eq.洗浄の腕輪],
                 exItems: () => [Eq.アングラの泥腕輪],
-                trendItems: () => [Item.肉],
+                trendItems: () => [Item.肉, Item.失った思い出, Item.血粉末, Item.バッタ, Item.かんな],
+                ghost: true,
             });
             this.isVisible = () => true;
             this.setBossInner = () => {
@@ -1282,6 +1286,9 @@ Dungeon.musicCount = 0;
             });
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
+                // if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_kabe0.done){
+                // Flag.story_kabe0.done = true;
+                // }
             });
         }
     };

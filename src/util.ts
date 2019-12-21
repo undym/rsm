@@ -140,3 +140,30 @@ export class SceneType{
         Scene.load( DungeonScene.ins );
     });
 }
+
+
+
+export namespace Flag{
+    class Flag{
+        done = false;
+    
+        constructor(readonly uniqueName:string){
+        }
+    }
+
+    const _values:Flag[] = [];
+    export const values = ():ReadonlyArray<Flag>=> _values;
+
+    // const _valueOf = new Map<string,Flag>();
+    // export const valueOf = (uniqueName:string):Flag|undefined=> _valueOf.get(uniqueName);
+
+    const create = (uniqueName:string):Flag=>{
+        const res = new Flag(uniqueName);
+        _values.push(res);
+        return res;
+    };
+
+
+    export const  story_Kabe0
+        = create("story_Kabe0");
+}

@@ -1173,12 +1173,13 @@ ActiveTec._valueOf = new Map();
     // };
     //--------------------------------------------------------------------------
     //
+    //-神格Passive
     //暗黒Active
     //
     //--------------------------------------------------------------------------
     Tec.暗黒剣 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "暗黒剣", info: "一体に暗黒攻撃　攻撃後反動ダメージ",
+            super({ uniqueName: "暗黒剣", info: "一体に暗黒攻撃  攻撃後反動ダメージ",
                 sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1,
             });
@@ -1202,7 +1203,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.吸血 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "吸血", info: "相手からHPを吸収　暗黒依存",
+            super({ uniqueName: "吸血", info: "相手からHPを吸収  暗黒依存",
                 sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
                 mul: 0.5, num: 1, hit: 1.1, mp: 2,
             });
@@ -1223,7 +1224,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.VAMPIRE_VLOODY_STAR = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "VAMPIRE_VLOODY_STAR", info: "敵全体からHPを吸収　暗黒依存",
+            super({ uniqueName: "VAMPIRE_VLOODY_STAR", info: "敵全体からHPを吸収  暗黒依存",
                 sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
                 mul: 0.5, num: 1, hit: 1.1, ep: 1,
             });
@@ -1235,8 +1236,57 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**敵:孤独のクグワ. */
+    Tec.死のエネルギー = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "死のエネルギー", info: "一体に暗黒攻撃  HP-10%",
+                sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                Util.msg.set("＞反動");
+                const cdmg = new Dmg({
+                    absPow: attacker.hp * 0.1,
+                    types: ["反撃"],
+                });
+                FX_格闘(attacker.imgCenter);
+                yield attacker.doDmg(cdmg);
+                yield wait();
+            });
+        }
+    };
+    /**敵:絶望のクグワ. */
+    Tec.自虐 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "自虐", info: "自分に暗黒値x2のダメージを与え、相手一体に同ダメージを与える",
+                sort: TecSort.暗黒, type: TecType.暗黒, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const dmg = new Dmg({
+                    absPow: attacker.prm(Prm.DRK).total * 2,
+                    types: ["反撃"],
+                });
+                attacker.doDmg(dmg);
+                target.doDmg(dmg);
+                Sound.DARK.play();
+                FX_格闘(attacker.imgCenter);
+                FX_格闘(target.imgCenter);
+                yield wait();
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-暗黒Active
     //暗黒Passive
     //
     //--------------------------------------------------------------------------
@@ -1259,7 +1309,7 @@ ActiveTec._valueOf = new Map();
     };
     Tec.宵闇 = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "宵闇", info: "暗黒攻撃+100%　最大HP-50%",
+            super({ uniqueName: "宵闇", info: "暗黒攻撃+100%  最大HP-50%",
                 sort: TecSort.暗黒, type: TecType.暗黒,
             });
         }
@@ -1273,6 +1323,25 @@ ActiveTec._valueOf = new Map();
         equip(u) {
             return __awaiter(this, void 0, void 0, function* () {
                 u.prm(Prm.MAX_HP).eq -= u.prm(Prm.MAX_HP).base * 0.5;
+            });
+        }
+    };
+    /**敵:絶望のクグワ. */
+    Tec.憑依 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "憑依", info: "攻撃してきた相手のHPを10%削る",
+                sort: TecSort.暗黒, type: TecType.暗黒,
+            });
+        }
+        afterBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Util.msg.set("＞憑依");
+                const counter = new Dmg({
+                    absPow: target.hp * 0.1 + 1,
+                    types: ["反撃"],
+                });
+                yield target.doDmg(counter);
+                yield wait();
             });
         }
     };

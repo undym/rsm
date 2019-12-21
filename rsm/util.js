@@ -98,3 +98,22 @@ SceneType.BATTLE = new SceneType("BATTLE", () => {
     Dungeon.now.playMusic("dungeon");
     Scene.load(DungeonScene.ins);
 });
+export var Flag;
+(function (Flag_1) {
+    class Flag {
+        constructor(uniqueName) {
+            this.uniqueName = uniqueName;
+            this.done = false;
+        }
+    }
+    const _values = [];
+    Flag_1.values = () => _values;
+    // const _valueOf = new Map<string,Flag>();
+    // export const valueOf = (uniqueName:string):Flag|undefined=> _valueOf.get(uniqueName);
+    const create = (uniqueName) => {
+        const res = new Flag(uniqueName);
+        _values.push(res);
+        return res;
+    };
+    Flag_1.story_Kabe0 = create("story_Kabe0");
+})(Flag || (Flag = {}));

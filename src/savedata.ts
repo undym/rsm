@@ -6,7 +6,7 @@ import { Player } from "./player.js";
 import { Tec, PassiveTec, ActiveTec } from "./tec.js";
 import { Job } from "./job.js";
 import { ConditionType, Condition } from "./condition.js";
-import { PlayData, SceneType, Util } from "./util.js";
+import { PlayData, SceneType, Util, Flag } from "./util.js";
 import { Color } from "./undym/type.js";
 import { Mix } from "./mix.js";
 import { PartySkill } from "./partyskill.js";
@@ -622,6 +622,11 @@ const storagePlayData = (type:ioType, json:any)=>{
 
     ioInt(type, json, "SoundVolume", Sound.getVolume("sound"), load=> Sound.setVolume("sound", load));
     ioInt(type, json, "MusicVolume", Sound.getVolume("music"), load=> Sound.setVolume("music", load));
+
+    const flagObj = ioObject(type, json, "Flag");
+    for(const flag of Flag.values()){
+        ioBool(type, flagObj, flag.uniqueName, flag.done, load=> flag.done = load);
+    }
 };
 
 const storageCollectingSkill = (type:ioType, json:any):void=>{

@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { EUnit, Prm } from "./unit.js";
+import { EUnit, Prm, Unit } from "./unit.js";
 import { Tec } from "./tec.js";
 import { EqPos, Eq } from "./eq.js";
 import { choice, randomInt } from "./undym/random.js";
@@ -79,6 +79,7 @@ export class Job {
     }
     get lvupExp() { return this.args.lvupExp; }
     get beast() { return this.args.beast ? this.args.beast : false; }
+    get ghost() { return this.args.ghost ? this.args.ghost : false; }
     toString() { return this.args.uniqueName; }
     get maxLv() { return 20; }
     setEnemy(e, lv) {
@@ -118,6 +119,11 @@ Job._values = [];
 Job._valueOf = new Map();
 Job.DEF_LVUP_EXP = 10;
 (function (Job) {
+    //------------------------------------------------------------------
+    //
+    //人間
+    //
+    //------------------------------------------------------------------
     Job.訓練生 = new class extends Job {
         constructor() {
             super({ uniqueName: "訓練生", info: "",
@@ -671,6 +677,7 @@ Job.DEF_LVUP_EXP = 10;
     };
     //--------------------------------------------------
     //
+    //-人間
     //獣
     //
     //--------------------------------------------------
@@ -857,6 +864,39 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.殴る, Tec.溶ける, Tec.溶ける, Tec.罪, Tec.心];
+        }
+    };
+    //------------------------------------------------------
+    //-獣
+    //ゴースト
+    //------------------------------------------------------
+    Job.絶望のクグワ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "絶望のクグワ", info: "敵専用ジョブ",
+                appearLv: 0, img: new Img("img/unit/unit116.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [],
+                learningTecs: () => [],
+                ghost: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.死のエネルギー, Tec.憑依];
+        }
+    };
+    Job.孤独のクグワ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "孤独のクグワ", info: "敵専用ジョブ",
+                appearLv: 0, img: new Img("img/unit/unit117.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [],
+                learningTecs: () => [],
+                ghost: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.自虐];
+            Unit.setCondition(e, Condition.病気, e.prm(Prm.DRK).total + 1, true);
         }
     };
 })(Job || (Job = {}));
