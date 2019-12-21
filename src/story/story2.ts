@@ -606,6 +606,131 @@ export namespace Story2{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第26話『暗雲の始まる場所』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
+    //ハデスの腹クリア
+    export const runMain27 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_nana  = new Img("img/face/p_nana.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic32.jpg"),
+            [
+                [f_empty,  "",        "ジスロフとナナが歩いていると、紫死草の茂みから音が聞こえた。"],
+                [f_jisrof, "ジスロフ","「何かいる･･･」"],
+                [f_empty,  "",        "ジスロフが警戒しながら茂みの中を覗こうとすると、中から幽霊猫が飛び出してきた。"],
+                [f_empty,  "",        "見ると、幽霊猫の口には小さな白い鳥がくわえられていた。"],
+                [f_empty,  "",        "ナナは、ゆっくりと幽霊猫に近づくと、口から鳥を取り出した。"],
+                [f_nana,   "ナナ",    "「ジスロフ、この鳥、まだ生きてるよ」"],
+                [f_jisrof, "ジスロフ","「ん･･･？」"],
+                [f_empty,  "",        "白い鳥は、ナナの掌の上でゆっくりと起き上がり、ナナの顔を見つめた。"],
+            ]
+        );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第27話『白い鳥』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    //魂人の廃都クリア
+    export const runMain28 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_syao  = new Img("img/face/p_syao.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_nana  = new Img("img/face/p_nana.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            Img.empty,
+            [
+                [f_syao,   "小鬼",    "「･･･ははーん、緑の髪に、桜色の獣耳･･･」"],
+                [f_syao,   "小鬼",    "「美奈枢様の言った通りだ」"],
+                [f_empty,  "",        "ジスロフ達の後から声が聞こえた。"],
+                [f_empty,  "",        "見ると、ジスロフ達の後方上空４メートルほどの空中に、少年が両足から紫の炎を出しながら浮遊していた。"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic33.jpg"),
+            [
+                [f_jisrof, "ジスロフ","「誰だ･･･」"],
+                [f_syao,   "小鬼",    "「俺はシャオグイ、あんた達を殺しにきたんだけど」"],
+                [f_jisrof, "ジスロフ","「誰の差しがねだ、冥界王朝か」"],
+                [f_syao,   "小鬼",    "「あったりぃ」"],
+                [f_syao,   "小鬼",    "「美奈枢様が、界王様の邪魔になるからあんた達を殺せってさ」"],
+                [f_jisrof, "ジスロフ","「美奈枢･･･」"],
+                [f_syao,   "小鬼",    "「生首だけあればいいらしいから、切らせてもらえる？」"],
+                [f_jisrof, "ジスロフ","「ナナ･･･気をつけろ」"],
+                [f_nana,   "ナナ",    "「うん･･･」"],
+            ]
+        );
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第28話『紫の刺客』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    //ハデスの口クリア
+    export const runMain29 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_syao  = new Img("img/face/p_syao.jpg");
+        const f_vinus  = new Img("img/face/p_vinus.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic34.jpg"),
+            [
+                [f_empty,  "",        "･･･王朝宮のとある一室にて･･･"],
+                [f_vinus,  "美奈枢",  "「･･･シャオグイか」"],
+                [f_empty,  "",        "寝台で眠りについていた美奈枢の目がゆっくり開いた。"],
+                [f_syao,   "小鬼",    "「へへ、美奈枢様には絶対気づかれちゃうなー」"],
+                [f_empty,  "",        "寝台の脇の暗闇から、小鬼の体が幽霊のように浮かび上がり実体化した。"],
+                [f_vinus,  "美奈枢",  "「･･･？･･･、血の臭いがしないぞ」"],
+                [f_syao,   "小鬼",    "「聞いてよ、美奈枢様っ、あの獣耳の男･･･」"],
+                [f_empty,  "",        "美奈枢は布団をどけ寝台から降りると、小鬼の目の前まで行き、右の頬を力強くぶった。"],
+                [f_empty,  "",        "室内にバシンッという音が散った。"],
+                [f_vinus,  "美奈枢",  "「何故殺さなかった、殺せと言ったはずだ」"],
+                [f_syao,   "小鬼",    "「だ･･･、だって･･･」"],
+                [f_empty,  "",        "小鬼の目に、いっぱいの涙が浮かんだ。"],
+                [f_syao,   "小鬼",    "「･･･あいつ凄く強いんだっ、強くて･･･もっと遊びたくなったんだ･･･」"],
+                [f_vinus,  "美奈枢",  "「甘くみるな･･･、奴はチュルホロ王族だ」"],
+                [f_vinus,  "美奈枢",  "「今は臥竜界王様の力のおかげで、羅文の真の力を発揮できないでいるだろう」"],
+                [f_vinus,  "美奈枢",  "「だが、臥竜界王様の力がいつまでもあると思うな」"],
+                [f_syao,   "小鬼",    "「大丈夫だよっ･･･、あいつは強いけど･･･、それにその羅文とかっていう力を出しても、俺に勝てるわけがないよっ！」"],
+                [f_vinus,  "美奈枢",  "「シャオグイ･･･」"],
+                [f_vinus,  "美奈枢",  "「確かにおまえは強い･･･」"],
+                [f_empty,  "",        "小鬼は美奈枢の口から強いと言われ、嬉しそうな顔をした。"],
+                [f_vinus,  "美奈枢",  "「･･･だがおまえの精神はまだ幼い」"],
+                [f_empty,  "",        "小鬼の顔から笑みが消える。"],
+                [f_vinus,  "美奈枢",  "「･･･その子供心が･･･、いつかおまえの命取りになる･･･」"],
+                [f_syao,   "小鬼",    "「俺は･･･強い･･･」"],
+                [f_empty,  "",        "小鬼は俯いて涙をふきながら呟いた。"],
+                [f_syao,   "小鬼",    "「美奈枢様･･････」"],
+                [f_syao,   "小鬼",    "「俺は･･･」"],
+                [f_syao,   "小鬼",    "「俺は･･･、強いんだよおおおおおお･･･！！！！！！」"],
+                [f_empty,  "",        "小鬼が叫び声をあげると共に、小鬼の髪の毛は逆立ち、全身から紫の炎が吹き出た。"],
+                [f_vinus,  "美奈枢",  "「もうじき、奴はここまでくるだろう」"],
+                [f_vinus,  "美奈枢",  "「次こそ、殺すんだ･･･」"],
+            ]
+        );
+        /*
+                [f_empty,  "",        ""],
+                [f_syao,   "小鬼",    ""],
+                [f_vinus,  "美奈枢",  ""],
+        */
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第29話『小鬼の涙』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
 }
 /*
         const f_empty  = new Img("img/face/p_rs.jpg");
@@ -629,8 +754,10 @@ export namespace Story2{
         const f_exe  = new Img("img/face/p_exe.jpg");
         const f_yoruko  = new Img("img/face/p_yoruko.jpg");
         const f_jiyuu  = new Img("img/face/p_jiyuu.jpg");
+        const f_syao  = new Img("img/face/p_syao.jpg");
+        const f_vinus  = new Img("img/face/p_vinus.jpg");
 
-    export const runMain26 = async()=>{
+    export const runMain28 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();

@@ -1181,5 +1181,70 @@ export namespace Dungeon{
     //         await super.dungeonClearEvent();
     //     }
     // };
+    // export const                         魂人の廃都:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"魂人の廃都", info:"",
+    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[],
+    //                             trendItems: ()=>[],
+    //     });}
+    //     isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "底主";
+    //         e.prm(Prm.MAX_HP).base = 400;
+    //     };
+    //     setExInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "霊体ブリザード";
+    //         e.img = new Img("img/unit/ex_bli.png");
+    //         e.prm(Prm.MAX_HP).base = 700;
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //     }
+    // };
+    // export const                         小鬼:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"小鬼", info:"",
+    //                             rank:0, enemyLv:0, au:1, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[],
+    //                             trendItems: ()=>[],
+    //     });}
+    //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "底主";
+    //         e.prm(Prm.MAX_HP).base = 400;
+    //     };
+    //     setExInner = ()=>{
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //     }
+    // };
+    // export const                         ハデスの口:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"ハデスの口", info:"",
+    //                             rank:0, enemyLv:0, au:1, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
+    //                             treasures:  ()=>[],
+    //                             exItems:    ()=>[],
+    //                             trendItems: ()=>[],
+    //     });}
+    //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "底主";
+    //         e.prm(Prm.MAX_HP).base = 400;
+    //     };
+    //     setExInner = ()=>{
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //     }
+    // };
 }
 

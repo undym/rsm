@@ -537,6 +537,12 @@ export namespace Item{
                                 use:async(user,target)=>await itemHealMP(target, 10),
         })}
     };
+    export const                         紫死草:Item = new class extends Item{
+        constructor(){super({uniqueName:"紫死草", info:"MP+20",
+                                type:ItemType.MP回復, rank:6, drop:ItemDrop.BOX,
+                                use:async(user,target)=>await itemHealMP(target, 20),
+        })}
+    };
     //-----------------------------------------------------------------
     //
     //
@@ -1930,6 +1936,10 @@ export namespace Item{
     };
     export const                         ブレインうさぎ:Item = new class extends Item{
         constructor(){super({uniqueName:"ブレインうさぎ", info:"あたまのいいうさぎちゃん....食べるとお腹+27",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.FISHING})}
+    };
+    export const                         幽霊猫:Item = new class extends Item{
+        constructor(){super({uniqueName:"幽霊猫", info:"",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.FISHING})}
     };
     export const                         魂のない子:Item = new class extends Item{

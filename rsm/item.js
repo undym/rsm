@@ -574,6 +574,14 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.紫死草 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "紫死草", info: "MP+20",
+                type: ItemType.MP回復, rank: 6, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 20); }),
+            });
+        }
+    };
     //-----------------------------------------------------------------
     //
     //
@@ -2400,6 +2408,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.ブレインうさぎ = new class extends Item {
         constructor() {
             super({ uniqueName: "ブレインうさぎ", info: "あたまのいいうさぎちゃん....食べるとお腹+27",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.FISHING });
+        }
+    };
+    Item.幽霊猫 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "幽霊猫", info: "",
                 type: ItemType.素材, rank: 4, drop: ItemDrop.FISHING });
         }
     };
