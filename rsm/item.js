@@ -1637,6 +1637,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.メモ, rank: 9, drop: ItemDrop.BOX, numLimit: 1 });
         }
     };
+    Item.練盾のメモ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "練盾のメモ", info: "「＜練＞状態は格闘・神格・鎖術・銃攻撃を強化する。＜盾＞状態はそれらを軽減する」と書かれている",
+                type: ItemType.メモ, rank: 1, drop: ItemDrop.BOX, numLimit: 1 });
+        }
+        toString() { return "＜練＞＜盾＞のメモ"; }
+    };
     Item.合成許可証 = new class extends Item {
         constructor() {
             super({ uniqueName: "合成許可証", info: "「合成してもいいよ」と書かれている",
