@@ -131,10 +131,10 @@ export class OptionScene extends Scene{
                 a.readOnly = true;
                 a.value = save;
                 a.style.position = "fixed";
-                a.style.top = "0vh";
+                a.style.top = "10vh";
                 a.style.left = "50vw";
                 a.style.width = "50vw";
-                a.style.height = "30vh";
+                a.style.height = "20vh";
                 a.onclick = ev=>{
                     a.setSelectionRange(0, save.length);
                 };
