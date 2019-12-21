@@ -671,6 +671,20 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ペガサス. */
+    Tec.角 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "角", info: "一体に鎖値を加えた格闘攻撃x2",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 2, num: 1, hit: 1, tp: 2,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base += attacker.prm(Prm.CHN).total;
+            return dmg;
+        }
+    };
     /**無習得技. */
     Tec.格闘カウンター = new class extends ActiveTec {
         constructor() {
@@ -687,6 +701,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-格闘Active
     //格闘Passive
     //
     //--------------------------------------------------------------------------
@@ -923,6 +938,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-格闘Passive
     //槍Active
     //
     //--------------------------------------------------------------------------
@@ -937,6 +953,13 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-槍Active
+    //槍Passive
+    //
+    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //-槍Passive
     //魔法Active
     //
     //--------------------------------------------------------------------------
@@ -1570,6 +1593,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-怨霊Passive
     //鎖術Active
     //
     //--------------------------------------------------------------------------
@@ -1593,6 +1617,25 @@ ActiveTec._valueOf = new Map();
     //--------------------------------------------------------------------------
     //
     //-鎖術Active
+    //練術Passive
+    //
+    //--------------------------------------------------------------------------
+    /**ペガサス. */
+    Tec.練ファクト = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "練ファクト", info: "行動開始時、鎖+3%",
+                sort: TecSort.鎖術, type: TecType.鎖術,
+            });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.prm(Prm.CHN).battle += unit.prm(Prm.CHN).get("base", "eq");
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //-鎖術Passive
     //過去Active
     //
     //--------------------------------------------------------------------------
@@ -3413,6 +3456,34 @@ ActiveTec._valueOf = new Map();
                 Sound.KAIFUKU.play();
                 Util.msg.set("最大HPMPTPx2！");
                 yield wait();
+            });
+        }
+    };
+    /**ペガサス. */
+    Tec.ペガサスダンス = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ペガサスダンス", info: "味方全員のHP+10%  対面の敵にその回復値分のダメージ",
+                sort: TecSort.回復, type: TecType.回復, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, mp: 5,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.KAIFUKU.play();
+                for (const party of attacker.searchUnits("party")) {
+                    const value = party.prm(Prm.MAX_HP).total * 0.1;
+                    Unit.healHP(party, value);
+                    FX_回復(party.imgCenter);
+                    Util.msg.set(`${party.name}のHPが${value}回復！`, Color.GREEN.bright);
+                    for (const enemy of party.searchUnits("faceToFace")) {
+                        const dmg = new Dmg({
+                            absPow: value,
+                        });
+                        enemy.doDmg(dmg);
+                        FX_鎖術(party.imgCenter, enemy.imgCenter);
+                        Util.msg.add(`${enemy.name}に${value}のダメージ`, Color.RED.bright);
+                    }
+                }
             });
         }
     };
