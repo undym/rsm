@@ -813,7 +813,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.月狼 = new class extends Job {
         constructor() {
             super({ uniqueName: "月狼", info: "",
-                appearLv: 95, img: new Img("img/unit/unit109.png"),
+                appearLv: 35, img: new Img("img/unit/unit109.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 1,
                 growthPrms: () => [[Prm.STR, 2]],
                 learningTecs: () => [Tec.噛みつく, Tec.回避UP, Tec.練気],
@@ -827,7 +827,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.アイス = new class extends Job {
         constructor() {
             super({ uniqueName: "アイス", info: "",
-                appearLv: 115, img: new Img("img/unit/unit110.png"),
+                appearLv: 45, img: new Img("img/unit/unit110.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
                 growthPrms: () => [[Prm.STR, 2]],
                 learningTecs: () => [Tec.コールドブレス, Tec.防御, Tec.かばう],
@@ -855,7 +855,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.ブルージェリー = new class extends Job {
         constructor() {
             super({ uniqueName: "ブルージェリー", info: "",
-                appearLv: 70, img: new Img("img/unit/unit112.png"),
+                appearLv: 10, img: new Img("img/unit/unit112.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 2,
                 growthPrms: () => [[Prm.MAX_HP, 4]],
                 learningTecs: () => [Tec.溶ける, Tec.罪, Tec.心],
@@ -864,6 +864,20 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.殴る, Tec.溶ける, Tec.溶ける, Tec.罪, Tec.心];
+        }
+    };
+    Job.ペガサス = new class extends Job {
+        constructor() {
+            super({ uniqueName: "ペガサス", info: "",
+                appearLv: 60, img: new Img("img/unit/unit115.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.STR, 1], [Prm.CHN, 1], [Prm.ARR, 1]],
+                learningTecs: () => [Tec.角, Tec.空中浮遊, Tec.ペガサスダンス, Tec.練ファクト],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.角, Tec.角, Tec.空中浮遊, Tec.ペガサスダンス, Tec.練ファクト];
         }
     };
     //------------------------------------------------------
