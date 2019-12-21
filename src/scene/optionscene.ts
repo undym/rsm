@@ -39,7 +39,15 @@ export class OptionScene extends Scene{
         super.add(Place.DUNGEON_DATA, Util.msg);
         
         super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.BTN, this.list);
+        super.add(Place.LIST_TYPE, this.list);
+
+        super.add(Place.LIST_BTN,
+            new Btn("<<", ()=>{
+                Sound.system.play();
+                this.runReturn();
+            })
+        );
+        
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
 
@@ -241,12 +249,6 @@ export class OptionScene extends Scene{
             });
         }
 
-        this.list.add({
-            center:()=>"<<",
-            push:elm=>{
-                this.runReturn();
-            },
-        });
     }
 
     private setReadyDeleteSaveData(){

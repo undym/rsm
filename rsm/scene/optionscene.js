@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Scene } from "../undym/scene.js";
 import { Place, Util, Debug, PlayData } from "../util.js";
+import { Btn } from "../widget/btn.js";
 import { List } from "../widget/list.js";
 import { EffectTest } from "../fx/fx.js";
 import { Item, ItemType } from "../item.js";
@@ -29,7 +30,11 @@ export class OptionScene extends Scene {
         super.clear();
         super.add(Place.DUNGEON_DATA, Util.msg);
         super.add(Place.YEN, DrawYen.ins);
-        super.add(Place.BTN, this.list);
+        super.add(Place.LIST_TYPE, this.list);
+        super.add(Place.LIST_BTN, new Btn("<<", () => {
+            Sound.system.play();
+            this.runReturn();
+        }));
         super.add(Place.P_BOX, DrawSTBoxes.players);
         super.add(Place.MAIN, DrawUnitDetail.ins);
         this.setDefList();
@@ -210,12 +215,6 @@ export class OptionScene extends Scene {
                 },
             });
         }
-        this.list.add({
-            center: () => "<<",
-            push: elm => {
-                this.runReturn();
-            },
-        });
     }
     setReadyDeleteSaveData() {
         Util.msg.set("セーブデータを削除しますか？");
