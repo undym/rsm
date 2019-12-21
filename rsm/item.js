@@ -11,7 +11,7 @@ import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
-import { FX_Str, FX_回復 } from "./fx/fx.js";
+import { FX_Str, FX_回復, FX_Buff } from "./fx/fx.js";
 import { Targeting, Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
@@ -778,8 +778,48 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
+    Item.天使のファンデュ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "天使のファンデュ", info: "味方全体を＜癒10＞状態にする",
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    FX_Buff(target.imgCenter);
+                    Unit.setCondition(target, Condition.癒, 10);
+                }),
+            });
+        }
+    };
+    Item.悪魔のファンデュ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "悪魔のファンデュ", info: "味方全体を＜体↑10＞(行動開始時最大HP+10%)状態にする",
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    FX_Buff(target.imgCenter);
+                    Unit.setCondition(target, Condition.体力上昇, 10);
+                }),
+            });
+        }
+    };
+    Item.恒星型リュスティック = new class extends Item {
+        constructor() {
+            super({ uniqueName: "恒星型リュスティック", info: "戦闘時、味方全体の最大HP・HPを50増加させる",
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Sound.up.play();
+                    FX_Buff(target.imgCenter);
+                    const value = 50;
+                    target.prm(Prm.MAX_HP).battle += value;
+                    target.hp += value;
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now !== SceneType.BATTLE; }
+    };
     //-----------------------------------------------------------------
     //
+    //-状態
     //ダメージ
     //
     //-----------------------------------------------------------------

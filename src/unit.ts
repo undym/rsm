@@ -37,6 +37,18 @@ class PrmSet{
         if(res < 0){return 0;}
         return res;
     }
+
+    get(...type:("base"|"eq"|"battle")[]):number{
+        let res = 0;
+        for(const t of type){
+            switch(t){
+                case "base"  : res += this.base;    break;
+                case "eq"    : res += this.eq;      break;
+                case "battle": res += this.battle;  break;
+            }
+        }
+        return res > 0 ? res : 0;
+    }
 }
 
 

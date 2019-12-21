@@ -129,6 +129,7 @@ Condition._valueOf = new Map();
             });
         }
     };
+    /**操作不能、勝手に殴る。格闘攻撃倍率x2。*/
     Condition.暴走 = new class extends Condition {
         constructor() { super("暴走", ConditionType.GOOD_LV1); }
         phaseStart(unit, pForce) {
@@ -138,6 +139,23 @@ Condition._valueOf = new Map();
                 yield wait();
                 const targets = Targeting.filter(Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum());
                 yield Tec.殴る.use(unit, targets);
+                unit.addConditionValue(this, -1);
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.mul *= 2;
+                }
+            });
+        }
+    };
+    /**行動開始時最大HP+10% */
+    Condition.体力上昇 = new class extends Condition {
+        constructor() { super("体力上昇", ConditionType.GOOD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.prm(Prm.MAX_HP).battle += unit.prm(Prm.MAX_HP).get("base", "eq") * 0.1;
                 unit.addConditionValue(this, -1);
             });
         }

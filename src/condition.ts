@@ -137,6 +137,7 @@ export namespace Condition{
             }
         }
     };
+    /**操作不能、勝手に殴る。格闘攻撃倍率x2。*/
     export const             暴走:Condition = new class extends Condition{
         constructor(){super("暴走", ConditionType.GOOD_LV1);}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
@@ -146,6 +147,20 @@ export namespace Condition{
             const targets = Targeting.filter( Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum() );
             await Tec.殴る.use(unit, targets);
 
+            unit.addConditionValue(this, -1);
+        }
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.mul *= 2;
+            }
+        }
+    };
+    /**行動開始時最大HP+10% */
+    export const             体力上昇:Condition = new class extends Condition{
+        constructor(){super("体力上昇", ConditionType.GOOD_LV1);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            unit.prm(Prm.MAX_HP).battle += unit.prm(Prm.MAX_HP).get("base","eq") * 0.1;
+            
             unit.addConditionValue(this, -1);
         }
     };

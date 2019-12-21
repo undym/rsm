@@ -40,6 +40,23 @@ class PrmSet {
         }
         return res;
     }
+    get(...type) {
+        let res = 0;
+        for (const t of type) {
+            switch (t) {
+                case "base":
+                    res += this.base;
+                    break;
+                case "eq":
+                    res += this.eq;
+                    break;
+                case "battle":
+                    res += this.battle;
+                    break;
+            }
+        }
+        return res > 0 ? res : 0;
+    }
 }
 export class Prm {
     constructor(_toString) {

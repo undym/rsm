@@ -790,7 +790,7 @@ Dungeon.musicCount = 0;
                 rank: 5, enemyLv: 30, au: 200, btn: [DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
                 treasures: () => [Eq.アンマシンベルト],
                 exItems: () => [Eq.ロングドレスの剣],
-                trendItems: () => [Item.肉, Item.燃える髪],
+                trendItems: () => [Item.肉, Item.燃える髪, Item.石溶け水, Item.恒星型リュスティック],
             });
             this.isVisible = () => Dungeon.塔6666階.dungeonClearCount >= 2;
             this.setBossInner = () => {
