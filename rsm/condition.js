@@ -279,6 +279,8 @@ Condition._valueOf = new Map();
                 }
                 unit.dead = false;
                 Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.45);
+                Util.msg.set(`${unit.name}は生き返った！`);
+                yield wait();
                 unit.addConditionValue(this, -1);
             });
         }

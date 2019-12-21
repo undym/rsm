@@ -609,7 +609,8 @@ export namespace Item{
     };
     //-----------------------------------------------------------------
     //
-    //状態
+    //-回復
+    //状態回復
     //
     //-----------------------------------------------------------------
     export const                         血清:Item = new class extends Item{
@@ -667,6 +668,12 @@ export namespace Item{
                                 },
         })}
     };
+    //-----------------------------------------------------------------
+    //
+    //-状態回復
+    //強化付与
+    //
+    //-----------------------------------------------------------------
     export const                         火の尻尾:Item = new class extends Item{
         constructor(){super({uniqueName:"火の尻尾", info:"一体を＜練＞状態にする",
                                 type:ItemType.状態, rank:1, drop:ItemDrop.BOX,
@@ -700,6 +707,15 @@ export namespace Item{
                                 use:async(user,target)=>{
                                     Sound.up.play();
                                     Unit.setCondition(target, Condition.練, 4);
+                                },
+        })}
+    };
+    export const                         ゆかちゃん保険:Item = new class extends Item{
+        constructor(){super({uniqueName:"ゆかちゃん保険", info:"一体を＜約1＞状態にする",
+                                type:ItemType.状態, rank:7, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    Sound.up.play();
+                                    Unit.setCondition(target, Condition.約束, 1);
                                 },
         })}
     };
@@ -741,7 +757,98 @@ export namespace Item{
     };
     //-----------------------------------------------------------------
     //
-    //-状態
+    //-強化付与
+    //弱体付与
+    //
+    //-----------------------------------------------------------------
+    export const                         ネクロマンス法:Item = new class extends Item{
+        constructor(){super({uniqueName:"ネクロマンス法", info:"一体の最大HPを10%消滅させる(最大99999)",
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+
+
+                                    const lim = 99999;
+                                    let value = target.prm(Prm.MAX_HP).total * 0.1;
+                                    if(value > lim){value = lim;}
+
+                                    target.prm(Prm.MAX_HP).battle -= value;
+                                    
+                                    Sound.DARK.play();
+                                    Util.msg.set(`${target.name}の最大HPが${value|0}消滅した`);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
+    export const                         ネクロマンス真法:Item = new class extends Item{
+        constructor(){super({uniqueName:"ネクロマンス真法", info:"一体の最大HPを20%消滅させる(最大99999)",
+                                type:ItemType.状態, rank:5, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+
+
+                                    const lim = 99999;
+                                    let value = target.prm(Prm.MAX_HP).total * 0.2;
+                                    if(value > lim){value = lim;}
+
+                                    target.prm(Prm.MAX_HP).battle -= value;
+                                    
+                                    Sound.DARK.play();
+                                    Util.msg.set(`${target.name}の最大HPが${value|0}消滅した`);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
+    export const                         八ノ地教裏禁呪:Item = new class extends Item{
+        constructor(){super({uniqueName:"八ノ地教裏禁呪", info:"一体の最大HPを33%消滅させる(最大99999)",
+                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+
+
+                                    const lim = 99999;
+                                    let value = target.prm(Prm.MAX_HP).total * 0.33;
+                                    if(value > lim){value = lim;}
+
+                                    target.prm(Prm.MAX_HP).battle -= value;
+                                    
+                                    Sound.DARK.play();
+                                    Util.msg.set(`${target.name}の最大HPが${value|0}消滅した`);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
+    export const                         エリの願い:Item = new class extends Item{
+        constructor(){super({uniqueName:"エリの願い", info:"一体の最大HPを50%消滅させる(最大99999)",
+                                type:ItemType.状態, rank:7, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+
+
+                                    const lim = 99999;
+                                    let value = target.prm(Prm.MAX_HP).total * 0.5;
+                                    if(value > lim){value = lim;}
+
+                                    target.prm(Prm.MAX_HP).battle -= value;
+                                    
+                                    Sound.DARK.play();
+                                    Util.msg.set(`${target.name}の最大HPが${value|0}消滅した`);
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
+    export const                         子守歌:Item = new class extends Item{
+        constructor(){super({uniqueName:"子守歌", info:"一体を50%の確率で＜眠1＞状態にする",
+                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    if(Math.random() < 0.5){
+                                        Unit.setCondition( target, Condition.眠, 1 );
+                                    }else{
+                                        Util.msg.set("MISS");
+                                    }
+                                },
+        })}
+        canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
+    };
+    //-----------------------------------------------------------------
+    //
+    //-弱体付与
     //ダメージ
     //
     //-----------------------------------------------------------------
@@ -1683,6 +1790,10 @@ export namespace Item{
     export const                         砂:Item = new class extends Item{
         constructor(){super({uniqueName:"砂", info:"",
                                 type:ItemType.素材, rank:0, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         地球のひも:Item = new class extends Item{
+        constructor(){super({uniqueName:"地球のひも", info:"",
+                                type:ItemType.素材, rank:0, drop:ItemDrop.STRATUM})}
     };
     export const                         銅:Item = new class extends Item{
         constructor(){super({uniqueName:"銅", info:"",

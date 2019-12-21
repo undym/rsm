@@ -445,49 +445,49 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         uniqueName: "パワータンク", limit: Mix.LIMIT_INF,
         result: () => [Item.パワータンク, 4],
         materials: () => [[Item.月の石, 1], [Item.アステロイド, 10], [Item.発砲ツル, 10],],
-        isVisible: () => Item.月の石.totalGetCount > 0,
+        isVisible: () => ルインドアースLv14.count > 0 && Item.月の石.totalGetCount > 0,
     });
     const 林式ミサイル = new Mix({
         uniqueName: "林式ミサイル", limit: Mix.LIMIT_INF,
         result: () => [Item.林式ミサイル, 1],
         materials: () => [[Item.黒色火薬, 1], [Item.サングラス, 3],],
-        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv15.count > 0 && Item.黒色火薬.totalGetCount > 0,
     });
     const エボリ製悪魔のミサイル = new Mix({
         uniqueName: "エボリ製悪魔のミサイル", limit: Mix.LIMIT_INF,
         result: () => [Item.エボリ製悪魔のミサイル, 1],
         materials: () => [[Item.黒色火薬, 1], [Item.太陽の欠片, 3],],
-        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv15.count > 0 && Item.黒色火薬.totalGetCount > 0,
     });
     const メフィスト製悪魔のミサイル = new Mix({
         uniqueName: "メフィスト製悪魔のミサイル", limit: Mix.LIMIT_INF,
         result: () => [Item.メフィスト製悪魔のミサイル, 1],
         materials: () => [[Item.黒色火薬, 1], [Item.うんち, 3],],
-        isVisible: () => Item.黒色火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv15.count > 0 && Item.黒色火薬.totalGetCount > 0,
     });
     const 原子爆弾 = new Mix({
         uniqueName: "原子爆弾", limit: Mix.LIMIT_INF,
         result: () => [Item.原子爆弾, 4],
         materials: () => [[Item.B火薬, 1], [Item.太陽の欠片, 4],],
-        isVisible: () => Item.B火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv16.count > 0 && Item.B火薬.totalGetCount > 0,
     });
     const 水素爆弾 = new Mix({
         uniqueName: "水素爆弾", limit: Mix.LIMIT_INF,
         result: () => [Item.水素爆弾, 4],
         materials: () => [[Item.B火薬, 1], [Item.水, 20],],
-        isVisible: () => Item.B火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv16.count > 0 && Item.B火薬.totalGetCount > 0,
     });
     const 重力子爆弾 = new Mix({
         uniqueName: "重力子爆弾", limit: Mix.LIMIT_INF,
         result: () => [Item.重力子爆弾, 4],
         materials: () => [[Item.B火薬, 1], [Item.重力, 2],],
-        isVisible: () => Item.B火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv16.count > 0 && Item.B火薬.totalGetCount > 0,
     });
     const lucifer製量子爆弾 = new Mix({
         uniqueName: "lucifer製量子爆弾", limit: Mix.LIMIT_INF,
         result: () => [Item.lucifer製量子爆弾, 4],
         materials: () => [[Item.B火薬, 1], [Item.重力, 1], [Item.ジスカルド, 1],],
-        isVisible: () => Item.B火薬.totalGetCount > 0,
+        isVisible: () => ルインドアースLv16.count > 0 && Item.B火薬.totalGetCount > 0,
     });
     const 杉材 = new Mix({
         uniqueName: "杉材", limit: Mix.LIMIT_INF,
@@ -551,6 +551,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     //--------------------------------------------------------
     //
+    //-アイテム
     //装備
     //
     //--------------------------------------------------------
@@ -578,4 +579,9 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.イズミミズ, 5], [Item.杉材, 5], [Item.ヒノキ材, 5], [Item.針金, 1]],
         isVisible: () => Item.イスレシピ.totalGetCount > 0,
     });
+    //--------------------------------------------------------
+    //
+    //-装備
+    //
+    //--------------------------------------------------------
 })(Mix || (Mix = {}));

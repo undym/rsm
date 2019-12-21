@@ -739,7 +739,6 @@ export namespace Dungeon{
                 Player.雪.join();
                 Player.雪.ins.job = Job.ペガサス;
                 Flag.yuki_beastOnly.done = true;
-
             }
         }
     };
