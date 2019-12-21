@@ -278,7 +278,7 @@ const title = ()=>{
             Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
         });
         
-        Font.def.draw("RigingStarMobile", new Point(0, 1), Color.WHITE, "lowerLeft");
+        Font.def.draw("RSMobile", new Point(0, 1), Color.WHITE, "lowerLeft");
 
         Input.update();
         setTimeout(loop, 1000 / 60);
