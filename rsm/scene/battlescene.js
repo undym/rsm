@@ -287,6 +287,40 @@ export class BattleScene extends Scene {
                     }));
                 }),
             });
+            list.add({
+                center: () => "逃げる",
+                push: (elm) => __awaiter(this, void 0, void 0, function* () {
+                    choosedTec = undefined;
+                    chooseTargetLayout = ILayout.empty;
+                    const runEscape = () => __awaiter(this, void 0, void 0, function* () {
+                        Battle.result = BattleResult.ESCAPE;
+                        Sound.nigeru.play();
+                        Util.msg.set("逃げた");
+                        yield wait();
+                        yield finish();
+                    });
+                    if (Battle.type === BattleType.EX) {
+                        yield runEscape();
+                        return;
+                    }
+                    else if (Battle.type === BattleType.NORMAL) {
+                        if (Math.random() < 0.6) {
+                            yield runEscape();
+                            return;
+                        }
+                        else {
+                            Util.msg.set("逃げられなかった...");
+                            yield wait();
+                            yield this.phaseEnd();
+                            return;
+                        }
+                    }
+                    else {
+                        Util.msg.set("逃げられない！");
+                        Sound.no.play();
+                    }
+                }),
+            });
             list.setScroll(attacker.tecListScroll, "center");
             btnSpace.clear();
             btnSpace.add(list);

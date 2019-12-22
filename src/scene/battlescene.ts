@@ -347,6 +347,39 @@ export class BattleScene extends Scene{
                 }));
             },
         });
+        list.add({
+            center:()=>"逃げる",
+            push:async elm=>{
+                choosedTec = undefined;
+                chooseTargetLayout = ILayout.empty;
+
+                const runEscape = async()=>{
+                    Battle.result = BattleResult.ESCAPE;
+
+                    Sound.nigeru.play();
+                    Util.msg.set("逃げた"); await wait();
+
+                    await finish();
+                };
+
+                if(Battle.type === BattleType.EX){
+                    await runEscape();
+                    return;
+                }else if(Battle.type === BattleType.NORMAL){
+                    if(Math.random() < 0.6){
+                        await runEscape();
+                        return;
+                    }else{
+                        Util.msg.set("逃げられなかった..."); await wait();
+                        await this.phaseEnd();
+                        return;
+                    }
+                }else{
+                    Util.msg.set("逃げられない！");
+                    Sound.no.play();
+                }
+            },
+        });
 
         list.setScroll( attacker.tecListScroll, "center" );
 

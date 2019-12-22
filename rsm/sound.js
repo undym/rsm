@@ -258,6 +258,7 @@ Sound.gains = [];
     Sound.MAGIC = createSound("sound/MAGIC.mp3");
     /**story. */
     Sound.moji = createSound("sound/moji.mp3");
+    Sound.nigeru = createSound("sound/nigeru.mp3");
     Sound.lazer = createSound("sound/lazer.mp3");
     /**踏破. */
     Sound.lvup = createSound("sound/lvup.mp3");

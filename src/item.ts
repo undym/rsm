@@ -834,11 +834,11 @@ export namespace Item{
         canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now !== SceneType.BATTLE;}
     };
     export const                         子守歌:Item = new class extends Item{
-        constructor(){super({uniqueName:"子守歌", info:"一体を50%の確率で＜眠1＞状態にする",
+        constructor(){super({uniqueName:"子守歌", info:"一体を50%の確率で＜眠2＞状態にする",
                                 type:ItemType.状態, rank:3, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     if(Math.random() < 0.5){
-                                        Unit.setCondition( target, Condition.眠, 1 );
+                                        Unit.setCondition( target, Condition.眠, 2 );
                                     }else{
                                         Util.msg.set("MISS");
                                     }

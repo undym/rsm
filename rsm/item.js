@@ -915,11 +915,11 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.子守歌 = new class extends Item {
         constructor() {
-            super({ uniqueName: "子守歌", info: "一体を50%の確率で＜眠1＞状態にする",
+            super({ uniqueName: "子守歌", info: "一体を50%の確率で＜眠2＞状態にする",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     if (Math.random() < 0.5) {
-                        Unit.setCondition(target, Condition.眠, 1);
+                        Unit.setCondition(target, Condition.眠, 2);
                     }
                     else {
                         Util.msg.set("MISS");

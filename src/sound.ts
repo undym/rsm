@@ -305,6 +305,7 @@ export namespace Sound{
     export const MAGIC      = createSound("sound/MAGIC.mp3");
     /**story. */
     export const moji       = createSound("sound/moji.mp3");
+    export const nigeru     = createSound("sound/nigeru.mp3");
     export const lazer      = createSound("sound/lazer.mp3");
     /**踏破. */
     export const lvup       = createSound("sound/lvup.mp3");
