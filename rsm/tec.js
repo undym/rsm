@@ -20,6 +20,7 @@ import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";
 import { EqPos, Eq } from "./eq.js";
+import { Player } from "./player.js";
 export class TecSort {
     constructor(name) {
         this.name = name;
@@ -2836,7 +2837,12 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).battle += 10);
+                for (const u of Unit.players) {
+                    if (u.player === Player.ナナ) {
+                        [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).battle += 10);
+                        break;
+                    }
+                }
             });
         }
         whenAnyoneDead(me, deadUnit) {

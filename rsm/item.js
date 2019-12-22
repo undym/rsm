@@ -1831,6 +1831,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
         }
     };
+    Item.トマト = new class extends Item {
+        constructor() {
+            super({ uniqueName: "トマト", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX });
+        }
+    };
     Item.エレタクレヨン = new class extends Item {
         constructor() {
             super({ uniqueName: "エレタクレヨン", info: "おえかきしようね",
@@ -1961,6 +1967,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
+    //-素材
     //TREE
     //
     //-----------------------------------------------------------------
@@ -2009,6 +2016,12 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.発砲ツル = new class extends Item {
         constructor() {
             super({ uniqueName: "発砲ツル", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.TREE });
+        }
+    };
+    Item.合板 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "合板", info: "",
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
@@ -2086,33 +2099,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
+    //-TREE
     //加工木材
     //
     //-----------------------------------------------------------------
-    Item.杉材 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "杉材", info: "",
-                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
-        }
-    };
-    Item.ヒノキ材 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ヒノキ材", info: "",
-                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
-        }
-    };
-    Item.竹材 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "竹材", info: "",
-                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
-        }
-    };
-    Item.合板 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "合板", info: "",
-                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
-        }
-    };
     Item.サクラ材 = new class extends Item {
         constructor() {
             super({ uniqueName: "サクラ材", info: "",
@@ -2148,6 +2138,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 0, drop: ItemDrop.BOX | ItemDrop.STRATUM | ItemDrop.FOSSIL });
         }
     };
+    Item.針金 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "針金", info: "",
+                type: ItemType.素材, rank: 0, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.鉄 = new class extends Item {
         constructor() {
             super({ uniqueName: "鉄", info: "",
@@ -2158,6 +2154,18 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "土", info: "",
                 type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.ガラス = new class extends Item {
+        constructor() {
+            super({ uniqueName: "ガラス", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.銅板 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "銅板", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
     Item.粘土 = new class extends Item {
@@ -2226,6 +2234,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 7, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.エレクトラム = new class extends Item {
+        constructor() {
+            super({ uniqueName: "エレクトラム", info: "",
+                type: ItemType.素材, rank: 7, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
     Item.ジスカルド = new class extends Item {
         constructor() {
             super({ uniqueName: "ジスカルド", info: "",
@@ -2240,38 +2254,21 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
+    //-STRATUM
     //加工金属
     //
     //-----------------------------------------------------------------
-    Item.針金 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "針金", info: "",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    Item.ガラス = new class extends Item {
-        constructor() {
-            super({ uniqueName: "ガラス", info: "",
-                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
-        }
-    };
-    Item.銅板 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "銅板", info: "",
-                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
-        }
-    };
-    Item.エレクトラム = new class extends Item {
-        constructor() {
-            super({ uniqueName: "エレクトラム", info: "",
-                type: ItemType.素材, rank: 7, drop: ItemDrop.BOX });
-        }
-    };
     //-----------------------------------------------------------------
     //
     //FOSSIL
     //
     //-----------------------------------------------------------------
+    Item.岩塩 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "岩塩", info: "",
+                type: ItemType.素材, rank: 1, drop: ItemDrop.BOX | ItemDrop.FOSSIL });
+        }
+    };
     Item.アステロイド = new class extends Item {
         constructor() {
             super({ uniqueName: "アステロイド", info: "",

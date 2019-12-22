@@ -793,7 +793,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:10, au:100, btn:[DungeonArea.黒地域, new Rect(0.7, 0.5, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔性のマント],
                                 exItems:    ()=>[Eq.妖魔の手],
-                                trendItems: ()=>[Item.バッタ, Item.クワ, Item.銅, Item.鉄],
+                                trendItems: ()=>[Item.バッタ, Item.クワ, Item.銅, Item.鉄, Item.銅板],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
         isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount >= 1;
@@ -823,7 +823,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:12, au:150, btn:[DungeonArea.黒地域, new Rect(0.2, 0.6, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉の手首飾り],
                                 exItems:    ()=>[Eq.無色の靴],
-                                trendItems: ()=>[Item.鉄, Item.銅, Item.バーミキュライト, Item.血清],
+                                trendItems: ()=>[Item.鉄, Item.銅板, Item.バーミキュライト, Item.血清, Item.ガラス],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
         isVisible = ()=>Dungeon.黒平原.dungeonClearCount >= 1;
@@ -945,7 +945,7 @@ export namespace Dungeon{
                                 rank:1, enemyLv:3, au:150, btn:[DungeonArea.月, new Rect(0.45, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.チェーンベルト],
                                 exItems:    ()=>[Eq.アメーバリング],
-                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油, Item.松],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
                                 beast:true,
         });}
@@ -1041,7 +1041,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:21, au:250, btn:[DungeonArea.古マーザン, new Rect(0.5, 0, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.魔ヶ玉],
                                 exItems:    ()=>[Eq.水晶の指輪],
-                                trendItems: ()=>[Item.蛍草のエキス, Item.水, Item.シェイクスピア分子2, Item.シェイクスピア分子1],
+                                trendItems: ()=>[Item.蛍草のエキス, Item.水, Item.シェイクスピア分子2, Item.シェイクスピア分子1, Item.桜],
         });}
         isVisible = ()=>Dungeon.月狼の森.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -1069,7 +1069,7 @@ export namespace Dungeon{
                                 rank:4, enemyLv:23, au:300, btn:[DungeonArea.古マーザン, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.水晶の手首飾り],
                                 exItems:    ()=>[Item.ホークマンの血],
-                                trendItems: ()=>[Item.燃える髪, Item.ワクチン, Item.太陽の欠片, Item.うんち],
+                                trendItems: ()=>[Item.燃える髪, Item.ワクチン, Item.太陽の欠片, Item.うんち, Item.ガラス],
         });}
         isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -1163,9 +1163,13 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
 
-            // if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_kabe0.done){
-                // Flag.story_kabe0.done = true;
-            // }
+            /*
+            if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_kabe0.done){
+                Flag.story_kabe0.done = true;
+                Story3.runKabe0();
+                Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 5);
+            }
+            */
         }
     };
     // export const                         ハデスの腹:Dungeon = new class extends Dungeon{
@@ -1173,7 +1177,7 @@ export namespace Dungeon{
     //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
     //                             treasures:  ()=>[],
     //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[Item.肉],
+    //                             trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
     //     });}
     //     isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
     //     setBossInner = ()=>{
@@ -1191,6 +1195,11 @@ export namespace Dungeon{
     //     };
     //     async dungeonClearEvent(){
     //         await super.dungeonClearEvent();
+                // if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
+                    // Flag.story_Kabe1.done = true;
+                    // Story3.runKabe1();
+                    // Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
+                // }
     //     }
     // };
     // export const                         魂人の廃都:Dungeon = new class extends Dungeon{
@@ -1198,7 +1207,7 @@ export namespace Dungeon{
     //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
     //                             treasures:  ()=>[],
     //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[],
+    //                             trendItems: ()=>[Item.合板],
     //     });}
     //     isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1;
     //     setBossInner = ()=>{
@@ -1216,6 +1225,11 @@ export namespace Dungeon{
     //     };
     //     async dungeonClearEvent(){
     //         await super.dungeonClearEvent();
+                // if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
+                    // Flag.story_Kabe2.done = true;
+                    // Story3.runKabe2();
+                    // Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
+                // }
     //     }
     // };
     // export const                         小鬼:Dungeon = new class extends Dungeon{

@@ -166,6 +166,8 @@ export namespace Flag{
 
     export const  story_Kabe0
         = create("story_Kabe0");
+    export const  story_Kabe1
+        = create("story_Kabe1");
 
     export const  yuki_beastOnly
         = create("yuki_beastOnly");

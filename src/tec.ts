@@ -13,6 +13,7 @@ import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";
 import { EqPos, Eq } from "./eq.js";
+import { Player } from "./player.js";
 
 
 
@@ -2358,7 +2359,12 @@ export namespace Tec{
                                 sort:TecSort.強化, type:TecType.その他,
         });}
         async battleStart(unit:Unit){
-            [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).battle += 10);
+            for(const u of Unit.players){
+                if(u.player === Player.ナナ){
+                    [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).battle += 10);
+                    break;
+                }
+            }
         }
         async whenAnyoneDead(me:Unit, deadUnit:Unit){
             Tec.かばう.whenAnyoneDead(me, deadUnit);
