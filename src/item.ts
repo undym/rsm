@@ -639,29 +639,103 @@ export namespace Item{
     };
     export const                         ワクチン:Item = new class extends Item{
         constructor(){super({uniqueName:"ワクチン", info:"＜病気＞状態を解除する",
-                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX,
                                 use:async(user,target)=>target.removeCondition(Condition.病気),
+        })}
+    };
+    export const                         発砲フィセル:Item = new class extends Item{
+        constructor(){super({uniqueName:"発砲フィセル", info:"＜命中低下＞状態を解除する",
+                                type:ItemType.状態, rank:3, drop:ItemDrop.BOX,
+                                use:async(user,target)=>target.removeCondition(Condition.命中低下),
         })}
     };
     export const                         攻撃力回復薬:Item = new class extends Item{
         constructor(){super({uniqueName:"攻撃力回復薬", info:"＜攻撃低下＞状態を解除する",
-                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX,
                                 use:async(user,target)=>target.removeCondition(Condition.攻撃低下),
         })}
     };
     export const                         防御力回復薬:Item = new class extends Item{
         constructor(){super({uniqueName:"防御力回復薬", info:"＜防御低下＞状態を解除する",
-                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX,
                                 use:async(user,target)=>target.removeCondition(Condition.防御低下),
+        })}
+    };
+    export const                         精神安定剤:Item = new class extends Item{
+        constructor(){super({uniqueName:"精神安定剤", info:"＜暴走＞状態を解除する",
+                                type:ItemType.状態, rank:4, drop:ItemDrop.BOX,
+                                use:async(user,target)=>target.removeCondition(Condition.暴走),
+        })}
+    };
+    export const                         空の涙:Item = new class extends Item{
+        constructor(){super({uniqueName:"空の涙", info:"＜契約＞以外のLV1状態異常を解除する",
+                                type:ItemType.状態, rank:5, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>{
+                                    const type = ConditionType.BAD_LV1;
+                                    const c = target.getCondition(type);
+                                    if(c !== Condition.契約){
+                                        target.removeCondition(type);
+                                    }
+                                },
+        })}
+    };
+    export const                         地の涙:Item = new class extends Item{
+        constructor(){super({uniqueName:"地の涙", info:"LV2状態異常を解除する",
+                                type:ItemType.状態, rank:5, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>{
+                                    const type = ConditionType.BAD_LV2;
+                                    const c = target.getCondition(type);
+                                    if(c !== Condition.契約){
+                                        target.removeCondition(type);
+                                    }
+                                },
+        })}
+    };
+    export const                         妖精の涙:Item = new class extends Item{
+        constructor(){super({uniqueName:"妖精の涙", info:"LV3状態異常を解除する",
+                                type:ItemType.状態, rank:5, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>{
+                                    const type = ConditionType.BAD_LV3;
+                                    const c = target.getCondition(type);
+                                    if(c !== Condition.契約){
+                                        target.removeCondition(type);
+                                    }
+                                },
         })}
     };
     export const                         パーフェクトパフォーマンス:Item = new class extends Item{
         constructor(){super({uniqueName:"パーフェクトパフォーマンス", info:"＜暴走・契約＞以外の強化・弱体状態を解除する",
-                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
                                     for(const type of ConditionType.values){
                                         const c = target.getCondition(type);
                                         if(c !== Condition.暴走 && c !== Condition.契約){
+                                            target.removeCondition(type);
+                                        }
+                                    }
+                                },
+        })}
+    };
+    export const                         天使の涙:Item = new class extends Item{
+        constructor(){super({uniqueName:"天使の涙", info:"＜契約＞以外の弱体状態を解除する",
+                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX | ItemDrop.LAKE,
+                                use:async(user,target)=>{
+                                    for(const type of ConditionType.badConditions()){
+                                        const c = target.getCondition(type);
+                                        if(c !== Condition.契約){
+                                            target.removeCondition(type);
+                                        }
+                                    }
+                                },
+        })}
+    };
+    export const                         解除コードのメモ:Item = new class extends Item{
+        constructor(){super({uniqueName:"解除コードのメモ", info:"＜暴走＞以外の強化状態を解除する",
+                                type:ItemType.状態, rank:6, drop:ItemDrop.BOX,
+                                use:async(user,target)=>{
+                                    for(const type of ConditionType.goodConditions()){
+                                        const c = target.getCondition(type);
+                                        if(c !== Condition.暴走){
                                             target.removeCondition(type);
                                         }
                                     }
