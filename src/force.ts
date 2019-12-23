@@ -4,6 +4,7 @@ import { choice } from "./undym/random.js";
 
 export class Force{
     equip(unit:Unit){};
+    /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async deadPhaseStart(unit:Unit){}

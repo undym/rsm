@@ -105,7 +105,7 @@ export class BattleScene extends Scene {
                             u.prm(prm).battle = 0;
                         }
                     }
-                    for (const u of Unit.all) {
+                    for (const u of Unit.all.filter(u => u.exists)) {
                         u.battleStart();
                     }
                     yield this.phaseEnd();

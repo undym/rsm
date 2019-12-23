@@ -765,6 +765,9 @@ EqEar._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 Unit.setCondition(unit, Condition.毒, unit.prm(Prm.LV).total, true);
             });
         }
@@ -923,6 +926,9 @@ EqEar._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 unit.setCondition(Condition.盾, 1);
             });
         }

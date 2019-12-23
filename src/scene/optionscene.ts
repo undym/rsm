@@ -126,9 +126,13 @@ export class OptionScene extends Scene{
                 const encoded = new TextEncoder().encode( SaveData.export() );
                 let save = "";
                 for(const e of encoded){
-                    save += e.toString(36) + "+";
+                    //2桁区切りでエンコードされたものを書き込んでいく
+                    //1桁のものは左を"+"で埋める
+                    const e36 = e.toString(36);
+                    if(e36.length < 2)  {save += "+"+e36;}
+                    else                {save += e36;}
                 }
-                save = save.substring(0, save.length-1);
+
                 const a = document.createElement("textarea");
                 a.id = "export";
                 a.readOnly = true;
@@ -152,9 +156,6 @@ export class OptionScene extends Scene{
         this.list.add({
             center:()=>"import",
             push:(()=>{
-                this.removeElements();
-
-                Util.msg.set("出力されたセーブデータを入力します");
 
                 let readText:string|undefined;
     
@@ -222,11 +223,15 @@ export class OptionScene extends Scene{
                         return;
                     }
     
-                    const split = readText.split("+");
-                    const arr = new Uint8Array( split.length );
-                    for(let i = 0; i < arr.length; i++){
-                        arr[i] = Number.parseInt( split[i], 36 );
+                    const arr = new Uint8Array( readText.length / 2 );
+                    for(let i = 0; i < readText.length; i+=2){
+                        const sp = readText.substring(i, i+2);
+
+                        const index = (i / 2)|0;
+                        if(sp.substring(0,1) === "+")   {arr[index] = Number.parseInt(sp.substring(1,2), 36);}//桁数を合わせるために付けた"+"を外す
+                        else                            {arr[index] = Number.parseInt(sp, 36);}
                     }
+
                     const decoded = new TextDecoder().decode(arr);
                     if(SaveData.load(decoded)){
                         Util.msg.set("import成功");
@@ -237,6 +242,8 @@ export class OptionScene extends Scene{
                 return async(elm:ListElm)=>{
                     this.removeElements();
     
+                    Util.msg.set("出力されたセーブデータを入力します");
+
                     document.body.appendChild(a);
                     document.body.appendChild(inputParent);
                     document.body.appendChild(runImport);

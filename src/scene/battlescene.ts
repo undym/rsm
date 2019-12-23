@@ -133,7 +133,7 @@ export class BattleScene extends Scene{
                     }
                 }
 
-                for(const u of Unit.all){
+                for(const u of Unit.all.filter(u=> u.exists)){
                     u.battleStart();
                 }
 

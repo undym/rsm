@@ -638,6 +638,8 @@ export namespace Eq{
                                 pos:EqPos.手, lv:19});}
                                 
         async battleStart(unit:Unit){
+            if(unit.dead){return;}
+            
             Unit.setCondition( unit, Condition.毒, unit.prm(Prm.LV).total, true );
         }
     }
@@ -758,6 +760,8 @@ export namespace Eq{
         constructor(){super({uniqueName:"安全靴", info:"戦闘開始時<盾>化",
                                 pos:EqPos.脚, lv:10});}
         async battleStart(unit:Unit){
+            if(unit.dead){return;}
+            
             unit.setCondition( Condition.盾, 1 );
         }
     }

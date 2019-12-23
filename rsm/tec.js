@@ -919,6 +919,9 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 unit.prm(Prm.STR).battle += (unit.prm(Prm.STR).base + unit.prm(Prm.STR).eq) * 0.5;
                 Unit.setCondition(unit, Condition.防御低下, 4);
             });
@@ -933,6 +936,9 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 Unit.setCondition(unit, Condition.暴走, 3, true);
             });
         }
@@ -2837,6 +2843,9 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 for (const u of Unit.players) {
                     if (u.player === Player.ナナ) {
                         [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm => unit.prm(prm).battle += 10);
@@ -2890,6 +2899,9 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 const value = unit.prm(Prm.MAX_HP).total * 0.2;
                 unit.prm(Prm.MAX_HP).battle += value;
                 Unit.healHP(unit, value);
@@ -2905,6 +2917,9 @@ ActiveTec._valueOf = new Map();
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
                 const targets = unit.searchUnits("party").filter(u => u !== unit);
                 for (const t of targets) {
                     const value = t.prm(Prm.MAX_HP).total * 0.1;

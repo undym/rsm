@@ -10,6 +10,7 @@ import { choice } from "./undym/random.js";
 export class Force {
     equip(unit) { }
     ;
+    /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
