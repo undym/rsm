@@ -342,6 +342,7 @@ export class Unit {
     phaseStart(pForce) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseStart(this, pForce); })); });
     }
+    attackNum(action, aForce) { this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.attackNum(action, this, aForce); })); }
     beforeDoAtk(action, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeDoAtk(action, this, target, dmg); })); });
     }
@@ -739,7 +740,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
     for (let i = 0; i < 10; i++) {
         let tec = choice(activeTecs);
         if (tec.checkCost(attacker)) {
-            let targets = Targeting.filter(tec.targetings, attacker, targetCandidates, tec.rndAttackNum());
+            let targets = Targeting.filter(tec.targetings, attacker, targetCandidates, tec.rndAttackNum(attacker));
             if (targets.length === 0) {
                 continue;
             }
@@ -747,7 +748,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
     }
-    Tec.殴る.use(attacker, Targeting.filter(Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum()));
+    Tec.殴る.use(attacker, Targeting.filter(Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum(attacker)));
 });
 (function (Unit) {
     class FXFont {

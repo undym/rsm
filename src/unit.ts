@@ -3,7 +3,7 @@ import { Util, PlayData } from "./util.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
-import { Dmg, Force, Action, Targeting, PhaseStartForce } from "./force.js";
+import { Dmg, Force, Action, Targeting, PhaseStartForce, AttackNumForce } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -381,6 +381,7 @@ export abstract class Unit{
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
     async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
+    attackNum(action:Action, aForce:AttackNumForce)         {this.force(async f=> await f.attackNum(action, this, aForce));}
     async beforeDoAtk(action:Action, target:Unit, dmg:Dmg)  {await this.force(async f=> await f.beforeDoAtk(action, this, target, dmg));}
     async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
     async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(this, dmg));}
@@ -776,14 +777,14 @@ export class EUnit extends Unit{
         for(let i = 0; i < 10; i++){
             let tec = choice( activeTecs );
             if(tec.checkCost(attacker)){
-                let targets = Targeting.filter( tec.targetings, attacker, targetCandidates, tec.rndAttackNum() );
+                let targets = Targeting.filter( tec.targetings, attacker, targetCandidates, tec.rndAttackNum(attacker) );
                 if(targets.length === 0){continue;}
                 await tec.use( attacker, targets );
                 return;
             }
         }
 
-        Tec.殴る.use( attacker, Targeting.filter( Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum() ) );
+        Tec.殴る.use( attacker, Targeting.filter( Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum(attacker) ) );
     };
 
     yen:number = 0;

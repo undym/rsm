@@ -20,6 +20,7 @@ export class Force {
     deadPhaseStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
+    attackNum(action, unit, aForce) { }
     beforeDoAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
@@ -58,6 +59,13 @@ export class PhaseStartForce {
     constructor() {
         this.phaseSkip = false;
     }
+}
+export class AttackNumForce {
+    constructor(base) {
+        this.base = base;
+        this.add = 0;
+    }
+    get total() { return (this.base + this.add) | 0; }
 }
 export class Dmg {
     constructor(args) {

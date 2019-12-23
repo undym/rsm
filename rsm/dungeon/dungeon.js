@@ -1341,9 +1341,10 @@ Dungeon.musicCount = 0;
     // export const                         魂人の廃都:Dungeon = new class extends Dungeon{
     //     constructor(){super({uniqueName:"魂人の廃都", info:"",
     //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[Item.合板],
+    //                             treasures:  ()=>[Eq.暖かい布],
+    //                             exItems:    ()=>[Eq.クピドの指輪],
+    //                             trendItems: ()=>[Item.合板, Item.ネクロマンス法, Item.子守歌],
+    //                             ghost:true,
     //     });}
     //     isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1;
     //     setBossInner = ()=>{
@@ -1374,6 +1375,7 @@ Dungeon.musicCount = 0;
     //                             treasures:  ()=>[],
     //                             exItems:    ()=>[],
     //                             trendItems: ()=>[],
+    //                             ghost:true,
     //     });}
     //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
     //     setBossInner = ()=>{
@@ -1394,6 +1396,7 @@ Dungeon.musicCount = 0;
     //                             treasures:  ()=>[],
     //                             exItems:    ()=>[],
     //                             trendItems: ()=>[],
+    //                             ghost:true,
     //     });}
     //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
     //     setBossInner = ()=>{

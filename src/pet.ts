@@ -60,7 +60,7 @@ export class Pet extends Force{
         for(let i = 0; i < 10; i++){
             const tec = choice( tecs );
             if(tec.checkCost(summoner)){
-                const targets = Targeting.filter( tec.targetings, summoner, Unit.all, tec.rndAttackNum() );
+                const targets = Targeting.filter( tec.targetings, summoner, Unit.all, tec.rndAttackNum( summoner ) );
                 if(targets.length === 0){return;}
     
                 Util.msg.set(`${this.toString()}の[${tec}]`, Color.D_GREEN.bright); await wait();

@@ -258,7 +258,7 @@ export class BattleScene extends Scene{
                             ){
                                 list.freeze(true);
                                 Util.msg.set(`＞${targets[0].name}を選択`);
-                                await tec.use(attacker, new Array<Unit>( tec.rndAttackNum() ).fill( targets[0] ));
+                                await tec.use(attacker, new Array<Unit>( tec.rndAttackNum( attacker ) ).fill( targets[0] ));
                                 await this.phaseEnd();
                             }else{
                                 choosedTec = undefined;
@@ -271,7 +271,7 @@ export class BattleScene extends Scene{
                     }else{
                         list.freeze(true);
                         let targets:Unit[] = [];
-                        targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum() ) );
+                        targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum( attacker ) ) );
                         await tec.use(attacker, targets);
                         await this.phaseEnd();
                     }

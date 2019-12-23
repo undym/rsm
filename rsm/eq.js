@@ -598,6 +598,7 @@ EqEar._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-体
     //腰
     //
     //--------------------------------------------------------------------------
@@ -916,6 +917,19 @@ EqEar._valueOf = new Map();
                     Unit.setCondition(unit, Condition.回避, 1);
                 }
             });
+        }
+    };
+    /**魂人の廃都EX. */
+    Eq.クピドの指輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "クピドの指輪", info: "ガルダ・ヤクシャ・キンナラ回数+1",
+                pos: EqPos.指, lv: 200 });
+        }
+        attackNum(action, unit, aForce) {
+            if (action instanceof ActiveTec
+                && (action === Tec.ガルダ || action === Tec.ヤクシャ || action === Tec.キンナラ)) {
+                aForce.add += 1;
+            }
         }
     };
     // /**塔地下二百階の門財宝. */

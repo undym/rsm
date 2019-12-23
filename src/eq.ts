@@ -1,4 +1,4 @@
-import { Force, Dmg, Action, PhaseStartForce } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, AttackNumForce } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
@@ -518,6 +518,7 @@ export namespace Eq{
     }
     //--------------------------------------------------------------------------
     //
+    //-体
     //腰
     //
     //--------------------------------------------------------------------------
@@ -746,6 +747,19 @@ export namespace Eq{
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
             if(Math.random() < 0.3){
                 Unit.setCondition( unit, Condition.回避, 1 );
+            }
+        }
+    }
+    /**魂人の廃都EX. */
+    export const                         クピドの指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"クピドの指輪", info:"ガルダ・ヤクシャ・キンナラ回数+1",
+                                pos:EqPos.指, lv:200});}
+        attackNum(action:Action, unit:Unit, aForce:AttackNumForce){
+            if(
+                   action instanceof ActiveTec
+                && (action === Tec.ガルダ || action === Tec.ヤクシャ || action === Tec.キンナラ)
+            ){
+                aForce.add += 1;
             }
         }
     }

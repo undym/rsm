@@ -8,6 +8,7 @@ export class Force{
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async deadPhaseStart(unit:Unit){}
+    attackNum(action:Action, unit:Unit, aForce:AttackNumForce){}
     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     /**ダメージを受ける直前、calc()された後に通る. */
@@ -28,6 +29,16 @@ export class Force{
 
 export class PhaseStartForce{
     phaseSkip:boolean = false;
+}
+
+export class AttackNumForce{
+    add = 0;
+
+    constructor(public base:number){
+
+    }
+
+    get total(){return (this.base + this.add)|0;}
 }
 
 export type DmgType = "毒"|"反射"|"反撃"|"ペット"|"罠";

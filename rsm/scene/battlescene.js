@@ -203,7 +203,7 @@ export class BattleScene extends Scene {
                                     || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
                                     list.freeze(true);
                                     Util.msg.set(`＞${targets[0].name}を選択`);
-                                    yield tec.use(attacker, new Array(tec.rndAttackNum()).fill(targets[0]));
+                                    yield tec.use(attacker, new Array(tec.rndAttackNum(attacker)).fill(targets[0]));
                                     yield this.phaseEnd();
                                 }
                                 else {
@@ -216,7 +216,7 @@ export class BattleScene extends Scene {
                         else {
                             list.freeze(true);
                             let targets = [];
-                            targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum()));
+                            targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum(attacker)));
                             yield tec.use(attacker, targets);
                             yield this.phaseEnd();
                         }

@@ -137,7 +137,7 @@ Condition._valueOf = new Map();
                 pForce.phaseSkip = true;
                 Util.msg.set(`${unit.name}は暴走している...`);
                 yield wait();
-                const targets = Targeting.filter(Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum());
+                const targets = Targeting.filter(Tec.殴る.targetings, unit, Unit.all, Tec.殴る.rndAttackNum(unit));
                 yield Tec.殴る.use(unit, targets);
                 unit.addConditionValue(this, -1);
             });

@@ -1,7 +1,7 @@
 import { Unit, Prm, PUnit, EUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Force, Dmg, Targeting, Action, PhaseStartForce } from "./force.js";
+import { Force, Dmg, Targeting, Action, PhaseStartForce, AttackNumForce } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
 import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_反射, FX_Debuff } from "./fx/fx.js";
@@ -308,10 +308,6 @@ export abstract class ActiveTec extends Tec implements Action{
     //
     //
     //--------------------------------------------------------------------------
-    // get mpCost():number{return this.args.mp ? this.args.mp : 0;}
-    // get tpCost():number{return this.args.tp ? this.args.tp : 0;}
-    // get epCost():number{return this.args.ep ? this.args.ep : 0;}
-    // get spCost():number{return this.args.sp ? this.args.sp : 0;}
     get costs():{prm:Prm, value:number}[]{
         const res:{prm:Prm, value:number}[] = [];
 
@@ -335,8 +331,14 @@ export abstract class ActiveTec extends Tec implements Action{
     
     /**攻撃倍率 */
     get mul():number{return this.args.mul;}
+    /**攻撃回数生成.継承禁止。継承する場合はrndAttackNumInner()を継承する。*/
+    rndAttackNum(unit:Unit):number{return this.rndAttackNumInner(unit);}
     /**攻撃回数生成 */
-    rndAttackNum():number{return this.args.num;}
+    protected rndAttackNumInner(unit:Unit){
+        const aForce = new AttackNumForce( this.args.num );
+        unit.attackNum( this, aForce );
+        return aForce.total;
+    }
     get hit():number{return this.args.hit;}
     get targetings():number{return this.args.targetings;}
     //--------------------------------------------------------------------------
@@ -625,7 +627,7 @@ export namespace Tec{
                               sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1, tp:4,
         });}
-        rndAttackNum(){return randomInt(2, 4, "[]");}
+        rndAttackNumInner(unit:Unit){return randomInt(2, 4, "[]");}
     }
     /**魔獣ドンゴ. */
     export const                          体当たり:ActiveTec = new class extends ActiveTec{
@@ -1918,7 +1920,7 @@ export namespace Tec{
                     async phaseStart(u:Unit){
                         Util.msg.set("空から矢が降り注ぐ！"); await wait();
 
-                        const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
+                        const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum( attacker ));
                         realTargets.filter(t=> t.exists && !t.dead)
                             .forEach(t=>{
                                 tec.inner.run(attacker, t);
@@ -1971,7 +1973,7 @@ export namespace Tec{
                     async phaseStart(u:Unit){
                         Util.msg.set("空から矢が降り注ぐ！"); await wait();
 
-                        const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum());
+                        const realTargets = Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum( attacker ));
                         realTargets.filter(t=> t.exists && !t.dead)
                             .forEach(t=>{
                                 tec.inner.run(attacker, t);
