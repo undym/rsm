@@ -1296,9 +1296,9 @@ Dungeon.musicCount = 0;
     };
     // export const                         ハデスの腹:Dungeon = new class extends Dungeon{
     //     constructor(){super({uniqueName:"ハデスの腹", info:"",
-    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
+    //                             rank:2, enemyLv:6, au:201, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
+    //                             treasures:  ()=>[Eq.回避の指輪],
+    //                             exItems:    ()=>[Eq.ハデスの腹剣],
     //                             trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
     //     });}
     //     isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;

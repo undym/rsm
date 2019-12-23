@@ -304,11 +304,11 @@ export namespace Eq{
     }
     /**クラウンボトル財宝. */
     export const                         呪縛の弓矢:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓攻撃時、稀に相手を＜鎖1＞化",
+        constructor(){super({uniqueName:"呪縛の弓矢", info:"弓攻撃時、稀に相手を＜鎖2＞化",
                                 pos:EqPos.武, lv:95});}
         async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any( TecType.弓 ) && dmg.result.isHit && Math.random() < 0.5){
-                Unit.setCondition(target, Condition.鎖, 1); await wait();
+                Unit.setCondition(target, Condition.鎖, 2); await wait();
             }
         }
     }
@@ -326,10 +326,10 @@ export namespace Eq{
     }
     /**合成. */
     export const                         アタックシールド:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"アタックシールド", info:"最大HP+20",
+        constructor(){super({uniqueName:"アタックシールド", info:"最大HP+25",
                                 pos:EqPos.武, lv:35});}
         async equip(unit:Unit){
-            unit.prm(Prm.MAX_HP).eq += 20;
+            unit.prm(Prm.MAX_HP).eq += 25;
         }
     }
     /**塔4000階EX. */
@@ -353,8 +353,19 @@ export namespace Eq{
             }
         }
     }
+    /**ハデスの腹EX. */
+    export const                         ハデスの腹剣:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ハデスの腹剣", info:"格闘攻撃時に自分の受けているダメージの1/3を加算",
+                                pos:EqPos.武, lv:0});}
+        async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
+                dmg.pow.add += attacker.prm(Prm.MAX_HP).total - attacker.hp;
+            }
+        }
+    }
     //--------------------------------------------------------------------------
     //
+    //-武
     //盾
     //
     //--------------------------------------------------------------------------
@@ -398,6 +409,7 @@ export namespace Eq{
     }
     //--------------------------------------------------------------------------
     //
+    //-盾
     //体
     //
     //--------------------------------------------------------------------------
@@ -574,7 +586,7 @@ export namespace Eq{
     /**黒平原EX. */
     export const                         妖魔の手:Eq = new class extends Eq{
         constructor(){super({uniqueName:"妖魔の手", info:"被魔法・過去攻撃時、稀に魔法反撃",
-                                pos:EqPos.手, lv:65});}
+                                pos:EqPos.手, lv:45});}
         async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去) && !dmg.hasType("反撃") && Math.random() < 0.7){
                 await Tec.魔法カウンター.run(target, attacker);
@@ -607,7 +619,7 @@ export namespace Eq{
                                 pos:EqPos.手, lv:70});}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去)){
-                dmg.abs.add += 10;
+                dmg.pow.add += 10;
             }
         }
     }
@@ -724,6 +736,16 @@ export namespace Eq{
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
                 dmg.pow.mul *= 1.2;
+            }
+        }
+    }
+    /**ハデスの腹財宝. */
+    export const                         回避の指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"回避の指輪", info:"行動開始時、稀に＜回避＞化する",
+                                pos:EqPos.指, lv:100});}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            if(Math.random() < 0.3){
+                Unit.setCondition( unit, Condition.回避, 1 );
             }
         }
     }

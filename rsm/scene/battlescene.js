@@ -298,6 +298,7 @@ export class BattleScene extends Scene {
                         Util.msg.set("逃げた");
                         yield wait();
                         yield finish();
+                        yield Battle.battleEndAction(BattleResult.ESCAPE);
                     });
                     if (Battle.type === BattleType.EX) {
                         yield runEscape();
@@ -415,6 +416,7 @@ const lose = () => __awaiter(this, void 0, void 0, function* () {
 const finish = () => __awaiter(this, void 0, void 0, function* () {
     for (const e of Unit.enemies) {
         e.exists = false;
+        e.clearConditions();
     }
     for (const u of Unit.all) {
         for (const prm of Prm.values) {

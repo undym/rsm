@@ -360,6 +360,7 @@ export class BattleScene extends Scene{
                     Util.msg.set("逃げた"); await wait();
 
                     await finish();
+                    await Battle.battleEndAction(BattleResult.ESCAPE);
                 };
 
                 if(Battle.type === BattleType.EX){
@@ -487,13 +488,13 @@ const lose = async()=>{
 const finish = async()=>{
     for(const e of Unit.enemies){
         e.exists = false;
+        e.clearConditions();
     }
 
     for(const u of Unit.all){
         for(const prm of Prm.values){
             u.prm(prm).battle = 0;
         }
-
         u.clearInvisibleConditions();
     }
 

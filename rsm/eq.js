@@ -297,13 +297,13 @@ EqEar._valueOf = new Map();
     /**クラウンボトル財宝. */
     Eq.呪縛の弓矢 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "呪縛の弓矢", info: "弓攻撃時、稀に相手を＜鎖1＞化",
+            super({ uniqueName: "呪縛の弓矢", info: "弓攻撃時、稀に相手を＜鎖2＞化",
                 pos: EqPos.武, lv: 95 });
         }
         afterDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.弓) && dmg.result.isHit && Math.random() < 0.5) {
-                    Unit.setCondition(target, Condition.鎖, 1);
+                    Unit.setCondition(target, Condition.鎖, 2);
                     yield wait();
                 }
             });
@@ -329,12 +329,12 @@ EqEar._valueOf = new Map();
     /**合成. */
     Eq.アタックシールド = new class extends Eq {
         constructor() {
-            super({ uniqueName: "アタックシールド", info: "最大HP+20",
+            super({ uniqueName: "アタックシールド", info: "最大HP+25",
                 pos: EqPos.武, lv: 35 });
         }
         equip(unit) {
             return __awaiter(this, void 0, void 0, function* () {
-                unit.prm(Prm.MAX_HP).eq += 20;
+                unit.prm(Prm.MAX_HP).eq += 25;
             });
         }
     };
@@ -367,8 +367,23 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**ハデスの腹EX. */
+    Eq.ハデスの腹剣 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ハデスの腹剣", info: "格闘攻撃時に自分の受けているダメージの1/3を加算",
+                pos: EqPos.武, lv: 0 });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
+                    dmg.pow.add += attacker.prm(Prm.MAX_HP).total - attacker.hp;
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-武
     //盾
     //
     //--------------------------------------------------------------------------
@@ -428,6 +443,7 @@ EqEar._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-盾
     //体
     //
     //--------------------------------------------------------------------------
@@ -675,7 +691,7 @@ EqEar._valueOf = new Map();
     Eq.妖魔の手 = new class extends Eq {
         constructor() {
             super({ uniqueName: "妖魔の手", info: "被魔法・過去攻撃時、稀に魔法反撃",
-                pos: EqPos.手, lv: 65 });
+                pos: EqPos.手, lv: 45 });
         }
         afterBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -722,7 +738,7 @@ EqEar._valueOf = new Map();
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.過去)) {
-                    dmg.abs.add += 10;
+                    dmg.pow.add += 10;
                 }
             });
         }
@@ -884,6 +900,20 @@ EqEar._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘)) {
                     dmg.pow.mul *= 1.2;
+                }
+            });
+        }
+    };
+    /**ハデスの腹財宝. */
+    Eq.回避の指輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "回避の指輪", info: "行動開始時、稀に＜回避＞化する",
+                pos: EqPos.指, lv: 100 });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (Math.random() < 0.3) {
+                    Unit.setCondition(unit, Condition.回避, 1);
                 }
             });
         }
