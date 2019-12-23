@@ -18,6 +18,7 @@ import { Story0 } from "../story/story0.js";
 import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
+import { Story3 } from "../story/story3.js";
 
 
 export class DungeonArea{
@@ -1161,6 +1162,9 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
 
+            if(this.dungeonClearCount === 1){
+                Story2.runMain26();
+            }
             /*
             if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_kabe0.done){
                 Flag.story_kabe0.done = true;
@@ -1170,36 +1174,39 @@ export namespace Dungeon{
             */
         }
     };
-    // export const                         ハデスの腹:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"ハデスの腹", info:"",
-    //                             rank:2, enemyLv:6, au:201, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.回避の指輪],
-    //                             exItems:    ()=>[Eq.ハデスの腹剣],
-    //                             trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
-    //     });}
-    //     isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "底主";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "霊体ブリザード";
-    //         e.img = new Img("img/unit/ex_bli.png");
-    //         e.prm(Prm.MAX_HP).base = 700;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-                // if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
-                    // Flag.story_Kabe1.done = true;
-                    // Story3.runKabe1();
-                    // Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
-                // }
-    //     }
-    // };
+    export const                         ハデスの腹:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"ハデスの腹", info:"",
+                                rank:2, enemyLv:6, au:201, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.回避の指輪],
+                                exItems:    ()=>[Eq.ハデスの腹剣],
+                                trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
+        });}
+        isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.孤独のクグワ.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "腹虫";
+            e.prm(Prm.MAX_HP).base = 500;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.魔砲士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "霊体ビジョン";
+            e.img = new Img("img/unit/ex_vision.png");
+            e.prm(Prm.MAX_HP).base = 945;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                Story2.runMain27();
+            }
+            // if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
+            //     Flag.story_Kabe1.done = true;
+            //     Story3.runKabe1();
+            //     Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
+            // }
+        }
+    };
     // export const                         魂人の廃都:Dungeon = new class extends Dungeon{
     //     constructor(){super({uniqueName:"魂人の廃都", info:"",
     //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
