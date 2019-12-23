@@ -1304,6 +1304,7 @@ Dungeon.musicCount = 0;
                 treasures: () => [Eq.回避の指輪],
                 exItems: () => [Eq.ハデスの腹剣],
                 trendItems: () => [Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
+                ghost: true,
             });
             this.isVisible = () => Dungeon.冥土の底.dungeonClearCount >= 1;
             this.setBossInner = () => {
