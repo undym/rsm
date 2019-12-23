@@ -377,5 +377,5 @@ export namespace Music{
 
     export const rs7        = createMusic("ex",      "sound/music/rs7.mp3", /*lazy*/false);
 
-    export const ruin       = createMusic("boss",    "sound/music/ruin.mp3", /*lazy*/true);
+    export const ruin       = createMusic("boss",    "sound/music/ruin.mp3", /*lazy*/false);
 }
