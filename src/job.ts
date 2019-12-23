@@ -126,7 +126,7 @@ export abstract class Job{
         e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
         e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
 
-        e.ep = 0;
+        e.ep = Math.random() < 0.01 ? 1 : 0;
 
         for(const pos of EqPos.values){
             e.setEq(pos, Eq.rnd(pos, lv));

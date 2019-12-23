@@ -314,6 +314,8 @@ export namespace Sound{
     export const PUNCH      = createSound("sound/PUNCH.mp3");
     /**財宝・ダンジョンクリア時のアイテム. */
     export const rare       = createSound("sound/rare.mp3");
+    /**ex撃破. */
+    export const reaitem1   = createSound("sound/reaitem1.mp3");
     export const save       = createSound("sound/save.mp3");
     /**凍てつく波動. */
     export const seikou     = createSound("sound/seikou.mp3");
@@ -340,18 +342,26 @@ export namespace Music{
     export function values():ReadonlyArray<Sound>{
         return _values;
     }
-    const _dungeonMusics:Sound[] = [];
-    export function getDungeonMusics():ReadonlyArray<Sound>{return _dungeonMusics;}
-    const _bossMusics:Sound[] = [];
-    export function getBossMusics():ReadonlyArray<Sound>{return _bossMusics;}
+
+    const musics = new Map<"dungeon"|"boss"|"ex", Sound[]>([
+        ["dungeon",[]],
+        ["boss",[]],
+        ["ex",[]],
+    ]);
+
+    export const getMusics = (type:"dungeon"|"boss"|"ex"):ReadonlyArray<Sound>=>{
+        const m = musics.get(type);
+        return m ? m : [];
+    };
     
-    function createMusic(type:"dungeon"|"boss", src:string, lazy:boolean):Sound{
+    function createMusic(type:"dungeon"|"boss"|"ex", src:string, lazy:boolean):Sound{
         const s = new Sound(src, "music", lazy);
         _values.push(s);
-
-             if(type === "dungeon"){_dungeonMusics.push(s);}
-        else if(type === "boss")   {_bossMusics.push(s);}
-
+        
+        // musics.get(type)?.push(s);
+        const m = musics.get(type);
+        if(m){m.push(s);}
+        
         return s;
     }
 
@@ -359,9 +369,13 @@ export namespace Music{
         Music.values().forEach(m=> m.stop());
     }
 
+
+
     export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
     export const hesoumi    = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/true);
     export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
 
-    export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/false);
+    export const rs7        = createMusic("ex",      "sound/music/rs7.mp3", /*lazy*/false);
+
+    export const ruin       = createMusic("boss",    "sound/music/ruin.mp3", /*lazy*/true);
 }

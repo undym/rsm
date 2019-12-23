@@ -464,13 +464,15 @@ export namespace DungeonEvent{
     export const             EX_BATTLE:DungeonEvent = new class extends DungeonEvent{
         constructor(){super("EX_BATTLE");}
         happenInner = async()=>{
-            Dungeon.now.playMusic("boss");
+            Dungeon.now.playMusic("ex");
 
             Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
             await Dungeon.now.setEx();
             Battle.setup( BattleType.EX, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
+                        Sound.reaitem1.play();
+                        
                         Dungeon.now.exKillCount++;
                         
                         if(Dungeon.now.exItems.length > 0){

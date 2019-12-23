@@ -152,13 +152,7 @@ export class Dungeon {
     //
     //-----------------------------------------------------------------
     musics(type) {
-        if (type === "dungeon") {
-            return Music.getDungeonMusics();
-        }
-        if (type === "boss") {
-            return Music.getBossMusics();
-        }
-        return [];
+        return Music.getMusics(type);
     }
     /**ランダムな曲を流す. */
     playMusic(type) {

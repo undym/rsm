@@ -209,13 +209,11 @@ export abstract class Dungeon{
     //
     //
     //-----------------------------------------------------------------
-    musics(type:"dungeon"|"boss"):ReadonlyArray<Sound>{
-        if(type === "dungeon"){return Music.getDungeonMusics();}
-        if(type === "boss")   {return Music.getBossMusics();}
-        return [];
+    musics(type:"dungeon"|"boss"|"ex"):ReadonlyArray<Sound>{
+        return Music.getMusics(type);
     }
     /**ランダムな曲を流す. */
-    playMusic(type:"dungeon"|"boss"){
+    playMusic(type:"dungeon"|"boss"|"ex"){
         Music.stop();
         Dungeon.musicCount = 0;
 

@@ -267,6 +267,8 @@ Sound.gains = [];
     Sound.PUNCH = createSound("sound/PUNCH.mp3");
     /**財宝・ダンジョンクリア時のアイテム. */
     Sound.rare = createSound("sound/rare.mp3");
+    /**ex撃破. */
+    Sound.reaitem1 = createSound("sound/reaitem1.mp3");
     Sound.save = createSound("sound/save.mp3");
     /**凍てつく波動. */
     Sound.seikou = createSound("sound/seikou.mp3");
@@ -293,20 +295,22 @@ export var Music;
         return _values;
     }
     Music.values = values;
-    const _dungeonMusics = [];
-    function getDungeonMusics() { return _dungeonMusics; }
-    Music.getDungeonMusics = getDungeonMusics;
-    const _bossMusics = [];
-    function getBossMusics() { return _bossMusics; }
-    Music.getBossMusics = getBossMusics;
+    const musics = new Map([
+        ["dungeon", []],
+        ["boss", []],
+        ["ex", []],
+    ]);
+    Music.getMusics = (type) => {
+        const m = musics.get(type);
+        return m ? m : [];
+    };
     function createMusic(type, src, lazy) {
         const s = new Sound(src, "music", lazy);
         _values.push(s);
-        if (type === "dungeon") {
-            _dungeonMusics.push(s);
-        }
-        else if (type === "boss") {
-            _bossMusics.push(s);
+        // musics.get(type)?.push(s);
+        const m = musics.get(type);
+        if (m) {
+            m.push(s);
         }
         return s;
     }
@@ -317,5 +321,6 @@ export var Music;
     Music.ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/ true);
     Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ true);
     Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ true);
-    Music.rs7 = createMusic("boss", "sound/music/rs7.mp3", /*lazy*/ false);
+    Music.rs7 = createMusic("ex", "sound/music/rs7.mp3", /*lazy*/ false);
+    Music.ruin = createMusic("boss", "sound/music/ruin.mp3", /*lazy*/ true);
 })(Music || (Music = {}));

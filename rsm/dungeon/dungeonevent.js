@@ -457,12 +457,13 @@ class EventImg {
         constructor() {
             super("EX_BATTLE");
             this.happenInner = () => __awaiter(this, void 0, void 0, function* () {
-                Dungeon.now.playMusic("boss");
+                Dungeon.now.playMusic("ex");
                 Util.msg.set(`[${Dungeon.now}]のエクストラエネミーが現れた！`, Color.WHITE.bright);
                 yield Dungeon.now.setEx();
                 Battle.setup(BattleType.EX, (result) => __awaiter(this, void 0, void 0, function* () {
                     switch (result) {
                         case BattleResult.WIN:
+                            Sound.reaitem1.play();
                             Dungeon.now.exKillCount++;
                             if (Dungeon.now.exItems.length > 0) {
                                 const item = choice(Dungeon.now.exItems);
