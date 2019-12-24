@@ -910,7 +910,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.自虐];
-            Unit.setCondition(e, Condition.病気, e.prm(Prm.DRK).total + 1, true);
+            Unit.setCondition(e, Condition.病気, e.prm(Prm.MAX_HP).total * 0.1, true);
         }
     };
 })(Job || (Job = {}));
