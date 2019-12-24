@@ -196,7 +196,17 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     const ルインドアースLv17 = new Mix({
         uniqueName: "ルインドアースLv17", limit: 1, info: "",
         materials: () => [[Item.クヌギ, 6], [Item.バーミキュライト, 20]],
-        isVisible: () => ルインドアースLv15.count > 0,
+        isVisible: () => ルインドアースLv16.count > 0,
+    });
+    const ルインドアースLv18 = new Mix({
+        uniqueName: "ルインドアースLv18", limit: 1, info: "",
+        materials: () => [[Item.肉まん, 1], [Item.月の石, 1], [Item.冥石, 1]],
+        isVisible: () => ルインドアースLv17.count > 0,
+    });
+    const ルインドアースLv19 = new Mix({
+        uniqueName: "ルインドアースLv19", limit: 1, info: "",
+        materials: () => [[Item.退魔の十字架, 10], [Item.血粉末, 10]],
+        isVisible: () => ルインドアースLv18.count > 0,
     });
     Mix.瞑想所 = new Mix({
         uniqueName: "瞑想所", limit: 1, info: "瞑想が可能になる",
@@ -211,7 +221,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     // export const    集会所:Mix = new Mix({
     //     uniqueName:"集会所", limit:1, info:"パーティースキルをセットできるようになる",
     //     materials:()=>[[Item.エレタクレヨン, 6], [Item.エデン樹, 3]],
-    //     isVisible:()=>ルインドアースLv12.count > 0,
+    //     isVisible:()=>ルインドアースLv20.count > 0,
     // });
     const 肉のスープ = new Mix({
         uniqueName: "肉のスープ", limit: 10, info: "ルインの最大HP+1",

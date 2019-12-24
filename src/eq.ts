@@ -516,6 +516,14 @@ export namespace Eq{
             }
         }
     }
+    /**魂人の廃都財宝. */
+    export const                         暖かい布:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"暖かい布", info:"行動開始時HP+5%",
+                                pos:EqPos.体, lv:120});}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.05 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //-体
@@ -654,6 +662,19 @@ export namespace Eq{
             if(unit.dead){return;}
             
             Unit.setCondition( unit, Condition.毒, unit.prm(Prm.LV).total, true );
+        }
+    }
+    /**小鬼. */
+    export const                         小鬼の腕輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"小鬼の腕輪", info:"5の倍数のターンに正気を取り戻す",
+                                pos:EqPos.手, lv:19});}
+                                
+        async battleStart(unit:Unit){
+            if(unit.dead){return;}
+            
+            if(Battle.turn % 5 === 0){
+                unit.removeCondition(Condition.暴走);
+            }
         }
     }
     //--------------------------------------------------------------------------

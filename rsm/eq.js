@@ -12,6 +12,7 @@ import { Num } from "./mix.js";
 import { ActiveTec, TecType, Tec } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
+import { Battle } from "./battle.js";
 import { choice } from "./undym/random.js";
 import { wait } from "./undym/scene.js";
 import { Player } from "./player.js";
@@ -596,6 +597,18 @@ EqEar._valueOf = new Map();
             });
         }
     };
+    /**魂人の廃都財宝. */
+    Eq.暖かい布 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "暖かい布", info: "行動開始時HP+5%",
+                pos: EqPos.体, lv: 120 });
+        }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.05);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-体
@@ -786,6 +799,23 @@ EqEar._valueOf = new Map();
                     return;
                 }
                 Unit.setCondition(unit, Condition.毒, unit.prm(Prm.LV).total, true);
+            });
+        }
+    };
+    /**小鬼. */
+    Eq.小鬼の腕輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "小鬼の腕輪", info: "5の倍数のターンに正気を取り戻す",
+                pos: EqPos.手, lv: 19 });
+        }
+        battleStart(unit) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (unit.dead) {
+                    return;
+                }
+                if (Battle.turn % 5 === 0) {
+                    unit.removeCondition(Condition.暴走);
+                }
             });
         }
     };

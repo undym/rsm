@@ -10,6 +10,7 @@ import { DungeonEvent } from "./dungeonevent.js";
 import { Rect, Color } from "../undym/type.js";
 import { Job } from "../job.js";
 import { Unit, Prm } from "../unit.js";
+import { Tec } from "../tec.js";
 import { Item } from "../item.js";
 import { Eq } from "../eq.js";
 import { Util, Flag } from "../util.js";
@@ -22,6 +23,7 @@ import { Story0 } from "../story/story0.js";
 import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
+import { Condition } from "../condition.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns, _areaItems) {
         this.uniqueName = uniqueName;
@@ -595,7 +597,7 @@ Dungeon.musicCount = 0;
                 rank: 3, enemyLv: 20, au: 250, btn: [DungeonArea.中央島, new Rect(0.15, 0.65, 0.3, 0.1)],
                 treasures: () => [Eq.呪縛の弓矢],
                 exItems: () => [Eq.コスモガン],
-                trendItems: () => [Item.血粉末, Item.うんち, Item.太陽の欠片, Item.シェイクスピア分子1],
+                trendItems: () => [Item.血粉末, Item.うんち, Item.太陽の欠片, Item.シェイクスピア分子1, Item.銅板],
             });
             this.isVisible = () => Dungeon.黒の廃村.dungeonClearCount >= 1;
             this.setBossInner = () => {
@@ -1338,58 +1340,86 @@ Dungeon.musicCount = 0;
             });
         }
     };
-    // export const                         魂人の廃都:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"魂人の廃都", info:"",
-    //                             rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.暖かい布],
-    //                             exItems:    ()=>[Eq.クピドの指輪],
-    //                             trendItems: ()=>[Item.合板, Item.ネクロマンス法, Item.子守歌],
-    //                             ghost:true,
-    //     });}
-    //     isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "底主";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "霊体ブリザード";
-    //         e.img = new Img("img/unit/ex_bli.png");
-    //         e.prm(Prm.MAX_HP).base = 700;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    // if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
-    // Flag.story_Kabe2.done = true;
-    // Story3.runKabe2();
-    // Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
-    // }
-    //     }
-    // };
-    // export const                         小鬼:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"小鬼", info:"",
-    //                             rank:0, enemyLv:0, au:1, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[],
-    //                             ghost:true,
-    //     });}
-    //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "底主";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    //     setExInner = ()=>{
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //     }
-    // };
+    Dungeon.魂人の廃都 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "魂人の廃都", info: "",
+                rank: 4, enemyLv: 8, au: 244, btn: [DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+                treasures: () => [Eq.暖かい布],
+                exItems: () => [Eq.クピドの指輪],
+                trendItems: () => [Item.合板, Item.ネクロマンス法, Item.子守歌, Item.地の涙, Item.血粉末, Item.血清],
+                ghost: true,
+            });
+            this.isVisible = () => Dungeon.ハデスの腹.dungeonClearCount >= 1;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "絶望の大クグワ";
+                e.prm(Prm.MAX_HP).base = 600;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.クピド.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "霊体・葵";
+                e.img = new Img("img/unit/ex_aoi.png");
+                e.prm(Prm.MAX_HP).base = 1440;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    Story2.runMain28();
+                }
+                // if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
+                //     Flag.story_Kabe2.done = true;
+                //     Story3.runKabe2();
+                //     Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
+                // }
+            });
+        }
+    };
+    Dungeon.小鬼 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "小鬼", info: "",
+                rank: 4, enemyLv: 12, au: 1, btn: [DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+                treasures: () => [],
+                exItems: () => [],
+                trendItems: () => [],
+                ghost: true,
+            });
+            this.isVisible = () => Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "小鬼";
+                e.img = new Img("img/unit/boss_syao.png");
+                e.prm(Prm.MAX_HP).base = 1500;
+                e.prm(Prm.STR).base = 31;
+                e.tecs.push(Tec.閻魔の笏);
+                e.setEq(Eq.小鬼の腕輪.pos, Eq.小鬼の腕輪);
+                e.setCondition(Condition.暴走, 40);
+            };
+            this.setExInner = () => {
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    Eq.小鬼の腕輪.add(1);
+                    yield wait();
+                    Item.鬼の血.add(1);
+                    yield wait();
+                }
+            });
+        }
+    };
     // export const                         ハデスの口:Dungeon = new class extends Dungeon{
     //     constructor(){super({uniqueName:"ハデスの口", info:"",
     //                             rank:0, enemyLv:0, au:1, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
