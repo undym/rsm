@@ -127,23 +127,23 @@ const continueGame = ()=>{
 const setInput = ()=>{
     if(Debug.DEBUG){
         document.addEventListener("keydown", ev=>{
-            if(ev.key === "d"){
-                Debug.debugMode = !Debug.debugMode;
-            }
+            // if(ev.key === "d"){
+            //     Debug.debugMode = !Debug.debugMode;
+            // }
+            // if(Debug.debugMode){
+            //     if(ev.key === "1"){
+            //         Dungeon.auNow = Dungeon.now.au;
+            //         for(const u of Unit.enemies){
+            //             u.exists = false;
+            //         }
+            //     }
+            // }
             if(ev.key === "e"){
                 Scene.load(new EffectTest({
                     onreturn:()=>{
                         Scene.load(TownScene.ins);
                     },
                 }));
-            }
-            if(Debug.debugMode){
-                if(ev.key === "1"){
-                    Dungeon.auNow = Dungeon.now.au;
-                    for(const u of Unit.enemies){
-                        u.exists = false;
-                    }
-                }
             }
         });
     }
