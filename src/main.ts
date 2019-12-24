@@ -236,8 +236,6 @@ const title = ()=>{
             music.load();
         }
 
-        Sound.start.play();
-
 
         const runNewGame = ()=>{
             newGame();

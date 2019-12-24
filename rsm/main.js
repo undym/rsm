@@ -194,7 +194,6 @@ const title = () => {
         for (const music of Music.values().filter(m => !m.lazyLoad)) {
             music.load();
         }
-        Sound.start.play();
         const runNewGame = () => {
             newGame();
             Scene.load(TownScene.ins);

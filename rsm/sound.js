@@ -274,7 +274,6 @@ Sound.gains = [];
     Sound.seikou = createSound("sound/seikou.mp3");
     /**神格攻撃. */
     Sound.sin = createSound("sound/sin.mp3");
-    Sound.start = createSound("sound/start.mp3");
     /**選択音. */
     Sound.system = createSound("sound/turn_who.mp3");
     Sound.TRAGER = createSound("sound/TRAGER.mp3");

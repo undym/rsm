@@ -321,7 +321,6 @@ export namespace Sound{
     export const seikou     = createSound("sound/seikou.mp3");
     /**神格攻撃. */
     export const sin        = createSound("sound/sin.mp3");
-    export const start      = createSound("sound/start.mp3");
     /**選択音. */
     export const system     = createSound("sound/turn_who.mp3");
     export const TRAGER     = createSound("sound/TRAGER.mp3");
