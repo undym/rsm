@@ -147,7 +147,7 @@ Player._valueOf = new Map();
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
         setJobChangeList(map) {
-            if (Flag.yuki_beastOnly) {
+            if (Flag.yuki_beastOnly.done) {
                 map.set(Job.ペガサス, true);
                 setBeastJobChangeList(map, this.ins);
             }
@@ -158,7 +158,7 @@ Player._valueOf = new Map();
         }
         get ins() {
             const _ins = super.ins;
-            if (Flag.yuki_beastOnly) {
+            if (Flag.yuki_beastOnly.done) {
                 _ins.img = this.uma;
             }
             else {

@@ -179,7 +179,7 @@ export namespace Player{
             p.setEq(Eq.ハルのカフス.pos, Eq.ハルのカフス);
         }
         setJobChangeList(map:Map<Job,true>){
-            if(Flag.yuki_beastOnly){
+            if(Flag.yuki_beastOnly.done){
                 map.set(Job.ペガサス, true);
                 setBeastJobChangeList(map, this.ins);
             }else{
@@ -189,7 +189,7 @@ export namespace Player{
         }
         get ins(){
             const _ins = super.ins;
-            if(Flag.yuki_beastOnly){
+            if(Flag.yuki_beastOnly.done){
                 _ins.img = this.uma;
             }else{
                 _ins.img = this.hito;
