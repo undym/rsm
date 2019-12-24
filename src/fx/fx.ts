@@ -80,20 +80,36 @@ export class EffectTest extends Scene{
     ){
         super();
     }
+
     async init(){
-        let list = new List();
         super.clear();
+
+
+        let list = new List();
         super.add(new Rect(0, 0.1, 0.2, 0.8), list);
+
+        const img = new Img("img/unit/unit0.png");
         super.add(Rect.FULL, ILayout.create({draw:(bounds)=>{
+            const w = 0.125;
+            const h = 0.125;
             {
-                let w = 5 / Graphics.pixelW;
-                let h = 5 / Graphics.pixelH;
-                Graphics.fillRect( new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h ), Color.RED );
+                // let w = 5 / Graphics.pixelW;
+                // let h = 5 / Graphics.pixelH;
+                // Graphics.fillRect( new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h ), Color.RED );
+                img.drawEx({
+                    dstRatio:new Rect(FXTest.attacker.x - w / 2, FXTest.attacker.y - h / 2, w, h ),
+                    keepRatio:true,
+                });
             }
             {
-                let w = 5 / Graphics.pixelW;
-                let h = 5 / Graphics.pixelH;
-                Graphics.fillRect( new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h ), Color.CYAN );
+                // let w = 5 / Graphics.pixelW;
+                // let h = 5 / Graphics.pixelH;
+                // Graphics.fillRect( new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h ), Color.CYAN );
+                img.drawEx({
+                    dstRatio:new Rect(FXTest.target.x - w / 2, FXTest.target.y - h / 2, w, h ),
+                    keepRatio:true,
+                    reverseHorizontal:true,
+                });
             }
         }}));
         super.add(new Rect(0.8, 0.8, 0.2, 0.2), new Btn(()=>"<<",()=>{
@@ -967,8 +983,9 @@ export const FX_Buff = (center:Point)=>{
     const elms:{x:number, y:number, h:number, vy:number, lifeTime:number}[] = [];
 
     for(let i = 0; i < 40; i++){
+        const w = 0.05;
         elms.push({
-            x: center.x - 0.03 + Math.random() * 0.06,
+            x: center.x - w + Math.random() * w * 2,
             y: center.y + Math.random() * 0.02,
             h: 0.01 + Math.random() * 0.06,
             vy: -Math.random() * 0.003,
@@ -1004,8 +1021,9 @@ export const FX_Debuff = (center:Point)=>{
     const elms:{x:number, y:number, h:number, vy:number, lifeTime:number}[] = [];
 
     for(let i = 0; i < 40; i++){
+        const w = 0.05;
         elms.push({
-            x: center.x - 0.03 + Math.random() * 0.06,
+            x: center.x - w + Math.random() * w * 2,
             y: center.y - Math.random() * 0.04,
             h: 0.01 + Math.random() * 0.06,
             vy: Math.random() * 0.002,
@@ -1035,6 +1053,37 @@ export const FX_Debuff = (center:Point)=>{
     });
 };
 FXTest.add(FX_Debuff.name, ()=> FX_Debuff( FXTest.target ));
+
+
+export const FX_RemoveCondition = (center:Point)=>{
+    
+    const PI2 = Math.PI * 2;
+    const addFX = (v:number) => {
+        FX.add(count => {
+            const over = 50;
+            const loop = 8;
+            const r = 0.015 + 0.07 * count / over;
+            const _y = center.y + 0.09 - 0.18 * count / over;
+            const size = 0.003 * (1.0 - count / over);
+            for (let i = 0; i < loop; i++) {
+                const rad = PI2 * (i + 1) / loop + count * 1.4 + v * 0.1;
+                const x = center.x + Math.cos(rad) * r;
+                const y = _y + Math.sin(rad) * r / 4;
+                Graphics.fillOval(new Point(x, y), size, Color.WHITE);
+            }
+            return count < over;
+        });
+    };
+    FX.add(count => {
+        const over = 12;
+        if(count % 2){
+            addFX(count);
+        }
+        return count < over;
+    });
+};
+FXTest.add(FX_RemoveCondition.name, ()=> FX_RemoveCondition( FXTest.target ));
+
 
 export const FX_機械 = (attacker:Point, target:Point)=>{
     const PI2 = Math.PI * 2;

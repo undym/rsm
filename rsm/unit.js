@@ -826,4 +826,11 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             }
         });
     };
+    // /** */
+    // export const removeCondition = (unit:Unit, condition:Condition)=>{
+    //     if(unit.hasCondition(condition)){
+    //         unit.removeCondition(condition);
+    //         FX_RemoveCondition( unit.imgCenter );
+    //     }
+    // };
 })(Unit || (Unit = {}));

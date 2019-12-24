@@ -11,7 +11,7 @@ import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
-import { FX_Str, FX_回復, FX_Buff } from "./fx/fx.js";
+import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition } from "./fx/fx.js";
 import { Targeting, Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
@@ -210,6 +210,14 @@ Item._consumableValues = [];
 Item._dropTypeValues = new Map();
 Item.DEF_NUM_LIMIT = 9999;
 (function (Item) {
+    const itemUnitCenter = (target) => {
+        if (SceneType.now === SceneType.BATTLE) {
+            return target.imgCenter;
+        }
+        else {
+            return target.boxCenter;
+        }
+    };
     const itemRevive = (target, hp) => __awaiter(this, void 0, void 0, function* () {
         if (!target.dead) {
             return;
@@ -218,26 +226,20 @@ Item.DEF_NUM_LIMIT = 9999;
         target.hp = 0;
         Unit.healHP(target, hp);
         Sound.KAIFUKU.play();
+        FX_回復(itemUnitCenter(target));
         if (SceneType.now === SceneType.BATTLE) {
-            FX_回復(target.imgCenter);
             Util.msg.set(`${target.name}は生き返った`);
             yield wait();
-        }
-        else {
-            FX_回復(target.boxCenter);
         }
     });
     const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
         value = value | 0;
         Unit.healHP(target, value);
         Sound.KAIFUKU.play();
+        FX_回復(itemUnitCenter(target));
         if (SceneType.now === SceneType.BATTLE) {
-            FX_回復(target.imgCenter);
             Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
             yield wait();
-        }
-        else {
-            FX_回復(target.boxCenter);
         }
     });
     const itemHealMP = (target, value) => __awaiter(this, void 0, void 0, function* () {
@@ -256,6 +258,19 @@ Item.DEF_NUM_LIMIT = 9999;
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright);
             yield wait();
+        }
+    });
+    const removeCondition = (target, condition) => __awaiter(this, void 0, void 0, function* () {
+        if (target.hasCondition(condition)) {
+            target.removeCondition(condition);
+            FX_RemoveCondition(itemUnitCenter(target));
+            Sound.up.play();
+            if (condition instanceof Condition) {
+                if (SceneType.now === SceneType.BATTLE) {
+                    Util.msg.set(`${target.name}の＜${condition}＞が解除された`);
+                    yield wait();
+                }
+            }
         }
     });
     //-----------------------------------------------------------------
@@ -668,7 +683,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "血清", info: "＜毒＞状態を解除する",
                 type: ItemType.状態, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.毒); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.毒); }),
             });
         }
     };
@@ -676,7 +691,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "目覚まし時計", info: "＜眠＞状態を解除する",
                 type: ItemType.状態, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.眠); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.眠); }),
             });
         }
     };
@@ -684,7 +699,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "レンチ", info: "＜鎖＞状態を解除する",
                 type: ItemType.状態, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.鎖); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.鎖); }),
             });
         }
     };
@@ -692,7 +707,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "石溶け水", info: "＜石＞状態を解除する",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX | ItemDrop.LAKE,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.石); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.石); }),
             });
         }
     };
@@ -700,7 +715,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ワクチン", info: "＜病気＞状態を解除する",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.病気); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.病気); }),
             });
         }
     };
@@ -708,7 +723,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "発砲フィセル", info: "＜命中低下＞状態を解除する",
                 type: ItemType.状態, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.命中低下); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.命中低下); }),
             });
         }
     };
@@ -716,7 +731,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "攻撃力回復薬", info: "＜攻撃低下＞状態を解除する",
                 type: ItemType.状態, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.攻撃低下); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.攻撃低下); }),
             });
         }
     };
@@ -724,7 +739,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "防御力回復薬", info: "＜防御低下＞状態を解除する",
                 type: ItemType.状態, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.防御低下); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.防御低下); }),
             });
         }
     };
@@ -732,7 +747,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "精神安定剤", info: "＜暴走＞状態を解除する",
                 type: ItemType.状態, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return target.removeCondition(Condition.暴走); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield removeCondition(target, Condition.暴走); }),
             });
         }
     };
@@ -744,7 +759,7 @@ Item.DEF_NUM_LIMIT = 9999;
                     const type = ConditionType.BAD_LV1;
                     const c = target.getCondition(type);
                     if (c !== Condition.契約) {
-                        target.removeCondition(type);
+                        yield removeCondition(target, type);
                     }
                 }),
             });
@@ -755,11 +770,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "地の涙", info: "LV2状態異常を解除する",
                 type: ItemType.状態, rank: 5, drop: ItemDrop.BOX | ItemDrop.LAKE,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const type = ConditionType.BAD_LV2;
-                    const c = target.getCondition(type);
-                    if (c !== Condition.契約) {
-                        target.removeCondition(type);
-                    }
+                    yield removeCondition(target, ConditionType.BAD_LV2);
                 }),
             });
         }
@@ -769,11 +780,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "妖精の涙", info: "LV3状態異常を解除する",
                 type: ItemType.状態, rank: 5, drop: ItemDrop.BOX | ItemDrop.LAKE,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    const type = ConditionType.BAD_LV3;
-                    const c = target.getCondition(type);
-                    if (c !== Condition.契約) {
-                        target.removeCondition(type);
-                    }
+                    yield removeCondition(target, ConditionType.BAD_LV3);
                 }),
             });
         }
@@ -786,7 +793,7 @@ Item.DEF_NUM_LIMIT = 9999;
                     for (const type of ConditionType.values) {
                         const c = target.getCondition(type);
                         if (c !== Condition.暴走 && c !== Condition.契約) {
-                            target.removeCondition(type);
+                            yield removeCondition(target, type);
                         }
                     }
                 }),
@@ -801,7 +808,7 @@ Item.DEF_NUM_LIMIT = 9999;
                     for (const type of ConditionType.badConditions()) {
                         const c = target.getCondition(type);
                         if (c !== Condition.契約) {
-                            target.removeCondition(type);
+                            yield removeCondition(target, type);
                         }
                     }
                 }),
@@ -816,7 +823,7 @@ Item.DEF_NUM_LIMIT = 9999;
                     for (const type of ConditionType.goodConditions()) {
                         const c = target.getCondition(type);
                         if (c !== Condition.暴走) {
-                            target.removeCondition(type);
+                            yield removeCondition(target, type);
                         }
                     }
                 }),
@@ -1207,7 +1214,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.侍プリッツ迅速 = new class extends Item {
         constructor() {
             super({ uniqueName: "侍プリッツ迅速", info: "10AU進む",
-                type: ItemType.ダンジョン, rank: 3, drop: ItemDrop.BOX,
+                type: ItemType.ダンジョン, rank: 2, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 10;
                     if (Dungeon.auNow > Dungeon.now.au) {
@@ -1222,7 +1229,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.侍プリッツ神速一歩手前 = new class extends Item {
         constructor() {
             super({ uniqueName: "侍プリッツ神速一歩手前", info: "20AU進む",
-                type: ItemType.ダンジョン, rank: 5, drop: ItemDrop.BOX,
+                type: ItemType.ダンジョン, rank: 3, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 20;
                     if (Dungeon.auNow > Dungeon.now.au) {
@@ -1237,7 +1244,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.侍プリッツ神速 = new class extends Item {
         constructor() {
             super({ uniqueName: "侍プリッツ神速", info: "30AU進む",
-                type: ItemType.ダンジョン, rank: 7, drop: ItemDrop.BOX,
+                type: ItemType.ダンジョン, rank: 4, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Dungeon.auNow += 30;
                     if (Dungeon.auNow > Dungeon.now.au) {
@@ -1248,6 +1255,21 @@ Item.DEF_NUM_LIMIT = 9999;
         }
         canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
         toString() { return "侍プリッツ・神速"; }
+    };
+    Item.侍プリッツ神速を超えて = new class extends Item {
+        constructor() {
+            super({ uniqueName: "侍プリッツ神速を超えて", info: "40AU進む",
+                type: ItemType.ダンジョン, rank: 5, drop: ItemDrop.BOX,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    Dungeon.auNow += 40;
+                    if (Dungeon.auNow > Dungeon.now.au) {
+                        Dungeon.auNow = Dungeon.now.au;
+                    }
+                }),
+            });
+        }
+        canUse(user, targets) { return super.canUse(user, targets) && SceneType.now === SceneType.DUNGEON; }
+        toString() { return "侍プリッツ・神速を超えて"; }
     };
     Item.釣り竿 = new class extends Item {
         constructor() {

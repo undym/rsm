@@ -5,7 +5,7 @@ import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
 import { Dmg, Force, Action, Targeting, PhaseStartForce, AttackNumForce } from "./force.js";
 import { Job } from "./job.js";
-import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
+import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射, FX_RemoveCondition } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
@@ -877,4 +877,11 @@ export namespace Unit{
             }
         });
     };
+    // /** */
+    // export const removeCondition = (unit:Unit, condition:Condition)=>{
+    //     if(unit.hasCondition(condition)){
+    //         unit.removeCondition(condition);
+    //         FX_RemoveCondition( unit.imgCenter );
+    //     }
+    // };
 }
