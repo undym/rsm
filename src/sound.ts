@@ -376,7 +376,8 @@ export namespace Music{
     export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
     export const aenai      = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/true);
 
-    export const rs7        = createMusic("ex",      "sound/music/rs7.mp3", /*lazy*/false);
+    export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/false);
+    
+    export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/false);
 
-    export const anokoro    = createMusic("boss",    "sound/music/anokoro.mp3", /*lazy*/false);
 }
