@@ -61,7 +61,7 @@ export class BattleScene extends Scene{
                                     const user = this.tecInfo.user;
                                     if(tec instanceof ActiveTec){
                                         let x = bounds.x;
-                                        const w = bounds.w * 0.1;
+                                        const w = bounds.w * 0.15;
                                         for(const cost of tec.costs){
                                             Font.def.draw( 
                                                 `${cost.prm}:${cost.value}`,
