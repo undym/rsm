@@ -80,6 +80,8 @@ export class Prm{
 
     static readonly EP      = new Prm("EP");
     static readonly MAX_EP  = new Prm("最大EP");
+    static readonly XP      = new Prm("XP");
+    static readonly MAX_XP  = new Prm("最大XP");
     static readonly SP      = new Prm("SP");
     
     static readonly GHOST   = new Prm("GHOST");
@@ -102,6 +104,7 @@ export class Prm{
 
 export abstract class Unit{
     static readonly DEF_MAX_EP = 1;
+    static readonly DEF_MAX_XP = 1;
     static readonly EAR_NUM = 2;
 
     private static _players:PUnit[];
@@ -192,6 +195,7 @@ export abstract class Unit{
         }
 
         this.prm(Prm.MAX_EP).base = Unit.DEF_MAX_EP;
+        this.prm(Prm.MAX_XP).base = Unit.DEF_MAX_XP;
 
         
         for(let type of ConditionType.values){
@@ -254,6 +258,11 @@ export abstract class Unit{
     set sp(value:number) {
         if(value >= 1) {this.prm(Prm.SP).base = 1;}
         else           {this.prm(Prm.SP).base = 0;}
+    }
+    get xp():number      {return this.prm(Prm.XP).base;}
+    set xp(value:number) {
+        this.prm(Prm.XP).base = value|0;
+        this.fixPrm(Prm.XP, Prm.MAX_XP);
     }
     get exp():number     {return this.prm(Prm.EXP).base;}
     set exp(value:number){this.prm(Prm.EXP).base = value|0;}
@@ -857,10 +866,14 @@ export namespace Unit{
         FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
     };
     /** */
-    export const set反射 = (unit:Unit)=>{
+    export const set反射Inv = (unit:Unit)=>{
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = "反射";
             async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+                target.removeInvisibleCondition(this);
+                
+                if(dmg.hasType("反射","反撃")){return;}
+
                 const result = dmg.calc();
                 if(result.isHit){
                     FX_反射( target.imgCenter, attacker.imgCenter );
@@ -873,7 +886,6 @@ export namespace Unit{
 
                     dmg.pow.mul = 0;
                 };
-                target.removeInvisibleCondition(this);
             }
         });
     };

@@ -87,6 +87,8 @@ Prm.EXP = new Prm("Exp");
 Prm.BP = new Prm("BP");
 Prm.EP = new Prm("EP");
 Prm.MAX_EP = new Prm("最大EP");
+Prm.XP = new Prm("XP");
+Prm.MAX_XP = new Prm("最大XP");
 Prm.SP = new Prm("SP");
 Prm.GHOST = new Prm("GHOST");
 export class Unit {
@@ -115,6 +117,7 @@ export class Unit {
             this.prmSets.push(new PrmSet());
         }
         this.prm(Prm.MAX_EP).base = Unit.DEF_MAX_EP;
+        this.prm(Prm.MAX_XP).base = Unit.DEF_MAX_XP;
         for (let type of ConditionType.values) {
             this.conditions.push({ condition: Condition.empty, value: 0 });
         }
@@ -205,6 +208,11 @@ export class Unit {
         else {
             this.prm(Prm.SP).base = 0;
         }
+    }
+    get xp() { return this.prm(Prm.XP).base; }
+    set xp(value) {
+        this.prm(Prm.XP).base = value | 0;
+        this.fixPrm(Prm.XP, Prm.MAX_XP);
     }
     get exp() { return this.prm(Prm.EXP).base; }
     set exp(value) { this.prm(Prm.EXP).base = value | 0; }
@@ -588,6 +596,7 @@ export class Unit {
     ;
 }
 Unit.DEF_MAX_EP = 1;
+Unit.DEF_MAX_XP = 1;
 Unit.EAR_NUM = 2;
 export class PUnit extends Unit {
     constructor(player) {
@@ -800,7 +809,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
     };
     /** */
-    Unit.set反射 = (unit) => {
+    Unit.set反射Inv = (unit) => {
         unit.addInvisibleCondition(new class extends InvisibleCondition {
             constructor() {
                 super(...arguments);
@@ -808,6 +817,10 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             }
             beforeBeAtk(action, attacker, target, dmg) {
                 return __awaiter(this, void 0, void 0, function* () {
+                    target.removeInvisibleCondition(this);
+                    if (dmg.hasType("反射", "反撃")) {
+                        return;
+                    }
                     const result = dmg.calc();
                     if (result.isHit) {
                         FX_反射(target.imgCenter, attacker.imgCenter);
@@ -821,7 +834,6 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                         dmg.pow.mul = 0;
                     }
                     ;
-                    target.removeInvisibleCondition(this);
                 });
             }
         });

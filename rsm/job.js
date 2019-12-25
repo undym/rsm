@@ -149,7 +149,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         get maxLv() { return super.maxLv + 1; }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.殴る, Tec.癒しの風, Tec.大いなる動き];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.何もしない, Tec.癒しの風, Tec.大いなる動き];
         }
     };
     Job.シーフ = new class extends Job {
@@ -202,7 +202,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.手裏剣, Tec.手裏剣, Tec.ジライヤ];
+            e.tecs = [Tec.殴る, Tec.二刀流, Tec.手裏剣, Tec.手裏剣, Tec.手裏剣, Tec.ジライヤ];
         }
     };
     Job.魔法使い = new class extends Job {
@@ -215,7 +215,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.殴る, Tec.殴る, Tec.殴る, Tec.ジョンD];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.エヴィン, Tec.ジョンD];
         }
     };
     Job.ウィザード = new class extends Job {
@@ -241,7 +241,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.殴る, Tec.殴る, Tec.ユグドラシル, Tec.空中浮遊];
+            e.tecs = [Tec.天籟, Tec.数珠, Tec.数珠, Tec.数珠, Tec.天籟, Tec.殴る, Tec.ユグドラシル, Tec.空中浮遊];
         }
     };
     Job.毒使い = new class extends Job {
@@ -281,7 +281,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.殴る, Tec.TP自動回復, Tec.ホワイトスネイク, Tec.血技の技巧];
+            e.tecs = [Tec.スネイク, Tec.スネイク, Tec.スネイク, Tec.殴る, Tec.TP自動回復, Tec.ホワイトスネイク, Tec.血技の技巧];
         }
     };
     Job.ダウザー = new class extends Job {
@@ -294,7 +294,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.殴る, Tec.殴る, Tec.光の護封剣, Tec.SORRYCSTEF];
+            e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.念力, Tec.殴る, Tec.光の護封剣, Tec.SORRYCSTEF];
         }
     };
     Job.カウボーイ = new class extends Job {
@@ -641,7 +641,7 @@ Job.DEF_LVUP_EXP = 10;
     Job.勇者 = new class extends Job {
         constructor() {
             super({ uniqueName: "勇者", info: "",
-                appearLv: 150, img: new Img("img/unit/unit40.png"),
+                appearLv: 99, img: new Img("img/unit/unit40.png"),
                 lvupExp: Job.DEF_LVUP_EXP * 4,
                 growthPrms: () => [[Prm.MAX_HP, 4],],
                 learningTecs: () => [Tec.友情の陣形, Tec.勇気, Tec.結束の陣形, Tec.さよならみんな],
@@ -649,6 +649,20 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.大いなる動き, Tec.殴る, Tec.五月雨, Tec.時雨, Tec.タックル, Tec.防御, Tec.友情の陣形, Tec.勇気, Tec.結束の陣形, Tec.さよならみんな];
+        }
+    };
+    Job.エスパー = new class extends Job {
+        constructor() {
+            super({ uniqueName: "エスパー", info: "",
+                appearLv: 120, img: new Img("img/unit/unit41.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_MP, 1], [Prm.PST, 2],],
+                learningTecs: () => [Tec.念力2, Tec.パワーストーン, Tec.オルゴン, Tec.封印回路],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.念, Tec.念力, Tec.念力2, Tec.MP自動回復, Tec.念力2, Tec.パワーストーン, Tec.オルゴン, Tec.封印回路];
+            e.prm(Prm.MAX_MP).base *= 2;
         }
     };
     // export const                         サマナー:Job = new class extends Job{
@@ -707,6 +721,9 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
+            if (Math.random() < 0.5) {
+                Unit.setCondition(e, Condition.吸収, randomInt(1, 2, "[]"));
+            }
         }
     };
     Job.妖精 = new class extends Job {

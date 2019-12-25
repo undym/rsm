@@ -221,6 +221,8 @@ Sound.gains = [];
     }
     /**毒. */
     Sound.awa = createSound("sound/awa.mp3");
+    /**封印回路. */
+    Sound.BELL = createSound("sound/BELL.mp3");
     /**罠発動. */
     Sound.blood = createSound("sound/blood.mp3");
     /**瞑想. */
@@ -238,6 +240,8 @@ Sound.gains = [];
     /**死神の鎌. */
     Sound.DARK = createSound("sound/DARK.mp3");
     Sound.death = createSound("sound/death.mp3");
+    /**弱体. */
+    Sound.down = createSound("sound/down.mp3");
     Sound.exp = createSound("sound/exp.mp3");
     Sound.gameover = createSound("sound/gameover.mp3");
     Sound.gun = createSound("sound/gun.mp3");

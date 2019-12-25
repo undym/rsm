@@ -437,7 +437,7 @@ EqEar._valueOf = new Map();
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && attacker.hasCondition(Condition.練) && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.暗黒)) {
-                    Unit.set反射(target);
+                    Unit.set反射Inv(target);
                 }
             });
         }

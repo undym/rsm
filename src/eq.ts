@@ -403,7 +403,7 @@ export namespace Eq{
                                 pos:EqPos.盾, lv:142});}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && attacker.hasCondition(Condition.練) && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.暗黒)){
-                Unit.set反射( target );
+                Unit.set反射Inv( target );
             }
         }   
     }

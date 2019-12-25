@@ -268,6 +268,8 @@ export namespace Sound{
     }
     /**毒. */
     export const awa        = createSound("sound/awa.mp3");
+    /**封印回路. */
+    export const BELL       = createSound("sound/BELL.mp3");
     /**罠発動. */
     export const blood      = createSound("sound/blood.mp3");
     /**瞑想. */
@@ -285,6 +287,8 @@ export namespace Sound{
     /**死神の鎌. */
     export const DARK       = createSound("sound/DARK.mp3");
     export const death      = createSound("sound/death.mp3");
+    /**弱体. */
+    export const down       = createSound("sound/down.mp3");
     export const exp        = createSound("sound/exp.mp3");
     export const gameover   = createSound("sound/gameover.mp3");
     export const gun        = createSound("sound/gun.mp3");

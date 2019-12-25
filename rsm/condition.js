@@ -160,25 +160,16 @@ Condition._valueOf = new Map();
             });
         }
     };
-    // export const             狙:Condition = new class extends Condition{
-    //     constructor(){super("狙", ConditionType.GOOD_LV1);}
-    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec){
-    //             dmg.hit.mul *= 1.2;
-    //             attacker.addConditionValue(this, -1);
-    //         }
-    //     }
-    // };
-    // export const             闇:Condition = new class extends Condition{
-    //     constructor(){super("闇", ConditionType.GOOD_LV1);}
-    //     async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-    //         if(action instanceof ActiveTec){
-    //             Util.msg.set("＞闇"); await wait();
-    //             dmg.pow.add += attacker.prm(Prm.DRK).total;
-    //             attacker.addConditionValue(this, -1);
-    //         }
-    //     }
-    // };
+    /**行動開始時TP+1 */
+    Condition.風 = new class extends Condition {
+        constructor() { super("風", ConditionType.GOOD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.tp += 1;
+                unit.addConditionValue(this, -1);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //GOOD_LV2
@@ -224,11 +215,24 @@ Condition._valueOf = new Map();
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)) {
-                    const value = dmg.calc().value;
-                    Unit.healHP(target, value);
-                    Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
-                    yield wait();
-                    dmg.pow.mul = 0;
+                    target.addInvisibleCondition(new class extends InvisibleCondition {
+                        constructor() {
+                            super(...arguments);
+                            this.uniqueName = "吸収";
+                        }
+                        beDamage(unit, dmg) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                unit.removeInvisibleCondition(this);
+                                if (dmg.result.isHit) {
+                                    const value = dmg.result.value;
+                                    Unit.healHP(unit, value);
+                                    Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
+                                    yield wait();
+                                    dmg.result.value = 0;
+                                }
+                            });
+                        }
+                    });
                     target.addConditionValue(this, -1);
                 }
             });
@@ -241,6 +245,17 @@ Condition._valueOf = new Map();
                 if (action instanceof ActiveTec && !action.type.any(TecType.槍, TecType.怨霊)) {
                     Util.msg.set("＞バリア");
                     dmg.pow.mul = 0;
+                    target.addConditionValue(this, -1);
+                }
+            });
+        }
+    };
+    Condition.反射 = new class extends Condition {
+        constructor() { super("反射", ConditionType.GOOD_LV2); }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)) {
+                    Unit.set反射Inv(target);
                     target.addConditionValue(this, -1);
                 }
             });
@@ -355,6 +370,14 @@ Condition._valueOf = new Map();
     };
     Condition.契約 = new class extends Condition {
         constructor() { super("契約", ConditionType.BAD_LV1); }
+    };
+    Condition.疲労 = new class extends Condition {
+        constructor() { super("疲労", ConditionType.BAD_LV1); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                unit.tp -= unit.prm(Prm.MAX_TP).total * 0.1;
+            });
+        }
     };
     //--------------------------------------------------------------------------
     //

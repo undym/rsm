@@ -303,6 +303,9 @@ export class ActiveTec extends Tec {
         if (this.args.sp) {
             res.push({ prm: Prm.SP, value: this.args.sp });
         }
+        if (this.args.xp) {
+            res.push({ prm: Prm.XP, value: this.args.xp });
+        }
         return res;
     }
     get itemCost() {
@@ -1658,6 +1661,16 @@ ActiveTec._valueOf = new Map();
         }
     };
     /**ダウザー. */
+    Tec.念力2 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "念力2", info: "全体に過去攻撃x2",
+                sort: TecSort.過去, type: TecType.過去, targetings: Targeting.ALL,
+                mul: 2, num: 1, hit: 1.2, mp: 12,
+            });
+        }
+        toString() { return "念力Ⅱ"; }
+    };
+    /**ダウザー. */
     Tec.念 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "念", info: "ランダムな一体に過去攻撃",
@@ -1690,6 +1703,21 @@ ActiveTec._valueOf = new Map();
     //過去Passive
     //
     //--------------------------------------------------------------------------
+    /**ペガサス. */
+    Tec.パワーストーン = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "パワーストーン", info: "過去攻撃+25%",
+                sort: TecSort.過去, type: TecType.過去,
+            });
+        }
+        beforeDoAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.過去)) {
+                    dmg.pow.mul *= 1.25;
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-過去Passive
@@ -2887,7 +2915,7 @@ ActiveTec._valueOf = new Map();
         beforeBeAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (action instanceof ActiveTec && action.type.any(TecType.格闘) && target.hasCondition(Condition.盾) && !dmg.hasType("反射")) {
-                    Unit.set反射(target);
+                    Unit.set反射Inv(target);
                 }
             });
         }
@@ -3134,6 +3162,41 @@ ActiveTec._valueOf = new Map();
                 target.prm(Prm.STR).battle -= value;
                 Util.msg.set(`${attacker.name}と${target.name}の力が相殺された`);
                 yield wait();
+            });
+        }
+    };
+    /**エスパー. */
+    Tec.オルゴン = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "オルゴン", info: "一体を＜疲労10＞(TP-10%)状態にし、自分を＜風10＞(TP+1)状態にする",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1, mp: 6, tp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.down.play();
+                FX_Debuff(target.imgCenter);
+                Unit.setCondition(target, Condition.疲労, 10);
+                Sound.up.play();
+                FX_Buff(attacker.imgCenter);
+                Unit.setCondition(attacker, Condition.風, 10);
+            });
+        }
+    };
+    /**エスパー. */
+    Tec.封印回路 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "封印回路", info: "味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
+                sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, xp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.BELL.play();
+                FX_Buff(target.imgCenter);
+                Unit.setCondition(target, Condition.反射, 2);
             });
         }
     };
