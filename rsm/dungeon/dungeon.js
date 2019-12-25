@@ -202,8 +202,8 @@ export class Dungeon {
         if (Dungeon.now.dungeonClearCount >= 1 && Math.random() < 0.001) {
             return DungeonEvent.EX_BATTLE;
         }
-        if (Math.random() < 0.15) {
-            if (Dungeon.now.rank >= 2 && Math.random() < 0.04) {
+        if (Math.random() < 0.13) {
+            if (Dungeon.now.rank >= 2 && Math.random() < 0.02) {
                 if (Dungeon.now.rank >= 6 && Math.random() < 0.3) {
                     return DungeonEvent.KEY_BOX_RANK6;
                 }
@@ -222,7 +222,7 @@ export class Dungeon {
                 return DungeonEvent.BOX;
             }
         }
-        if (Math.random() < 0.15) {
+        if (Math.random() < 0.13) {
             return DungeonEvent.BATTLE;
         }
         if (Math.random() < 0.04) {
