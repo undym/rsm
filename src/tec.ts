@@ -682,6 +682,46 @@ export namespace Tec{
             return dmg;
         }
     }
+    /**朱雀. */
+    export const                          暴れる:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"暴れる", info:"敵全体に力値分のダメージ  自分にその10%の反動ダメージ",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, mp:1, tp:7,
+        });}
+        async use(attacker:Unit, targets:Unit[]){
+            const check = this.checkCost(attacker);
+            super.use(attacker, targets);
+            if(check){
+                const dmg = new Dmg({absPow:attacker.prm(Prm.STR).total * 0.1});
+                await attacker.doDmg(dmg); await wait();
+            }
+        }
+        async run(attacker:Unit, target:Unit){
+            Tec.殴る.sound();
+            Tec.殴る.effect(attacker, target, new Dmg());
+
+            const dmg = new Dmg({absPow:attacker.prm(Prm.STR).total});
+            await target.doDmg(dmg); await wait();
+        }
+    }
+    /**朱雀. */
+    export const                          踏み潰す:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"踏み潰す", info:"対象に格闘攻撃x3  稀に＜衰弱5＞(行動開始時最大HP-10%)化  反撃有",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
+                              mul:3, num:1, hit:1, tp:7,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+            Util.msg.set("＞反撃");
+            await Tec.格闘カウンター.run( target, attacker );
+        }
+        async runInner(attacker:Unit, target:Unit, dmg:Dmg){
+            await super.runInner(attacker, target, dmg);
+            if(dmg.result.isHit && Math.random() < 0.7){
+                Unit.setCondition( target, Condition.衰弱, 5 );
+            }
+        }
+    }
     /**無習得技. */
     export const                          格闘カウンター:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"格闘カウンター", info:"！カウンター技用",
@@ -902,7 +942,9 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
 
-            attacker.doDmg(new Dmg({absPow:attacker.prm(Prm.DRK).total, types:["反撃"]}));
+            const lim = 99;
+            const selfTarm = attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim;
+            await attacker.doDmg(new Dmg({absPow:selfTarm, types:["反撃"]}));
         }
     }
     /**鳥. */

@@ -257,6 +257,43 @@ Player._valueOf = new Map();
             setDefJobChangeList(map, this.ins);
         }
     };
+    Player.白い鳥 = new class extends Player {
+        constructor() { super("白い鳥", "♂"); }
+        createInner(p) {
+            p.job = Job.鳥;
+            p.img = new Img("img/unit/unit118.png");
+            p.prm(Prm.MAX_HP).base = 75;
+            p.prm(Prm.MAX_MP).base = 3;
+            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.STR).base = 2;
+            p.prm(Prm.LIG).base = 5;
+            p.prm(Prm.DRK).base = 2;
+            p.prm(Prm.ARR).base = 35;
+            p.tecs = [
+                Tec.ホワイトランス,
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+        }
+        setJobChangeList(map) {
+            map.set(Job.鳥, true);
+            if (this.ins.isMasteredJob(Job.鳥)) {
+                map.set(Job.カリストコウモリ, true);
+                if (this.ins.isMasteredJob(Job.カリストコウモリ)) {
+                    map.set(Job.雷鳥, true);
+                    if (this.ins.isMasteredJob(Job.雷鳥)) {
+                        map.set(Job.エルフ, true);
+                    }
+                    map.set(Job.魔獣ドンゴ, true);
+                    if (this.ins.isMasteredJob(Job.魔獣ドンゴ)) {
+                        map.set(Job.朱雀, true);
+                    }
+                }
+            }
+        }
+    };
 })(Player || (Player = {}));
 const setDefJobChangeList = (map, u) => {
     const add = (addJob, checkJobs) => {
@@ -318,9 +355,11 @@ const setBeastJobChangeList = (map, u) => {
     add(Job.アングラ, [Job.アメーバ, Job.魔獣ドンゴ]);
     add(Job.ノーム, [Job.ドラゴン]);
     add(Job.妖精, [Job.ノーム]);
+    add(Job.エルフ, [Job.妖精]);
     add(Job.アイス, [Job.ノーム, Job.チルナノーグ]);
     add(Job.カリストコウモリ, [Job.ドラゴン]);
     add(Job.雷鳥, [Job.カリストコウモリ]);
     add(Job.魔獣ドンゴ, [Job.雷鳥]);
     add(Job.月狼, [Job.魔獣ドンゴ]);
+    //add(Job.朱雀, [Job.月狼, Job.お化け]);
 };

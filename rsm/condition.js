@@ -477,6 +477,26 @@ Condition._valueOf = new Map();
             });
         }
     };
+    Condition.衰弱 = new class extends Condition {
+        constructor() { super("衰弱", ConditionType.BAD_LV3); }
+        phaseStart(unit, pForce) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Util.msg.set("＞衰弱", Color.RED);
+                const lim = 3999;
+                let value = unit.prm(Prm.MAX_HP).total * 0.1;
+                if (value > lim) {
+                    value = lim;
+                }
+                unit.prm(Prm.MAX_HP).battle -= value;
+                unit.addConditionValue(this, -1);
+            });
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //-BAD_LV3
+    //
+    //--------------------------------------------------------------------------
 })(Condition || (Condition = {}));
 export class InvisibleCondition extends Force {
 }

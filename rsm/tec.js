@@ -691,6 +691,68 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    /**朱雀. */
+    Tec.暴れる = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "暴れる", info: "敵全体に力値分のダメージ  自分にその10%の反動ダメージ",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, mp: 1, tp: 7,
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                const check = this.checkCost(attacker);
+                _super.use.call(this, attacker, targets);
+                if (check) {
+                    const dmg = new Dmg({ absPow: attacker.prm(Prm.STR).total * 0.1 });
+                    yield attacker.doDmg(dmg);
+                    yield wait();
+                }
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Tec.殴る.sound();
+                Tec.殴る.effect(attacker, target, new Dmg());
+                const dmg = new Dmg({ absPow: attacker.prm(Prm.STR).total });
+                yield target.doDmg(dmg);
+                yield wait();
+            });
+        }
+    };
+    /**朱雀. */
+    Tec.踏み潰す = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "踏み潰す", info: "対象に格闘攻撃x3  稀に＜衰弱5＞(行動開始時最大HP-10%)化  反撃有",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
+                mul: 3, num: 1, hit: 1, tp: 7,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                Util.msg.set("＞反撃");
+                yield Tec.格闘カウンター.run(target, attacker);
+            });
+        }
+        runInner(attacker, target, dmg) {
+            const _super = Object.create(null, {
+                runInner: { get: () => super.runInner }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.runInner.call(this, attacker, target, dmg);
+                if (dmg.result.isHit && Math.random() < 0.7) {
+                    Unit.setCondition(target, Condition.衰弱, 5);
+                }
+            });
+        }
+    };
     /**無習得技. */
     Tec.格闘カウンター = new class extends ActiveTec {
         constructor() {
@@ -988,7 +1050,9 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.run.call(this, attacker, target);
-                attacker.doDmg(new Dmg({ absPow: attacker.prm(Prm.DRK).total, types: ["反撃"] }));
+                const lim = 99;
+                const selfTarm = attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim;
+                yield attacker.doDmg(new Dmg({ absPow: selfTarm, types: ["反撃"] }));
             });
         }
     };

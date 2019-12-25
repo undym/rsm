@@ -446,6 +446,24 @@ export namespace Condition{
             }
         }
     };
+    export const             衰弱:Condition = new class extends Condition{
+        constructor(){super("衰弱", ConditionType.BAD_LV3);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            Util.msg.set("＞衰弱", Color.RED);
+
+            const lim = 3999;
+            let value = unit.prm(Prm.MAX_HP).total * 0.1;
+            if(value > lim){value = lim;}
+            unit.prm(Prm.MAX_HP).battle -= value;
+
+            unit.addConditionValue(this, -1);
+        }
+    };
+    //--------------------------------------------------------------------------
+    //
+    //-BAD_LV3
+    //
+    //--------------------------------------------------------------------------
 }
 
 

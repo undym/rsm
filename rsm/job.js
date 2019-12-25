@@ -751,7 +751,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.ファイアボール, Tec.ファイアボール, Tec.殴る, Tec.殴る, Tec.魔法攻撃UP];
+            e.tecs = [Tec.ファイアボール, Tec.ファイアボール, Tec.ヴァハ, Tec.殴る, Tec.魔法攻撃UP];
         }
     };
     Job.ノーム = new class extends Job {
@@ -765,7 +765,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.光合成, Tec.良き占い, Tec.殴る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.光合成, Tec.良き占い, Tec.光合成, Tec.光合成, Tec.殴る];
         }
     };
     Job.チルナノーグ = new class extends Job {
@@ -909,6 +909,34 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.ホワイトランス, Tec.ホワイトランス, Tec.ホワイトランス, Tec.ロンギヌブ, Tec.天の紋, Tec.妖艶なる目];
+        }
+    };
+    Job.朱雀 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "朱雀", info: "",
+                appearLv: 80, img: new Img("img/unit/unit122.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.STR, 1], [Prm.LIG, 1], [Prm.ARR, 1]],
+                learningTecs: () => [Tec.暴れる, Tec.ヤクシャ, Tec.印, Tec.踏み潰す],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.暴れる, Tec.ヤクシャ, Tec.ヤクシャ, Tec.ヤクシャ, Tec.印, Tec.踏み潰す];
+        }
+    };
+    Job.エルフ = new class extends Job {
+        constructor() {
+            super({ uniqueName: "エルフ", info: "",
+                appearLv: 150, img: new Img("img/unit/unit125.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.DRK, 1], [Prm.GUN, 1], [Prm.ARR, 1]],
+                learningTecs: () => [],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.妖精の粉, Tec.ホワイトランス, Tec.ホワイトランス, Tec.ペガサスダンス, Tec.数珠, Tec.空中浮遊];
         }
     };
     //------------------------------------------------------
