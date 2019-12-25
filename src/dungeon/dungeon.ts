@@ -228,12 +228,12 @@ export abstract class Dungeon{
             const fileName = pathSplit.length > 0 ? pathSplit[ pathSplit.length - 1 ] : "";
             Util.msg.set("|> "+fileName, Color.L_GRAY.bright);
 
-            m.play({loop:true});
+            m.play({loop:type !== "dungeon"});//通常ダンジョン曲はループしない
         }
     }
 
     rndEvent():DungeonEvent{
-        if(Dungeon.musicCount++ >= 200 && Math.random() < 0.05){
+        if(Dungeon.musicCount++ >= 100 && Math.random() < 0.02){
             this.playMusic("dungeon");
         }
 
