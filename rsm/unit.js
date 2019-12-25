@@ -285,12 +285,6 @@ export class Unit {
                     yield _doDmg(value);
                     Util.msg.set(`+${value}`, Color.RED.bright);
                 }
-                // dmg.additionalAttacks.forEach(async(aa,index)=>{
-                //     await wait(1);
-                //     const value = aa(dmg, index)|0;
-                //     this.hp -= value;
-                //     Util.msg.set(`+${value}`, Color.RED.bright);
-                // });
             }
             else {
                 FX_RotateStr(font, "MISS", point, Color.L_GRAY);
@@ -520,28 +514,6 @@ export class Unit {
     //
     //
     //---------------------------------------------------------
-    /**
-     * そのユニットのパーティーメンバーを返す。!existsは含めない。deadは含める.
-     * @withHimSelf 本人を含めるかどうか。デフォルトでは含めない。
-     * */
-    // getParty(withHimSelf = false):Unit[]{
-    //     const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
-    //         let res:Unit[] = [];
-    //         for(const u of units){
-    //             if(!u.exists){continue;}
-    //             if(withHimSelf && u === this){continue;}
-    //             res.push(u);
-    //         }
-    //         return res;
-    //     };
-    //     if(this instanceof PUnit){
-    //         return searchMember( Unit.players );
-    //     }
-    //     if(this instanceof EUnit){
-    //         return searchMember( Unit.enemies );
-    //     }
-    //     return [];
-    // }
     /**
      * !existsとdeadは含めない.
      * @party 本人を含める.

@@ -688,11 +688,20 @@ export namespace Tec{
                               sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.SELECT,
                               mul:0.5, num:1, hit:1,
         });}
+        toString(){return "殴る";}
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
             dmg.types.push("反撃");
             return dmg;
         }
+    }
+    /**無習得技. */
+    export const                          混乱殴り:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"混乱殴り", info:"！混乱用",
+                              sort:TecSort.格闘, type:TecType.格闘, targetings:Targeting.RANDOM | Targeting.FRIEND_ONLY,
+                              mul:0.5, num:1, hit:1,
+        });}
+        toString(){return "殴る";}
     }
     //--------------------------------------------------------------------------
     //
@@ -882,6 +891,25 @@ export namespace Tec{
         constructor(){super({ uniqueName:"槍", info:"一体に槍攻撃",
                               sort:TecSort.格闘, type:TecType.槍, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1, tp:2,
+        });}
+    }
+    /**鳥. */
+    export const                          ホワイトランス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"槍", info:"一体に槍攻撃  暗黒+1  攻撃後暗黒値分のダメージ(最大99)",
+                              sort:TecSort.格闘, type:TecType.槍, targetings:Targeting.SELECT,
+                              mul:1, num:1, hit:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+
+            attacker.doDmg(new Dmg({absPow:attacker.prm(Prm.DRK).total, types:["反撃"]}));
+        }
+    }
+    /**鳥. */
+    export const                          ロンギヌブ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ロンギヌブ", info:"敵全体に槍攻撃",
+                              sort:TecSort.格闘, type:TecType.槍, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, tp:4,
         });}
     }
     //--------------------------------------------------------------------------
@@ -2280,6 +2308,30 @@ export namespace Tec{
             Unit.setCondition( target, Condition.バリア, 2 );
         }
     }
+    /**鳥. */
+    export const                          天の紋:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"天の紋", info:"自分を＜反射2＞化する",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.SELF,
+                              mul:1, num:1, hit:1, mp:5, tp:2,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.BELL.play();
+            FX_Buff( target.imgCenter );
+            Unit.setCondition( target, Condition.反射, 2 );
+        }
+    }
+    /**エスパー. */
+    export const                          封印回路:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"封印回路", info:"味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
+                              sort:TecSort.強化, type:TecType.状態, targetings:Targeting.ALL,
+                              mul:1, num:1, hit:1, xp:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.BELL.play();
+            FX_Buff( target.imgCenter );
+            Unit.setCondition( target, Condition.反射, 2 );
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //-強化Active
@@ -2621,16 +2673,16 @@ export namespace Tec{
             Unit.setCondition( attacker, Condition.風, 10 );
         }
     }
-    /**エスパー. */
-    export const                          封印回路:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"封印回路", info:"味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
+    /**鳥. */
+    export const                          妖艶なる目:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"妖艶なる目", info:"敵全体を＜混乱1＞化する",
                               sort:TecSort.弱体, type:TecType.状態, targetings:Targeting.ALL,
-                              mul:1, num:1, hit:1, xp:1,
+                              mul:1, num:1, hit:1, mp:6, ep:1,
         });}
         async run(attacker:Unit, target:Unit){
-            Sound.BELL.play();
-            FX_Buff( target.imgCenter );
-            Unit.setCondition( target, Condition.反射, 2 );
+            Sound.down.play();
+            FX_Debuff( target.imgCenter );
+            Unit.setCondition( target, Condition.混乱, 1 );
         }
     }
     //--------------------------------------------------------------------------

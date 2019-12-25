@@ -699,11 +699,22 @@ ActiveTec._valueOf = new Map();
                 mul: 0.5, num: 1, hit: 1,
             });
         }
+        toString() { return "殴る"; }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.types.push("反撃");
             return dmg;
         }
+    };
+    /**無習得技. */
+    Tec.混乱殴り = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "混乱殴り", info: "！混乱用",
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.RANDOM | Targeting.FRIEND_ONLY,
+                mul: 0.5, num: 1, hit: 1,
+            });
+        }
+        toString() { return "殴る"; }
     };
     //--------------------------------------------------------------------------
     //
@@ -960,6 +971,33 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "槍", info: "一体に槍攻撃",
                 sort: TecSort.格闘, type: TecType.槍, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, tp: 2,
+            });
+        }
+    };
+    /**鳥. */
+    Tec.ホワイトランス = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "槍", info: "一体に槍攻撃  暗黒+1  攻撃後暗黒値分のダメージ(最大99)",
+                sort: TecSort.格闘, type: TecType.槍, targetings: Targeting.SELECT,
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                attacker.doDmg(new Dmg({ absPow: attacker.prm(Prm.DRK).total, types: ["反撃"] }));
+            });
+        }
+    };
+    /**鳥. */
+    Tec.ロンギヌブ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ロンギヌブ", info: "敵全体に槍攻撃",
+                sort: TecSort.格闘, type: TecType.槍, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, tp: 4,
             });
         }
     };
@@ -2733,6 +2771,38 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**鳥. */
+    Tec.天の紋 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "天の紋", info: "自分を＜反射2＞化する",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.SELF,
+                mul: 1, num: 1, hit: 1, mp: 5, tp: 2,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.BELL.play();
+                FX_Buff(target.imgCenter);
+                Unit.setCondition(target, Condition.反射, 2);
+            });
+        }
+    };
+    /**エスパー. */
+    Tec.封印回路 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "封印回路", info: "味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
+                sort: TecSort.強化, type: TecType.状態, targetings: Targeting.ALL,
+                mul: 1, num: 1, hit: 1, xp: 1,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.BELL.play();
+                FX_Buff(target.imgCenter);
+                Unit.setCondition(target, Condition.反射, 2);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-強化Active
@@ -3184,19 +3254,19 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
-    /**エスパー. */
-    Tec.封印回路 = new class extends ActiveTec {
+    /**鳥. */
+    Tec.妖艶なる目 = new class extends ActiveTec {
         constructor() {
-            super({ uniqueName: "封印回路", info: "味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
+            super({ uniqueName: "妖艶なる目", info: "敵全体を＜混乱1＞化する",
                 sort: TecSort.弱体, type: TecType.状態, targetings: Targeting.ALL,
-                mul: 1, num: 1, hit: 1, xp: 1,
+                mul: 1, num: 1, hit: 1, mp: 6, ep: 1,
             });
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                Sound.BELL.play();
-                FX_Buff(target.imgCenter);
-                Unit.setCondition(target, Condition.反射, 2);
+                Sound.down.play();
+                FX_Debuff(target.imgCenter);
+                Unit.setCondition(target, Condition.混乱, 1);
             });
         }
     };

@@ -95,7 +95,7 @@ export namespace Condition{
     export const             練:Condition = new class extends Condition{
         constructor(){super("練", ConditionType.GOOD_LV1);}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃, TecType.弓)){
                 
                 Util.msg.set("＞練");
                 dmg.pow.mul *= (1 + attacker.getConditionValue(this) * 0.5)
@@ -181,7 +181,7 @@ export namespace Condition{
     export const             盾:Condition = new class extends Condition{
         constructor(){super("盾", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃, TecType.弓)){
                 
                 Util.msg.set("＞盾");
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -193,7 +193,7 @@ export namespace Condition{
     export const             雲:Condition = new class extends Condition{
         constructor(){super("雲", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.暗黒, TecType.過去, TecType.弓)){
+            if(action instanceof ActiveTec && action.type.any(TecType.魔法, TecType.神格, TecType.過去)){
                 
                 Util.msg.set("＞雲");
                 dmg.pow.mul /= (1 + target.getConditionValue(this) * 0.5);
@@ -215,7 +215,7 @@ export namespace Condition{
     export const             吸収:Condition = new class extends Condition{
         constructor(){super("吸収", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃)){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃, TecType.弓, TecType.怨霊)){
 
                 target.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = "吸収";
@@ -403,8 +403,28 @@ export namespace Condition{
             }
         }
     };
+    /**1/2の確率で味方を殴る。 */
+    export const             混乱:Condition = new class extends Condition{
+        constructor(){super("混乱", ConditionType.BAD_LV2);}
+        async phaseStart(unit:Unit, pForce:PhaseStartForce){
+            if(Math.random() < 0.5){
+                pForce.phaseSkip = true;
+                
+                Util.msg.set(`${unit.name}は混乱している...`); await wait();
+                await Tec.混乱殴り.use( unit, Targeting.filter( Tec.混乱殴り.targetings, unit, Unit.all, Tec.混乱殴り.rndAttackNum(unit)));
+                
+                unit.addConditionValue(this, -1);
+            }
+        }
+        async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
+            if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.槍, TecType.鎖術, TecType.機械, TecType.怨霊) && Math.random() < 0.5){
+                target.addConditionValue(this, -1);
+            }
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-BAD_LV2
     //BAD_LV3
     //
     //--------------------------------------------------------------------------

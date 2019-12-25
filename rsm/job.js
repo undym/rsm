@@ -722,7 +722,7 @@ Job.DEF_LVUP_EXP = 10;
         setEnemyInner(e) {
             e.tecs = [Tec.殴る, Tec.弱体液, Tec.タックル, Tec.殴る, Tec.セル, Tec.被膜];
             if (Math.random() < 0.5) {
-                Unit.setCondition(e, Condition.吸収, randomInt(1, 2, "[]"));
+                Unit.setCondition(e, Condition.吸収, 1);
             }
         }
     };
@@ -895,6 +895,20 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.スネイク, Tec.スネイク, Tec.角, Tec.角, Tec.空中浮遊, Tec.ペガサスダンス, Tec.練ファクト];
+        }
+    };
+    Job.鳥 = new class extends Job {
+        constructor() {
+            super({ uniqueName: "鳥", info: "",
+                appearLv: 140, img: new Img("img/unit/unit118.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 2,
+                growthPrms: () => [[Prm.MAX_MP, 1], [Prm.PST, 1], [Prm.ARR, 1],],
+                learningTecs: () => [Tec.ホワイトランス, Tec.ロンギヌブ, Tec.天の紋, Tec.妖艶なる目],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.ホワイトランス, Tec.ホワイトランス, Tec.ホワイトランス, Tec.ロンギヌブ, Tec.天の紋, Tec.妖艶なる目];
         }
     };
     //------------------------------------------------------

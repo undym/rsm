@@ -337,12 +337,6 @@ export abstract class Unit{
                 await _doDmg(value);
                 Util.msg.set(`+${value}`, Color.RED.bright);
             }
-            // dmg.additionalAttacks.forEach(async(aa,index)=>{
-            //     await wait(1);
-            //     const value = aa(dmg, index)|0;
-            //     this.hp -= value;
-            //     Util.msg.set(`+${value}`, Color.RED.bright);
-            // });
         }else{
             FX_RotateStr(font, "MISS", point, Color.L_GRAY);
             Util.msg.set("MISS", Color.L_GRAY);
@@ -544,29 +538,6 @@ export abstract class Unit{
     //
     //---------------------------------------------------------
     /**
-     * そのユニットのパーティーメンバーを返す。!existsは含めない。deadは含める.
-     * @withHimSelf 本人を含めるかどうか。デフォルトでは含めない。
-     * */
-    // getParty(withHimSelf = false):Unit[]{
-    //     const searchMember = (units:ReadonlyArray<PUnit>|ReadonlyArray<EUnit>|ReadonlyArray<Unit>):Unit[]=>{
-    //         let res:Unit[] = [];
-    //         for(const u of units){
-    //             if(!u.exists){continue;}
-    //             if(withHimSelf && u === this){continue;}
-    //             res.push(u);
-    //         }
-    //         return res;
-    //     };
-
-    //     if(this instanceof PUnit){
-    //         return searchMember( Unit.players );
-    //     }
-    //     if(this instanceof EUnit){
-    //         return searchMember( Unit.enemies );
-    //     }
-    //     return [];
-    // }
-    /**
      * !existsとdeadは含めない.
      * @party 本人を含める.
      * @withDead deadを含める.
@@ -608,32 +579,6 @@ export abstract class Unit{
         }
         return [];
     };
-    /**
-     * このユニットが隣接しているユニット。 
-     * 
-    */
-    // getAdjacentUnits(who:("top"|"bottom")[]):Unit[]{
-    //     const top    = who.some(w=> w === "top");
-    //     const bottom = who.some(w=> w === "bottom");
-    //     const search = (units:ReadonlyArray<Unit>):Unit[]=>{
-    //         for(let i = 0; i < units.length; i++){
-    //             if(units[i] === this){
-    //                 const res:Unit[] = [];
-    //                 if(top    && i > 0)                {res.push(units[i-1]);}
-    //                 if(bottom && i < units.length - 1) {res.push(units[i+1]);}
-    //                 return res;
-    //             }
-    //         }
-    //         return [];
-    //     }
-    //     if(this instanceof PUnit){
-    //         return search(Unit.players);
-    //     }
-    //     if(this instanceof EUnit){
-    //         return search(Unit.enemies);
-    //     }
-    //     return [];
-    // }
 }
 
 
@@ -871,7 +816,7 @@ export namespace Unit{
             readonly uniqueName = "反射";
             async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
                 target.removeInvisibleCondition(this);
-                
+
                 if(dmg.hasType("反射","反撃")){return;}
 
                 const result = dmg.calc();
