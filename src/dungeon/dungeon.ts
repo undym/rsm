@@ -219,8 +219,6 @@ export abstract class Dungeon{
         Music.stop();
         Dungeon.musicCount = 0;
 
-        Music.stop();
-
         const _musics = this.musics(type);
         if(_musics){
             const m = choice( _musics );
