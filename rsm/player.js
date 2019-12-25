@@ -352,6 +352,8 @@ const setBeastJobChangeList = (map, u) => {
     add(Job.アメーバ, [Job.ドラゴン]);
     add(Job.鬼火, [Job.アメーバ]);
     add(Job.チルナノーグ, [Job.アメーバ]);
+    add(Job.ブルージェリー, [Job.チルナノーグ]);
+    add(Job.ブラッド, [Job.ブルージェリー, Job.カリストコウモリ]);
     add(Job.アングラ, [Job.アメーバ, Job.魔獣ドンゴ]);
     add(Job.ノーム, [Job.ドラゴン]);
     add(Job.妖精, [Job.ノーム]);

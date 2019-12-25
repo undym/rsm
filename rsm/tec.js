@@ -1021,6 +1021,21 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ブラッド. */
+    Tec.受容 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "受容", info: "稀に格闘攻撃を吸収",
+                sort: TecSort.格闘, type: TecType.格闘,
+            });
+        }
+        beforeBeAtk(action, attacker, target, dmg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (action instanceof ActiveTec && action.type.any(TecType.格闘) && Math.random() < 0.15) {
+                    Unit.set吸収Inv(target);
+                }
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-格闘Passive

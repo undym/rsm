@@ -808,6 +808,18 @@ export namespace Job{
             e.tecs = [Tec.殴る, Tec.溶ける, Tec.溶ける, Tec.罪, Tec.心];
         }
     };
+    export const                         ブラッド:Job = new class extends Job{
+        constructor(){super({uniqueName:"ブラッド", info:"",
+                                appearLv:30, img:new Img("img/unit/unit113.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.CHN, 1], [Prm.PST, 1]],
+                                learningTecs:()=>[Tec.セル, Tec.吸血, Tec.受容],
+                                beast:true,
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.殴る, Tec.溶ける, Tec.溶ける, Tec.罪, Tec.セル, Tec.吸血, Tec.受容];
+        }
+    };
     export const                         ペガサス:Job = new class extends Job{
         constructor(){super({uniqueName:"ペガサス", info:"",
                                 appearLv:60, img:new Img("img/unit/unit115.png"),

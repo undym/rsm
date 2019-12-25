@@ -216,23 +216,7 @@ export namespace Condition{
         constructor(){super("吸収", ConditionType.GOOD_LV2);}
         async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘, TecType.神格, TecType.鎖術, TecType.銃, TecType.弓, TecType.怨霊)){
-
-                target.addInvisibleCondition(new class extends InvisibleCondition{
-                    readonly uniqueName = "吸収";
-                    async beDamage(unit:Unit, dmg:Dmg){
-                        unit.removeInvisibleCondition(this);
-
-                        if(dmg.result.isHit){
-                            const value = dmg.result.value;
-                            Unit.healHP( unit, value );
-                            Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
-            
-                            dmg.result.value = 0;
-                        }
-                    }
-                });
-
-                target.addConditionValue(this, -1);
+                Unit.set吸収Inv(target, ()=>target.addConditionValue(this, -1));
             }
         }
     };

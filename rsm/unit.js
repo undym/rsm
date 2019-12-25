@@ -495,6 +495,9 @@ export class Unit {
         this.invisibleConditions.push(iCondition);
     }
     getInvisibleConditions() { return this.invisibleConditions; }
+    hasInvisibleCondition(uniqueName) {
+        return this.invisibleConditions.some(inv => inv.uniqueName === uniqueName);
+    }
     //---------------------------------------------------------
     //
     //Eq
@@ -806,6 +809,34 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                         dmg.pow.mul = 0;
                     }
                     ;
+                });
+            }
+        });
+    };
+    /** */
+    Unit.set吸収Inv = (unit, drainSuccess) => {
+        const name = "吸収";
+        if (unit.hasInvisibleCondition(name)) {
+            return;
+        }
+        unit.addInvisibleCondition(new class extends InvisibleCondition {
+            constructor() {
+                super(...arguments);
+                this.uniqueName = name;
+            }
+            beDamage(u, dmg) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    u.removeInvisibleCondition(this);
+                    if (dmg.result.isHit) {
+                        const value = dmg.result.value;
+                        Unit.healHP(u, value);
+                        Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
+                        yield wait();
+                        dmg.result.value = 0;
+                        if (drainSuccess) {
+                            drainSuccess();
+                        }
+                    }
                 });
             }
         });
