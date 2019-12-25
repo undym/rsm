@@ -335,7 +335,7 @@ export namespace Eq{
     /**塔4000階EX. */
     export const                         ぱとバット:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ぱとバット", info:"＜眠＞から目覚めやすくなる",
-                                pos:EqPos.武, lv:0});}
+                                pos:EqPos.武, lv:100});}
         async phaseStart(unit:Unit, pForce:PhaseStartForce){
             if(unit.hasCondition(Condition.眠)){
                 unit.addConditionValue(Condition.眠, -1);
@@ -345,7 +345,7 @@ export namespace Eq{
     /**塔地下200階の門EX. */
     export const                         ロングドレスの剣:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ロングドレスの剣", info:"格闘攻撃時、現在MP値を加算 MP-10%",
-                                pos:EqPos.武, lv:0});}
+                                pos:EqPos.武, lv:200});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
                 dmg.pow.add += attacker.mp;
@@ -356,7 +356,7 @@ export namespace Eq{
     /**ハデスの腹EX. */
     export const                         ハデスの腹剣:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ハデスの腹剣", info:"格闘攻撃時に自分の受けているダメージの1/3を加算",
-                                pos:EqPos.武, lv:0});}
+                                pos:EqPos.武, lv:300});}
         async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
             if(action instanceof ActiveTec && action.type.any(TecType.格闘)){
                 dmg.pow.add += attacker.prm(Prm.MAX_HP).total - attacker.hp;
@@ -667,7 +667,7 @@ export namespace Eq{
     /**小鬼. */
     export const                         小鬼の腕輪:Eq = new class extends Eq{
         constructor(){super({uniqueName:"小鬼の腕輪", info:"5の倍数のターンに正気を取り戻す",
-                                pos:EqPos.手, lv:19});}
+                                pos:EqPos.手, lv:79});}
                                 
         async battleStart(unit:Unit){
             if(unit.dead){return;}

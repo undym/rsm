@@ -343,7 +343,7 @@ EqEar._valueOf = new Map();
     Eq.ぱとバット = new class extends Eq {
         constructor() {
             super({ uniqueName: "ぱとバット", info: "＜眠＞から目覚めやすくなる",
-                pos: EqPos.武, lv: 0 });
+                pos: EqPos.武, lv: 100 });
         }
         phaseStart(unit, pForce) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -357,7 +357,7 @@ EqEar._valueOf = new Map();
     Eq.ロングドレスの剣 = new class extends Eq {
         constructor() {
             super({ uniqueName: "ロングドレスの剣", info: "格闘攻撃時、現在MP値を加算 MP-10%",
-                pos: EqPos.武, lv: 0 });
+                pos: EqPos.武, lv: 200 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -372,7 +372,7 @@ EqEar._valueOf = new Map();
     Eq.ハデスの腹剣 = new class extends Eq {
         constructor() {
             super({ uniqueName: "ハデスの腹剣", info: "格闘攻撃時に自分の受けているダメージの1/3を加算",
-                pos: EqPos.武, lv: 0 });
+                pos: EqPos.武, lv: 300 });
         }
         beforeDoAtk(action, attacker, target, dmg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -806,7 +806,7 @@ EqEar._valueOf = new Map();
     Eq.小鬼の腕輪 = new class extends Eq {
         constructor() {
             super({ uniqueName: "小鬼の腕輪", info: "5の倍数のターンに正気を取り戻す",
-                pos: EqPos.手, lv: 19 });
+                pos: EqPos.手, lv: 79 });
         }
         battleStart(unit) {
             return __awaiter(this, void 0, void 0, function* () {
