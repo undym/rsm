@@ -946,7 +946,7 @@ export namespace Tec{
     }
     /**鳥. */
     export const                          ホワイトランス:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"槍", info:"一体に槍攻撃  暗黒+1  攻撃後暗黒値分のダメージ(最大99)",
+        constructor(){super({ uniqueName:"ホワイトランス", info:"一体に槍攻撃  暗黒+1  攻撃後暗黒値分のダメージ(最大99)",
                               sort:TecSort.格闘, type:TecType.槍, targetings:Targeting.SELECT,
                               mul:1, num:1, hit:1,
         });}
@@ -1190,7 +1190,7 @@ export namespace Tec{
 
             Util.msg.set("＞反動");
             const cdmg = new Dmg({
-                            absPow:target.prm(Prm.LIG).total + target.prm(Prm.LV).total * 0.1 + 1,
+                            absPow:target.prm(Prm.LV).total * 0.5,
                             types:["反撃"],
                         });
             FX_格闘( attacker.imgCenter );
@@ -2774,6 +2774,7 @@ export namespace Tec{
             if(attacker.getEq(EqPos.指) === Eq.霊宝天尊){
                 value *= 1.5;
             }
+            value = value|0;
             Unit.healHP(target, value);
 
             Sound.KAIFUKU.play();
@@ -2788,7 +2789,6 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:6,
         });}
         async run(attacker:Unit, target:Unit){
-            
             Tec.数珠.run(attacker, target);
         }
     }
@@ -3186,7 +3186,7 @@ export namespace Tec{
                 this.dmgValue = attacker.hp;
                 this.soundAndFX = true;
             }
-            super.use(attacker, targets);
+            await super.use(attacker, targets);
             
             if(!canUse){
                 Util.msg.set(`光に吸い寄せられた虫が体にいっぱいくっついた...`); await wait();
