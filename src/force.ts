@@ -41,7 +41,10 @@ export class AttackNumForce{
     get total(){return (this.base + this.add)|0;}
 }
 
-export type DmgType = "毒"|"反射"|"反撃"|"ペット"|"罠";
+export type DmgType = 
+                 "格闘"|"槍"|"魔法"|"神格"|"暗黒"|"怨霊"|"鎖術"|"過去"|"銃"|"機械"|"弓"
+                |"毒"|"反射"|"反撃"|"ペット"|"罠"
+                ;
 
 export class Dmg{
     //0     1

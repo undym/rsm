@@ -86,6 +86,7 @@ TecType._values = [];
             return new Dmg({
                 pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.MAG).total,
+                types: ["格闘"],
             });
         }
         effect(attacker, target, dmg) { FX_格闘(target.imgBounds.center); }
@@ -97,6 +98,7 @@ TecType._values = [];
             return new Dmg({
                 pow: attacker.prm(Prm.STR).total + attacker.prm(Prm.ARR).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.MAG).total,
+                types: ["槍"],
             });
         }
         effect(attacker, target, dmg) { FX_格闘(target.imgBounds.center); }
@@ -108,6 +110,7 @@ TecType._values = [];
             return new Dmg({
                 pow: attacker.prm(Prm.MAG).total + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.STR).total,
+                types: ["魔法"],
             });
         }
         effect(attacker, target, dmg) { FX_魔法(target.imgBounds.center); }
@@ -119,6 +122,7 @@ TecType._values = [];
             return new Dmg({
                 pow: attacker.prm(Prm.LIG).total * 0.85 + attacker.prm(Prm.LV).total * 0.3,
                 def: target.prm(Prm.DRK).total,
+                types: ["神格"],
             });
         }
         effect(attacker, target, dmg) { FX_神格(target.imgBounds.center); }
@@ -492,7 +496,7 @@ ActiveTec._valueOf = new Map();
     Tec.静かなる動き = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "静かなる動き", info: "一体に格闘攻撃 相手の防御値無視 対象の強化状態解除",
-                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.ALL,
+                sort: TecSort.格闘, type: TecType.格闘, targetings: Targeting.SELECT,
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
@@ -1344,7 +1348,7 @@ ActiveTec._valueOf = new Map();
                 yield _super.run.call(this, attacker, target);
                 Util.msg.set("＞反動");
                 const cdmg = new Dmg({
-                    absPow: target.prm(Prm.LV).total * 0.5,
+                    absPow: target.prm(Prm.LV).total,
                     types: ["反撃"],
                 });
                 FX_格闘(attacker.imgCenter);
