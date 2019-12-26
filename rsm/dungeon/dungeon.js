@@ -224,20 +224,26 @@ export class Dungeon {
         if (Math.random() < 0.13) {
             return DungeonEvent.BATTLE;
         }
-        if (Math.random() < 0.04) {
+        if (Math.random() < 0.03) {
             return DungeonEvent.TRAP;
         }
-        if (this.rank >= 1 && Math.random() < 0.01) {
-            return DungeonEvent.TREE;
-        }
-        if (this.rank >= 2 && Math.random() < 0.01) {
-            return DungeonEvent.STRATUM;
-        }
-        if (this.rank >= 3 && Math.random() < 0.01) {
-            return DungeonEvent.LAKE;
-        }
-        if (this.rank >= 4 && Math.random() < 0.01) {
-            return DungeonEvent.FOSSIL;
+        if (Math.random() < 0.01) {
+            const collectingEvents = [];
+            if (this.rank >= 1) {
+                collectingEvents.push(DungeonEvent.TREE);
+            }
+            if (this.rank >= 2) {
+                collectingEvents.push(DungeonEvent.STRATUM);
+            }
+            if (this.rank >= 3) {
+                collectingEvents.push(DungeonEvent.LAKE);
+            }
+            if (this.rank >= 4) {
+                collectingEvents.push(DungeonEvent.FOSSIL);
+            }
+            if (collectingEvents.length > 0) {
+                return choice(collectingEvents);
+            }
         }
         //(10 + rank * 1) / (10 + rank * 6)
         //[rank = 0,  1 / 1] [rank = 1,  11 / 16] [rank = 5,  15 / 40] [rank = 10, 20 / 70 = 2 / 7]
