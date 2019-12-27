@@ -12,7 +12,7 @@ import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
-import { Targeting, Dmg } from "../force.js";
+import { Dmg } from "../force.js";
 import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { Input } from "../undym/input.js";
@@ -242,8 +242,12 @@ export namespace DungeonEvent{
                                         if(!p.exists || p.dead){continue;}
 
                                         FX_格闘( p.imgCenter );
-                                        const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 5});
-                                        await p.doDmg(dmg);
+                                        await new Dmg({
+                                            attacker:p,
+                                            target:p,
+                                            pow:p.prm(Prm.MAX_HP).total / 5,
+                                            types:["反撃","罠"],
+                                        }).run();
                                         await p.judgeDead();
                                     }
 
@@ -304,8 +308,12 @@ export namespace DungeonEvent{
                                         if(!p.exists || p.dead){continue;}
 
                                         FX_格闘( p.imgCenter );
-                                        const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
-                                        await p.doDmg(dmg);
+                                        await new Dmg({
+                                            attacker:p,
+                                            target:p,
+                                            pow:p.prm(Prm.MAX_HP).total / 10,
+                                            types:["反撃"],
+                                        }).run();
                                         await p.judgeDead();
                                     }
                                 }).dontMove())
@@ -357,8 +365,12 @@ export namespace DungeonEvent{
                                             if(!p.exists || p.dead){continue;}
 
                                             FX_格闘( p.imgCenter );
-                                            const dmg = new Dmg({absPow: p.prm(Prm.MAX_HP).total / 10});
-                                            await p.doDmg(dmg);
+                                            await new Dmg({
+                                                attacker:p,
+                                                target:p,
+                                                pow:p.prm(Prm.MAX_HP).total / 10,
+                                                types:["反撃"],
+                                            }).run();
                                             await p.judgeDead();
                                         }
 
@@ -606,10 +618,10 @@ class ItemBtn{
                     selectUser:true,
                     user:Unit.players[0],
                     use:async(item,user)=>{
-                        if(item.targetings & Targeting.SELECT){
+                        if(item.targetings.some(t=> t === "select")){
                             await item.use( user, [user] );
                         }else{
-                            let targets = Targeting.filter( item.targetings, user, Unit.players, /*num*/1 );
+                            const targets = user.searchUnits( item.targetings, 1 );
                             
                             if(targets.length > 0){
                                 await item.use( user, targets );

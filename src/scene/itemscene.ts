@@ -9,7 +9,6 @@ import { Rect, Color, Point } from "../undym/type.js";
 import { Item, ItemParentType } from "../item.js";
 import { FX } from "../fx/fx.js";
 import { Input } from "../undym/input.js";
-import { Targeting } from "../force.js";
 import { Battle } from "../battle.js";
 import { BattleScene } from "./battlescene.js";
 import { Graphics, Font } from "../graphics/graphics.js";

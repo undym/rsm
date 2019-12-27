@@ -1,20 +1,45 @@
 import { Unit, Prm } from "./unit.js";
 import { choice } from "./undym/random.js";
+import { Font, Graphics } from "./graphics/graphics.js";
+import { DrawSTBox } from "./scene/sceneutil.js";
+import { FX_Shake, FX_RotateStr, FX_PetDie } from "./fx/fx.js";
+import { Color } from "./undym/type.js";
+import { Util } from "./util.js";
+import { wait } from "./undym/scene.js";
+import { Sound } from "./sound.js";
 
+
+
+export interface ForceIns{
+    // 
+    readonly force:Force;
+    /*
+        private forceIns:Force;
+        get force(){return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
+        protected createForce(_this:ForceIns):Force{return emptyForce();}
+     */
+    // protected createForce(_this:ForceIns):Force;
+    // get force(){return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
+    // 
+}
 
 export class Force{
-    equip(unit:Unit){};
+    private static _empty:Force;
+    static get empty(){return this._empty ? this._empty : (this._empty = new Force());}
+
+    
+    equip(unit:Unit){}
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
     async deadPhaseStart(unit:Unit){}
     attackNum(action:Action, unit:Unit, aForce:AttackNumForce){}
-    async beforeDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async beforeDoAtk(dmg:Dmg){}
+    async beforeBeAtk(dmg:Dmg){}
     /**ダメージを受ける直前、calc()された後に通る. */
     async beDamage(unit:Unit, dmg:Dmg){}
-    async afterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
-    async afterBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async afterDoAtk(dmg:Dmg){}
+    async afterBeAtk(dmg:Dmg){}
     async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
     async whenDead(unit:Unit){}
     /**
@@ -47,6 +72,16 @@ export type DmgType =
                 ;
 
 export class Dmg{
+    private static _empty:Dmg;
+    static get empty():Dmg{
+        if(!this._empty){
+            this._empty = new Dmg({
+                attacker:Unit.all[0],
+                target:Unit.all[0],
+            });
+        }
+        return this._empty;
+    }
     //0     1
     //60    0.85
     //300   0.55
@@ -59,6 +94,10 @@ export class Dmg{
         let res = (elm.base + elm.add) * elm.mul;
         return res > 0 ? res : 0;
     }
+
+    attacker:Unit;
+    target:Unit;
+    action:Action|undefined;
     /**攻撃力。*/
     pow:{base:number, add:number, mul:number};
     /**防御力。 */
@@ -83,7 +122,10 @@ export class Dmg{
         return false;
     }
 
-    constructor(args?:{
+    constructor(args:{
+        attacker:Unit,
+        target:Unit,
+        action?:Action,
         pow?:number,
         mul?:number,
         hit?:number,
@@ -94,15 +136,16 @@ export class Dmg{
     }){
         this.clear();
 
-        if(args){
-            if(args.pow)    {this.pow.base = args.pow;}
-            if(args.mul)    {this.pow.mul  = args.mul;}
-            if(args.hit)    {this.hit.base = args.hit;}
-            if(args.def)    {this.def.base = args.def;}
-            if(args.absPow) {this.abs.base = args.absPow;}
-            if(args.absMul) {this.abs.mul  = args.absMul;}
-            if(args.types)  {this.types = args.types;}
-        }
+        this.attacker = args.attacker;
+        this.target = args.target;
+        this.action = args.action;
+        if(args.pow)    {this.pow.base = args.pow;}
+        if(args.mul)    {this.pow.mul  = args.mul;}
+        if(args.hit)    {this.hit.base = args.hit;}
+        if(args.def)    {this.def.base = args.def;}
+        if(args.absPow) {this.abs.base = args.absPow;}
+        if(args.absMul) {this.abs.mul  = args.absMul;}
+        if(args.types)  {this.types = args.types;}
     }
 
     clear(){
@@ -160,6 +203,65 @@ export class Dmg{
         this.result.isHit = isHit;
         return this.result;
     }
+
+    async run():Promise<void>{
+        if(!this.target.exists || this.target.dead){return;}
+
+        const result = this.calc();
+        const font = new Font(Font.def.size * 2, Font.BOLD);
+        const point =   {
+                        x:this.target.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
+                        y:this.target.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
+                    };
+        const effect = (value:number)=>{
+            const stbox = new DrawSTBox(()=>this.target);
+            FX_Shake(this.target.boxBounds, bounds=>{
+                Graphics.fillRect(bounds, Color.BLACK);
+                stbox.draw(bounds)
+            });
+            FX_RotateStr(font, `${value}`, point, Color.WHITE);
+        };
+
+
+        this.target.beDamage(this);
+
+        if(result.isHit){
+            const _doDmg = async(value:number)=>{
+                effect(value);
+                if(this.target.pet && value >= this.target.hp){
+                    Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`); await wait(1);
+
+                    this.target.pet.hp--;
+                    if(this.target.pet.hp <= 0){
+                        const petName = this.target.pet.toString();
+                        this.target.pet = undefined;
+                        Sound.pet_die.play();
+                        FX_PetDie( this.target.imgCenter );
+                        Util.msg.set(`${petName}は砕け散った...`); await wait();
+                    }
+                }else{
+                    this.target.hp -= value;
+                }
+            };
+
+            const value = result.value;
+            await _doDmg(value);
+            Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
+
+            for(let i = 0; i < this.additionalAttacks.length; i++){
+                await wait(1);
+
+                const value = this.additionalAttacks[i]( this, i );
+                await _doDmg(value);
+                Util.msg.set(`+${value}`, Color.RED.bright);
+            }
+        }else{
+            FX_RotateStr(font, "MISS", point, Color.L_GRAY);
+            Util.msg.set("MISS", Color.L_GRAY);
+        }
+
+        this.target.tp += 1;
+    }
 }
 
 
@@ -167,51 +269,52 @@ export abstract class Action{
     abstract use(attacker:Unit, targets:Unit[]):void;
 }
 
-export enum Targeting{
-    SELECT      = 1 << 0,
-    SELF        = 1 << 1,
-    ALL         = 1 << 2,
-    WITH_DEAD   = 1 << 3,
-    DEAD_ONLY   = 1 << 4,
-    WITH_FRIEND = 1 << 5,
-    FRIEND_ONLY = 1 << 6,
-    RANDOM      = 1 << 7,
-}
-export namespace Targeting{
-    export const filter = (targetings:Targeting, attacker:Unit, targets:Unit[]|ReadonlyArray<Unit>, num:number):Unit[] => {
+// export type Targeting = number;
+// export namespace Targeting{
+//     export const SELECT      = 1 << 0;
+//     export const SELF        = 1 << 1;
+//     export const ALL         = 1 << 2;
+//     export const WITH_DEAD   = 1 << 3;
+//     export const DEAD_ONLY   = 1 << 4;
+//     export const WITH_FRIEND = 1 << 5;
+//     export const FRIEND_ONLY = 1 << 6;
+//     export const RANDOM      = 1 << 7;
+
+
+//     export const filter = (targetings:Targeting, attacker:Unit, targets:Unit[]|ReadonlyArray<Unit>, num:number):Unit[] => {
         
-        if(targetings & Targeting.SELF){
-            return new Array<Unit>(num).fill(attacker);
-        }
+//         if(targetings & Targeting.SELF){
+//             return new Array<Unit>(num).fill(attacker);
+//         }
 
 
-        let filtered = targets.filter(t=> t.exists);
-             if(targetings & Targeting.WITH_DEAD){}
-        else if(targetings & Targeting.DEAD_ONLY){filtered = filtered.filter(t=> t.dead);}
-        else                                     {filtered = filtered.filter(t=> !t.dead);}
+//         let filtered = targets.filter(t=> t.exists);
+//              if(targetings & Targeting.WITH_DEAD){}
+//         else if(targetings & Targeting.DEAD_ONLY){filtered = filtered.filter(t=> t.dead);}
+//         else                                     {filtered = filtered.filter(t=> !t.dead);}
 
-             if(targetings & Targeting.WITH_FRIEND){}
-        else if(targetings & Targeting.FRIEND_ONLY){filtered = filtered.filter(t=> t.isFriend(attacker));}
-        else                                       {filtered = filtered.filter(t=> !t.isFriend(attacker));}
+//              if(targetings & Targeting.WITH_FRIEND){}
+//         else if(targetings & Targeting.FRIEND_ONLY){filtered = filtered.filter(t=> t.isFriend(attacker));}
+//         else                                       {filtered = filtered.filter(t=> !t.isFriend(attacker));}
 
-        if(filtered.length === 0){return [];}
+//         if(filtered.length === 0){return [];}
 
-        if(targetings & Targeting.RANDOM){
-            let res:Unit[] = [];
-            for(let i = 0; i < num; i++){
-                res.push( choice(filtered) );
-            }
-            return res;
-        }
+//         if(targetings & Targeting.RANDOM){
+//             let res:Unit[] = [];
+//             for(let i = 0; i < num; i++){
+//                 res.push( choice(filtered) );
+//             }
+//             return res;
+//         }
         
-        if(targetings & Targeting.SELECT){
-            return new Array<Unit>(num).fill( choice(filtered) );
-        }
-        //all
-        let res:Unit[] = [];
-        for(let i = 0; i < num; i++){
-            res = res.concat( filtered );
-        }
-        return res;
-    }
-}
+//         if(targetings & Targeting.SELECT){
+//             return new Array<Unit>(num).fill( choice(filtered) );
+//         }
+//         //all
+//         let res:Unit[] = [];
+//         for(let i = 0; i < num; i++){
+//             res = res.concat( filtered );
+//         }
+//         return res;
+//     }
+// }

@@ -12,7 +12,7 @@ import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition } from "./fx/fx.js";
-import { Targeting, Dmg } from "./force.js";
+import { Dmg } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
@@ -22,6 +22,17 @@ import { Tec } from "./tec.js";
 import { Condition, ConditionType } from "./condition.js";
 import { Sound } from "./sound.js";
 import { Job } from "./job.js";
+// //FIXME
+// namespace Targeting{
+//     export const SELECT      = 1 << 0;
+//     export const SELF        = 1 << 1;
+//     export const ALL         = 1 << 2;
+//     export const WITH_DEAD   = 1 << 3;
+//     export const DEAD_ONLY   = 1 << 4;
+//     export const WITH_FRIEND = 1 << 5;
+//     export const FRIEND_ONLY = 1 << 6;
+//     export const RANDOM      = 1 << 7;
+// }
 export class ItemType {
     constructor(name) {
         this.toString = () => name;
@@ -151,7 +162,7 @@ export class Item {
     get info() { return this.args.info; }
     get itemType() { return this.args.type; }
     get rank() { return this.args.rank; }
-    get targetings() { return this.args.targetings ? this.args.targetings : Targeting.SELECT; }
+    get targetings() { return this.args.targetings ? this.args.targetings : ["select"]; }
     get consumable() { return this.args.consumable ? this.args.consumable : false; }
     /**所持上限. */
     get numLimit() { return this.args.numLimit ? this.args.numLimit : Item.DEF_NUM_LIMIT; }
@@ -448,7 +459,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子", info: "全員のHP+30",
-                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 30); }),
             });
         }
@@ -456,7 +467,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子1 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子1", info: "全員のHP+50",
-                type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 50); }),
             });
         }
@@ -465,7 +476,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子2 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子2", info: "全員のHP+100",
-                type: ItemType.HP回復, rank: 4, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 4, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 100); }),
             });
         }
@@ -474,7 +485,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子3 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子3", info: "全員のHP+130",
-                type: ItemType.HP回復, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 5, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 130); }),
             });
         }
@@ -483,7 +494,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子4 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子4", info: "全員のHP+150",
-                type: ItemType.HP回復, rank: 6, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 6, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 150); }),
             });
         }
@@ -492,7 +503,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子5 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子5", info: "全員のHP+200",
-                type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 200); }),
             });
         }
@@ -501,7 +512,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子6 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子6", info: "全員のHP+300",
-                type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 300); }),
             });
         }
@@ -510,7 +521,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.シェイクスピア分子7 = new class extends Item {
         constructor() {
             super({ uniqueName: "シェイクスピア分子7", info: "全員のHP+500",
-                type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX, targetings: Targeting.FRIEND_ONLY | Targeting.ALL,
+                type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 500); }),
             });
         }
@@ -894,7 +905,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.天使のファンデュ = new class extends Item {
         constructor() {
             super({ uniqueName: "天使のファンデュ", info: "味方全体を＜癒10＞状態にする",
-                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.up.play();
                     FX_Buff(target.imgCenter);
@@ -906,7 +917,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.悪魔のファンデュ = new class extends Item {
         constructor() {
             super({ uniqueName: "悪魔のファンデュ", info: "味方全体を＜体↑10＞(行動開始時最大HP+10%)状態にする",
-                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.up.play();
                     FX_Buff(target.imgCenter);
@@ -918,7 +929,7 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.恒星型リュスティック = new class extends Item {
         constructor() {
             super({ uniqueName: "恒星型リュスティック", info: "戦闘時、味方全体の最大HP・HPを50増加させる",
-                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.FRIEND_ONLY,
+                type: ItemType.状態, rank: 5, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.up.play();
                     FX_Buff(target.imgCenter);
@@ -1036,7 +1047,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom.play();
-                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 10,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1048,7 +1064,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom.play();
-                    yield target.doDmg(new Dmg({ absPow: 50 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 50,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1060,7 +1081,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 2, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom.play();
-                    yield target.doDmg(new Dmg({ absPow: 150 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 150,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1072,7 +1098,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 250 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 250,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1084,7 +1115,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 4, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 350 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 350,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1096,7 +1132,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 5, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 450 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 450,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1108,7 +1149,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.ダメージ, rank: 7, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 1000 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 1000,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1117,10 +1163,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.鬼火 = new class extends Item {
         constructor() {
             super({ uniqueName: "鬼火", info: "戦闘時、敵全体に10ダメージを与える",
-                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: ["all"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom.play();
-                    yield target.doDmg(new Dmg({ absPow: 10 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 10,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1129,10 +1180,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.ウィルスα = new class extends Item {
         constructor() {
             super({ uniqueName: "ウィルスα", info: "戦闘時、敵全体に25ダメージを与える",
-                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                type: ItemType.ダメージ, rank: 0, drop: ItemDrop.BOX, targetings: ["all"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom.play();
-                    yield target.doDmg(new Dmg({ absPow: 25 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 25,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1141,10 +1197,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.手榴弾 = new class extends Item {
         constructor() {
             super({ uniqueName: "手榴弾", info: "戦闘時、敵全体に100ダメージを与える",
-                type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                type: ItemType.ダメージ, rank: 1, drop: ItemDrop.BOX, targetings: ["all"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 100 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 100,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1153,10 +1214,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.鬼火のダイナマイト = new class extends Item {
         constructor() {
             super({ uniqueName: "鬼火のダイナマイト", info: "戦闘時、敵全体に200ダメージを与える",
-                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                type: ItemType.ダメージ, rank: 3, drop: ItemDrop.BOX, targetings: ["all"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 200 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 200,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1165,10 +1231,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.セクシーダイナマイツ = new class extends Item {
         constructor() {
             super({ uniqueName: "セクシーダイナマイツ", info: "戦闘時、敵全体に1000ダメージを与える",
-                type: ItemType.ダメージ, rank: 8, drop: ItemDrop.BOX, targetings: Targeting.ALL,
+                type: ItemType.ダメージ, rank: 8, drop: ItemDrop.BOX, targetings: ["all"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 1000 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 1000,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }
@@ -1177,10 +1248,15 @@ Item.DEF_NUM_LIMIT = 9999;
     Item.バスターマシン3号 = new class extends Item {
         constructor() {
             super({ uniqueName: "バスターマシン3号", info: "戦闘時、敵味方全体に30000ダメージを与える",
-                type: ItemType.ダメージ, rank: 10, drop: ItemDrop.BOX, targetings: Targeting.ALL | Targeting.WITH_FRIEND,
+                type: ItemType.ダメージ, rank: 10, drop: ItemDrop.BOX, targetings: ["all", "withFriend"],
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
                     Sound.bom2.play();
-                    yield target.doDmg(new Dmg({ absPow: 3000 }));
+                    yield new Dmg({
+                        attacker: user,
+                        target: target,
+                        absPow: 3000,
+                        types: ["反撃"],
+                    }).run();
                 }),
             });
         }

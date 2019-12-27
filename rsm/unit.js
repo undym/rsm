@@ -11,15 +11,15 @@ import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
-import { Dmg, Targeting } from "./force.js";
+import { Dmg } from "./force.js";
 import { Job } from "./job.js";
-import { FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
+import { FX_RotateStr, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font } from "./graphics/graphics.js";
 import { Img } from "./graphics/texture.js";
-import { DrawSTBox } from "./scene/sceneutil.js";
+// import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
 class PrmSet {
     constructor() {
@@ -248,12 +248,12 @@ export class Unit {
                 y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
             };
             const effect = (value) => {
-                const stbox = new DrawSTBox(() => this);
-                FX_Shake(this.boxBounds, bounds => {
-                    Graphics.fillRect(bounds, Color.BLACK);
-                    stbox.draw(bounds);
-                });
-                FX_RotateStr(font, `${value}`, point, Color.WHITE);
+                // const stbox = new DrawSTBox(()=>this);
+                // FX_Shake(this.boxBounds, bounds=>{
+                //     Graphics.fillRect(bounds, Color.BLACK);
+                //     stbox.draw(bounds)
+                // });
+                // FX_RotateStr(font, `${value}`, point, Color.WHITE);
             };
             this.beDamage(dmg);
             if (result.isHit) {
@@ -345,20 +345,20 @@ export class Unit {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseStart(this, pForce); })); });
     }
     attackNum(action, aForce) { this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.attackNum(action, this, aForce); })); }
-    beforeDoAtk(action, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeDoAtk(action, this, target, dmg); })); });
+    beforeDoAtk(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeDoAtk(dmg); })); });
     }
-    beforeBeAtk(action, attacker, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeBeAtk(action, attacker, this, dmg); })); });
+    beforeBeAtk(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeBeAtk(dmg); })); });
     }
     beDamage(dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beDamage(this, dmg); })); });
     }
-    afterDoAtk(action, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterDoAtk(action, this, target, dmg); })); });
+    afterDoAtk(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterDoAtk(dmg); })); });
     }
-    afterBeAtk(action, attacker, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterBeAtk(action, attacker, this, dmg); })); });
+    afterBeAtk(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterBeAtk(dmg); })); });
     }
     memberAfterDoAtk(action, attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.memberAfterDoAtk(this, action, attacker, target, dmg); })); });
@@ -375,22 +375,22 @@ export class Unit {
     force(forceDlgt) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const tec of this.tecs) {
-                yield forceDlgt(tec);
+                yield forceDlgt(tec.force);
             }
             for (const eq of this.equips.values()) {
-                yield forceDlgt(eq);
+                yield forceDlgt(eq.force);
             }
             for (const ear of this.eqEars.values()) {
-                yield forceDlgt(ear);
+                yield forceDlgt(ear.force);
             }
             for (const cond of this.conditions.values()) {
-                yield forceDlgt(cond.condition);
-            }
-            for (const icond of this.invisibleConditions.values()) {
-                yield forceDlgt(icond);
+                yield forceDlgt(cond.condition.force);
             }
             if (this.pet) {
-                yield forceDlgt(this.pet);
+                yield forceDlgt(this.pet.force);
+            }
+            for (const inv of this.invisibleConditions.values()) {
+                yield forceDlgt(inv.force);
             }
         });
     }
@@ -518,11 +518,53 @@ export class Unit {
     //
     //---------------------------------------------------------
     /**
+     *
+     */
+    searchUnits(who, num) {
+        if (who.some(w => w === "self")) {
+            return new Array(num).fill(this);
+        }
+        let filtered = Unit.all.filter(t => t.exists);
+        if (who.some(w => w === "withDead")) { }
+        else if (who.some(w => w === "deadOnly")) {
+            filtered = filtered.filter(t => t.dead);
+        }
+        else {
+            filtered = filtered.filter(t => !t.dead);
+        }
+        if (who.some(w => w === "withFriend")) { }
+        else if (who.some(w => w === "friendOnly")) {
+            filtered = filtered.filter(t => t.isFriend(this));
+        }
+        else {
+            filtered = filtered.filter(t => !t.isFriend(this));
+        }
+        if (filtered.length === 0) {
+            return [];
+        }
+        if (who.some(w => w === "random")) {
+            let res = [];
+            for (let i = 0; i < num; i++) {
+                res.push(choice(filtered));
+            }
+            return res;
+        }
+        if (who.some(w => w === "select")) {
+            return new Array(num).fill(choice(filtered));
+        }
+        //all
+        let res = [];
+        for (let i = 0; i < num; i++) {
+            res = res.concat(filtered);
+        }
+        return res;
+    }
+    /**
      * !existsとdeadは含めない.
      * @party 本人を含める.
      * @withDead deadを含める.
      */
-    searchUnits(...who) {
+    searchUnitsEx(...who) {
         const withDead = who.some(w => w === "withDead");
         const top = who.some(w => w === "top");
         const bottom = who.some(w => w === "bottom");
@@ -724,7 +766,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
     for (let i = 0; i < 10; i++) {
         let tec = choice(activeTecs);
         if (tec.checkCost(attacker)) {
-            let targets = Targeting.filter(tec.targetings, attacker, targetCandidates, tec.rndAttackNum(attacker));
+            const targets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
             if (targets.length === 0) {
                 continue;
             }
@@ -732,7 +774,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
     }
-    Tec.殴る.use(attacker, Targeting.filter(Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum(attacker)));
+    Tec.殴る.use(attacker, attacker.searchUnits(Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker)));
 });
 (function (Unit) {
     class FXFont {
@@ -790,21 +832,23 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 super(...arguments);
                 this.uniqueName = "反射";
             }
-            beforeBeAtk(action, attacker, target, dmg) {
+            beforeBeAtk(dmg) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    target.removeInvisibleCondition(this);
+                    dmg.target.removeInvisibleCondition(this);
                     if (dmg.hasType("反射", "反撃")) {
                         return;
                     }
                     const result = dmg.calc();
                     if (result.isHit) {
-                        FX_反射(target.imgCenter, attacker.imgCenter);
+                        FX_反射(dmg.target.imgCenter, dmg.attacker.imgCenter);
                         Util.msg.set("＞反射");
                         const refDmg = new Dmg({
+                            attacker: dmg.target,
+                            target: dmg.attacker,
                             absPow: result.value,
                             types: ["反射", "反撃"],
                         });
-                        yield attacker.doDmg(refDmg);
+                        yield refDmg.run();
                         yield wait();
                         dmg.pow.mul = 0;
                     }

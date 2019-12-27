@@ -3,7 +3,7 @@ import { Util, PlayData } from "./util.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
-import { Dmg, Force, Action, Targeting, PhaseStartForce, AttackNumForce } from "./force.js";
+import { Dmg, Force, Action, PhaseStartForce, AttackNumForce } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射, FX_RemoveCondition } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -11,7 +11,7 @@ import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Graphics, Font } from "./graphics/graphics.js";
 import { Img } from "./graphics/texture.js";
-import { DrawSTBox } from "./scene/sceneutil.js";
+// import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";
 
@@ -100,6 +100,7 @@ export class Prm{
 }
 
 
+export type Targeting = "select"|"random"|"self"|"all"|"withDead"|"deadOnly"|"withFriend"|"friendOnly";
 
 
 export abstract class Unit{
@@ -295,12 +296,12 @@ export abstract class Unit{
                         y:this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
                     };
         const effect = (value:number)=>{
-            const stbox = new DrawSTBox(()=>this);
-            FX_Shake(this.boxBounds, bounds=>{
-                Graphics.fillRect(bounds, Color.BLACK);
-                stbox.draw(bounds)
-            });
-            FX_RotateStr(font, `${value}`, point, Color.WHITE);
+            // const stbox = new DrawSTBox(()=>this);
+            // FX_Shake(this.boxBounds, bounds=>{
+            //     Graphics.fillRect(bounds, Color.BLACK);
+            //     stbox.draw(bounds)
+            // });
+            // FX_RotateStr(font, `${value}`, point, Color.WHITE);
         };
 
 
@@ -385,11 +386,11 @@ export abstract class Unit{
     async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
     attackNum(action:Action, aForce:AttackNumForce)         {this.force(async f=> await f.attackNum(action, this, aForce));}
-    async beforeDoAtk(action:Action, target:Unit, dmg:Dmg)  {await this.force(async f=> await f.beforeDoAtk(action, this, target, dmg));}
-    async beforeBeAtk(action:Action, attacker:Unit, dmg:Dmg){await this.force(async f=> await f.beforeBeAtk(action, attacker, this, dmg));}
+    async beforeDoAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeDoAtk(dmg));}
+    async beforeBeAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeBeAtk(dmg));}
     async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(this, dmg));}
-    async afterDoAtk(action:Action, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.afterDoAtk(action, this, target, dmg));}
-    async afterBeAtk(action:Action, attacker:Unit, dmg:Dmg) {await this.force(async f=> await f.afterBeAtk(action, attacker, this, dmg));}
+    async afterDoAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterDoAtk(dmg));}
+    async afterBeAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterBeAtk(dmg));}
     async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
     async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
     async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
@@ -397,22 +398,22 @@ export abstract class Unit{
 
     protected async force(forceDlgt:(f:Force)=>Promise<void>){
         for(const tec of this.tecs){
-            await forceDlgt( tec );
+            await forceDlgt( tec.force );
         }
         for(const eq of this.equips.values()){
-            await forceDlgt( eq );
+            await forceDlgt( eq.force );
         }
         for(const ear of this.eqEars.values()){
-            await forceDlgt( ear );
+            await forceDlgt( ear.force );
         }
         for(const cond of this.conditions.values()){
-            await forceDlgt( cond.condition );
-        }
-        for(const icond of this.invisibleConditions.values()){
-            await forceDlgt( icond );
+            await forceDlgt( cond.condition.force );
         }
         if(this.pet){
-            await forceDlgt( this.pet );
+            await forceDlgt( this.pet.force );
+        }
+        for(const inv of this.invisibleConditions.values()){
+            await forceDlgt( inv.force );
         }
     }
     //---------------------------------------------------------
@@ -541,11 +542,49 @@ export abstract class Unit{
     //
     //---------------------------------------------------------
     /**
+     * 
+     */
+    searchUnits(who:Targeting[], num:number):Unit[]{
+        
+        if(who.some(w=> w === "self")){
+            return new Array<Unit>(num).fill(this);
+        }
+
+        let filtered = Unit.all.filter(t=> t.exists);
+             if(who.some(w=> w === "withDead")){}
+        else if(who.some(w=> w === "deadOnly")){filtered = filtered.filter(t=> t.dead);}
+        else                                   {filtered = filtered.filter(t=> !t.dead);}
+
+             if(who.some(w=> w === "withFriend")){}
+        else if(who.some(w=> w === "friendOnly")){filtered = filtered.filter(t=> t.isFriend(this));}
+        else                                     {filtered = filtered.filter(t=> !t.isFriend(this));}
+
+        if(filtered.length === 0){return [];}
+
+        if(who.some(w=> w === "random")){
+            let res:Unit[] = [];
+            for(let i = 0; i < num; i++){
+                res.push( choice(filtered) );
+            }
+            return res;
+        }
+        
+        if(who.some(w=> w === "select")){
+            return new Array<Unit>(num).fill( choice(filtered) );
+        }
+        //all
+        let res:Unit[] = [];
+        for(let i = 0; i < num; i++){
+            res = res.concat( filtered );
+        }
+        return res;
+    }
+    /**
      * !existsとdeadは含めない.
      * @party 本人を含める.
      * @withDead deadを含める.
      */
-    searchUnits(...who:("withDead"|"top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
+    searchUnitsEx(...who:("withDead"|"top"|"bottom"|"faceToFace"|"party")[]):Unit[]{
         const withDead   = who.some(w=> w === "withDead");
         const top    = who.some(w=> w === "top");
         const bottom = who.some(w=> w === "bottom");
@@ -734,14 +773,14 @@ export class EUnit extends Unit{
         for(let i = 0; i < 10; i++){
             let tec = choice( activeTecs );
             if(tec.checkCost(attacker)){
-                let targets = Targeting.filter( tec.targetings, attacker, targetCandidates, tec.rndAttackNum(attacker) );
+                const targets = attacker.searchUnits( tec.targetings, tec.rndAttackNum(attacker) );
                 if(targets.length === 0){continue;}
                 await tec.use( attacker, targets );
                 return;
             }
         }
 
-        Tec.殴る.use( attacker, Targeting.filter( Tec.殴る.targetings, attacker, targetCandidates, Tec.殴る.rndAttackNum(attacker) ) );
+        Tec.殴る.use( attacker, attacker.searchUnits( Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker) ) );
     };
 
     yen:number = 0;
@@ -817,20 +856,22 @@ export namespace Unit{
     export const set反射Inv = (unit:Unit)=>{
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = "反射";
-            async beforeBeAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-                target.removeInvisibleCondition(this);
+            async beforeBeAtk(dmg:Dmg){
+                dmg.target.removeInvisibleCondition(this);
 
                 if(dmg.hasType("反射","反撃")){return;}
 
                 const result = dmg.calc();
                 if(result.isHit){
-                    FX_反射( target.imgCenter, attacker.imgCenter );
+                    FX_反射( dmg.target.imgCenter, dmg.attacker.imgCenter );
                     Util.msg.set("＞反射");
                     const refDmg =  new Dmg({
+                                        attacker:dmg.target,
+                                        target:dmg.attacker,
                                         absPow:result.value,
                                         types:["反射","反撃"],
                                     });
-                    await attacker.doDmg(refDmg); await wait();
+                    await refDmg.run(); await wait();
 
                     dmg.pow.mul = 0;
                 };

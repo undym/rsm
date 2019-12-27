@@ -20,7 +20,7 @@ import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
-import { Targeting, Dmg } from "../force.js";
+import { Dmg } from "../force.js";
 import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
@@ -233,8 +233,12 @@ class EventImg {
                         continue;
                     }
                     FX_格闘(p.imgCenter);
-                    const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 5 });
-                    yield p.doDmg(dmg);
+                    yield new Dmg({
+                        attacker: p,
+                        target: p,
+                        pow: p.prm(Prm.MAX_HP).total / 5,
+                        types: ["反撃", "罠"],
+                    }).run();
                     yield p.judgeDead();
                 }
                 if (Unit.players.every(p => !p.exists || p.dead)) {
@@ -296,8 +300,12 @@ class EventImg {
                         continue;
                     }
                     FX_格闘(p.imgCenter);
-                    const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 10 });
-                    yield p.doDmg(dmg);
+                    yield new Dmg({
+                        attacker: p,
+                        target: p,
+                        pow: p.prm(Prm.MAX_HP).total / 10,
+                        types: ["反撃"],
+                    }).run();
                     yield p.judgeDead();
                 }
             })).dontMove())
@@ -355,8 +363,12 @@ class EventImg {
                         continue;
                     }
                     FX_格闘(p.imgCenter);
-                    const dmg = new Dmg({ absPow: p.prm(Prm.MAX_HP).total / 10 });
-                    yield p.doDmg(dmg);
+                    yield new Dmg({
+                        attacker: p,
+                        target: p,
+                        pow: p.prm(Prm.MAX_HP).total / 10,
+                        types: ["反撃"],
+                    }).run();
                     yield p.judgeDead();
                 }
                 DungeonEvent.empty.happen();
@@ -579,11 +591,11 @@ class ItemBtn {
                     selectUser: true,
                     user: Unit.players[0],
                     use: (item, user) => __awaiter(this, void 0, void 0, function* () {
-                        if (item.targetings & Targeting.SELECT) {
+                        if (item.targetings.some(t => t === "select")) {
                             yield item.use(user, [user]);
                         }
                         else {
-                            let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
+                            const targets = user.searchUnits(item.targetings, 1);
                             if (targets.length > 0) {
                                 yield item.use(user, targets);
                             }

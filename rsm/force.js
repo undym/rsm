@@ -6,10 +6,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { choice } from "./undym/random.js";
+import { Unit } from "./unit.js";
+import { Font, Graphics } from "./graphics/graphics.js";
+import { DrawSTBox } from "./scene/sceneutil.js";
+import { FX_Shake, FX_RotateStr, FX_PetDie } from "./fx/fx.js";
+import { Color } from "./undym/type.js";
+import { Util } from "./util.js";
+import { wait } from "./undym/scene.js";
+import { Sound } from "./sound.js";
 export class Force {
+    static get empty() { return this._empty ? this._empty : (this._empty = new Force()); }
     equip(unit) { }
-    ;
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
@@ -21,20 +28,20 @@ export class Force {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     attackNum(action, unit, aForce) { }
-    beforeDoAtk(action, attacker, target, dmg) {
+    beforeDoAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    beforeBeAtk(action, attacker, target, dmg) {
+    beforeBeAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     /**ダメージを受ける直前、calc()された後に通る. */
     beDamage(unit, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    afterDoAtk(action, attacker, target, dmg) {
+    afterDoAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    afterBeAtk(action, attacker, target, dmg) {
+    afterBeAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     memberAfterDoAtk(me, action, attacker, target, dmg) {
@@ -76,29 +83,39 @@ export class Dmg {
         /** */
         this.types = [];
         this.clear();
-        if (args) {
-            if (args.pow) {
-                this.pow.base = args.pow;
-            }
-            if (args.mul) {
-                this.pow.mul = args.mul;
-            }
-            if (args.hit) {
-                this.hit.base = args.hit;
-            }
-            if (args.def) {
-                this.def.base = args.def;
-            }
-            if (args.absPow) {
-                this.abs.base = args.absPow;
-            }
-            if (args.absMul) {
-                this.abs.mul = args.absMul;
-            }
-            if (args.types) {
-                this.types = args.types;
-            }
+        this.attacker = args.attacker;
+        this.target = args.target;
+        this.action = args.action;
+        if (args.pow) {
+            this.pow.base = args.pow;
         }
+        if (args.mul) {
+            this.pow.mul = args.mul;
+        }
+        if (args.hit) {
+            this.hit.base = args.hit;
+        }
+        if (args.def) {
+            this.def.base = args.def;
+        }
+        if (args.absPow) {
+            this.abs.base = args.absPow;
+        }
+        if (args.absMul) {
+            this.abs.mul = args.absMul;
+        }
+        if (args.types) {
+            this.types = args.types;
+        }
+    }
+    static get empty() {
+        if (!this._empty) {
+            this._empty = new Dmg({
+                attacker: Unit.all[0],
+                target: Unit.all[0],
+            });
+        }
+        return this._empty;
     }
     //0     1
     //60    0.85
@@ -171,58 +188,103 @@ export class Dmg {
         this.result.isHit = isHit;
         return this.result;
     }
+    run() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.target.exists || this.target.dead) {
+                return;
+            }
+            const result = this.calc();
+            const font = new Font(Font.def.size * 2, Font.BOLD);
+            const point = {
+                x: this.target.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
+                y: this.target.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
+            };
+            const effect = (value) => {
+                const stbox = new DrawSTBox(() => this.target);
+                FX_Shake(this.target.boxBounds, bounds => {
+                    Graphics.fillRect(bounds, Color.BLACK);
+                    stbox.draw(bounds);
+                });
+                FX_RotateStr(font, `${value}`, point, Color.WHITE);
+            };
+            this.target.beDamage(this);
+            if (result.isHit) {
+                const _doDmg = (value) => __awaiter(this, void 0, void 0, function* () {
+                    effect(value);
+                    if (this.target.pet && value >= this.target.hp) {
+                        Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`);
+                        yield wait(1);
+                        this.target.pet.hp--;
+                        if (this.target.pet.hp <= 0) {
+                            const petName = this.target.pet.toString();
+                            this.target.pet = undefined;
+                            Sound.pet_die.play();
+                            FX_PetDie(this.target.imgCenter);
+                            Util.msg.set(`${petName}は砕け散った...`);
+                            yield wait();
+                        }
+                    }
+                    else {
+                        this.target.hp -= value;
+                    }
+                });
+                const value = result.value;
+                yield _doDmg(value);
+                Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
+                for (let i = 0; i < this.additionalAttacks.length; i++) {
+                    yield wait(1);
+                    const value = this.additionalAttacks[i](this, i);
+                    yield _doDmg(value);
+                    Util.msg.set(`+${value}`, Color.RED.bright);
+                }
+            }
+            else {
+                FX_RotateStr(font, "MISS", point, Color.L_GRAY);
+                Util.msg.set("MISS", Color.L_GRAY);
+            }
+            this.target.tp += 1;
+        });
+    }
 }
 export class Action {
 }
-export var Targeting;
-(function (Targeting) {
-    Targeting[Targeting["SELECT"] = 1] = "SELECT";
-    Targeting[Targeting["SELF"] = 2] = "SELF";
-    Targeting[Targeting["ALL"] = 4] = "ALL";
-    Targeting[Targeting["WITH_DEAD"] = 8] = "WITH_DEAD";
-    Targeting[Targeting["DEAD_ONLY"] = 16] = "DEAD_ONLY";
-    Targeting[Targeting["WITH_FRIEND"] = 32] = "WITH_FRIEND";
-    Targeting[Targeting["FRIEND_ONLY"] = 64] = "FRIEND_ONLY";
-    Targeting[Targeting["RANDOM"] = 128] = "RANDOM";
-})(Targeting || (Targeting = {}));
-(function (Targeting) {
-    Targeting.filter = (targetings, attacker, targets, num) => {
-        if (targetings & Targeting.SELF) {
-            return new Array(num).fill(attacker);
-        }
-        let filtered = targets.filter(t => t.exists);
-        if (targetings & Targeting.WITH_DEAD) { }
-        else if (targetings & Targeting.DEAD_ONLY) {
-            filtered = filtered.filter(t => t.dead);
-        }
-        else {
-            filtered = filtered.filter(t => !t.dead);
-        }
-        if (targetings & Targeting.WITH_FRIEND) { }
-        else if (targetings & Targeting.FRIEND_ONLY) {
-            filtered = filtered.filter(t => t.isFriend(attacker));
-        }
-        else {
-            filtered = filtered.filter(t => !t.isFriend(attacker));
-        }
-        if (filtered.length === 0) {
-            return [];
-        }
-        if (targetings & Targeting.RANDOM) {
-            let res = [];
-            for (let i = 0; i < num; i++) {
-                res.push(choice(filtered));
-            }
-            return res;
-        }
-        if (targetings & Targeting.SELECT) {
-            return new Array(num).fill(choice(filtered));
-        }
-        //all
-        let res = [];
-        for (let i = 0; i < num; i++) {
-            res = res.concat(filtered);
-        }
-        return res;
-    };
-})(Targeting || (Targeting = {}));
+// export type Targeting = number;
+// export namespace Targeting{
+//     export const SELECT      = 1 << 0;
+//     export const SELF        = 1 << 1;
+//     export const ALL         = 1 << 2;
+//     export const WITH_DEAD   = 1 << 3;
+//     export const DEAD_ONLY   = 1 << 4;
+//     export const WITH_FRIEND = 1 << 5;
+//     export const FRIEND_ONLY = 1 << 6;
+//     export const RANDOM      = 1 << 7;
+//     export const filter = (targetings:Targeting, attacker:Unit, targets:Unit[]|ReadonlyArray<Unit>, num:number):Unit[] => {
+//         if(targetings & Targeting.SELF){
+//             return new Array<Unit>(num).fill(attacker);
+//         }
+//         let filtered = targets.filter(t=> t.exists);
+//              if(targetings & Targeting.WITH_DEAD){}
+//         else if(targetings & Targeting.DEAD_ONLY){filtered = filtered.filter(t=> t.dead);}
+//         else                                     {filtered = filtered.filter(t=> !t.dead);}
+//              if(targetings & Targeting.WITH_FRIEND){}
+//         else if(targetings & Targeting.FRIEND_ONLY){filtered = filtered.filter(t=> t.isFriend(attacker));}
+//         else                                       {filtered = filtered.filter(t=> !t.isFriend(attacker));}
+//         if(filtered.length === 0){return [];}
+//         if(targetings & Targeting.RANDOM){
+//             let res:Unit[] = [];
+//             for(let i = 0; i < num; i++){
+//                 res.push( choice(filtered) );
+//             }
+//             return res;
+//         }
+//         if(targetings & Targeting.SELECT){
+//             return new Array<Unit>(num).fill( choice(filtered) );
+//         }
+//         //all
+//         let res:Unit[] = [];
+//         for(let i = 0; i < num; i++){
+//             res = res.concat( filtered );
+//         }
+//         return res;
+//     }
+// }

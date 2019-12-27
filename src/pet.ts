@@ -1,4 +1,4 @@
-import { Force, PhaseStartForce, Targeting } from "./force.js";
+import { Force, PhaseStartForce, ForceIns } from "./force.js";
 import { Unit, PUnit } from "./unit.js";
 import { Tec, ActiveTec } from "./tec.js";
 import { choice } from "./undym/random.js";
@@ -28,7 +28,7 @@ export abstract class PetFactory{
     abstract create(hp:number):Pet;
 }
 
-export class Pet extends Force{
+export class Pet implements ForceIns{
     
     private static readonly HP_NAMES:ReadonlyArray<string> = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄壁", "無敵",];
     static get HP_LIMIT(){return Pet.HP_NAMES.length-1;}
@@ -37,8 +37,11 @@ export class Pet extends Force{
         readonly img:Img,
         protected _hp:number,
     ){
-        super();
     }
+    
+    private forceIns:Force;
+    get force():Force{return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
+    protected createForce(_this:Pet):Force{return new Force();}
 
     get hp(){return this._hp;}
     set hp(value:number){
@@ -60,7 +63,7 @@ export class Pet extends Force{
         for(let i = 0; i < 10; i++){
             const tec = choice( tecs );
             if(tec.checkCost(summoner)){
-                const targets = Targeting.filter( tec.targetings, summoner, Unit.all, tec.rndAttackNum( summoner ) );
+                const targets = summoner.searchUnits( tec.targetings, tec.rndAttackNum( summoner ) );
                 if(targets.length === 0){return;}
     
                 Util.msg.set(`${this.toString()}の[${tec}]`, Color.D_GREEN.bright); await wait();

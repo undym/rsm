@@ -17,7 +17,6 @@ import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { DrawUnitDetail, DrawSTBoxes, DrawYen } from "./sceneutil.js";
 import { Unit, Prm } from "../unit.js";
 import { ItemScene } from "./itemscene.js";
-import { Targeting } from "../force.js";
 import { Font, Graphics } from "../graphics/graphics.js";
 import { Texture } from "../graphics/texture.js";
 import { Item } from "../item.js";
@@ -254,11 +253,11 @@ class TownBtn {
                     selectUser: true,
                     user: Unit.players[0],
                     use: (item, user) => __awaiter(this, void 0, void 0, function* () {
-                        if (item.targetings & Targeting.SELECT) {
+                        if (item.targetings.some(t => t === "select")) {
                             yield item.use(user, [user]);
                         }
                         else {
-                            let targets = Targeting.filter(item.targetings, user, Unit.players, /*num*/ 1);
+                            const targets = user.searchUnits(item.targetings, 1);
                             if (targets.length > 0) {
                                 yield item.use(user, targets);
                             }

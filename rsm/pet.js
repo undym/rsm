@@ -6,8 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Force, Targeting } from "./force.js";
-import { Unit } from "./unit.js";
+import { Force } from "./force.js";
 import { Tec } from "./tec.js";
 import { choice } from "./undym/random.js";
 import { Util } from "./util.js";
@@ -33,14 +32,15 @@ export class PetFactory {
 }
 PetFactory._values = [];
 PetFactory._valueOf = new Map();
-export class Pet extends Force {
+export class Pet {
     constructor(uniqueName, img, _hp) {
-        super();
         this.uniqueName = uniqueName;
         this.img = img;
         this._hp = _hp;
     }
     static get HP_LIMIT() { return Pet.HP_NAMES.length - 1; }
+    get force() { return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this)); }
+    createForce(_this) { return new Force(); }
     get hp() { return this._hp; }
     set hp(value) {
         if (value < 0) {
@@ -72,7 +72,7 @@ export class Pet extends Force {
             for (let i = 0; i < 10; i++) {
                 const tec = choice(tecs);
                 if (tec.checkCost(summoner)) {
-                    const targets = Targeting.filter(tec.targetings, summoner, Unit.all, tec.rndAttackNum(summoner));
+                    const targets = summoner.searchUnits(tec.targetings, tec.rndAttackNum(summoner));
                     if (targets.length === 0) {
                         return;
                     }

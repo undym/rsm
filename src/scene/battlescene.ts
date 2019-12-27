@@ -8,7 +8,7 @@ import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "../tec.js";
 import { Input } from "../undym/input.js";
 import { Btn } from "../widget/btn.js";
-import { Targeting, Action, PhaseStartForce } from "../force.js";
+import { Action, PhaseStartForce } from "../force.js";
 import { Player } from "../player.js";
 import { FX } from "../fx/fx.js";
 import { Dungeon } from "../dungeon/dungeon.js";
@@ -246,7 +246,7 @@ export class BattleScene extends Scene{
 
                     this.tecInfo.tec = Tec.empty;
                     
-                    if(tec.targetings & Targeting.SELECT){
+                    if(tec.targetings.some(t=> t === "select")){
         
                         Util.msg.set(`[${tec}]のターゲットを選択してください`);
                         
@@ -254,7 +254,7 @@ export class BattleScene extends Scene{
                         await this.setChooseTargetBtn(attacker, async(targets)=>{
                             if(
                                    !targets[0].dead 
-                                || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)
+                                || (tec.targetings.some(t=> t === "withDead" || t === "deadOnly"))
                             ){
                                 list.freeze(true);
                                 Util.msg.set(`＞${targets[0].name}を選択`);
@@ -270,8 +270,7 @@ export class BattleScene extends Scene{
                         return;
                     }else{
                         list.freeze(true);
-                        let targets:Unit[] = [];
-                        targets = targets.concat( Targeting.filter( tec.targetings, attacker, Unit.all, tec.rndAttackNum( attacker ) ) );
+                        let targets:Unit[] = attacker.searchUnits( tec.targetings, tec.rndAttackNum(attacker) );
                         await tec.use(attacker, targets);
                         await this.phaseEnd();
                     }
@@ -325,7 +324,7 @@ export class BattleScene extends Scene{
                     use:async(item, user)=>{
                         Scene.set(this);
     
-                        if(item.targetings & Targeting.SELECT){
+                        if(item.targetings.some(t=> t === "select")){
                             Util.msg.set(`[${item}]のターゲットを選択してください`);
                             
                             this.setChooseTargetBtn(attacker, async(targets)=>{
@@ -336,7 +335,7 @@ export class BattleScene extends Scene{
                         }else{
                             list.freeze(true);
 
-                            let targets = Targeting.filter( item.targetings, user, Unit.all, /*num*/1 );
+                            const targets = user.searchUnits( item.targetings, 1 );
                             await item.use( user, targets );
                             await this.phaseEnd();
                         }

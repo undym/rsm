@@ -15,7 +15,7 @@ import { Unit, PUnit, Prm } from "../unit.js";
 import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec } from "../tec.js";
 import { Input } from "../undym/input.js";
-import { Targeting, PhaseStartForce } from "../force.js";
+import { PhaseStartForce } from "../force.js";
 import { List } from "../widget/list.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -196,11 +196,11 @@ export class BattleScene extends Scene {
                         Sound.system.play();
                         attacker.tecListScroll = index;
                         this.tecInfo.tec = Tec.empty;
-                        if (tec.targetings & Targeting.SELECT) {
+                        if (tec.targetings.some(t => t === "select")) {
                             Util.msg.set(`[${tec}]のターゲットを選択してください`);
                             yield this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
                                 if (!targets[0].dead
-                                    || (tec.targetings & Targeting.WITH_DEAD || tec.targetings & Targeting.DEAD_ONLY)) {
+                                    || (tec.targetings.some(t => t === "withDead" || t === "deadOnly"))) {
                                     list.freeze(true);
                                     Util.msg.set(`＞${targets[0].name}を選択`);
                                     yield tec.use(attacker, new Array(tec.rndAttackNum(attacker)).fill(targets[0]));
@@ -215,8 +215,7 @@ export class BattleScene extends Scene {
                         }
                         else {
                             list.freeze(true);
-                            let targets = [];
-                            targets = targets.concat(Targeting.filter(tec.targetings, attacker, Unit.all, tec.rndAttackNum(attacker)));
+                            let targets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
                             yield tec.use(attacker, targets);
                             yield this.phaseEnd();
                         }
@@ -266,7 +265,7 @@ export class BattleScene extends Scene {
                         selectUser: false,
                         use: (item, user) => __awaiter(this, void 0, void 0, function* () {
                             Scene.set(this);
-                            if (item.targetings & Targeting.SELECT) {
+                            if (item.targetings.some(t => t === "select")) {
                                 Util.msg.set(`[${item}]のターゲットを選択してください`);
                                 this.setChooseTargetBtn(attacker, (targets) => __awaiter(this, void 0, void 0, function* () {
                                     list.freeze(true);
@@ -276,7 +275,7 @@ export class BattleScene extends Scene {
                             }
                             else {
                                 list.freeze(true);
-                                let targets = Targeting.filter(item.targetings, user, Unit.all, /*num*/ 1);
+                                const targets = user.searchUnits(item.targetings, 1);
                                 yield item.use(user, targets);
                                 yield this.phaseEnd();
                             }
