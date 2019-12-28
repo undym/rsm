@@ -18,19 +18,6 @@ import { Sound } from "./sound.js";
 import { Job } from "./job.js";
 
 
-// //FIXME
-// namespace Targeting{
-//     export const SELECT      = 1 << 0;
-//     export const SELF        = 1 << 1;
-//     export const ALL         = 1 << 2;
-//     export const WITH_DEAD   = 1 << 3;
-//     export const DEAD_ONLY   = 1 << 4;
-//     export const WITH_FRIEND = 1 << 5;
-//     export const FRIEND_ONLY = 1 << 6;
-//     export const RANDOM      = 1 << 7;
-// }
-
-
 
 export class ItemType{
     protected _values:Item[];
@@ -91,6 +78,7 @@ export class ItemParentType{
                                                                     ItemType.メモ, ItemType.素材,
                                                                 ]);
 }
+
 
 export enum ItemDrop{
     NO      = 0,

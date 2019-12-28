@@ -447,9 +447,9 @@ export class ActiveTec extends Tec {
     }
     runInner(attacker, target, dmg) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield target.doDmg(dmg);
             this.effect(attacker, target, dmg);
             this.sound();
+            yield dmg.run();
             yield wait();
         });
     }
@@ -764,7 +764,7 @@ ActiveTec._valueOf = new Map();
                         target: attacker,
                         absPow: attacker.prm(Prm.STR).total * 0.1
                     });
-                    yield attacker.doDmg(dmg);
+                    yield dmg.run();
                     yield wait();
                 }
             });
@@ -1182,13 +1182,13 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.run.call(this, attacker, target);
                 const lim = 99;
-                const selfTarm = attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim;
-                yield attacker.doDmg(new Dmg({
+                const selfHarm = new Dmg({
                     attacker: attacker,
                     target: attacker,
-                    absPow: selfTarm,
+                    absPow: attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim,
                     types: ["反撃"],
-                }));
+                });
+                yield selfHarm.run();
             });
         }
     };
@@ -1472,14 +1472,14 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.run.call(this, attacker, target);
                 Util.msg.set("＞反動");
-                const cdmg = new Dmg({
+                FX_格闘(attacker.imgCenter);
+                const selfHarm = new Dmg({
                     attacker: attacker,
                     target: attacker,
                     absPow: target.prm(Prm.LV).total,
                     types: ["反撃"],
                 });
-                FX_格闘(attacker.imgCenter);
-                yield attacker.doDmg(cdmg);
+                yield selfHarm.run();
                 yield wait();
             });
         }

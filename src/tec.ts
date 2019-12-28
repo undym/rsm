@@ -493,10 +493,9 @@ export abstract class ActiveTec extends Tec implements Action{
     }
 
     async runInner(attacker:Unit, target:Unit, dmg:Dmg){
-        await target.doDmg(dmg); 
         this.effect(attacker, target, dmg);
         this.sound();
-        await wait();
+        await dmg.run(); await wait();
     }
 
     createDmg(attacker:Unit, target:Unit):Dmg{
@@ -749,7 +748,7 @@ export namespace Tec{
                     target:attacker,
                     absPow:attacker.prm(Prm.STR).total * 0.1
                 });
-                await attacker.doDmg(dmg); await wait();
+                await dmg.run(); await wait();
             }
         }
         async run(attacker:Unit, target:Unit){
@@ -1040,13 +1039,14 @@ export namespace Tec{
             await super.run(attacker, target);
 
             const lim = 99;
-            const selfTarm = attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim;
-            await attacker.doDmg(new Dmg({
-                attacker:attacker,
-                target:attacker,
-                absPow:selfTarm, 
-                types:["反撃"],
-            }));
+
+            const selfHarm = new Dmg({
+                                attacker:attacker,
+                                target:attacker,
+                                absPow:attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim,
+                                types:["反撃"],
+                            });
+            await selfHarm.run();
         }
     }
     /**鳥. */
@@ -1284,14 +1284,14 @@ export namespace Tec{
             await super.run(attacker, target);
 
             Util.msg.set("＞反動");
-            const cdmg = new Dmg({
+            FX_格闘( attacker.imgCenter );
+            const selfHarm = new Dmg({
                             attacker:attacker,
                             target:attacker,
                             absPow:target.prm(Prm.LV).total,
                             types:["反撃"],
                         });
-            FX_格闘( attacker.imgCenter );
-            await attacker.doDmg(cdmg); await wait();
+            await selfHarm.run(); await wait();
         }
     }
     export const                          吸血:ActiveTec = new class extends ActiveTec{

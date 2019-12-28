@@ -13,11 +13,11 @@ import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
 import { Dmg } from "./force.js";
 import { Job } from "./job.js";
-import { FX_RotateStr, FX_Str, FX_LVUP, FX_PetDie, FX_反射 } from "./fx/fx.js";
+import { FX_RotateStr, FX_Str, FX_LVUP, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
-import { Graphics, Font } from "./graphics/graphics.js";
+import { Font } from "./graphics/graphics.js";
 import { Img } from "./graphics/texture.js";
 // import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
@@ -236,63 +236,6 @@ export class Unit {
     //
     //
     //---------------------------------------------------------
-    doDmg(dmg) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.exists || this.dead) {
-                return;
-            }
-            const result = dmg.calc();
-            const font = new Font(Font.def.size * 2, Font.BOLD);
-            const point = {
-                x: this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
-                y: this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
-            };
-            const effect = (value) => {
-                // const stbox = new DrawSTBox(()=>this);
-                // FX_Shake(this.boxBounds, bounds=>{
-                //     Graphics.fillRect(bounds, Color.BLACK);
-                //     stbox.draw(bounds)
-                // });
-                // FX_RotateStr(font, `${value}`, point, Color.WHITE);
-            };
-            this.beDamage(dmg);
-            if (result.isHit) {
-                const _doDmg = (value) => __awaiter(this, void 0, void 0, function* () {
-                    effect(value);
-                    if (this.pet && value >= this.hp) {
-                        Util.msg.set(`${this.pet}が${value}のダメージを引き受けた`);
-                        yield wait(1);
-                        this.pet.hp--;
-                        if (this.pet.hp <= 0) {
-                            const petName = this.pet.toString();
-                            this.pet = undefined;
-                            Sound.pet_die.play();
-                            FX_PetDie(this.imgCenter);
-                            Util.msg.set(`${petName}は砕け散った...`);
-                            yield wait();
-                        }
-                    }
-                    else {
-                        this.hp -= value;
-                    }
-                });
-                const value = result.value;
-                yield _doDmg(value);
-                Util.msg.set(`${this.name}に${value}のダメージ`, Color.RED.bright);
-                for (let i = 0; i < dmg.additionalAttacks.length; i++) {
-                    yield wait(1);
-                    const value = dmg.additionalAttacks[i](dmg, i);
-                    yield _doDmg(value);
-                    Util.msg.set(`+${value}`, Color.RED.bright);
-                }
-            }
-            else {
-                FX_RotateStr(font, "MISS", point, Color.L_GRAY);
-                Util.msg.set("MISS", Color.L_GRAY);
-            }
-            this.tp += 1;
-        });
-    }
     judgeDead() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.exists || this.dead) {

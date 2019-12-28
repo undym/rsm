@@ -18,16 +18,12 @@ export interface ForceIns{
         get force(){return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
         protected createForce(_this:ForceIns):Force{return emptyForce();}
      */
-    // protected createForce(_this:ForceIns):Force;
-    // get force(){return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
-    // 
 }
 
 export class Force{
     private static _empty:Force;
     static get empty(){return this._empty ? this._empty : (this._empty = new Force());}
 
-    
     equip(unit:Unit){}
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     async battleStart(unit:Unit){}

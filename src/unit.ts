@@ -286,65 +286,6 @@ export abstract class Unit{
     //
     //
     //---------------------------------------------------------
-    async doDmg(dmg:Dmg){
-        if(!this.exists || this.dead){return;}
-
-        const result = dmg.calc();
-        const font = new Font(Font.def.size * 2, Font.BOLD);
-        const point =   {
-                        x:this.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
-                        y:this.imgBounds.cy + Graphics.dotH * 60 * (Math.random() * 2 - 1),
-                    };
-        const effect = (value:number)=>{
-            // const stbox = new DrawSTBox(()=>this);
-            // FX_Shake(this.boxBounds, bounds=>{
-            //     Graphics.fillRect(bounds, Color.BLACK);
-            //     stbox.draw(bounds)
-            // });
-            // FX_RotateStr(font, `${value}`, point, Color.WHITE);
-        };
-
-
-        this.beDamage(dmg);
-
-
-        if(result.isHit){
-            const _doDmg = async(value:number)=>{
-                effect(value);
-                if(this.pet && value >= this.hp){
-                    Util.msg.set(`${this.pet}が${value}のダメージを引き受けた`); await wait(1);
-
-                    this.pet.hp--;
-                    if(this.pet.hp <= 0){
-                        const petName = this.pet.toString();
-                        this.pet = undefined;
-                        Sound.pet_die.play();
-                        FX_PetDie( this.imgCenter );
-                        Util.msg.set(`${petName}は砕け散った...`); await wait();
-                    }
-                }else{
-                    this.hp -= value;
-                }
-            };
-
-            const value = result.value;
-            await _doDmg(value);
-            Util.msg.set(`${this.name}に${value}のダメージ`, Color.RED.bright);
-
-            for(let i = 0; i < dmg.additionalAttacks.length; i++){
-                await wait(1);
-
-                const value = dmg.additionalAttacks[i]( dmg, i );
-                await _doDmg(value);
-                Util.msg.set(`+${value}`, Color.RED.bright);
-            }
-        }else{
-            FX_RotateStr(font, "MISS", point, Color.L_GRAY);
-            Util.msg.set("MISS", Color.L_GRAY);
-        }
-
-        this.tp += 1;
-    }
     
     async judgeDead(){
         if(!this.exists || this.dead){return;}
