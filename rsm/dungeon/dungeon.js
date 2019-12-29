@@ -1296,11 +1296,11 @@ Dungeon.musicCount = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    Story2.runMain26();
+                    yield Story2.runMain26();
                 }
                 if (Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_Kabe0.done) {
                     Flag.story_Kabe0.done = true;
-                    Story3.runKabe0();
+                    yield Story3.runKabe0();
                     Unit.players.filter(u => u.exists).forEach(u => u.prm(Prm.MAX_HP).base += 5);
                 }
             });
@@ -1337,12 +1337,15 @@ Dungeon.musicCount = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    Story2.runMain27();
+                    yield Story2.runMain27();
                 }
                 if (Flag.story_Kabe0.done && !Flag.story_Kabe1.done) {
                     Flag.story_Kabe1.done = true;
-                    Story3.runKabe1();
+                    yield Story3.runKabe1();
                     Unit.players.filter(u => u.exists).forEach(u => u.prm(Prm.MAX_HP).base += 10);
+                }
+                if (!Player.白い鳥.member) {
+                    Player.白い鳥.join();
                 }
             });
         }
@@ -1356,7 +1359,7 @@ Dungeon.musicCount = 0;
                 trendItems: () => [Item.合板, Item.ネクロマンス法, Item.子守歌, Item.地の涙, Item.血粉末, Item.血清],
                 ghost: true,
             });
-            this.isVisible = () => Dungeon.ハデスの腹.dungeonClearCount >= 1;
+            this.isVisible = () => Dungeon.ハデスの腹.dungeonClearCount >= 1 && !Dungeon.小鬼.isVisible();
             this.setBossInner = () => {
                 let e = Unit.enemies[0];
                 Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
@@ -1378,11 +1381,11 @@ Dungeon.musicCount = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    Story2.runMain28();
+                    yield Story2.runMain28();
                 }
                 if (Flag.story_Kabe1.done && !Flag.story_Kabe2.done) {
                     Flag.story_Kabe2.done = true;
-                    Story3.runKabe2();
+                    yield Story3.runKabe2();
                     Unit.players.filter(u => u.exists).forEach(u => u.prm(Prm.MAX_HP).base += 15);
                 }
             });
@@ -1391,7 +1394,7 @@ Dungeon.musicCount = 0;
     Dungeon.小鬼 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "小鬼", info: "",
-                rank: 4, enemyLv: 12, au: 1, btn: [DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+                rank: 4, enemyLv: 12, au: 1, btn: [DungeonArea.冥界, new Rect(0.55, 0.4, 0.3, 0.1)],
                 treasures: () => [],
                 exItems: () => [],
                 trendItems: () => [],
@@ -1459,7 +1462,7 @@ Dungeon.musicCount = 0;
             return __awaiter(this, void 0, void 0, function* () {
                 yield _super.dungeonClearEvent.call(this);
                 if (this.dungeonClearCount === 1) {
-                    Story2.runMain29();
+                    yield Story2.runMain29();
                 }
                 // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
                 //     Flag.story_Main30.done = true;

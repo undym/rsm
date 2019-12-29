@@ -1172,11 +1172,11 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
 
             if(this.dungeonClearCount === 1){
-                Story2.runMain26();
+                await Story2.runMain26();
             }
             if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_Kabe0.done){
                 Flag.story_Kabe0.done = true;
-                Story3.runKabe0();
+                await Story3.runKabe0();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 5);
             }
         }
@@ -1206,13 +1206,18 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                Story2.runMain27();
+                await Story2.runMain27();
             }
             if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
                 Flag.story_Kabe1.done = true;
-                Story3.runKabe1();
+                await Story3.runKabe1();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
             }
+
+            if(!Player.白い鳥.member){
+                Player.白い鳥.join();
+            }
+
         }
     };
     export const                         魂人の廃都:Dungeon = new class extends Dungeon{
@@ -1223,7 +1228,7 @@ export namespace Dungeon{
                                 trendItems: ()=>[Item.合板, Item.ネクロマンス法, Item.子守歌, Item.地の涙, Item.血粉末, Item.血清],
                                 ghost:true,
         });}
-        isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1;
+        isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1 && !Dungeon.小鬼.isVisible();
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
@@ -1240,18 +1245,18 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                Story2.runMain28();
+                await Story2.runMain28();
             }
             if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
                 Flag.story_Kabe2.done = true;
-                Story3.runKabe2();
+                await Story3.runKabe2();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
             }
         }
     };
     export const                         小鬼:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"小鬼", info:"",
-                                rank:4, enemyLv:12, au:1, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
+                                rank:4, enemyLv:12, au:1, btn:[DungeonArea.冥界, new Rect(0.55, 0.4, 0.3, 0.1)],
                                 treasures:  ()=>[],
                                 exItems:    ()=>[],
                                 trendItems: ()=>[],
@@ -1305,7 +1310,7 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                Story2.runMain29();
+                await Story2.runMain29();
             }
             // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
             //     Flag.story_Main30.done = true;

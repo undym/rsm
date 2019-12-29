@@ -401,6 +401,7 @@ const setBeastJobChangeList = (map:Map<Job,true>, u:PUnit)=>{
             add(Job.ブルージェリー, [Job.チルナノーグ]);
                 add(Job.ブラッド, [Job.ブルージェリー, Job.カリストコウモリ]);
         add(Job.アングラ, [Job.アメーバ, Job.魔獣ドンゴ]);
+            add(Job.お化け, [Job.アングラ, Job.妖精, Job.アイス]);
     add(Job.ノーム, [Job.ドラゴン]);
         add(Job.妖精, [Job.ノーム]);
             add(Job.エルフ, [Job.妖精]);
@@ -409,6 +410,5 @@ const setBeastJobChangeList = (map:Map<Job,true>, u:PUnit)=>{
         add(Job.雷鳥, [Job.カリストコウモリ]);
             add(Job.魔獣ドンゴ, [Job.雷鳥]);
                 add(Job.月狼, [Job.魔獣ドンゴ]);        
-        
-    //add(Job.朱雀, [Job.月狼, Job.お化け]);
+                    add(Job.朱雀, [Job.月狼, Job.お化け]);
 };
