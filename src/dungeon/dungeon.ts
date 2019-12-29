@@ -141,8 +141,11 @@ export abstract class Dungeon{
     get originalEnemyLv():number{return this.args.enemyLv;}
     /**クリア回数の補正をかけたもの。 */
     get enemyLv():number{
-        const _clearCount = this.dungeonClearCount < 20 ? this.dungeonClearCount : 20;
-        const res = this.args.enemyLv * (1 + _clearCount * 0.05) + _clearCount / 2;
+        const lim = 40;
+        const _clearCount = this.dungeonClearCount < lim ? this.dungeonClearCount : lim;
+        //クリア回数による敵のレベルの最大倍率。maxEnemyLvMul===2の場合なら、元のレベルの2倍(+_clearCount/2)まで出る。
+        const maxEnemyLvMul = 2;
+        const res = this.args.enemyLv * (1 + _clearCount / lim * (maxEnemyLvMul-1)) + _clearCount / 2;
         return res|0;
     }
     get au():number         {return this.args.au;}
