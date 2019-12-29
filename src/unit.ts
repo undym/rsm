@@ -770,24 +770,23 @@ export namespace Unit{
     export const set反射Inv = (unit:Unit)=>{
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = "反射";
-            async beforeBeAtk(dmg:Dmg){
+            async beDamage(dmg:Dmg){
                 dmg.target.removeInvisibleCondition(this);
 
-                if(dmg.hasType("反射","反撃")){return;}
+                if(!dmg.canCounter || dmg.attacker === dmg.target){return;}
 
-                const result = dmg.calc();
-                if(result.isHit){
+                if(dmg.result.isHit){
                     FX_反射( dmg.target.imgCenter, dmg.attacker.imgCenter );
                     Util.msg.set("＞反射");
                     const refDmg =  new Dmg({
                                         attacker:dmg.target,
                                         target:dmg.attacker,
-                                        absPow:result.value,
-                                        types:["反射","反撃"],
+                                        absPow:dmg.result.value,
+                                        canCounter:false,
                                     });
                     await refDmg.run(); await wait();
 
-                    dmg.pow.mul = 0;
+                    dmg.result.value = 0;
                 };
             }
         });
@@ -798,8 +797,8 @@ export namespace Unit{
         if(unit.hasInvisibleCondition(name)){return;}
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = name;
-            async beDamage(u:Unit, dmg:Dmg){
-                u.removeInvisibleCondition(this);
+            async beDamage(dmg:Dmg){
+                dmg.target.removeInvisibleCondition(this);
 
                 if(dmg.result.isHit){
                     const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);

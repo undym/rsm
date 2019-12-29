@@ -823,7 +823,7 @@ ActiveTec._valueOf = new Map();
         toString() { return "殴る"; }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
-            dmg.types.push("反撃");
+            dmg.canCounter = false;
             return dmg;
         }
     };
@@ -935,7 +935,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘") && !dmg.hasType("反撃")) {
+                        if (dmg.hasType("格闘") && dmg.canCounter) {
                             Util.msg.set("＞カウンター");
                             yield wait();
                             yield Tec.格闘カウンター.run(dmg.target, dmg.attacker);
@@ -1021,7 +1021,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 memberAfterDoAtk(me, dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec => tec === Tec.格闘連携)) {
+                        if (dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.tecs.some(tec => tec === Tec.格闘連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
                             yield Tec.格闘カウンター.run(me, dmg.target);
@@ -1185,7 +1185,7 @@ ActiveTec._valueOf = new Map();
                     attacker: attacker,
                     target: attacker,
                     absPow: attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim,
-                    types: ["反撃"],
+                    canCounter: false,
                 });
                 yield selfHarm.run();
             });
@@ -1297,7 +1297,7 @@ ActiveTec._valueOf = new Map();
         }
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
-            dmg.types.push("反撃");
+            dmg.canCounter = false;
             return dmg;
         }
     };
@@ -1336,7 +1336,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 memberAfterDoAtk(me, dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("魔法") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec => tec === Tec.魔道連携)) {
+                        if (dmg.hasType("魔法") && dmg.canCounter && dmg.attacker.tecs.some(tec => tec === Tec.魔道連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
                             yield Tec.魔法カウンター.run(me, dmg.target);
@@ -1476,7 +1476,7 @@ ActiveTec._valueOf = new Map();
                     attacker: attacker,
                     target: attacker,
                     absPow: target.prm(Prm.LV).total,
-                    types: ["反撃"],
+                    canCounter: false,
                 });
                 yield selfHarm.run();
                 yield wait();
@@ -1538,7 +1538,7 @@ ActiveTec._valueOf = new Map();
                     attacker: attacker,
                     target: attacker,
                     absPow: attacker.hp * 0.1,
-                    types: ["反撃"],
+                    canCounter: false,
                 });
                 yield cdmg.run();
                 yield wait();
@@ -1560,7 +1560,7 @@ ActiveTec._valueOf = new Map();
                         attacker: attacker,
                         target: unit,
                         absPow: attacker.prm(Prm.DRK).total * 2,
-                        types: ["反撃"],
+                        canCounter: false,
                     });
                     Sound.DARK.play();
                     FX_格闘(unit.imgCenter);
@@ -1638,7 +1638,7 @@ ActiveTec._valueOf = new Map();
                             attacker: dmg.target,
                             target: dmg.attacker,
                             absPow: dmg.attacker.hp * 0.1 + 1,
-                            types: ["反撃"],
+                            canCounter: false,
                         });
                         yield counter.run();
                         yield wait();
@@ -3328,7 +3328,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘") && dmg.hasType("反撃")) {
+                        if (dmg.hasType("格闘") && !dmg.canCounter) {
                             dmg.abs.add += dmg.attacker.prm(Prm.PST).total;
                         }
                     });
@@ -3347,7 +3347,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 beforeBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (!dmg.hasType("反射") && !dmg.hasType("反撃") && dmg.hasType("格闘") && dmg.target.hasCondition(Condition.盾)) {
+                        if (dmg.canCounter && dmg.hasType("格闘") && dmg.target.hasCondition(Condition.盾)) {
                             Unit.set反射Inv(dmg.target);
                         }
                     });
@@ -4241,7 +4241,7 @@ ActiveTec._valueOf = new Map();
                     attacker: attacker,
                     target: target,
                     absPow: attacker.hp,
-                    types: ["反撃"],
+                    canCounter: false,
                 });
                 yield dmg.run();
                 yield wait();
@@ -4501,7 +4501,7 @@ ActiveTec._valueOf = new Map();
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃", "ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     };
@@ -4547,7 +4547,7 @@ ActiveTec._valueOf = new Map();
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃", "ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     };
@@ -4562,7 +4562,7 @@ ActiveTec._valueOf = new Map();
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃", "ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     };
@@ -4636,7 +4636,7 @@ ActiveTec._valueOf = new Map();
         createDmg(attacker, target) {
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃", "ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     };

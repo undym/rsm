@@ -68,7 +68,7 @@ export class AttackNumForce{
 
 export type DmgType = 
                  "格闘"|"槍"|"魔法"|"神格"|"暗黒"|"怨霊"|"鎖術"|"過去"|"銃"|"機械"|"弓"
-                |"毒"|"反射"|"反撃"|"ペット"|"罠"
+                |"毒"|"ペット"|"罠"
                 ;
 
 export class Dmg{
@@ -121,6 +121,8 @@ export class Dmg{
         }
         return false;
     }
+    /**カウンター可能かどうか。自傷技にもつける。 */
+    canCounter = true;
 
     constructor(args:{
         attacker:Unit,
@@ -133,6 +135,7 @@ export class Dmg{
         absPow?:number,
         absMul?:number,
         types?:DmgType[],
+        canCounter?:boolean,
     }){
         this.clear();
 
@@ -146,6 +149,7 @@ export class Dmg{
         if(args.absPow) {this.abs.base = args.absPow;}
         if(args.absMul) {this.abs.mul  = args.absMul;}
         if(args.types)  {this.types = args.types;}
+        if(args.canCounter !== undefined){this.canCounter = args.canCounter;}
     }
 
     clear(){
@@ -178,7 +182,7 @@ export class Dmg{
         this.types = [];
     }
 
-    calc():{value:number, isHit:boolean}{
+    private calc():void{
         const _pow = Dmg.calcDmgElm( this.pow );
         const _def = Dmg.calcDmgElm( this.def );
         const _hit = Dmg.calcDmgElm( this.hit );
@@ -201,13 +205,13 @@ export class Dmg{
 
         this.result.value = value > 0 ? value|0 : 0;
         this.result.isHit = isHit;
-        return this.result;
     }
+
 
     async run():Promise<void>{
         if(!this.target.exists || this.target.dead){return;}
 
-        const result = this.calc();
+        
         const font = new Font(Font.def.size * 2, Font.BOLD);
         const point =   {
                         x:this.target.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
@@ -222,10 +226,11 @@ export class Dmg{
             FX_RotateStr(font, `${value}`, point, Color.WHITE);
         };
 
+        this.calc();
 
         this.target.beDamage(this);
 
-        if(result.isHit){
+        if(this.result.isHit){
             const _doDmg = async(value:number)=>{
                 effect(value);
                 if(this.target.pet && value >= this.target.hp){
@@ -244,7 +249,7 @@ export class Dmg{
                 }
             };
 
-            const value = result.value;
+            const value = this.result.value;
             await _doDmg(value);
             Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
 

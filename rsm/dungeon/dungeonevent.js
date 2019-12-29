@@ -237,7 +237,7 @@ class EventImg {
                         attacker: p,
                         target: p,
                         pow: p.prm(Prm.MAX_HP).total / 5,
-                        types: ["反撃", "罠"],
+                        canCounter: false,
                     }).run();
                     yield p.judgeDead();
                 }
@@ -304,7 +304,7 @@ class EventImg {
                         attacker: p,
                         target: p,
                         pow: p.prm(Prm.MAX_HP).total / 10,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                     yield p.judgeDead();
                 }
@@ -367,7 +367,7 @@ class EventImg {
                         attacker: p,
                         target: p,
                         pow: p.prm(Prm.MAX_HP).total / 10,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                     yield p.judgeDead();
                 }

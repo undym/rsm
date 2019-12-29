@@ -547,7 +547,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘") && !dmg.hasType("反撃") && Math.random() < 0.4) {
+                        if (dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4) {
                             yield Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                         }
                     });
@@ -828,7 +828,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("魔法", "過去") && !dmg.hasType("反撃") && Math.random() < 0.7) {
+                        if (dmg.hasType("魔法", "過去") && dmg.canCounter && Math.random() < 0.7) {
                             yield Tec.魔法カウンター.run(dmg.target, dmg.attacker);
                         }
                     });
@@ -868,7 +868,7 @@ EqEar._valueOf = new Map();
                                 attacker: unit,
                                 target: unit,
                                 absPow: unit.prm(Prm.MAX_HP).total * 0.1,
-                                types: ["反撃"],
+                                canCounter: false,
                             });
                             yield dmg.run();
                             yield wait();

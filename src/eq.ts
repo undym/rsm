@@ -467,7 +467,7 @@ export namespace Eq{
                                 pos:EqPos.体, lv:55});}
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
-                if(dmg.hasType("格闘") && !dmg.hasType("反撃") && Math.random() < 0.4){
+                if(dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4){
                     await Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                 }
             }
@@ -656,7 +656,7 @@ export namespace Eq{
                                 pos:EqPos.手, lv:45});}
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
-                if(dmg.hasType("魔法","過去") && !dmg.hasType("反撃") && Math.random() < 0.7){
+                if(dmg.hasType("魔法","過去") && dmg.canCounter && Math.random() < 0.7){
                     await Tec.魔法カウンター.run(dmg.target, dmg.attacker);
                 }
             }
@@ -685,7 +685,7 @@ export namespace Eq{
                         attacker:unit,
                         target:unit,
                         absPow:unit.prm(Prm.MAX_HP).total * 0.1,
-                        types:["反撃"],
+                        canCounter:false,
                     });
                     await dmg.run(); await wait();
                 }

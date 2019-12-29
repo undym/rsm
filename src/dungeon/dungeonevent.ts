@@ -246,7 +246,7 @@ export namespace DungeonEvent{
                                             attacker:p,
                                             target:p,
                                             pow:p.prm(Prm.MAX_HP).total / 5,
-                                            types:["反撃","罠"],
+                                            canCounter:false,
                                         }).run();
                                         await p.judgeDead();
                                     }
@@ -312,7 +312,7 @@ export namespace DungeonEvent{
                                             attacker:p,
                                             target:p,
                                             pow:p.prm(Prm.MAX_HP).total / 10,
-                                            types:["反撃"],
+                                            canCounter:false,
                                         }).run();
                                         await p.judgeDead();
                                     }
@@ -369,7 +369,7 @@ export namespace DungeonEvent{
                                                 attacker:p,
                                                 target:p,
                                                 pow:p.prm(Prm.MAX_HP).total / 10,
-                                                types:["反撃"],
+                                                canCounter:false,
                                             }).run();
                                             await p.judgeDead();
                                         }

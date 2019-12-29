@@ -752,25 +752,24 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 super(...arguments);
                 this.uniqueName = "反射";
             }
-            beforeBeAtk(dmg) {
+            beDamage(dmg) {
                 return __awaiter(this, void 0, void 0, function* () {
                     dmg.target.removeInvisibleCondition(this);
-                    if (dmg.hasType("反射", "反撃")) {
+                    if (!dmg.canCounter || dmg.attacker === dmg.target) {
                         return;
                     }
-                    const result = dmg.calc();
-                    if (result.isHit) {
+                    if (dmg.result.isHit) {
                         FX_反射(dmg.target.imgCenter, dmg.attacker.imgCenter);
                         Util.msg.set("＞反射");
                         const refDmg = new Dmg({
                             attacker: dmg.target,
                             target: dmg.attacker,
-                            absPow: result.value,
-                            types: ["反射", "反撃"],
+                            absPow: dmg.result.value,
+                            canCounter: false,
                         });
                         yield refDmg.run();
                         yield wait();
-                        dmg.pow.mul = 0;
+                        dmg.result.value = 0;
                     }
                     ;
                 });
@@ -788,9 +787,9 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 super(...arguments);
                 this.uniqueName = name;
             }
-            beDamage(u, dmg) {
+            beDamage(dmg) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    u.removeInvisibleCondition(this);
+                    dmg.target.removeInvisibleCondition(this);
                     if (dmg.result.isHit) {
                         const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
                         Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);

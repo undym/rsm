@@ -88,6 +88,8 @@ export class Dmg {
         this.additionalAttacks = [];
         /** */
         this.types = [];
+        /**カウンター可能かどうか。自傷技にもつける。 */
+        this.canCounter = true;
         this.clear();
         this.attacker = args.attacker;
         this.target = args.target;
@@ -112,6 +114,9 @@ export class Dmg {
         }
         if (args.types) {
             this.types = args.types;
+        }
+        if (args.canCounter !== undefined) {
+            this.canCounter = args.canCounter;
         }
     }
     static get empty() {
@@ -192,14 +197,12 @@ export class Dmg {
         }
         this.result.value = value > 0 ? value | 0 : 0;
         this.result.isHit = isHit;
-        return this.result;
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.target.exists || this.target.dead) {
                 return;
             }
-            const result = this.calc();
             const font = new Font(Font.def.size * 2, Font.BOLD);
             const point = {
                 x: this.target.imgBounds.cx + Graphics.dotW * 60 * (Math.random() * 2 - 1),
@@ -213,8 +216,9 @@ export class Dmg {
                 });
                 FX_RotateStr(font, `${value}`, point, Color.WHITE);
             };
+            this.calc();
             this.target.beDamage(this);
-            if (result.isHit) {
+            if (this.result.isHit) {
                 const _doDmg = (value) => __awaiter(this, void 0, void 0, function* () {
                     effect(value);
                     if (this.target.pet && value >= this.target.hp) {
@@ -234,7 +238,7 @@ export class Dmg {
                         this.target.hp -= value;
                     }
                 });
-                const value = result.value;
+                const value = this.result.value;
                 yield _doDmg(value);
                 Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
                 for (let i = 0; i < this.additionalAttacks.length; i++) {

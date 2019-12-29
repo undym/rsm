@@ -1018,7 +1018,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 10,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1035,7 +1035,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 50,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1052,7 +1052,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 150,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1069,7 +1069,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 250,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1086,7 +1086,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 350,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1103,7 +1103,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 450,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1120,7 +1120,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 1000,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1137,7 +1137,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 10,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1154,7 +1154,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 25,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1171,7 +1171,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 100,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1188,7 +1188,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 200,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1205,7 +1205,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 1000,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });
@@ -1222,7 +1222,7 @@ Item.DEF_NUM_LIMIT = 9999;
                         attacker: user,
                         target: target,
                         absPow: 3000,
-                        types: ["反撃"],
+                        canCounter: false,
                     }).run();
                 }),
             });

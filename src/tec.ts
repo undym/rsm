@@ -790,7 +790,7 @@ export namespace Tec{
         toString(){return "殴る";}
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
-            dmg.types.push("反撃");
+            dmg.canCounter = false;
             return dmg;
         }
     }
@@ -870,7 +870,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
-                if(dmg.hasType("格闘") && !dmg.hasType("反撃")){
+                if(dmg.hasType("格闘") && dmg.canCounter){
                     Util.msg.set("＞カウンター"); await wait();
                     await Tec.格闘カウンター.run( dmg.target, dmg.attacker );
                 }
@@ -929,7 +929,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async memberAfterDoAtk(me:Unit, dmg:Dmg){
-                if(dmg.hasType("格闘") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec=> tec === Tec.格闘連携)){
+                if(dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.tecs.some(tec=> tec === Tec.格闘連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
                     await Tec.格闘カウンター.run(me, dmg.target);
                 }
@@ -1044,7 +1044,7 @@ export namespace Tec{
                                 attacker:attacker,
                                 target:attacker,
                                 absPow:attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim,
-                                types:["反撃"],
+                                canCounter:false,
                             });
             await selfHarm.run();
         }
@@ -1135,7 +1135,7 @@ export namespace Tec{
         });}
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
-            dmg.types.push("反撃");
+            dmg.canCounter = false;
             return dmg;
         }
     }
@@ -1164,7 +1164,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async memberAfterDoAtk(me:Unit, dmg:Dmg){
-                if(dmg.hasType("魔法") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec=> tec === Tec.魔道連携)){
+                if(dmg.hasType("魔法") && dmg.canCounter && dmg.attacker.tecs.some(tec=> tec === Tec.魔道連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
                     await Tec.魔法カウンター.run(me, dmg.target);
                 }
@@ -1289,7 +1289,7 @@ export namespace Tec{
                             attacker:attacker,
                             target:attacker,
                             absPow:target.prm(Prm.LV).total,
-                            types:["反撃"],
+                            canCounter:false,
                         });
             await selfHarm.run(); await wait();
         }
@@ -1334,7 +1334,7 @@ export namespace Tec{
                             attacker:attacker,
                             target:attacker,
                             absPow:attacker.hp * 0.1,
-                            types:["反撃"],
+                            canCounter:false,
                         });
             await cdmg.run(); await wait();
         }
@@ -1352,7 +1352,7 @@ export namespace Tec{
                     attacker:attacker,
                     target:unit,
                     absPow:attacker.prm(Prm.DRK).total * 2,
-                    types:["反撃"],
+                    canCounter:false,
                 });
 
                 Sound.DARK.play();
@@ -1412,7 +1412,7 @@ export namespace Tec{
                     attacker:dmg.target,
                     target:dmg.attacker,
                     absPow:dmg.attacker.hp * 0.1 + 1,
-                    types:["反撃"],
+                    canCounter:false,
                 });
                 await counter.run(); await wait();
             }
@@ -2688,7 +2688,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
-                if(dmg.hasType("格闘") && dmg.hasType("反撃")){
+                if(dmg.hasType("格闘") && !dmg.canCounter){
                     dmg.abs.add += dmg.attacker.prm(Prm.PST).total;
                 }
             }
@@ -2701,7 +2701,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
-                if(!dmg.hasType("反射") && !dmg.hasType("反撃") && dmg.hasType("格闘") && dmg.target.hasCondition(Condition.盾)){
+                if(dmg.canCounter && dmg.hasType("格闘") && dmg.target.hasCondition(Condition.盾)){
                     Unit.set反射Inv( dmg.target );
                 }
             }
@@ -3393,7 +3393,7 @@ export namespace Tec{
                 attacker:attacker,
                 target:target,
                 absPow:attacker.hp,
-                types:["反撃"],
+                canCounter:false,
             });
             await dmg.run(); await wait();
         }
@@ -3595,7 +3595,7 @@ export namespace Tec{
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃","ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     }
@@ -3629,7 +3629,7 @@ export namespace Tec{
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃","ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     }
@@ -3642,7 +3642,7 @@ export namespace Tec{
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃","ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     }
@@ -3696,7 +3696,7 @@ export namespace Tec{
         createDmg(attacker:Unit, target:Unit){
             const dmg = super.createDmg(attacker, target);
             dmg.pow.base = attacker.prm(Prm.LV).total;
-            dmg.types.push("反撃","ペット");
+            dmg.types.push("ペット");
             return dmg;
         }
     }
