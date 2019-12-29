@@ -33,10 +33,10 @@ export class Force{
     async beforeDoAtk(dmg:Dmg){}
     async beforeBeAtk(dmg:Dmg){}
     /**ダメージを受ける直前、calc()された後に通る. */
-    async beDamage(unit:Unit, dmg:Dmg){}
+    async beDamage(dmg:Dmg){}
     async afterDoAtk(dmg:Dmg){}
     async afterBeAtk(dmg:Dmg){}
-    async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){}
+    async memberAfterDoAtk(me:Unit, dmg:Dmg){}
     async whenDead(unit:Unit){}
     /**
      * 自分以外の死亡時.

@@ -1019,12 +1019,12 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                memberAfterDoAtk(me, action, attacker, target, dmg) {
+                memberAfterDoAtk(me, dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.hasType("反撃") && attacker.tecs.some(tec => tec === Tec.格闘連携)) {
+                        if (dmg.hasType("格闘") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec => tec === Tec.格闘連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
-                            yield Tec.格闘カウンター.run(me, target);
+                            yield Tec.格闘カウンター.run(me, dmg.target);
                         }
                     });
                 }
@@ -1334,12 +1334,12 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                memberAfterDoAtk(me, action, attacker, target, dmg) {
+                memberAfterDoAtk(me, dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.hasType("反撃") && attacker.tecs.some(tec => tec === Tec.魔道連携)) {
+                        if (dmg.hasType("魔法") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec => tec === Tec.魔道連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
-                            yield Tec.魔法カウンター.run(me, target);
+                            yield Tec.魔法カウンター.run(me, dmg.target);
                         }
                     });
                 }
@@ -3139,10 +3139,10 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                beDamage(unit, dmg) {
+                beDamage(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("毒")) {
-                            Heal.run("HP", dmg.result.value, unit, unit, Tec.毒吸収, false);
+                            Heal.run("HP", dmg.result.value, dmg.attacker, dmg.target, Tec.毒吸収, false);
                         }
                     });
                 }
@@ -3157,7 +3157,7 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                beDamage(unit, dmg) {
+                beDamage(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("罠")) {
                             dmg.pow.mul = 0;

@@ -928,10 +928,10 @@ export namespace Tec{
                                 sort:TecSort.格闘, type:TecType.格闘,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
-            async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-                if(action instanceof ActiveTec && action.type.any(TecType.格闘) && !dmg.hasType("反撃") && attacker.tecs.some(tec=> tec === Tec.格闘連携)){
+            async memberAfterDoAtk(me:Unit, dmg:Dmg){
+                if(dmg.hasType("格闘") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec=> tec === Tec.格闘連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
-                    await Tec.格闘カウンター.run(me, target);
+                    await Tec.格闘カウンター.run(me, dmg.target);
                 }
             }
         };}
@@ -1163,10 +1163,10 @@ export namespace Tec{
                                 sort:TecSort.魔法, type:TecType.魔法,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
-            async memberAfterDoAtk(me:Unit, action:Action, attacker:Unit, target:Unit, dmg:Dmg){
-                if(action instanceof ActiveTec && action.type.any(TecType.魔法) && !dmg.hasType("反撃") && attacker.tecs.some(tec=> tec === Tec.魔道連携)){
+            async memberAfterDoAtk(me:Unit, dmg:Dmg){
+                if(dmg.hasType("魔法") && !dmg.hasType("反撃") && dmg.attacker.tecs.some(tec=> tec === Tec.魔道連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
-                    await Tec.魔法カウンター.run(me, target);
+                    await Tec.魔法カウンター.run(me, dmg.target);
                 }
             }
         };}
@@ -2556,9 +2556,9 @@ export namespace Tec{
                                 sort:TecSort.強化, type:TecType.状態,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
-            async beDamage(unit:Unit, dmg:Dmg){
+            async beDamage(dmg:Dmg){
                 if(dmg.hasType("毒")){
-                    Heal.run( "HP", dmg.result.value, unit, unit, Tec.毒吸収, false);
+                    Heal.run( "HP", dmg.result.value, dmg.attacker, dmg.target, Tec.毒吸収, false);
                 }
             }
         };}
@@ -2568,7 +2568,7 @@ export namespace Tec{
                                 sort:TecSort.強化, type:TecType.状態,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
-            async beDamage(unit:Unit, dmg:Dmg){
+            async beDamage(dmg:Dmg){
                 if(dmg.hasType("罠")){
                     dmg.pow.mul = 0;
                     dmg.abs.mul = 0;

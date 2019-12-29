@@ -329,10 +329,10 @@ export abstract class Unit{
     attackNum(action:Action, aForce:AttackNumForce)         {this.force(async f=> await f.attackNum(action, this, aForce));}
     async beforeDoAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeDoAtk(dmg));}
     async beforeBeAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeBeAtk(dmg));}
-    async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(this, dmg));}
+    async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(dmg));}
     async afterDoAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterDoAtk(dmg));}
     async afterBeAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterBeAtk(dmg));}
-    async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
+    async memberAfterDoAtk(dmg:Dmg)                         {await this.force(async f=> await f.memberAfterDoAtk(this, dmg));}
     async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
     async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
     async beHeal(heal:Heal)                                 {await this.force(async f=> await f.beHeal(heal));}

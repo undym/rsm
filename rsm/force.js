@@ -35,7 +35,7 @@ export class Force {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     /**ダメージを受ける直前、calc()された後に通る. */
-    beDamage(unit, dmg) {
+    beDamage(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     afterDoAtk(dmg) {
@@ -44,7 +44,7 @@ export class Force {
     afterBeAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    memberAfterDoAtk(me, action, attacker, target, dmg) {
+    memberAfterDoAtk(me, dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     whenDead(unit) {

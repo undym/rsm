@@ -295,7 +295,7 @@ export class Unit {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beforeBeAtk(dmg); })); });
     }
     beDamage(dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beDamage(this, dmg); })); });
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beDamage(dmg); })); });
     }
     afterDoAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterDoAtk(dmg); })); });
@@ -303,8 +303,8 @@ export class Unit {
     afterBeAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.afterBeAtk(dmg); })); });
     }
-    memberAfterDoAtk(action, attacker, target, dmg) {
-        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.memberAfterDoAtk(this, action, attacker, target, dmg); })); });
+    memberAfterDoAtk(dmg) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.memberAfterDoAtk(this, dmg); })); });
     }
     whenDead() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenDead(this); })); });
@@ -745,29 +745,6 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
-    /** */
-    // export const healHP = (target:Unit, value:number)=>{
-    //     if(!target.exists || target.dead){return;}
-    //     value = value|0;
-    //     const p = new Point(target.imgBounds.cx, target.imgBounds.cy - target.imgBounds.h / 2);
-    //     FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
-    //     target.hp += value;
-    // };
-    // /** */
-    // export const healMP = (target:Unit, value:number)=>{
-    //     if(!target.exists || target.dead){return;}
-    //     value = value|0;
-    //     target.mp += value;
-    //     FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
-    // };
-    // /** */
-    // export const healTP = (target:Unit, value:number)=>{
-    //     if(!target.exists || target.dead){return;}
-    //     value = value|0;
-    //     target.tp += value;
-    //     const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
-    //     FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
-    // };
     /** */
     Unit.set反射Inv = (unit) => {
         unit.addInvisibleCondition(new class extends InvisibleCondition {
