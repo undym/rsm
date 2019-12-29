@@ -12,7 +12,7 @@ import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition } from "./fx/fx.js";
-import { Dmg } from "./force.js";
+import { Dmg, Heal } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num } from "./mix.js";
@@ -218,13 +218,13 @@ Item.DEF_NUM_LIMIT = 9999;
             return target.boxCenter;
         }
     };
-    const itemRevive = (target, hp) => __awaiter(this, void 0, void 0, function* () {
+    const itemRevive = (hp, user, target, item) => __awaiter(this, void 0, void 0, function* () {
         if (!target.dead) {
             return;
         }
         target.dead = false;
         target.hp = 0;
-        Unit.healHP(target, hp);
+        Heal.run("HP", hp, target, target, item, false);
         Sound.KAIFUKU.play();
         FX_回復(itemUnitCenter(target));
         if (SceneType.now === SceneType.BATTLE) {
@@ -232,33 +232,11 @@ Item.DEF_NUM_LIMIT = 9999;
             yield wait();
         }
     });
-    const itemHealHP = (target, value) => __awaiter(this, void 0, void 0, function* () {
-        value = value | 0;
-        Unit.healHP(target, value);
+    const itemHeal = (type, value, user, target, item) => __awaiter(this, void 0, void 0, function* () {
         Sound.KAIFUKU.play();
         FX_回復(itemUnitCenter(target));
-        if (SceneType.now === SceneType.BATTLE) {
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
-            yield wait();
-        }
-    });
-    const itemHealMP = (target, value) => __awaiter(this, void 0, void 0, function* () {
-        value = value | 0;
-        Unit.healMP(target, value);
-        Sound.KAIFUKU.play();
-        if (SceneType.now === SceneType.BATTLE) {
-            Util.msg.set(`${target.name}のMPが${value}回復した`, Color.PINK.bright);
-            yield wait();
-        }
-    });
-    const itemHealTP = (target, value) => __awaiter(this, void 0, void 0, function* () {
-        value = value | 0;
-        Unit.healTP(target, value);
-        Sound.KAIFUKU.play();
-        if (SceneType.now === SceneType.BATTLE) {
-            Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright);
-            yield wait();
-        }
+        const msg = SceneType.now === SceneType.BATTLE;
+        Heal.run(type, value, user, target, item, msg);
     });
     const removeCondition = (target, condition) => __awaiter(this, void 0, void 0, function* () {
         if (target.hasCondition(condition)) {
@@ -283,7 +261,7 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "サンタクララ薬", info: "一体をHP1で蘇生",
                 type: ItemType.蘇生, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemRevive(target, 1);
+                    yield itemRevive(1, user, target, this);
                 })
             });
         }
@@ -297,7 +275,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "スティック", info: "HP+5",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 5); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 5, user, target, this); }),
             });
         }
     };
@@ -305,7 +283,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "スティックパ", info: "HP+10",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 10); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 10, user, target, this); }),
             });
         }
     };
@@ -313,7 +291,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "スティックパン", info: "HP+20",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 20); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 20, user, target, this); }),
             });
         }
     };
@@ -321,7 +299,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ダブルスティックパン", info: "HP+30",
                 type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 30); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 30, user, target, this); }),
             });
         }
     };
@@ -329,7 +307,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "硬化スティックパン", info: "HP+50",
                 type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 50); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 50, user, target, this); }),
             });
         }
     };
@@ -337,7 +315,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "マーラーカオ", info: "HP+70",
                 type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 70); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 70, user, target, this); }),
             });
         }
     };
@@ -345,7 +323,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "霊水", info: "HP+300",
                 type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 300); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 300, user, target, this); }),
             });
         }
     };
@@ -353,7 +331,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "清水", info: "HP+400",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 400); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 400, user, target, this); }),
             });
         }
     };
@@ -361,7 +339,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "超聖水", info: "HP+500",
                 type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 500); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 500, user, target, this); }),
             });
         }
     };
@@ -369,7 +347,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ドラッグ", info: "HP+10%",
                 type: ItemType.HP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.10 + 1, user, target, this); }),
             });
         }
     };
@@ -377,7 +355,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "LAドラッグ", info: "HP+20%",
                 type: ItemType.HP回復, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.20 + 1, user, target, this); }),
             });
         }
     };
@@ -385,7 +363,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ロシアドラッグ", info: "HP+30%",
                 type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.30 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.30 + 1, user, target, this); }),
             });
         }
     };
@@ -393,7 +371,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ビタミンドラッグ", info: "HP+40%",
                 type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.40 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.40 + 1, user, target, this); }),
             });
         }
     };
@@ -401,7 +379,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "高ビタミンドラッグ", info: "HP+50%",
                 type: ItemType.HP回復, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.50 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.50 + 1, user, target, this); }),
             });
         }
     };
@@ -409,7 +387,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "濃密ビタミンドラッグ", info: "HP+60%",
                 type: ItemType.HP回復, rank: 5, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.60 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.60 + 1, user, target, this); }),
             });
         }
     };
@@ -417,7 +395,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ビタミンドラッグA", info: "HP+70%",
                 type: ItemType.HP回復, rank: 6, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.70 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.70 + 1, user, target, this); }),
             });
         }
     };
@@ -425,7 +403,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ビタミンドラッグFINAL", info: "HP+80%",
                 type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.80 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.80 + 1, user, target, this); }),
             });
         }
     };
@@ -433,7 +411,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ビタミンドラッグFF", info: "HP+90%",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.90 + 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.90 + 1, user, target, this); }),
             });
         }
     };
@@ -441,7 +419,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "ビタミンドラッグFFF", info: "HP+100%",
                 type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, target.prm(Prm.MAX_HP).total); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", target.prm(Prm.MAX_HP).total, user, target, this); }),
             });
         }
     };
@@ -449,7 +427,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子", info: "全員のHP+30",
                 type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 30); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 30, user, target, this); }),
             });
         }
     };
@@ -457,7 +435,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子1", info: "全員のHP+50",
                 type: ItemType.HP回復, rank: 3, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 50); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 50, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+1"; }
@@ -466,7 +444,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子2", info: "全員のHP+100",
                 type: ItemType.HP回復, rank: 4, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 100); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 100, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+2"; }
@@ -475,7 +453,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子3", info: "全員のHP+130",
                 type: ItemType.HP回復, rank: 5, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 130); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 130, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+3"; }
@@ -484,7 +462,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子4", info: "全員のHP+150",
                 type: ItemType.HP回復, rank: 6, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 150); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 150, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+4"; }
@@ -493,7 +471,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子5", info: "全員のHP+200",
                 type: ItemType.HP回復, rank: 7, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 200); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 200, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+5"; }
@@ -502,7 +480,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子6", info: "全員のHP+300",
                 type: ItemType.HP回復, rank: 8, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 300); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 300, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+6"; }
@@ -511,7 +489,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "シェイクスピア分子7", info: "全員のHP+500",
                 type: ItemType.HP回復, rank: 9, drop: ItemDrop.BOX, targetings: ["all", "friendOnly"],
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealHP(target, 500); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 500, user, target, this); }),
             });
         }
         toString() { return "シェイクスピア分子+7"; }
@@ -521,9 +499,9 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "じすたま", info: "",
                 type: ItemType.HP回復, rank: 12, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, target.prm(Prm.MAX_HP).total);
-                    yield itemHealMP(target, target.prm(Prm.MAX_MP).total);
-                    yield itemHealTP(target, target.prm(Prm.MAX_TP).total);
+                    yield itemHeal("HP", target.prm(Prm.MAX_HP).total, user, target, this);
+                    yield itemHeal("MP", target.prm(Prm.MAX_MP).total, user, target, this);
+                    yield itemHeal("TP", target.prm(Prm.MAX_TP).total, user, target, this);
                 }),
             });
         }
@@ -537,7 +515,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "蛍草", info: "MP+1",
                 type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 1); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 1, user, target, this); }),
             });
         }
     };
@@ -545,7 +523,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "赤葉草", info: "MP+2",
                 type: ItemType.MP回復, rank: 0, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 2); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 2, user, target, this); }),
             });
         }
     };
@@ -553,7 +531,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "蛍草のエキス", info: "MP+3",
                 type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 3); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 3, user, target, this); }),
             });
         }
     };
@@ -561,7 +539,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "赤い水", info: "MP+4",
                 type: ItemType.MP回復, rank: 3, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 4); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 4, user, target, this); }),
             });
         }
     };
@@ -569,7 +547,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "赤蛍草", info: "MP+6",
                 type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 6); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 6, user, target, this); }),
             });
         }
     };
@@ -577,7 +555,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "インパチェンス", info: "MP+7",
                 type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 7); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 7, user, target, this); }),
             });
         }
     };
@@ -585,7 +563,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "アウラレッドグラス", info: "MP+10",
                 type: ItemType.MP回復, rank: 5, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 10); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 10, user, target, this); }),
             });
         }
     };
@@ -593,7 +571,7 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "紫死草", info: "MP+20",
                 type: ItemType.MP回復, rank: 6, drop: ItemDrop.BOX,
-                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHealMP(target, 20); }),
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("MP", 20, user, target, this); }),
             });
         }
     };
@@ -607,8 +585,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ", info: "HP+20 MP+2",
                 type: ItemType.MP回復, rank: 1, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 20);
-                    yield itemHealMP(target, 2);
+                    yield itemHeal("HP", 20, user, target, this);
+                    yield itemHeal("MP", 2, user, target, this);
                 }),
             });
         }
@@ -618,8 +596,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ2", info: "HP+30 MP+3",
                 type: ItemType.MP回復, rank: 2, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 30);
-                    yield itemHealMP(target, 3);
+                    yield itemHeal("HP", 30, user, target, this);
+                    yield itemHeal("MP", 3, user, target, this);
                 }),
             });
         }
@@ -630,8 +608,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ3", info: "HP+50 MP+5",
                 type: ItemType.MP回復, rank: 4, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 50);
-                    yield itemHealMP(target, 5);
+                    yield itemHeal("HP", 50, user, target, this);
+                    yield itemHeal("MP", 5, user, target, this);
                 }),
             });
         }
@@ -642,8 +620,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ4", info: "HP+100 MP+10",
                 type: ItemType.MP回復, rank: 6, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 100);
-                    yield itemHealMP(target, 10);
+                    yield itemHeal("HP", 100, user, target, this);
+                    yield itemHeal("MP", 10, user, target, this);
                 }),
             });
         }
@@ -654,8 +632,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ5", info: "HP+200 MP+20",
                 type: ItemType.MP回復, rank: 7, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 200);
-                    yield itemHealMP(target, 20);
+                    yield itemHeal("HP", 200, user, target, this);
+                    yield itemHeal("MP", 20, user, target, this);
                 }),
             });
         }
@@ -666,8 +644,8 @@ Item.DEF_NUM_LIMIT = 9999;
             super({ uniqueName: "ヴァイスドラッグ6", info: "HP+400 MP+40",
                 type: ItemType.MP回復, rank: 8, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () {
-                    yield itemHealHP(target, 400);
-                    yield itemHealMP(target, 40);
+                    yield itemHeal("HP", 400, user, target, this);
+                    yield itemHeal("MP", 40, user, target, this);
                 }),
             });
         }

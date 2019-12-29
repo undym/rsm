@@ -3,7 +3,7 @@ import { Util, PlayData } from "./util.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
-import { Dmg, Force, Action, PhaseStartForce, AttackNumForce } from "./force.js";
+import { Dmg, Force, Action, PhaseStartForce, AttackNumForce, Heal } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射, FX_RemoveCondition } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -335,6 +335,8 @@ export abstract class Unit{
     async memberAfterDoAtk(action:Action, attacker:Unit, target:Unit, dmg:Dmg)   {await this.force(async f=> await f.memberAfterDoAtk(this, action, attacker, target, dmg));}
     async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
     async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
+    async beHeal(heal:Heal)                                 {await this.force(async f=> await f.beHeal(heal));}
+    async doHeal(heal:Heal)                                 {await this.force(async f=> await f.doHeal(heal));}
     async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
 
     protected async force(forceDlgt:(f:Force)=>Promise<void>){
@@ -765,35 +767,6 @@ export namespace Unit{
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
     /** */
-    export const healHP = (target:Unit, value:number)=>{
-        if(!target.exists || target.dead){return;}
-
-        value = value|0;
-        
-        const p = new Point(target.imgBounds.cx, target.imgBounds.cy - target.imgBounds.h / 2);
-        FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
-        target.hp += value;
-    };
-    /** */
-    export const healMP = (target:Unit, value:number)=>{
-        if(!target.exists || target.dead){return;}
-
-        value = value|0;
-        target.mp += value;
-    
-        FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
-    };
-    /** */
-    export const healTP = (target:Unit, value:number)=>{
-        if(!target.exists || target.dead){return;}
-
-        value = value|0;
-        target.tp += value;
-    
-        const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
-        FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
-    };
-    /** */
     export const set反射Inv = (unit:Unit)=>{
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = "反射";
@@ -820,7 +793,7 @@ export namespace Unit{
         });
     };
     /** */
-    export const set吸収Inv = (unit:Unit, drainSuccess?:()=>void)=>{
+    export const set吸収Inv = (unit:Unit, drainSuccessAction?:()=>void)=>{
         const name = "吸収";
         if(unit.hasInvisibleCondition(name)){return;}
         unit.addInvisibleCondition(new class extends InvisibleCondition{
@@ -829,13 +802,12 @@ export namespace Unit{
                 u.removeInvisibleCondition(this);
 
                 if(dmg.result.isHit){
-                    const value = dmg.result.value;
-                    Unit.healHP( u, value );
+                    const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
                     Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
     
                     dmg.result.value = 0;
-                    if(drainSuccess){
-                        drainSuccess();
+                    if(drainSuccessAction){
+                        drainSuccessAction();
                     }
                 }
             }

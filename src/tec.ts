@@ -1,10 +1,10 @@
 import { Unit, Prm, PUnit, EUnit, Targeting } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_反射, FX_Debuff } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_反射, FX_Debuff, FX } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
@@ -1832,8 +1832,7 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
                 if(dmg.hasType("銃")){
-                    const value = dmg.result.value * 0.01;
-                    Unit.healHP( dmg.attacker, value );
+                    Heal.run("HP", dmg.result.value * 0.01, dmg.attacker, dmg.attacker, Tec.ブラッドブレッド, false);
                 }
             }
         };}
@@ -2280,8 +2279,8 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("弓")){
-                    Unit.healMP( dmg.attacker, 3 );
-                    Unit.healTP( dmg.attacker, 1 );
+                    Heal.run("MP", 3, dmg.attacker, dmg.attacker, Tec.中庸の悟り, false);
+                    Heal.run("TP", 1, dmg.attacker, dmg.attacker, Tec.中庸の悟り, false);
                 }
             }
         };}
@@ -2559,8 +2558,7 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async beDamage(unit:Unit, dmg:Dmg){
                 if(dmg.hasType("毒")){
-                    const value = dmg.result.value;
-                    Unit.healHP(unit, value);
+                    Heal.run( "HP", dmg.result.value, unit, unit, Tec.毒吸収, false);
                 }
             }
         };}
@@ -2653,7 +2651,9 @@ export namespace Tec{
                 if(deadUnit.dead && deadUnit.isFriend(me) && me.hp >= me.prm(Prm.MAX_HP).total / 2){
                     deadUnit.dead = false;
                     deadUnit.hp = 0;
-                    Unit.healHP(deadUnit, me.hp / 2);
+
+                    Heal.run("HP", me.hp / 2, me, deadUnit, Tec.かばう, false);
+
                     me.hp /= 2;
                     Util.msg.set(`${me.name}は${deadUnit.name}をかばった！`); await wait();
                 }
@@ -2718,7 +2718,7 @@ export namespace Tec{
                 
                 const value = unit.prm(Prm.MAX_HP).total * 0.2;
                 unit.prm(Prm.MAX_HP).battle += value;
-                Unit.healHP( unit, value );
+                Heal.run("HP", value, unit, unit, Tec.身体器, false);
             }
         };}
     };
@@ -2735,8 +2735,7 @@ export namespace Tec{
                 for(const t of targets){
                     const value = t.prm(Prm.MAX_HP).total * 0.1;
                     t.prm(Prm.MAX_HP).battle += value;
-                    Unit.healHP( t, value );
-                    t.hp += value;
+                    Heal.run("HP", value, unit, t, Tec.結束の陣形, false);
                 }
             }
         };}
@@ -2959,18 +2958,9 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:3,
         });}
         async run(attacker:Unit, target:Unit){
-            
-            const dmg = this.createDmg(attacker, target);
-            let value = dmg.calc().value;
-            if(attacker.getEq(EqPos.指) === Eq.霊宝天尊){
-                value *= 1.5;
-            }
-            value = value|0;
-            Unit.healHP(target, value);
-
             Sound.KAIFUKU.play();
             this.effect( attacker, target, Dmg.empty );
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("HP", attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total, attacker, target, this, true); await wait();
         }
     }
     /**ノーム.医師. */
@@ -2990,7 +2980,7 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:1,
         });}
         async run(attacker:Unit, target:Unit){
-            Unit.healTP( target, 2 ); await wait();
+            Heal.run("TP", 2, target, target, this, true); await wait();
         }
     }
     /**魔法使い. */
@@ -3034,9 +3024,9 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             target.dead = false;
             
-            Unit.healHP( target, target.prm(Prm.MAX_HP).total );
-            Unit.healMP( target, target.prm(Prm.MAX_MP).total );
-            Unit.healTP( target, target.prm(Prm.MAX_TP).total );
+            Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+            Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+            Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
             target.clearConditions();
 
             Sound.KAIFUKU.play();
@@ -3051,12 +3041,13 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
         async run(attacker:Unit, target:Unit){
-            this.effect( attacker, target, Dmg.empty );
             
-            Unit.healHP( target, target.prm(Prm.MAX_HP).total );
-            Unit.healMP( target, target.prm(Prm.MAX_MP).total );
-            Unit.healTP( target, target.prm(Prm.MAX_TP).total );
+            Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+            Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+            Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
+
             Sound.KAIFUKU.play();
+            this.effect( attacker, target, Dmg.empty );
             Util.msg.set("全回復！"); await wait();
 
             for(const prm of [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR]){
@@ -3081,12 +3072,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:3,
         });}
         async run(attacker:Unit, target:Unit){
-            
-            const value = 1;
-            Unit.healTP(target, value);
-
             Sound.KAIFUKU.play();
-            Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("TP", 1, attacker, target, this, true); await wait();
         }
     }
     /**格闘家. */
@@ -3096,12 +3083,9 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:2,
         });}
         async run(attacker:Unit, target:Unit){
-            
-            const value = (target.prm(Prm.MAX_HP).total * 0.1 + 1)|0;
-            Unit.healHP(target, value);
 
             Sound.KAIFUKU.play();
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, true); await wait();
         }
     }
     /**医師. */
@@ -3132,10 +3116,10 @@ export namespace Tec{
                 target.dead = false;
                 target.hp = 1;
 
-                Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.1 );
+                Heal.run( "HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, false);
                 Util.msg.set(`${target.name}は蘇った！`, Color.GREEN.bright); await wait();
             }else{
-                Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.1 );
+                Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, true);
             }
         }
     }
@@ -3186,9 +3170,10 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             Sound.KAIFUKU.play();
             FX_回復( target.imgCenter );
-            Unit.healHP( target, target.prm(Prm.MAX_HP).total * 0.2 );
-            Unit.healMP( target, target.prm(Prm.MAX_MP).total * 0.2 );
-            Unit.healTP( target, target.prm(Prm.MAX_TP).total * 0.2 );
+            Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.2, attacker, target, this, true);
+            Heal.run("MP", target.prm(Prm.MAX_MP).total * 0.2, attacker, target, this, true);
+            Heal.run("TP", target.prm(Prm.MAX_TP).total * 0.2, attacker, target, this, true);
+            await wait();
         }
     }
     /**羅文騎士. */
@@ -3202,9 +3187,9 @@ export namespace Tec{
             target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
             target.prm(Prm.MAX_TP).battle = target.prm(Prm.MAX_TP).base + target.prm(Prm.MAX_TP).eq;
             
-            Unit.healHP( target, target.prm(Prm.MAX_HP).total );
-            Unit.healMP( target, target.prm(Prm.MAX_MP).total );
-            Unit.healTP( target, target.prm(Prm.MAX_TP).total );
+            Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+            Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+            Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
 
             this.effect( attacker, target, Dmg.empty );
             Sound.KAIFUKU.play();
@@ -3222,12 +3207,7 @@ export namespace Tec{
             Sound.chain.play();
 
             for(const party of attacker.searchUnitsEx("party")){
-                const value = (party.prm(Prm.MAX_HP).total * 0.1)|0;
-
-                Unit.healHP( party, value );
-                
-                FX_回復( party.imgCenter );
-                Util.msg.set(`${party.name}のHPが${value}回復！`, Color.GREEN.bright);
+                const value = Heal.run("HP", party.prm(Prm.MAX_HP).total * 0.1, attacker, party, this, false);
 
                 for(const enemy of party.searchUnitsEx("faceToFace")){
                     const dmg = new Dmg({
@@ -3256,7 +3236,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
+                Heal.run("HP", 1 + unit.prm(Prm.MAX_HP).total * 0.01, unit, unit, Tec.HP自動回復, false);
             }
         };}
     };
@@ -3269,7 +3249,7 @@ export namespace Tec{
             async phaseStart(unit:Unit){
                 Sound.KAIFUKU.play();
                 for(const u of unit.searchUnitsEx("party")){
-                    Unit.healHP(u, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+                    Heal.run("HP", 1 + u.prm(Prm.MAX_HP).total * 0.05, unit, u, Tec.衛生, false);
                 }
             }
         };}
@@ -3291,7 +3271,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healMP(unit, 1);
+                Heal.run("MP", 1, unit, unit, this, false);
             }
         };}
     };
@@ -3302,8 +3282,8 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.01 + 1 );
-                Unit.healMP( unit, 1 );
+                Heal.run( "HP", 1 + unit.prm(Prm.MAX_HP).total * 0.01, unit, unit, Tec.HPMP回復, false );
+                Heal.run( "MP", 1, unit, unit, Tec.HPMP回復 ,false );
             }
         };}
     };
@@ -3315,7 +3295,7 @@ export namespace Tec{
             async phaseStart(unit:Unit){
                 unit.hp--;
                 unit.mp--;
-                Unit.healTP(unit, 1);
+                Heal.run("TP", 1, unit, unit, this, false);
             }
         };}
     };
@@ -3326,9 +3306,9 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(Math.random() < 0.5){
-                    const value = 5;
+                    
+                    const value = Heal.run("HP", 5, dmg.target, dmg.attacker, Tec.血技の技巧, false);
                     dmg.attacker.hp -= value;
-                    dmg.target.hp += value;
                     
                     Sound.drain.play();
                     FX_吸収(dmg.target.imgCenter, dmg.attacker.imgCenter);
@@ -3345,7 +3325,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+                Heal.run( "HP", 1 + unit.prm(Prm.MAX_HP).total * 0.05, unit, unit, Tec.自然治癒, false );
             }
         };}
     };
@@ -3356,9 +3336,8 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async phaseStart(unit:Unit){
-                const targets = unit.searchUnitsEx("party").filter(u=> u !== unit && !u.dead);
-                for(const t of targets){
-                    Unit.healTP( t, 1 );
+                for(const t of unit.searchUnitsEx("party").filter(u=> u !== unit && !u.dead)){
+                    Heal.run("TP", 1, unit, t, Tec.友情の陣形, false);
                 }
             }
         };}
@@ -3582,11 +3561,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:4,
         });}
         async run(attacker:Unit, target:Unit){
-            const value = attacker.prm(Prm.LV).total;
-            Unit.healHP(target, value);
-
             Sound.KAIFUKU.play();
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("HP", attacker.prm(Prm.LV).total, attacker, target, this, true); await wait();
         }
     }
     /**ペット:ネーレイス. */
@@ -3596,11 +3572,8 @@ export namespace Tec{
                               mul:1, num:1, hit:1, mp:4,
         });}
         async run(attacker:Unit, target:Unit){
-            const value = 1;
-            Unit.healTP(target, value);
-
             Sound.KAIFUKU.play();
-            Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("TP", 1, attacker, target, this, true); await wait();
         }
     }
     /**ペット:強化ネーレイス. */
@@ -3695,9 +3668,7 @@ export namespace Tec{
 
             FX_回復( target.imgCenter );
             Sound.KAIFUKU.play();
-            const value = attacker.prm(Prm.LV).total * 0.5 + 1;
-            Unit.healHP( target, value );
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
+            Heal.run("HP", attacker.prm(Prm.LV).total * 0.5 + 1, attacker, target, this, true); await wait();
         }
     }
     /**ペット:ホムンクルス. */
@@ -3712,8 +3683,7 @@ export namespace Tec{
             if(dmg.result.isHit){
                 Sound.drain.play();
                 FX_吸収(attacker.imgCenter, target.imgCenter);
-                const result = dmg.result.value;
-                Unit.healHP( attacker, result );
+                Heal.run("HP", dmg.result.value, target, attacker, this, false); await wait();
             }
         }
     }

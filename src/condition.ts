@@ -1,4 +1,4 @@
-import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal } from "./force.js";
 import { Tec, TecType, ActiveTec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
@@ -279,7 +279,7 @@ export namespace Condition{
         constructor(){super("癒", ConditionType.GOOD_LV3);}
         createForce(_this:Condition){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.1 );
+                Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1, unit, unit, Condition.癒, false);
                 
                 unit.addConditionValue(_this, -1);
             }
@@ -289,7 +289,7 @@ export namespace Condition{
         constructor(){super("治", ConditionType.GOOD_LV3);}
         createForce(_this:Condition){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.2 );
+                Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.2, unit, unit, Condition.治, false);
                 
                 unit.addConditionValue(_this, -1);
             }
@@ -303,7 +303,7 @@ export namespace Condition{
                 if(!unit.dead){return;}
     
                 unit.dead = false;
-                Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.45 );
+                Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.45, unit, unit, Condition.約束, false);
                 Util.msg.set(`${unit.name}は生き返った！`); await wait();
                 
                 unit.addConditionValue(_this, -1);

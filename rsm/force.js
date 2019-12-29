@@ -10,7 +10,7 @@ import { Unit } from "./unit.js";
 import { Font, Graphics } from "./graphics/graphics.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
 import { FX_Shake, FX_RotateStr, FX_PetDie } from "./fx/fx.js";
-import { Color } from "./undym/type.js";
+import { Color, Point } from "./undym/type.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Sound } from "./sound.js";
@@ -56,6 +56,12 @@ export class Force {
      * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
      * */
     whenAnyoneDead(me, deadUnit) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    doHeal(heal) {
+        return __awaiter(this, void 0, void 0, function* () { });
+    }
+    beHeal(heal) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
     phaseEnd(unit) {
@@ -244,6 +250,68 @@ export class Dmg {
             }
             this.target.tp += 1;
         });
+    }
+}
+export class Heal {
+    static run(type, value, healer, target, action, msg) {
+        if (!target.exists || target.dead) {
+            return 0;
+        }
+        const heal = new Heal(type, value, healer, target, action);
+        heal.healer.doHeal(heal);
+        heal.target.beHeal(heal);
+        switch (heal.type) {
+            case "HP":
+                {
+                    heal.target.hp += heal.value;
+                    const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy - heal.target.imgBounds.h / 2);
+                    FX_RotateStr(Heal.font, `${heal.value}`, p, Color.GREEN);
+                    if (msg) {
+                        Util.msg.set(`${heal.target.name}のHPが${heal.value}回復した！`, Color.GREEN.bright);
+                    }
+                }
+                break;
+            case "MP":
+                {
+                    heal.target.mp += heal.value;
+                    const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy);
+                    FX_RotateStr(Heal.font, `${heal.value}`, p, Color.PINK);
+                    if (msg) {
+                        Util.msg.set(`${heal.target.name}のMPが${heal.value}回復した！`, Color.GREEN.bright);
+                    }
+                }
+                break;
+            case "TP":
+                {
+                    heal.target.tp += heal.value;
+                    const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy + heal.target.imgBounds.h / 2);
+                    FX_RotateStr(Heal.font, `${heal.value}`, p, Color.CYAN);
+                    if (msg) {
+                        Util.msg.set(`${heal.target.name}のTPが${heal.value}回復した！`, Color.GREEN.bright);
+                    }
+                }
+                break;
+        }
+        return heal.value;
+    }
+    get value() { return this._value | 0; }
+    set value(v) { this._value = v; }
+    // constructor(args:{
+    //     healer:Unit,
+    //     target:Unit,
+    //     type:HealType,
+    //     value:number,
+    //     action?:Object,
+    // }){
+    constructor(type, value, healer, target, action) {
+        this.healer = healer;
+        this.target = target;
+        this.type = type;
+        this.value = value;
+        this.action = action;
+        if (!Heal.font) {
+            Heal.font = new Font(Font.def.size * 2);
+        }
     }
 }
 export class Action {

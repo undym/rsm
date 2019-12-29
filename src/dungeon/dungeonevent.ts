@@ -12,7 +12,7 @@ import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
-import { Dmg } from "../force.js";
+import { Dmg, Heal } from "../force.js";
 import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { Input } from "../undym/input.js";
@@ -282,8 +282,8 @@ export namespace DungeonEvent{
 
                                     for(const p of Unit.players){
                                         if(p.exists && !p.dead){
-                                            Unit.healHP(p, p.prm(Prm.MAX_HP).total * 0.2 + 1);
-                                            Unit.healMP(p, p.prm(Prm.MAX_MP).total * 0.2 + 1);
+                                            Heal.run("HP", p.prm(Prm.MAX_HP).total * 0.2 + 1, p, p, undefined, true);
+                                            Heal.run("MP", p.prm(Prm.MAX_MP).total * 0.2 + 1, p, p, undefined, true);
                                         }
                                     }
 

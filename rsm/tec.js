@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Unit, Prm, PUnit, EUnit } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Force, Dmg, AttackNumForce } from "./force.js";
+import { Force, Dmg, AttackNumForce, Heal } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
 import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff } from "./fx/fx.js";
@@ -19,7 +19,6 @@ import { Item } from "./item.js";
 import { randomInt } from "./undym/random.js";
 import { Sound } from "./sound.js";
 import { Pet } from "./pet.js";
-import { EqPos, Eq } from "./eq.js";
 import { Player } from "./player.js";
 export class TecSort {
     constructor(name) {
@@ -2192,8 +2191,7 @@ ActiveTec._valueOf = new Map();
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("銃")) {
-                            const value = dmg.result.value * 0.01;
-                            Unit.healHP(dmg.attacker, value);
+                            Heal.run("HP", dmg.result.value * 0.01, dmg.attacker, dmg.attacker, Tec.ブラッドブレッド, false);
                         }
                     });
                 }
@@ -2758,8 +2756,8 @@ ActiveTec._valueOf = new Map();
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("弓")) {
-                            Unit.healMP(dmg.attacker, 3);
-                            Unit.healTP(dmg.attacker, 1);
+                            Heal.run("MP", 3, dmg.attacker, dmg.attacker, Tec.中庸の悟り, false);
+                            Heal.run("TP", 1, dmg.attacker, dmg.attacker, Tec.中庸の悟り, false);
                         }
                     });
                 }
@@ -3144,8 +3142,7 @@ ActiveTec._valueOf = new Map();
                 beDamage(unit, dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("毒")) {
-                            const value = dmg.result.value;
-                            Unit.healHP(unit, value);
+                            Heal.run("HP", dmg.result.value, unit, unit, Tec.毒吸収, false);
                         }
                     });
                 }
@@ -3280,7 +3277,7 @@ ActiveTec._valueOf = new Map();
                         if (deadUnit.dead && deadUnit.isFriend(me) && me.hp >= me.prm(Prm.MAX_HP).total / 2) {
                             deadUnit.dead = false;
                             deadUnit.hp = 0;
-                            Unit.healHP(deadUnit, me.hp / 2);
+                            Heal.run("HP", me.hp / 2, me, deadUnit, Tec.かばう, false);
                             me.hp /= 2;
                             Util.msg.set(`${me.name}は${deadUnit.name}をかばった！`);
                             yield wait();
@@ -3374,7 +3371,7 @@ ActiveTec._valueOf = new Map();
                         }
                         const value = unit.prm(Prm.MAX_HP).total * 0.2;
                         unit.prm(Prm.MAX_HP).battle += value;
-                        Unit.healHP(unit, value);
+                        Heal.run("HP", value, unit, unit, Tec.身体器, false);
                     });
                 }
             };
@@ -3398,8 +3395,7 @@ ActiveTec._valueOf = new Map();
                         for (const t of targets) {
                             const value = t.prm(Prm.MAX_HP).total * 0.1;
                             t.prm(Prm.MAX_HP).battle += value;
-                            Unit.healHP(t, value);
-                            t.hp += value;
+                            Heal.run("HP", value, unit, t, Tec.結束の陣形, false);
                         }
                     });
                 }
@@ -3691,16 +3687,9 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const dmg = this.createDmg(attacker, target);
-                let value = dmg.calc().value;
-                if (attacker.getEq(EqPos.指) === Eq.霊宝天尊) {
-                    value *= 1.5;
-                }
-                value = value | 0;
-                Unit.healHP(target, value);
                 Sound.KAIFUKU.play();
                 this.effect(attacker, target, Dmg.empty);
-                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("HP", attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -3729,7 +3718,7 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                Unit.healTP(target, 2);
+                Heal.run("TP", 2, target, target, this, true);
                 yield wait();
             });
         }
@@ -3783,9 +3772,9 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 target.dead = false;
-                Unit.healHP(target, target.prm(Prm.MAX_HP).total);
-                Unit.healMP(target, target.prm(Prm.MAX_MP).total);
-                Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+                Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+                Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
                 target.clearConditions();
                 Sound.KAIFUKU.play();
                 this.effect(attacker, target, Dmg.empty);
@@ -3804,11 +3793,11 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                this.effect(attacker, target, Dmg.empty);
-                Unit.healHP(target, target.prm(Prm.MAX_HP).total);
-                Unit.healMP(target, target.prm(Prm.MAX_MP).total);
-                Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+                Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+                Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
                 Sound.KAIFUKU.play();
+                this.effect(attacker, target, Dmg.empty);
                 Util.msg.set("全回復！");
                 yield wait();
                 for (const prm of [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR]) {
@@ -3838,10 +3827,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = 1;
-                Unit.healTP(target, value);
                 Sound.KAIFUKU.play();
-                Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("TP", 1, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -3856,10 +3843,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = (target.prm(Prm.MAX_HP).total * 0.1 + 1) | 0;
-                Unit.healHP(target, value);
                 Sound.KAIFUKU.play();
-                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -3899,12 +3884,12 @@ ActiveTec._valueOf = new Map();
                 if (target.dead) {
                     target.dead = false;
                     target.hp = 1;
-                    Unit.healHP(target, target.prm(Prm.MAX_HP).total * 0.1);
+                    Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, false);
                     Util.msg.set(`${target.name}は蘇った！`, Color.GREEN.bright);
                     yield wait();
                 }
                 else {
-                    Unit.healHP(target, target.prm(Prm.MAX_HP).total * 0.1);
+                    Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.1 + 1, attacker, target, this, true);
                 }
             });
         }
@@ -3971,9 +3956,10 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.KAIFUKU.play();
                 FX_回復(target.imgCenter);
-                Unit.healHP(target, target.prm(Prm.MAX_HP).total * 0.2);
-                Unit.healMP(target, target.prm(Prm.MAX_MP).total * 0.2);
-                Unit.healTP(target, target.prm(Prm.MAX_TP).total * 0.2);
+                Heal.run("HP", target.prm(Prm.MAX_HP).total * 0.2, attacker, target, this, true);
+                Heal.run("MP", target.prm(Prm.MAX_MP).total * 0.2, attacker, target, this, true);
+                Heal.run("TP", target.prm(Prm.MAX_TP).total * 0.2, attacker, target, this, true);
+                yield wait();
             });
         }
     };
@@ -3990,9 +3976,9 @@ ActiveTec._valueOf = new Map();
                 target.prm(Prm.MAX_HP).battle = target.prm(Prm.MAX_HP).base + target.prm(Prm.MAX_HP).eq;
                 target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;
                 target.prm(Prm.MAX_TP).battle = target.prm(Prm.MAX_TP).base + target.prm(Prm.MAX_TP).eq;
-                Unit.healHP(target, target.prm(Prm.MAX_HP).total);
-                Unit.healMP(target, target.prm(Prm.MAX_MP).total);
-                Unit.healTP(target, target.prm(Prm.MAX_TP).total);
+                Heal.run("HP", target.prm(Prm.MAX_HP).total, attacker, target, this, false);
+                Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
+                Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
                 this.effect(attacker, target, Dmg.empty);
                 Sound.KAIFUKU.play();
                 Util.msg.set("最大HPMPTPx2！");
@@ -4013,10 +3999,7 @@ ActiveTec._valueOf = new Map();
                 Sound.KAIFUKU.play();
                 Sound.chain.play();
                 for (const party of attacker.searchUnitsEx("party")) {
-                    const value = (party.prm(Prm.MAX_HP).total * 0.1) | 0;
-                    Unit.healHP(party, value);
-                    FX_回復(party.imgCenter);
-                    Util.msg.set(`${party.name}のHPが${value}回復！`, Color.GREEN.bright);
+                    const value = Heal.run("HP", party.prm(Prm.MAX_HP).total * 0.1, attacker, party, this, false);
                     for (const enemy of party.searchUnitsEx("faceToFace")) {
                         const dmg = new Dmg({
                             attacker: attacker,
@@ -4048,7 +4031,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.01);
+                        Heal.run("HP", 1 + unit.prm(Prm.MAX_HP).total * 0.01, unit, unit, Tec.HP自動回復, false);
                     });
                 }
             };
@@ -4067,7 +4050,7 @@ ActiveTec._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         Sound.KAIFUKU.play();
                         for (const u of unit.searchUnitsEx("party")) {
-                            Unit.healHP(u, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+                            Heal.run("HP", 1 + u.prm(Prm.MAX_HP).total * 0.05, unit, u, Tec.衛生, false);
                         }
                     });
                 }
@@ -4095,7 +4078,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healMP(unit, 1);
+                        Heal.run("MP", 1, unit, unit, this, false);
                     });
                 }
             };
@@ -4112,8 +4095,8 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.01 + 1);
-                        Unit.healMP(unit, 1);
+                        Heal.run("HP", 1 + unit.prm(Prm.MAX_HP).total * 0.01, unit, unit, Tec.HPMP回復, false);
+                        Heal.run("MP", 1, unit, unit, Tec.HPMP回復, false);
                     });
                 }
             };
@@ -4131,7 +4114,7 @@ ActiveTec._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         unit.hp--;
                         unit.mp--;
-                        Unit.healTP(unit, 1);
+                        Heal.run("TP", 1, unit, unit, this, false);
                     });
                 }
             };
@@ -4148,9 +4131,8 @@ ActiveTec._valueOf = new Map();
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (Math.random() < 0.5) {
-                            const value = 5;
+                            const value = Heal.run("HP", 5, dmg.target, dmg.attacker, Tec.血技の技巧, false);
                             dmg.attacker.hp -= value;
-                            dmg.target.hp += value;
                             Sound.drain.play();
                             FX_吸収(dmg.target.imgCenter, dmg.attacker.imgCenter);
                             Util.msg.set("＞血技の技巧");
@@ -4173,7 +4155,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, 1 + unit.prm(Prm.MAX_HP).total * 0.05);
+                        Heal.run("HP", 1 + unit.prm(Prm.MAX_HP).total * 0.05, unit, unit, Tec.自然治癒, false);
                     });
                 }
             };
@@ -4190,9 +4172,8 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        const targets = unit.searchUnitsEx("party").filter(u => u !== unit && !u.dead);
-                        for (const t of targets) {
-                            Unit.healTP(t, 1);
+                        for (const t of unit.searchUnitsEx("party").filter(u => u !== unit && !u.dead)) {
+                            Heal.run("TP", 1, unit, t, Tec.友情の陣形, false);
                         }
                     });
                 }
@@ -4473,10 +4454,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = attacker.prm(Prm.LV).total;
-                Unit.healHP(target, value);
                 Sound.KAIFUKU.play();
-                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("HP", attacker.prm(Prm.LV).total, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -4491,10 +4470,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                const value = 1;
-                Unit.healTP(target, value);
                 Sound.KAIFUKU.play();
-                Util.msg.set(`${target.name}のTPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("TP", 1, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -4620,9 +4597,7 @@ ActiveTec._valueOf = new Map();
                 }
                 FX_回復(target.imgCenter);
                 Sound.KAIFUKU.play();
-                const value = attacker.prm(Prm.LV).total * 0.5 + 1;
-                Unit.healHP(target, value);
-                Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright);
+                Heal.run("HP", attacker.prm(Prm.LV).total * 0.5 + 1, attacker, target, this, true);
                 yield wait();
             });
         }
@@ -4644,8 +4619,8 @@ ActiveTec._valueOf = new Map();
                 if (dmg.result.isHit) {
                     Sound.drain.play();
                     FX_吸収(attacker.imgCenter, target.imgCenter);
-                    const result = dmg.result.value;
-                    Unit.healHP(attacker, result);
+                    Heal.run("HP", dmg.result.value, target, attacker, this, false);
+                    yield wait();
                 }
             });
         }

@@ -3,7 +3,7 @@ import { choice } from "./undym/random.js";
 import { Font, Graphics } from "./graphics/graphics.js";
 import { DrawSTBox } from "./scene/sceneutil.js";
 import { FX_Shake, FX_RotateStr, FX_PetDie } from "./fx/fx.js";
-import { Color } from "./undym/type.js";
+import { Color, Point } from "./undym/type.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Sound } from "./sound.js";
@@ -44,6 +44,10 @@ export class Force{
      * deadUnitが本当に死亡しているかはdeadUnit.deadで確認されなければならない。
      * */
     async whenAnyoneDead(me:Unit, deadUnit:Unit){}
+    
+    async doHeal(heal:Heal){}
+    async beHeal(heal:Heal){}
+
     async phaseEnd(unit:Unit){}
 }
 
@@ -258,6 +262,129 @@ export class Dmg{
 
         this.target.tp += 1;
     }
+}
+
+
+type HealType = "HP"|"MP"|"TP";
+
+export class Heal{
+    private static font:Font;
+
+    static run(
+        type:HealType,
+        value:number,
+        healer:Unit,
+        target:Unit,
+        action:Object|undefined,
+        msg:boolean,
+    ):number{
+        if(!target.exists || target.dead){return 0;}
+
+        const heal = new Heal(type, value, healer, target, action);
+        heal.healer.doHeal(heal);
+        heal.target.beHeal(heal);
+
+        switch(heal.type){
+            case "HP":{
+                heal.target.hp += heal.value;
+        
+                const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy - heal.target.imgBounds.h / 2);
+                FX_RotateStr(Heal.font, `${heal.value}`, p, Color.GREEN);
+
+                if(msg){Util.msg.set(`${heal.target.name}のHPが${heal.value}回復した！`, Color.GREEN.bright);}
+                }break;
+            case "MP":{
+                heal.target.mp += heal.value;
+        
+                const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy);
+                FX_RotateStr(Heal.font, `${heal.value}`, p, Color.PINK);
+
+                if(msg){Util.msg.set(`${heal.target.name}のMPが${heal.value}回復した！`, Color.GREEN.bright);}
+                }break;
+            case "TP":{
+                heal.target.tp += heal.value;
+        
+                const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy + heal.target.imgBounds.h / 2);
+                FX_RotateStr(Heal.font, `${heal.value}`, p, Color.CYAN);
+
+                if(msg){Util.msg.set(`${heal.target.name}のTPが${heal.value}回復した！`, Color.GREEN.bright);}
+                }break;
+        }
+        return heal.value;
+    }
+
+    healer:Unit;
+    target:Unit;
+
+    type:HealType;
+
+    private _value:number;
+    get value(){return this._value|0;}
+    set value(v:number){this._value = v;}
+
+    action:Object|undefined;
+
+    // constructor(args:{
+    //     healer:Unit,
+    //     target:Unit,
+    //     type:HealType,
+    //     value:number,
+    //     action?:Object,
+    // }){
+    private constructor(
+        type:HealType,
+        value:number,
+        healer:Unit,
+        target:Unit,
+        action?:Object,
+    ){
+        this.healer = healer;
+        this.target = target;
+        this.type   = type;
+        this.value  = value;
+        this.action = action;
+
+        if(!Heal.font){
+            Heal.font = new Font( Font.def.size * 2 );
+        }
+    }
+    /**
+     * @return 回復値を返す.
+     */
+    // run(msg:boolean):number{
+    //     if(!this.target.exists || this.target.dead){return 0;}
+
+    //     this.healer.doHeal(this);
+    //     this.target.beHeal(this);
+
+    //     switch(this.type){
+    //         case "HP":{
+    //             this.target.hp += this.value;
+        
+    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy - this.target.imgBounds.h / 2);
+    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.GREEN);
+
+    //             if(msg){Util.msg.set(`${this.target.name}のHPが${this.value}回復した！`, Color.GREEN.bright);}
+    //             }break;
+    //         case "MP":{//TODO
+    //             this.target.mp += this.value;
+        
+    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy);
+    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.PINK);
+
+    //             if(msg){Util.msg.set(`${this.target.name}のMPが${this.value}回復した！`, Color.GREEN.bright);}
+    //             }break;
+    //         case "TP":{
+    //             this.target.tp += this.value;
+        
+    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy + this.target.imgBounds.h / 2);
+    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.CYAN);
+
+    //             if(msg){Util.msg.set(`${this.target.name}のTPが${this.value}回復した！`, Color.GREEN.bright);}
+    //             }break;
+    //     }
+    //     return this.value;
+    // }
 }
 
 

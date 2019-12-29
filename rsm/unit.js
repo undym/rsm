@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Player } from "./player.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
-import { Color, Rect, Point } from "./undym/type.js";
+import { Color, Rect } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
-import { Dmg } from "./force.js";
+import { Dmg, Heal } from "./force.js";
 import { Job } from "./job.js";
-import { FX_RotateStr, FX_Str, FX_LVUP, FX_反射 } from "./fx/fx.js";
+import { FX_Str, FX_LVUP, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
@@ -311,6 +311,12 @@ export class Unit {
     }
     whenAnyoneDead(deadUnit) {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.whenAnyoneDead(this, deadUnit); })); });
+    }
+    beHeal(heal) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.beHeal(heal); })); });
+    }
+    doHeal(heal) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.doHeal(heal); })); });
     }
     phaseEnd() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.phaseEnd(this); })); });
@@ -740,34 +746,28 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
     };
     /** */
-    Unit.healHP = (target, value) => {
-        if (!target.exists || target.dead) {
-            return;
-        }
-        value = value | 0;
-        const p = new Point(target.imgBounds.cx, target.imgBounds.cy - target.imgBounds.h / 2);
-        FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
-        target.hp += value;
-    };
-    /** */
-    Unit.healMP = (target, value) => {
-        if (!target.exists || target.dead) {
-            return;
-        }
-        value = value | 0;
-        target.mp += value;
-        FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
-    };
-    /** */
-    Unit.healTP = (target, value) => {
-        if (!target.exists || target.dead) {
-            return;
-        }
-        value = value | 0;
-        target.tp += value;
-        const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
-        FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
-    };
+    // export const healHP = (target:Unit, value:number)=>{
+    //     if(!target.exists || target.dead){return;}
+    //     value = value|0;
+    //     const p = new Point(target.imgBounds.cx, target.imgBounds.cy - target.imgBounds.h / 2);
+    //     FX_RotateStr(FXFont.def, `${value}`, p, Color.GREEN);
+    //     target.hp += value;
+    // };
+    // /** */
+    // export const healMP = (target:Unit, value:number)=>{
+    //     if(!target.exists || target.dead){return;}
+    //     value = value|0;
+    //     target.mp += value;
+    //     FX_RotateStr(FXFont.def, `${value}`, target.imgBounds.center, Color.PINK);
+    // };
+    // /** */
+    // export const healTP = (target:Unit, value:number)=>{
+    //     if(!target.exists || target.dead){return;}
+    //     value = value|0;
+    //     target.tp += value;
+    //     const p = new Point(target.imgBounds.cx, target.imgBounds.cy + target.imgBounds.h / 2);
+    //     FX_RotateStr(FXFont.def, `${value}`, p, Color.CYAN);
+    // };
     /** */
     Unit.set反射Inv = (unit) => {
         unit.addInvisibleCondition(new class extends InvisibleCondition {
@@ -801,7 +801,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         });
     };
     /** */
-    Unit.set吸収Inv = (unit, drainSuccess) => {
+    Unit.set吸収Inv = (unit, drainSuccessAction) => {
         const name = "吸収";
         if (unit.hasInvisibleCondition(name)) {
             return;
@@ -815,13 +815,12 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 return __awaiter(this, void 0, void 0, function* () {
                     u.removeInvisibleCondition(this);
                     if (dmg.result.isHit) {
-                        const value = dmg.result.value;
-                        Unit.healHP(u, value);
+                        const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
                         Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
                         yield wait();
                         dmg.result.value = 0;
-                        if (drainSuccess) {
-                            drainSuccess();
+                        if (drainSuccessAction) {
+                            drainSuccessAction();
                         }
                     }
                 });

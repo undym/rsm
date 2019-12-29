@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Force, Dmg } from "./force.js";
+import { Force, Dmg, Heal } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num } from "./mix.js";
 import { ActiveTec, Tec } from "./tec.js";
@@ -241,7 +241,7 @@ EqEar._valueOf = new Map();
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (Math.random() < 0.5) {
-                            Unit.healHP(dmg.attacker, dmg.attacker.prm(Prm.MAX_HP).total * 0.05 + 1);
+                            Heal.run("HP", dmg.attacker.prm(Prm.MAX_HP).total * 0.05 + 1, dmg.attacker, dmg.attacker, Eq.ミルテの棍, false);
                         }
                     });
                 }
@@ -645,7 +645,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healTP(unit, 1);
+                        Heal.run("TP", 1, unit, unit, Eq.ルナローブ, false);
                     });
                 }
             };
@@ -698,7 +698,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.05);
+                        Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.05, unit, unit, Eq.暖かい布, false);
                     });
                 }
             };
@@ -846,7 +846,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healMP(unit, 1);
+                        Heal.run("MP", 1, unit, unit, Eq.魔ヶ玉の手首飾り, false);
                     });
                 }
             };
@@ -862,7 +862,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healTP(unit, 1);
+                        Heal.run("TP", 1, unit, unit, Eq.ハルのカフス, false);
                         if (unit instanceof PUnit && unit.player !== Player.雪) {
                             const dmg = new Dmg({
                                 attacker: unit,
@@ -911,7 +911,7 @@ EqEar._valueOf = new Map();
                 }
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.HP).total * 0.01 + 1);
+                        Heal.run("HP", unit.prm(Prm.HP).total * 0.01 + 1, unit, unit, Eq.水晶の手首飾り, false);
                     });
                 }
             };
@@ -1046,7 +1046,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healMP(unit, 1);
+                        Heal.run("MP", 1, unit, unit, Eq.魔ヶ玉, false);
                     });
                 }
             };
@@ -1062,7 +1062,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.HP).total * 0.05 + 1);
+                        Heal.run("HP", unit.prm(Prm.HP).total * 0.05 + 1, unit, unit, Eq.水晶の指輪, false);
                     });
                 }
             };
@@ -1094,6 +1094,13 @@ EqEar._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
+                doHeal(heal) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (heal.action === Tec.数珠 || heal.action === Tec.良き占い) {
+                            heal.value *= 1.5;
+                        }
+                    });
+                }
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("神格")) {

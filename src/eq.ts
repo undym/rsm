@@ -1,4 +1,4 @@
-import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
@@ -261,7 +261,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
                 if(Math.random() < 0.5){
-                    Unit.healHP( dmg.attacker, dmg.attacker.prm(Prm.MAX_HP).total * 0.05 + 1);
+                    Heal.run("HP", dmg.attacker.prm(Prm.MAX_HP).total * 0.05 + 1, dmg.attacker, dmg.attacker, Eq.ミルテの棍, false);
                 }
             }
         };}
@@ -531,7 +531,7 @@ export namespace Eq{
                                 pos:EqPos.体, lv:25});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                Unit.healTP(unit, 1);
+                Heal.run("TP", 1, unit, unit, Eq.ルナローブ, false);
             }
         };}
     }
@@ -566,7 +566,7 @@ export namespace Eq{
                                 pos:EqPos.体, lv:120});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                Unit.healHP( unit, unit.prm(Prm.MAX_HP).total * 0.05 );
+                Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.05, unit, unit, Eq.暖かい布, false);
             }
         };}
     }
@@ -668,7 +668,7 @@ export namespace Eq{
                                 pos:EqPos.手, lv:55});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healMP( unit, 1 );
+                Heal.run("MP", 1, unit, unit, Eq.魔ヶ玉の手首飾り, false);
             }
         };}
     }
@@ -678,7 +678,7 @@ export namespace Eq{
                                 pos:EqPos.手, lv:65});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healTP( unit, 1 );
+                Heal.run("TP", 1, unit, unit, Eq.ハルのカフス, false);
     
                 if(unit instanceof PUnit && unit.player !== Player.雪){
                     const dmg = new Dmg({
@@ -713,7 +713,7 @@ export namespace Eq{
                 unit.prm(Prm.MAX_HP).eq += 50;
             }
             async phaseStart(unit:Unit){
-                Unit.healHP(unit, unit.prm(Prm.HP).total * 0.01 + 1 );
+                Heal.run("HP", unit.prm(Prm.HP).total * 0.01 + 1, unit, unit, Eq.水晶の手首飾り, false);
             }
         };}
     }
@@ -802,7 +802,7 @@ export namespace Eq{
                                 pos:EqPos.指, lv:98});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healMP( unit, 1 );
+                Heal.run("MP", 1, unit, unit, Eq.魔ヶ玉, false);
             }
         };}
     }
@@ -812,7 +812,7 @@ export namespace Eq{
                                 pos:EqPos.指, lv:97});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
-                Unit.healHP(unit, unit.prm(Prm.HP).total * 0.05 + 1 );
+                Heal.run("HP", unit.prm(Prm.HP).total * 0.05 + 1, unit, unit, Eq.水晶の指輪, false);
             }
         };}
     }
@@ -833,6 +833,11 @@ export namespace Eq{
         constructor(){super({uniqueName:"霊宝天尊", info:"数珠・良き占いの回復量+50% 神格攻撃+33%",
                                 pos:EqPos.指, lv:0});}
         createForce(_this:Eq){return new class extends Force{
+            async doHeal(heal:Heal){
+                if(heal.action === Tec.数珠 || heal.action === Tec.良き占い){
+                    heal.value *= 1.5;
+                }
+            }
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("神格")){
                     dmg.pow.mul *= 1.33;

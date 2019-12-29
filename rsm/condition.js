@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Force, Dmg } from "./force.js";
+import { Force, Dmg, Heal } from "./force.js";
 import { Tec } from "./tec.js";
 import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
@@ -312,7 +312,7 @@ Condition._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.1);
+                        Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1, unit, unit, Condition.癒, false);
                         unit.addConditionValue(_this, -1);
                     });
                 }
@@ -325,7 +325,7 @@ Condition._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.2);
+                        Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.2, unit, unit, Condition.治, false);
                         unit.addConditionValue(_this, -1);
                     });
                 }
@@ -343,7 +343,7 @@ Condition._valueOf = new Map();
                             return;
                         }
                         unit.dead = false;
-                        Unit.healHP(unit, unit.prm(Prm.MAX_HP).total * 0.45);
+                        Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.45, unit, unit, Condition.約束, false);
                         Util.msg.set(`${unit.name}は生き返った！`);
                         yield wait();
                         unit.addConditionValue(_this, -1);

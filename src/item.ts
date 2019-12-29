@@ -4,7 +4,7 @@ import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit, Targeting } from "./unit.js";
 import { FX_Str, FX_RotateStr, FX_回復, FX_Buff, FX_RemoveCondition } from "./fx/fx.js";
-import { Action, Dmg } from "./force.js";
+import { Action, Dmg, Heal } from "./force.js";
 import { randomInt, choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
 import { Num, Mix } from "./mix.js";
@@ -259,12 +259,12 @@ export namespace Item{
             return target.boxCenter;
         }
     };
-    const itemRevive = async(target:Unit, hp:number)=>{
+    const itemRevive = async(hp:number, user:Unit, target:Unit, item:Item)=>{
         if(!target.dead){return;}
         
         target.dead = false;
         target.hp = 0;
-        Unit.healHP(target, hp);
+        Heal.run("HP", hp, target, target, item, false);
 
         Sound.KAIFUKU.play();
         FX_回復( itemUnitCenter(target) );
@@ -272,29 +272,11 @@ export namespace Item{
             Util.msg.set(`${target.name}は生き返った`); await wait();
         }
     }
-    const itemHealHP = async(target:Unit, value:number)=>{
-        value = value|0;
-        Unit.healHP(target, value);
-
+    const itemHeal = async(type:"HP"|"MP"|"TP", value:number, user:Unit, target:Unit, item:Item)=>{
         Sound.KAIFUKU.play();
         FX_回復( itemUnitCenter(target) );
-        if(SceneType.now === SceneType.BATTLE){
-            Util.msg.set(`${target.name}のHPが${value}回復した`, Color.GREEN.bright); await wait();
-        }
-    };
-    const itemHealMP = async(target:Unit, value:number)=>{
-        value = value|0;
-        Unit.healMP(target, value)
-
-        Sound.KAIFUKU.play();
-        if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のMPが${value}回復した`, Color.PINK.bright); await wait();}
-    };
-    const itemHealTP = async(target:Unit, value:number)=>{
-        value = value|0;
-        Unit.healTP(target, value)
-
-        Sound.KAIFUKU.play();
-        if(SceneType.now === SceneType.BATTLE){Util.msg.set(`${target.name}のTPが${value}回復した`, Color.CYAN.bright); await wait();}
+        const msg = SceneType.now === SceneType.BATTLE;
+        Heal.run(type, value, user, target, item, msg);
     };
 
     const removeCondition = async(target:Unit, condition:Condition|ConditionType)=>{
@@ -320,7 +302,7 @@ export namespace Item{
         constructor(){super({uniqueName:"サンタクララ薬", info:"一体をHP1で蘇生",
                                 type:ItemType.蘇生, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemRevive( target, 1 );
+                                    await itemRevive( 1, user, target, this );
                                 }
         })}
     };
@@ -332,169 +314,169 @@ export namespace Item{
     export const                         スティック:Item = new class extends Item{
         constructor(){super({uniqueName:"スティック", info:"HP+5",
                                 type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 5),
+                                use:async(user,target)=>await itemHeal("HP", 5, user, target, this),
         })}
     };
     export const                         スティックパ:Item = new class extends Item{
         constructor(){super({uniqueName:"スティックパ", info:"HP+10",
                                 type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 10),
+                                use:async(user,target)=>await itemHeal("HP", 10, user, target, this),
         })}
     };
     export const                         スティックパン:Item = new class extends Item{
         constructor(){super({uniqueName:"スティックパン", info:"HP+20",
                                 type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 20),
+                                use:async(user,target)=>await itemHeal("HP", 20, user, target, this),
         })}
     };
     export const                         ダブルスティックパン:Item = new class extends Item{
         constructor(){super({uniqueName:"ダブルスティックパン", info:"HP+30",
                                 type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 30),
+                                use:async(user,target)=>await itemHeal("HP", 30, user, target, this),
         })}
     };
     export const                         硬化スティックパン:Item = new class extends Item{
         constructor(){super({uniqueName:"硬化スティックパン", info:"HP+50",
                                 type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 50),
+                                use:async(user,target)=>await itemHeal("HP", 50, user, target, this),
         })}
     };
     export const                         マーラーカオ:Item = new class extends Item{
         constructor(){super({uniqueName:"マーラーカオ", info:"HP+70",
                                 type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 70),
+                                use:async(user,target)=>await itemHeal("HP", 70, user, target, this),
         })}
     };
     export const                         霊水:Item = new class extends Item{
         constructor(){super({uniqueName:"霊水", info:"HP+300",
                                 type:ItemType.HP回復, rank:7, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 300),
+                                use:async(user,target)=>await itemHeal("HP", 300, user, target, this),
         })}
     };
     export const                         清水:Item = new class extends Item{
         constructor(){super({uniqueName:"清水", info:"HP+400",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 400),
+                                use:async(user,target)=>await itemHeal("HP", 400, user, target, this),
         })}
     };
     export const                         超聖水:Item = new class extends Item{
         constructor(){super({uniqueName:"超聖水", info:"HP+500",
                                 type:ItemType.HP回復, rank:9, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, 500),
+                                use:async(user,target)=>await itemHeal("HP", 500, user, target, this),
         })}
     };
     export const                         ドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"ドラッグ", info:"HP+10%",
                                 type:ItemType.HP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.10 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.10 + 1, user, target, this),
         })}
     };
     export const                         LAドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"LAドラッグ", info:"HP+20%",
                                 type:ItemType.HP回復, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.20 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.20 + 1, user, target, this),
         })}
     };
     export const                         ロシアドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"ロシアドラッグ", info:"HP+30%",
                                 type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.30 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.30 + 1, user, target, this),
         })}
     };
     export const                         ビタミンドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"ビタミンドラッグ", info:"HP+40%",
                                 type:ItemType.HP回復, rank:3, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.40 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.40 + 1, user, target, this),
         })}
     };
     export const                         高ビタミンドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"高ビタミンドラッグ", info:"HP+50%",
                                 type:ItemType.HP回復, rank:4, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.50 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.50 + 1, user, target, this),
         })}
     };
     export const                         濃密ビタミンドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"濃密ビタミンドラッグ", info:"HP+60%",
                                 type:ItemType.HP回復, rank:5, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.60 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.60 + 1, user, target, this),
         })}
     };
     export const                         ビタミンドラッグA:Item = new class extends Item{
         constructor(){super({uniqueName:"ビタミンドラッグA", info:"HP+70%",
                                 type:ItemType.HP回復, rank:6, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.70 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.70 + 1, user, target, this),
         })}
     };
     export const                         ビタミンドラッグFINAL:Item = new class extends Item{
         constructor(){super({uniqueName:"ビタミンドラッグFINAL", info:"HP+80%",
                                 type:ItemType.HP回復, rank:7, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.80 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.80 + 1, user, target, this),
         })}
     };
     export const                         ビタミンドラッグFF:Item = new class extends Item{
         constructor(){super({uniqueName:"ビタミンドラッグFF", info:"HP+90%",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total * 0.90 + 1),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total * 0.90 + 1, user, target, this),
         })}
     };
     export const                         ビタミンドラッグFFF:Item = new class extends Item{
         constructor(){super({uniqueName:"ビタミンドラッグFFF", info:"HP+100%",
                                 type:ItemType.HP回復, rank:9, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealHP(target, target.prm(Prm.MAX_HP).total),
+                                use:async(user,target)=>await itemHeal("HP", target.prm(Prm.MAX_HP).total, user, target, this),
         })}
     };
     export const                         シェイクスピア分子:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子", info:"全員のHP+30",
                                 type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 30),
+                                use:async(user,target)=>await itemHeal("HP", 30, user, target, this),
         })}
     };
     export const                         シェイクスピア分子1:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子1", info:"全員のHP+50",
                                 type:ItemType.HP回復, rank:3, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 50),
+                                use:async(user,target)=>await itemHeal("HP", 50, user, target, this),
         })}
         toString(){return "シェイクスピア分子+1";}
     };
     export const                         シェイクスピア分子2:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子2", info:"全員のHP+100",
                                 type:ItemType.HP回復, rank:4, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 100),
+                                use:async(user,target)=>await itemHeal("HP", 100, user, target, this),
         })}
         toString(){return "シェイクスピア分子+2";}
     };
     export const                         シェイクスピア分子3:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子3", info:"全員のHP+130",
                                 type:ItemType.HP回復, rank:5, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 130),
+                                use:async(user,target)=>await itemHeal("HP", 130, user, target, this),
         })}
         toString(){return "シェイクスピア分子+3";}
     };
     export const                         シェイクスピア分子4:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子4", info:"全員のHP+150",
                                 type:ItemType.HP回復, rank:6, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 150),
+                                use:async(user,target)=>await itemHeal("HP", 150, user, target, this),
         })}
         toString(){return "シェイクスピア分子+4";}
     };
     export const                         シェイクスピア分子5:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子5", info:"全員のHP+200",
                                 type:ItemType.HP回復, rank:7, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 200),
+                                use:async(user,target)=>await itemHeal("HP", 200, user, target, this),
         })}
         toString(){return "シェイクスピア分子+5";}
     };
     export const                         シェイクスピア分子6:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子6", info:"全員のHP+300",
                                 type:ItemType.HP回復, rank:8, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 300),
+                                use:async(user,target)=>await itemHeal("HP", 300, user, target, this),
         })}
         toString(){return "シェイクスピア分子+6";}
     };
     export const                         シェイクスピア分子7:Item = new class extends Item{
         constructor(){super({uniqueName:"シェイクスピア分子7", info:"全員のHP+500",
                                 type:ItemType.HP回復, rank:9, drop:ItemDrop.BOX, targetings:["all","friendOnly"],
-                                use:async(user,target)=>await itemHealHP(target, 500),
+                                use:async(user,target)=>await itemHeal("HP", 500, user, target, this),
         })}
         toString(){return "シェイクスピア分子+7";}
     };
@@ -502,9 +484,9 @@ export namespace Item{
         constructor(){super({uniqueName:"じすたま", info:"",
                                 type:ItemType.HP回復, rank:12, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, target.prm(Prm.MAX_HP).total);
-                                    await itemHealMP(target, target.prm(Prm.MAX_MP).total);
-                                    await itemHealTP(target, target.prm(Prm.MAX_TP).total);
+                                    await itemHeal("HP", target.prm(Prm.MAX_HP).total, user, target, this);
+                                    await itemHeal("MP", target.prm(Prm.MAX_MP).total, user, target, this);
+                                    await itemHeal("TP", target.prm(Prm.MAX_TP).total, user, target, this);
                                 },
         })}
     };
@@ -516,49 +498,49 @@ export namespace Item{
     export const                         蛍草:Item = new class extends Item{
         constructor(){super({uniqueName:"蛍草", info:"MP+1",
                                 type:ItemType.MP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 1),
+                                use:async(user,target)=>await itemHeal("MP", 1, user, target, this),
         })}
     };
     export const                         赤葉草:Item = new class extends Item{
         constructor(){super({uniqueName:"赤葉草", info:"MP+2",
                                 type:ItemType.MP回復, rank:0, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 2),
+                                use:async(user,target)=>await itemHeal("MP", 2, user, target, this),
         })}
     };
     export const                         蛍草のエキス:Item = new class extends Item{
         constructor(){super({uniqueName:"蛍草のエキス", info:"MP+3",
                                 type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 3),
+                                use:async(user,target)=>await itemHeal("MP", 3, user, target, this),
         })}
     };
     export const                         赤い水:Item = new class extends Item{
         constructor(){super({uniqueName:"赤い水", info:"MP+4",
                                 type:ItemType.MP回復, rank:3, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 4),
+                                use:async(user,target)=>await itemHeal("MP", 4, user, target, this),
         })}
     };
     export const                         赤蛍草:Item = new class extends Item{
         constructor(){super({uniqueName:"赤蛍草", info:"MP+6",
                                 type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 6),
+                                use:async(user,target)=>await itemHeal("MP", 6, user, target, this),
         })}
     };
     export const                         インパチェンス:Item = new class extends Item{
         constructor(){super({uniqueName:"インパチェンス", info:"MP+7",
                                 type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 7),
+                                use:async(user,target)=>await itemHeal("MP", 7, user, target, this),
         })}
     };
     export const                         アウラレッドグラス:Item = new class extends Item{
         constructor(){super({uniqueName:"アウラレッドグラス", info:"MP+10",
                                 type:ItemType.MP回復, rank:5, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 10),
+                                use:async(user,target)=>await itemHeal("MP", 10, user, target, this),
         })}
     };
     export const                         紫死草:Item = new class extends Item{
         constructor(){super({uniqueName:"紫死草", info:"MP+20",
                                 type:ItemType.MP回復, rank:6, drop:ItemDrop.BOX,
-                                use:async(user,target)=>await itemHealMP(target, 20),
+                                use:async(user,target)=>await itemHeal("MP", 20, user, target, this),
         })}
     };
     //-----------------------------------------------------------------
@@ -570,8 +552,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ", info:"HP+20 MP+2",
                                 type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 20);
-                                    await itemHealMP(target, 2);
+                                    await itemHeal("HP", 20, user, target, this);
+                                    await itemHeal("MP", 2, user, target, this);
                                 },
         })}
     };
@@ -579,8 +561,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ2", info:"HP+30 MP+3",
                                 type:ItemType.MP回復, rank:2, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 30);
-                                    await itemHealMP(target, 3);
+                                    await itemHeal("HP", 30, user, target, this);
+                                    await itemHeal("MP", 3, user, target, this);
                                 },
         })}
         toString(){return "ヴァイスドラッグⅡ";}
@@ -589,8 +571,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ3", info:"HP+50 MP+5",
                                 type:ItemType.MP回復, rank:4, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 50);
-                                    await itemHealMP(target, 5);
+                                    await itemHeal("HP", 50, user, target, this);
+                                    await itemHeal("MP", 5, user, target, this);
                                 },
         })}
         toString(){return "ヴァイスドラッグⅢ";}
@@ -599,8 +581,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ4", info:"HP+100 MP+10",
                                 type:ItemType.MP回復, rank:6, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 100);
-                                    await itemHealMP(target, 10);
+                                    await itemHeal("HP", 100, user, target, this);
+                                    await itemHeal("MP", 10, user, target, this);
                                 },
         })}
         toString(){return "ヴァイスドラッグⅣ";}
@@ -609,8 +591,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ5", info:"HP+200 MP+20",
                                 type:ItemType.MP回復, rank:7, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 200);
-                                    await itemHealMP(target, 20);
+                                    await itemHeal("HP", 200, user, target, this);
+                                    await itemHeal("MP", 20, user, target, this);
                                 },
         })}
         toString(){return "ヴァイスドラッグⅤ";}
@@ -619,8 +601,8 @@ export namespace Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ6", info:"HP+400 MP+40",
                                 type:ItemType.MP回復, rank:8, drop:ItemDrop.BOX,
                                 use:async(user,target)=>{
-                                    await itemHealHP(target, 400);
-                                    await itemHealMP(target, 40);
+                                    await itemHeal("HP", 400, user, target, this);
+                                    await itemHeal("MP", 40, user, target, this);
                                 },
         })}
         toString(){return "ヴァイスドラッグⅥ";}
