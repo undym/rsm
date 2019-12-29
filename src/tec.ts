@@ -1502,7 +1502,7 @@ export namespace Tec{
         }
         async use(attacker:Unit, targets:Unit[]){
             const canUse = this.checkCost(attacker);
-            super.use(attacker, targets);
+            await super.use(attacker, targets);
 
             if(canUse){
                 attacker.hp = 0;
@@ -2495,7 +2495,9 @@ export namespace Tec{
                 FX_PetDie( attacker.imgCenter );
                 Sound.sin.play();
             }
-            super.use( attacker, targets );
+
+            await super.use( attacker, targets );
+
             if(canUse){
                 Sound.KAIFUKU.play();
                 for(const type of ConditionType.goodConditions()){
@@ -2760,6 +2762,20 @@ export namespace Tec{
                         Util.msg.set("＞クリティカルⅣ");
                         dmg.pow.mul *= 1.5;
                     }
+                }
+            }
+        };}
+    };
+    //敵:お化け
+    export const                         すりぬけ:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"すりぬけ", info:"被攻撃時稀に回避",
+                                sort:TecSort.強化, type:TecType.その他,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async beforeBeAtk(dmg:Dmg){
+                if(Math.random() < 0.3){
+                    Util.msg.set("＞すりぬけ");
+                    dmg.hit.base = 0;
                 }
             }
         };}

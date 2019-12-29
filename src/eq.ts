@@ -639,6 +639,18 @@ export namespace Eq{
             }
         };}
     }
+    /**ハデスの口EX. */
+    export const                         卯月ベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"卯月ベルト", info:"過去攻撃後HP+2%",
+                                pos:EqPos.腰, lv:340});}
+        createForce(_this:Eq){return new class extends Force{
+            async afterDoAtk(dmg:Dmg){
+                if(dmg.hasType("過去")){
+                    Heal.run("HP", dmg.attacker.prm(Prm.MAX_HP).total * 0.02, dmg.attacker, dmg.attacker, Eq.卯月ベルト, false);
+                }
+            }
+        };}
+    }
     //--------------------------------------------------------------------------
     //
     //-腰
@@ -932,6 +944,18 @@ export namespace Eq{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("格闘")){
                     dmg.pow.mul *= 1.2;
+                }
+            }
+        };}
+    }
+    /**ハデスの腹財宝. */
+    export const                         光色の靴:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"光色の靴", info:"神格攻撃x1.5",
+                                pos:EqPos.脚, lv:205});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("神格")){
+                    dmg.pow.mul *= 1.5;
                 }
             }
         };}

@@ -1174,19 +1174,17 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 Story2.runMain26();
             }
-            /*
-            if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_kabe0.done){
-                Flag.story_kabe0.done = true;
+            if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_Kabe0.done){
+                Flag.story_Kabe0.done = true;
                 Story3.runKabe0();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 5);
             }
-            */
         }
     };
     export const                         ハデスの腹:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"ハデスの腹", info:"",
                                 rank:2, enemyLv:6, au:201, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
-                                treasures:  ()=>[Eq.回避の指輪],
+                                treasures:  ()=>[Eq.光色の靴],
                                 exItems:    ()=>[Eq.ハデスの腹剣],
                                 trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
                                 ghost:true,
@@ -1210,11 +1208,11 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 Story2.runMain27();
             }
-            // if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
-            //     Flag.story_Kabe1.done = true;
-            //     Story3.runKabe1();
-            //     Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
-            // }
+            if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
+                Flag.story_Kabe1.done = true;
+                Story3.runKabe1();
+                Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
+            }
         }
     };
     export const                         魂人の廃都:Dungeon = new class extends Dungeon{
@@ -1244,11 +1242,11 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 Story2.runMain28();
             }
-            // if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
-            //     Flag.story_Kabe2.done = true;
-            //     Story3.runKabe2();
-            //     Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
-            // }
+            if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
+                Flag.story_Kabe2.done = true;
+                Story3.runKabe2();
+                Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
+            }
         }
     };
     export const                         小鬼:Dungeon = new class extends Dungeon{
@@ -1281,26 +1279,38 @@ export namespace Dungeon{
             }
         }
     };
-    // export const                         ハデスの口:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"ハデスの口", info:"",
-    //                             rank:0, enemyLv:0, au:1, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
-    //                             treasures:  ()=>[],
-    //                             exItems:    ()=>[],
-    //                             trendItems: ()=>[],
-    //                             ghost:true,
-    //     });}
-    //     isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "底主";
-    //         e.prm(Prm.MAX_HP).base = 400;
-    //     };
-    //     setExInner = ()=>{
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //     }
-    // };
+    export const                         ハデスの口:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"ハデスの口", info:"湖+",
+                                rank:5, enemyLv:14, au:355, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.回避の指輪],
+                                exItems:    ()=>[Eq.卯月ベルト],
+                                trendItems: ()=>[Item.鬼火, Item.旧式ミサイル, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.クリスタル, Item.大型隕石],
+                                trendEvents:()=>[[DungeonEvent.LAKE, 0.05]],
+                                ghost:true,
+        });}
+        isVisible = ()=>Dungeon.小鬼.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "口に住まう亡霊";
+            e.prm(Prm.MAX_HP).base = 700;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "霊体・卯月";
+            e.img = new Img("img/unit/ex_uzuki.png");
+            e.prm(Prm.MAX_HP).base = 2000;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                Story2.runMain29();
+            }
+            // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
+            //     Flag.story_Main30.done = true;
+            // }
+        }
+    };
 }
 

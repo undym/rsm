@@ -897,6 +897,20 @@ Job.DEF_LVUP_EXP = 10;
             e.tecs = [Tec.殴る, Tec.溶ける, Tec.溶ける, Tec.罪, Tec.セル, Tec.吸血, Tec.受容];
         }
     };
+    Job.お化け = new class extends Job {
+        constructor() {
+            super({ uniqueName: "お化け", info: "",
+                appearLv: 40, img: new Img("img/unit/unit114.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.LIG, 1], [Prm.DRK, 1]],
+                learningTecs: () => [Tec.鎌, Tec.怨霊使い, Tec.成仏, Tec.アンデッド],
+                beast: true,
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.すりぬけ, Tec.鎌, Tec.鎌, Tec.罪, Tec.鎌, Tec.怨霊使い, Tec.成仏, Tec.アンデッド];
+        }
+    };
     Job.ペガサス = new class extends Job {
         constructor() {
             super({ uniqueName: "ペガサス", info: "",

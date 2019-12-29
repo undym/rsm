@@ -5,6 +5,8 @@ import { cwait } from "../undym/scene.js";
 import { Img } from "../graphics/texture.js";
 import { Story } from "./story.js";
 
+
+
 export namespace Story3{
     
     export const runKabe0 = async()=>{

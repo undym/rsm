@@ -1755,7 +1755,7 @@ ActiveTec._valueOf = new Map();
             });
             return __awaiter(this, void 0, void 0, function* () {
                 const canUse = this.checkCost(attacker);
-                _super.use.call(this, attacker, targets);
+                yield _super.use.call(this, attacker, targets);
                 if (canUse) {
                     attacker.hp = 0;
                     attacker.ghost *= 0.9;
@@ -3060,7 +3060,7 @@ ActiveTec._valueOf = new Map();
                     FX_PetDie(attacker.imgCenter);
                     Sound.sin.play();
                 }
-                _super.use.call(this, attacker, targets);
+                yield _super.use.call(this, attacker, targets);
                 if (canUse) {
                     Sound.KAIFUKU.play();
                     for (const type of ConditionType.goodConditions()) {
@@ -3426,6 +3426,26 @@ ActiveTec._valueOf = new Map();
                                 Util.msg.set("＞クリティカルⅣ");
                                 dmg.pow.mul *= 1.5;
                             }
+                        }
+                    });
+                }
+            };
+        }
+    };
+    //敵:お化け
+    Tec.すりぬけ = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "すりぬけ", info: "被攻撃時稀に回避",
+                sort: TecSort.強化, type: TecType.その他,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeBeAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (Math.random() < 0.3) {
+                            Util.msg.set("＞すりぬけ");
+                            dmg.hit.base = 0;
                         }
                     });
                 }
