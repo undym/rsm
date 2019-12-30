@@ -185,24 +185,49 @@ export class Sound{
     load(ondecoded?:()=>void){
         this.loaded = true;
         
-        fetch(this.path, {method:"GET"})
-            .then(res=>{
+        if(this.gainType === "sound"){
+            fetch(this.path, {method:"GET"})
+                .then(res=>{
+    
+                    res.arrayBuffer()
+                        .then(audioData=>{
+                            Sound.context.decodeAudioData(audioData, buffer=>{
+                                this.buffer = buffer;
+                                if(ondecoded){
+                                    ondecoded();
+                                }
+                            },e=>{
+                                console.log( "Error with decoding audio data " + this.path );
+                            });
+                        })
+                        ;
+    
+                })
+                ;
+        }else{
+            const worker = new Worker("soundworker.js");
 
-                res.arrayBuffer()
-                    .then(audioData=>{
-                        Sound.context.decodeAudioData(audioData, buffer=>{
-                            this.buffer = buffer;
-                            if(ondecoded){
-                                ondecoded();
-                            }
-                        },e=>{
-                            console.log( "Error with decoding audio data " + this.path );
-                        });
-                    })
-                    ;
+            worker.onmessage = ev=>{
+                Sound.context.decodeAudioData(ev.data.audioData, buffer=>{
+                    this.buffer = buffer;
+                    if(ondecoded){
+                        ondecoded();
+                    }
 
-            })
-            ;
+                    worker.terminate();
+                },e=>{
+                    console.log( "Error with decoding audio data " + this.path );
+                    worker.terminate();
+                });
+                // this.buffer = ev.data.buffer;
+                // if(ondecoded){
+                //     ondecoded();
+                // }
+            };
+            worker.postMessage({
+                path:this.path,
+            });
+        }
     }
 
     play(options?:{
@@ -380,7 +405,7 @@ export namespace Music{
     export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
     export const aenai      = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/true);
 
-    export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/false);
+    export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/true);
 
     export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/false);
 

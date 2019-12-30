@@ -41,6 +41,8 @@ window.onload = ()=>{
     {
         const loading = document.getElementById("loading") as HTMLElement;
         document.body.removeChild(loading);
+        const reload = document.getElementById("reload") as HTMLElement;
+        document.body.removeChild(reload);
     }
 
     console.log("start");

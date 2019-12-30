@@ -41,6 +41,8 @@ window.onload = () => {
     {
         const loading = document.getElementById("loading");
         document.body.removeChild(loading);
+        const reload = document.getElementById("reload");
+        document.body.removeChild(reload);
     }
     console.log("start");
     const canvas = document.getElementById("canvas");

@@ -69,6 +69,12 @@ export class OptionScene extends Scene {
             push: elm => {
             },
         });
+        this.list.add({
+            center: () => "再読み込み",
+            push: elm => {
+                this.setReload();
+            },
+        });
         const addVolume = (type, v) => {
             Sound.setVolume(type, Sound.getVolume(type) + v);
             Util.msg.set(`${Sound.getVolume(type)}`);
@@ -230,6 +236,30 @@ export class OptionScene extends Scene {
                 },
             });
         }
+    }
+    setReload() {
+        Util.msg.set("再読み込みしますか？");
+        this.list.clear();
+        this.list.add({
+            center: () => "はい",
+            push: elm => {
+                window.location.reload(true);
+            },
+        });
+        this.list.add({
+            center: () => "いいえ",
+            push: elm => {
+                Util.msg.set("＞いいえ");
+                this.setDefList();
+            },
+        });
+        this.list.add({
+            center: () => "<<",
+            push: elm => {
+                Util.msg.set("やめた");
+                this.setDefList();
+            },
+        });
     }
     setReadyDeleteSaveData() {
         Util.msg.set("セーブデータを削除しますか？");

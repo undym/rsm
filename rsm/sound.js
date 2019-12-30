@@ -140,20 +140,44 @@ export class Sound {
     }
     load(ondecoded) {
         this.loaded = true;
-        fetch(this.path, { method: "GET" })
-            .then(res => {
-            res.arrayBuffer()
-                .then(audioData => {
-                Sound.context.decodeAudioData(audioData, buffer => {
+        if (this.gainType === "sound") {
+            fetch(this.path, { method: "GET" })
+                .then(res => {
+                res.arrayBuffer()
+                    .then(audioData => {
+                    Sound.context.decodeAudioData(audioData, buffer => {
+                        this.buffer = buffer;
+                        if (ondecoded) {
+                            ondecoded();
+                        }
+                    }, e => {
+                        console.log("Error with decoding audio data " + this.path);
+                    });
+                });
+            });
+        }
+        else {
+            const worker = new Worker("soundworker.js");
+            worker.onmessage = ev => {
+                Sound.context.decodeAudioData(ev.data.audioData, buffer => {
                     this.buffer = buffer;
                     if (ondecoded) {
                         ondecoded();
                     }
+                    worker.terminate();
                 }, e => {
                     console.log("Error with decoding audio data " + this.path);
+                    worker.terminate();
                 });
+                // this.buffer = ev.data.buffer;
+                // if(ondecoded){
+                //     ondecoded();
+                // }
+            };
+            worker.postMessage({
+                path: this.path,
             });
-        });
+        }
     }
     play(options) {
         this.doStop = false;
@@ -326,6 +350,6 @@ export var Music;
     Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ true);
     Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ true);
     Music.aenai = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/ true);
-    Music.anokoro = createMusic("ex", "sound/music/anokoro.mp3", /*lazy*/ false);
+    Music.anokoro = createMusic("ex", "sound/music/anokoro.mp3", /*lazy*/ true);
     Music.rs7 = createMusic("boss", "sound/music/rs7.mp3", /*lazy*/ false);
 })(Music || (Music = {}));

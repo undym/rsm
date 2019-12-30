@@ -84,6 +84,12 @@ export class OptionScene extends Scene{
             push:elm=>{
             },
         });
+        this.list.add({
+            center:()=>"再読み込み",
+            push:elm=>{
+                this.setReload();
+            },
+        });
 
         const addVolume = (type:"sound"|"music", v:number)=>{
             Sound.setVolume(type, Sound.getVolume(type)+v);
@@ -261,6 +267,34 @@ export class OptionScene extends Scene{
             });
         }
 
+    }
+
+    
+    private setReload(){
+        Util.msg.set("再読み込みしますか？");
+    
+        this.list.clear();
+    
+        this.list.add({
+            center:()=>"はい",
+            push:elm=>{
+                window.location.reload(true);
+            },
+        });
+        this.list.add({
+            center:()=>"いいえ",
+            push:elm=>{
+                Util.msg.set("＞いいえ");
+                this.setDefList();
+            },
+        });
+        this.list.add({
+            center:()=>"<<",
+            push:elm=>{
+                Util.msg.set("やめた");
+                this.setDefList();
+            },
+        });
     }
 
     private setReadyDeleteSaveData(){
