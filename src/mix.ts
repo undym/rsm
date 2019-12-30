@@ -266,7 +266,7 @@ export namespace Mix{
     const           肉のスープ:Mix = new Mix({
         uniqueName:"肉のスープ", limit:10, info:"ルインの最大HP+1",
         materials:()=>[[Item.石, 2], [Item.肉, 1], [Item.水, 1]],
-        isVisible:()=>ルインドアースLv2.count > 0,
+        isVisible:()=>Player.ルイン.member && ルインドアースLv2.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -274,7 +274,7 @@ export namespace Mix{
     const           猫の秘薬:Mix = new Mix({
         uniqueName:"猫の秘薬", limit:10, info:"ルインの最大HP+1",
         materials:()=>[[Item.肉, 1], [Item.水, 3]],
-        isVisible:()=>ルインドアースLv6.count > 0 && 肉のスープ.count >= 肉のスープ.countLimit,
+        isVisible:()=>Player.ルイン.member && ルインドアースLv6.count > 0 && 肉のスープ.count >= 肉のスープ.countLimit,
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -282,7 +282,7 @@ export namespace Mix{
     const           ねこじゃらし:Mix = new Mix({
         uniqueName:"ねこじゃらし", limit:10, info:"ルインの力+1",
         materials:()=>[[Item.竹, 4], [Item.バッタ, 2], [Item.草, 1]],
-        isVisible:()=>ルインドアースLv3.count > 0,
+        isVisible:()=>Player.ルイン.member && ルインドアースLv3.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.STR).base += 1;
         },
@@ -290,7 +290,7 @@ export namespace Mix{
     const           銅像:Mix = new Mix({
         uniqueName:"銅像", limit:5, info:"ルインの最大TP+1",
         materials:()=>[[Item.銅板, 1], [Item.少女の心を持ったおっさん, 3], [Item.たんぽぽ, 1]],
-        isVisible:()=>ルインドアースLv10.count > 0,
+        isVisible:()=>Player.ルイン.member && ルインドアースLv10.count > 0,
         action:()=>{
             Player.ルイン.ins.prm(Prm.MAX_TP).base += 1;
         },
@@ -298,7 +298,7 @@ export namespace Mix{
     const           バッタのスープ:Mix = new Mix({
         uniqueName:"バッタのスープ", limit:10, info:"ピアーの最大HP+1",
         materials:()=>[[Item.肉, 1], [Item.バッタ, 2], [Item.水, 1]],
-        isVisible:()=>ルインドアースLv2.count > 0,
+        isVisible:()=>Player.ピアー.member && ルインドアースLv2.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -306,7 +306,7 @@ export namespace Mix{
     const           ピアー家秘薬:Mix = new Mix({
         uniqueName:"ピアー家秘薬", limit:10, info:"ピアーの最大HP+1",
         materials:()=>[[Item.肉, 1], [Item.草, 2]],
-        isVisible:()=>ルインドアースLv6.count > 0 && バッタのスープ.count >= バッタのスープ.countLimit,
+        isVisible:()=>Player.ピアー.member && ルインドアースLv6.count > 0 && バッタのスープ.count >= バッタのスープ.countLimit,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_HP).base += 1;
         },
@@ -314,7 +314,7 @@ export namespace Mix{
     const           ゴーグルケース:Mix = new Mix({
         uniqueName:"ゴーグルケース", limit:5, info:"ピアーの最大MP+1",
         materials:()=>[[Item.ガラス, 3], [Item.ヒノキ, 2], [Item.針金, 1]],
-        isVisible:()=>ルインドアースLv10.count > 0,
+        isVisible:()=>Player.ピアー.member && ルインドアースLv10.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAX_MP).base += 1;
         },
@@ -322,7 +322,7 @@ export namespace Mix{
     const           水晶玉:Mix = new Mix({
         uniqueName:"水晶玉", limit:10, info:"ピアーの魔+1",
         materials:()=>[[Item.ガラス, 3], [Item.水, 2]],
-        isVisible:()=>ルインドアースLv4.count > 0,
+        isVisible:()=>Player.ピアー.member && ルインドアースLv4.count > 0,
         action:()=>{
             Player.ピアー.ins.prm(Prm.MAG).base += 1;
         },
@@ -331,19 +331,29 @@ export namespace Mix{
     const           ウェルダン:Mix = new Mix({
         uniqueName:"ウェルダン", limit:10, info:"一号の闇+1",
         materials:()=>[[Item.肉, 1], [Item.針金, 1]],
-        isVisible:()=>Dungeon.テント樹林.dungeonClearCount > 0,
+        isVisible:()=>Player.一号.member && Dungeon.テント樹林.dungeonClearCount > 0,
         action:()=>{
             Player.一号.ins.prm(Prm.DRK).base += 1;
         },
     });
+    // const           ウェルダン:Mix = new Mix({
+    //     uniqueName:"ウェルダン", limit:10, info:"一号の闇+1",
+    //     materials:()=>[[Item.肉, 1], [Item.針金, 1]],
+    //     isVisible:()=>Player.一号.member && ルインドアースLv4.count > 0,
+    //     action:()=>{
+    //         Player.一号.ins.prm(Prm.DRK).base += 1;
+    //     },
+    // });
+
     const           レア:Mix = new Mix({
         uniqueName:"レア", limit:10, info:"雪の鎖+1",
         materials:()=>[[Item.肉, 1], [Item.草, 2]],
-        isVisible:()=>Dungeon.テント樹林.dungeonClearCount > 0,
+        isVisible:()=>Player.雪.member && Dungeon.テント樹林.dungeonClearCount > 0,
         action:()=>{
             Player.雪.ins.prm(Prm.CHN).base += 1;
         },
     });
+
     const           ガンステーキ:Mix = new Mix({
         uniqueName:"ガンステーキ", limit:10, info:"lukaの銃+1",
         materials:()=>[[Item.肉, 1], [Item.発砲ツル, 1]],
@@ -380,7 +390,7 @@ export namespace Mix{
 
     const           技の極み:Mix = new Mix({
         uniqueName:"技の極み", limit:1, info:"技セット上限数増加アイテムの合成が解放される",
-        materials:()=>[[Item.松, 3], [Item.クワ, 3]],
+        materials:()=>[[Item.松, 20], [Item.クワ, 20]],
         isVisible:()=>ルインドアースLv9.count > 0,
     });
     const           技の極み2:Mix = new Mix({
