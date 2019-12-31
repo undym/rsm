@@ -2,116 +2,6 @@ import { choice } from "./undym/random.js";
 import { Util } from "./util.js";
 
 
-// export class Sound2{
-
-//     static readonly MIN_VOLUME = -10;
-//     static readonly MAX_VOLUME = 10;
-
-//     private static _volume:number;
-//     /**-10～10.Int. */
-//     static get volume()         {return this._volume;}
-//     /**-10～10.Int. */
-//     static set volume(v:number) {
-//         v = v|0;
-//         if(v > this.MAX_VOLUME){v = this.MAX_VOLUME;}
-//         if(v < this.MIN_VOLUME){v = this.MIN_VOLUME;}
-//         this._volume = v;
-//         Sound2.gain.gain.value = v / 10;
-//     }
-
-//     private static ac:AudioContext;
-//     private static gain:GainNode;
-
-//     /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
-//     static init(){
-//         const w:any = window;
-//         const AC = (w.AudioContext || w.webkitAudioContext);
-//         this.ac = new AC();
-//         this.gain = this.ac.createGain();
-//         this.gain.connect(this.ac.destination);
-//         this.volume = 0;
-//         // Sound.gain.gain.value = 0;
-//     }
-
-//     static load(node:SoundNode, ondecoded?:()=>void){
-//         node.loaded = true;
-
-//         const request = new XMLHttpRequest();
-//         request.onload = ()=>{
-//             var audioData = request.response;
-//             Sound2.ac.decodeAudioData(audioData, buffer=>{
-//                 node.buffer = buffer;
-//                 if(ondecoded){
-//                     ondecoded();
-//                 }
-//             },e=>{
-//                 return "Error with decoding audio data: " + node.path;
-//             });
-//         };
-//         request.open("GET", node.path, true);
-//         request.responseType = 'arraybuffer';
-//         request.send();
-        
-//     }
-
-//     static play(
-//         node:SoundNode, 
-//         options?:{
-//             loop?:boolean,
-//         },
-//     ){
-//         if(Sound2.ac.state !== "running"){
-//             Sound2.ac.resume();
-//         }
-
-//         if(!node.loaded){
-//             this.load(node, ()=>{
-//                 this.play(node, options);
-//             });
-//             return;
-//         }
-//         if(!node.buffer){return;}
-
-//         const src = Sound2.ac.createBufferSource();
-//         src.buffer = node.buffer;
-//         src.connect(Sound2.ac.destination);
-//         src.connect(Sound2.gain);
-
-//         if(options && options.loop){
-//             src.loop = true;
-//         }
-
-//         src.start(0);
-//         node.src = src;
-//     }
-
-//     static stop(node:SoundNode){
-//         node.src.stop();
-//     }
-// }
-
-
-// export class SoundNode{
-//     buffer:AudioBuffer;
-//     src:AudioBufferSourceNode;
-//     loaded = false;
-
-//     constructor(readonly path:string){
-
-//     }
-
-//     play(
-//         options?:{
-//             loop?:boolean,
-//         },
-//     ){
-//         Sound2.play(this, options);
-//     }
-
-//     stop(){
-//         Sound2.stop(this);
-//     }
-// }
 
 export class Sound{
     private static readonly GAIN_SOUND = 0;
@@ -121,18 +11,6 @@ export class Sound{
     static readonly MIN_VOLUME = -10;
     static readonly MAX_VOLUME = 10;
 
-
-    // private static _soundVolume:number;
-    // /**-10～10.Int. */
-    // static get soundVolume()         {return this._soundVolume;}
-    // /**-10～10.Int. */
-    // static set soundVolume(v:number) {
-    //     v = v|0;
-    //     if(v > this.MAX_VOLUME){v = this.MAX_VOLUME;}
-    //     if(v < this.MIN_VOLUME){v = this.MIN_VOLUME;}
-    //     this._soundVolume = v;
-    //     Sound.soundGain.gain.value = v / 10;
-    // }
 
     private static _context:AudioContext;
     static get context(){return this._context;}
@@ -185,49 +63,24 @@ export class Sound{
     load(ondecoded?:()=>void){
         this.loaded = true;
         
-        if(this.gainType === "sound"){
-            fetch(this.path, {method:"GET"})
-                .then(res=>{
-    
-                    res.arrayBuffer()
-                        .then(audioData=>{
-                            Sound.context.decodeAudioData(audioData, buffer=>{
-                                this.buffer = buffer;
-                                if(ondecoded){
-                                    ondecoded();
-                                }
-                            },e=>{
-                                console.log( "Error with decoding audio data " + this.path );
-                            });
-                        })
-                        ;
-    
-                })
-                ;
-        }else{
-            const worker = new Worker("soundworker.js");
+        fetch(this.path, {method:"GET"})
+            .then(res=>{
 
-            worker.onmessage = ev=>{
-                Sound.context.decodeAudioData(ev.data.audioData, buffer=>{
-                    this.buffer = buffer;
-                    if(ondecoded){
-                        ondecoded();
-                    }
+                res.arrayBuffer()
+                    .then(audioData=>{
+                        Sound.context.decodeAudioData(audioData, buffer=>{
+                            this.buffer = buffer;
+                            if(ondecoded){
+                                ondecoded();
+                            }
+                        },e=>{
+                            console.log( "Error with decoding audio data " + this.path );
+                        });
+                    })
+                    ;
 
-                    worker.terminate();
-                },e=>{
-                    console.log( "Error with decoding audio data " + this.path );
-                    worker.terminate();
-                });
-                // this.buffer = ev.data.buffer;
-                // if(ondecoded){
-                //     ondecoded();
-                // }
-            };
-            worker.postMessage({
-                path:this.path,
-            });
-        }
+            })
+            ;
     }
 
     play(options?:{
@@ -405,7 +258,7 @@ export namespace Music{
     export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
     export const aenai      = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/true);
 
-    export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/true);
+    export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/false);
 
     export const rs7        = createMusic("boss",    "sound/music/rs7.mp3", /*lazy*/false);
 
