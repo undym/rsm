@@ -789,6 +789,11 @@ export namespace Dungeon{
 
                 DungeonArea.now = DungeonArea.冥界;
             }
+            if(Flag.story_Main30.done && !Flag.story_Main31.done){
+                Flag.story_Main31.done = true;
+                await Story3.runMain31();
+                DungeonArea.now = DungeonArea.冥界;
+            }
         }
     };
 
@@ -1312,9 +1317,12 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain29();
             }
-            // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
-            //     Flag.story_Main30.done = true;
-            // }
+            if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
+                Flag.story_Main30.done = true;
+
+                await Story3.runMain30();
+                DungeonArea.now = DungeonArea.中央島;
+            }
         }
     };
 }

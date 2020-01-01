@@ -211,7 +211,6 @@ ctx.addEventListener("message", async ev=>{
     //     return;
     // }
 
-    ev.data.action();
 
     // fetch(ev.data.path, {method:"GET"})
     //     .then(res=>{

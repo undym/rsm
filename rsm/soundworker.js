@@ -182,7 +182,6 @@ ctx.addEventListener("message", (ev) => __awaiter(this, void 0, void 0, function
     //     sound.stop();
     //     return;
     // }
-    ev.data.action();
     // fetch(ev.data.path, {method:"GET"})
     //     .then(res=>{
     //         res.arrayBuffer()

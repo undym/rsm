@@ -836,6 +836,11 @@ Dungeon.musicCount = 0;
                     Player.ナナ.join();
                     DungeonArea.now = DungeonArea.冥界;
                 }
+                if (Flag.story_Main30.done && !Flag.story_Main31.done) {
+                    Flag.story_Main31.done = true;
+                    yield Story3.runMain31();
+                    DungeonArea.now = DungeonArea.冥界;
+                }
             });
         }
     };
@@ -1464,9 +1469,11 @@ Dungeon.musicCount = 0;
                 if (this.dungeonClearCount === 1) {
                     yield Story2.runMain29();
                 }
-                // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
-                //     Flag.story_Main30.done = true;
-                // }
+                if (Flag.story_Kabe2.done && !Flag.story_Main30.done) {
+                    Flag.story_Main30.done = true;
+                    yield Story3.runMain30();
+                    DungeonArea.now = DungeonArea.中央島;
+                }
             });
         }
     };

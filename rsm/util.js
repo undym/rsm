@@ -119,5 +119,6 @@ export var Flag;
     Flag_1.story_Kabe1 = create("story_Kabe1");
     Flag_1.story_Kabe2 = create("story_Kabe2");
     Flag_1.story_Main30 = create("story_Main30");
+    Flag_1.story_Main31 = create("story_Main31");
     Flag_1.yuki_beastOnly = create("yuki_beastOnly");
 })(Flag || (Flag = {}));

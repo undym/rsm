@@ -147,13 +147,6 @@ export var Story3;
             [f_empty, "", "その勢いで、火柱はあっという間に消えさった。"],
             [f_empty, "", "小鬼が転移の間の扉を開いた時には、既にジスロフ達の姿はなかった。"],
         ]);
-        /*
-                [f_empty,  "",          ""],
-                [f_kabe,   "カベイリア",""],
-                [f_jisrof, "ジスロフ",  ""],
-                [f_nana,   "ナナ",      ""],
-                [f_syao,   "小鬼",      ""],
-         */
         s.end();
         Util.msg.set(".", Color.L_GRAY);
         Sound.moji.play();
@@ -165,6 +158,321 @@ export var Story3;
         Sound.moji.play();
         yield cwait();
         Util.msg.set("第30話『カベイリアの願い』", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    Story3.runMain31 = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_jisrof = new Img("img/face/p_jis.jpg");
+        const s = new Story();
+        yield s.set(Img.empty, [
+            [f_empty, "", "地球塔地下２００階にて、ジスロフ達は「契約書保管室」と書かれた扉の前に立っていた。"],
+            [f_jisrof, "ジスロフ", "「ここだな･･･」"],
+            [f_empty, "", "ジスロフが扉を開けようとするも、扉は何かがひっかかっているのか開かなかった。"],
+            [f_jisrof, "ジスロフ", "「･･････」"],
+            [f_empty, "", "しばらく考えこむと、ジスロフは思いきり扉を破壊した。"],
+        ]);
+        yield s.set(new Img("img/story/s_pic35.jpg"), [
+            [f_empty, "", "室内は、大量の植物に覆われ、もう何年もの間、人が出入りしていない様子だった。"],
+            [f_empty, "", "部屋の中央に机らしきものがあった。"],
+            [f_empty, "", "そこへジスロフ達が近づいた時、ジスロフ達は気を失った･･･。"],
+        ]);
+        s.end();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set("第31話『目的の部屋にて』", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    Story3.runMain32 = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_kimi = new Img("img/face/p_kimi.jpg");
+        const f_sayaka = new Img("img/face/p_sayaka.jpg");
+        const s = new Story();
+        yield s.set(new Img("img/story/s_pic34.jpg"), [
+            [f_kimi, "キミロフ", "「爺！！！！！！」"],
+            [f_kimi, "キミロフ", "「爺！！！！！！呼んでるだろ、爺！！！！！」"],
+            [f_sayaka, "沙耶香爺", "「は、はい、お坊ちゃま、爺はここにございます」"],
+            [f_kimi, "キミロフ", "「コラ爺･･･、お坊ちゃまと呼ぶなと何度言ったら分かるんだよ･･････」"],
+            [f_sayaka, "沙耶香爺", "「キャッ」"],
+            [f_empty, "", "キミロフは手の甲で沙耶香の頬を殴った。"],
+            [f_sayaka, "沙耶香爺", "「はっ･･･も、申し訳ありません･･････殿下」"],
+            [f_kimi, "キミロフ", "「そうだ、それでいいんだよ、バーカ」"],
+            [f_empty, "", "キミロフは、一枚の羊皮紙を取りだし沙耶香に見せた。"],
+            [f_kimi, "キミロフ", "「見ろ･･･、今朝の占いで出た」"],
+            [f_empty, "", "紙には、冥土一帯の地図が描かれており、その中に２つの赤い点があった。"],
+            [f_sayaka, "沙耶香爺", "「これは･･･」"],
+            [f_kimi, "キミロフ", "「時は満ちたり･･･」"],
+            [f_kimi, "キミロフ", "「我がキミロフ家の御先祖様が、冥界王朝と不死の契約を結んだばっかりに、我が一族は末代に渡り王朝の奴隷と成り下がってきたが･･･」"],
+            [f_kimi, "キミロフ", "「やっと･･･やっとだ･･･」"],
+            [f_kimi, "キミロフ", "「我等一族を再び常の世界に連れ戻してくれる賢者を探し求め、占い続けること数千年･･･」"],
+            [f_sayaka, "沙耶香爺", "「キミロフ坊ちゃ･･･、ゴホン･･･キミロフ殿下！！爺も嬉しゅうございます」"],
+            [f_kimi, "キミロフ", "「爺っ、すぐに仕度だ！！」"],
+            [f_kimi, "キミロフ", "「この賢者様の位置へ向かうぞ！！！早くしろ！！！」"],
+            [f_sayaka, "沙耶香爺", "「はいっ、ただいまっ」"],
+        ]);
+        s.end();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set("第32話『殿下現る』", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    Story3.runMain33 = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_kimi = new Img("img/face/p_kimi.jpg");
+        const f_sayaka = new Img("img/face/p_sayaka.jpg");
+        const f_jisrof = new Img("img/face/p_jis.jpg");
+        const f_nana = new Img("img/face/p_nana.jpg");
+        const s = new Story();
+        yield s.set(new Img("img/story/s_pic32.jpg"), [
+            [f_empty, "", "ジスロフの行く手に、フードを被った男と、その従者らしき者が現れた。"],
+            [f_jisrof, "ジスロフ", "「なんだ･･･」"],
+            [f_empty, "", "ジスロフはナナを自分の後に立たせ、万が一に備えた。"],
+            [f_empty, "", "男はフードを取ると、片膝を地面について、こうべを垂れた。"],
+            [f_jisrof, "ジスロフ", "「？」"],
+            [f_kimi, "キミロフ", "「賢者様･･･、貴方様の出現を御待ちしておりました」"],
+            [f_jisrof, "ジスロフ", "「賢者だと？」"],
+            [f_kimi, "キミロフ", "「はい･･･、私めの占いによって、私達をこの冥界より連れ出してくださる賢者様が現れたと、出たのであります」"],
+            [f_jisrof, "ジスロフ", "「それが俺だとでも？」"],
+            [f_kimi, "キミロフ", "「はい、間違いありません」"],
+            [f_jisrof, "ジスロフ", "「くだらない･･･」"],
+            [f_empty, "", "ジスロフは男を無視して先を行こうとした。"],
+            [f_kimi, "キミロフ", "「お、お待ち下さい！！賢者様！！！」"],
+            [f_nana, "ナナ", "「ジスロフ、この人達困っているよ･･･」"],
+            [f_empty, "", "ナナはジスロフの袖を掴み、引っ張った。"],
+            [f_nana, "ナナ", "「それにこの人･･･なんだかジスロフに似てる･･･」"],
+            [f_kimi, "キミロフ", "「あ･･･貴方は･･･」"],
+            [f_empty, "", "ナナの顔を見たキミロフの目つきが変わった。"],
+            [f_kimi, "キミロフ", "「私はキミロフ・スターマイン７世と申すものです･･･、失礼ですが、貴方のお名前は？」"],
+            [f_nana, "ナナ", "「え･･･、僕はナナ･･･」"],
+            [f_kimi, "キミロフ", "「ナナ･･･、なんと心地よい響き･･･」"],
+            [f_kimi, "キミロフ", "「貴方のように美しい女性は見た事がありません･･･」"],
+            [f_nana, "ナナ", "「え･･･、あの、僕は･･･」"],
+            [f_kimi, "キミロフ", "「そうか！！！」"],
+            [f_kimi, "キミロフ", "「貴方が賢者様なのですね･･･、そうに違いない」"],
+            [f_kimi, "キミロフ", "「貴方を見た瞬間･･･、私めの胸の内で、何かが弾けるのが分かりました」"],
+            [f_kimi, "キミロフ", "「どうか、私めを貴方の旅にお連れ下さい」"],
+            [f_empty, "", "そう言うとキミロフはナナの手を取り、甲に口付けをしようとした。"],
+            [f_empty, "", "キミロフの唇がナナの手に触れる直前に、キミロフは物凄い力で蹴られて地面に転がった。"],
+            [f_sayaka, "沙耶香爺", "「キ、キミロフ様！！！」"],
+            [f_empty, "", "蹴ったのはむろんジスロフだった。"],
+            [f_empty, "", "更に追い討ちをかけるべく、倒れたキミロフに近寄ろうとすると、目の前に沙耶香が立ちふさがった。"],
+            [f_jisrof, "ジスロフ", "「なんだ･･･」"],
+            [f_kimi, "キミロフ", "「どけっ！！」"],
+            [f_sayaka, "沙耶香爺", "「キャッ」"],
+            [f_empty, "", "起き上がったキミロフは沙耶香を突き飛ばすと、ジスロフに立ち向かった。"],
+            [f_kimi, "キミロフ", "「何するんだよ、おまえはよ！！！」"],
+            [f_jisrof, "ジスロフ", "「それが賢者様に向かって言う言葉か？」"],
+            [f_empty, "", "目を真っ赤にさせるキミロフに対し、ジスロフは冷ややかな目でそう言った。"],
+            [f_kimi, "キミロフ", "「おまえのような奴が賢者なわけがないだろ！賢者様はこのナナ様なんだよ！！」"],
+            [f_empty, "", "ジスロフがキミロフの喉を掴み上げた。"],
+            [f_kimi, "キミロフ", "「うぐっ」"],
+            [f_jisrof, "ジスロフ", "「もう一度ナナの名前を気安く呼んでみろ、殺すぞ･･･」"],
+            [f_empty, "", "ジスロフの目はますます氷のように冷たい視線を放った。"],
+            [f_nana, "ナナ", "「や、やめて、ジスロフ！」"],
+            [f_kimi, "キミロフ", "「は、離しやがれ･･･！！！」"],
+            [f_sayaka, "沙耶香爺", "「殿下！！！！」"],
+            [f_empty, "", "沙耶香のその言葉に、キミロフとジスロフの二人が反応した。"],
+            [f_sayaka, "沙耶香爺", "「殿下、どうかおやめください･･･こんな所で死んでしまってはキミロフ家の血が絶えてしまいます･･･」"],
+            [f_kimi, "キミロフ", "「なんだと、この俺様がこんな奴に殺されるとでもいうのか！」"],
+            [f_jisrof, "ジスロフ", "「試してみるか･･･」"],
+            [f_sayaka, "沙耶香爺", "「た、旅の賢者様もどうか御許しを･･･！！」"],
+            [f_sayaka, "沙耶香爺", "「我等は元は常界で生きる占い士の一族でした･･･」"],
+            [f_sayaka, "沙耶香爺", "「それがひょんな事から、この冥界で生きることを強いられ･･･、もとの世界に戻ることも叶わず･･･」"],
+            [f_sayaka, "沙耶香爺", "「しかし、我等一族の占いが、我等を助け出してくれる賢者様の存在を予言したのです」"],
+            [f_sayaka, "沙耶香爺", "「我等一族の占いは、百パーセント当たる占い･･･」"],
+            [f_sayaka, "沙耶香爺", "「その証拠に、我等が冥界に囚われているのも、その力を冥界が利用しようとするがため･･･」"],
+            [f_sayaka, "沙耶香爺", "「この力が賢者様の役に立つ事もありましょう」"],
+            [f_sayaka, "沙耶香爺", "「どうか、我等を旅にお供にお加え下さい･･･」"],
+            [f_jisrof, "ジスロフ", "「嫌だ」"],
+            [f_empty, "", "ジスロフは冷酷な表情で言った。"],
+            [f_nana, "ナナ", "「ジスロフ･･･、可哀そうだよ」"],
+            [f_empty, "", "ナナの言葉がジスロフを葛藤させた。"],
+        ]);
+        s.end();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set("第33話『賢者の導き』", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    Story3.runMain34 = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_kimi = new Img("img/face/p_kimi.jpg");
+        const f_sayaka = new Img("img/face/p_sayaka.jpg");
+        const f_jisrof = new Img("img/face/p_jis.jpg");
+        const f_nana = new Img("img/face/p_nana.jpg");
+        const s = new Story();
+        yield s.set(new Img("img/story/s_pic34.jpg"), [
+            [f_jisrof, "ジスロフ", "「しかしどういう事なんだ･･･俺達は一度は元の世界に戻ったはずなのに･･･」"],
+            [f_nana, "ナナ", "「また冥界に舞い戻ってきちゃったね･･･」"],
+            [f_nana, "ナナ", "「･･･それにカベイリアさんの姿もない･･･もしかしたらシャオグイに･･･」"],
+            [f_kimi, "キミロフ", "「カベイリア？･･･はて、どこかで聞いたような･･･」"],
+            [f_kimi, "キミロフ", "「ともかく、ナナ達が元の世界に戻る方法はある」"],
+            [f_nana, "ナナ", "「本当？」"],
+            [f_kimi, "キミロフ", "「ああ･･･、転移の炉をくぐればいい」"],
+            [f_nana, "ナナ", "「･･･転移の炉･･･やっぱり･･･」"],
+            [f_kimi, "キミロフ", "「転移の炉を知っているのか？なら話が早い」"],
+            [f_kimi, "キミロフ", "「あの炉を使って、地球塔へ行き、その深部にある契約書保管室で契約書を破ってくれさえすれば･･･」"],
+            [f_kimi, "キミロフ", "「･･･我等は冥界より解放され、常界に戻る事ができる」"],
+            [f_nana, "ナナ", "「僕達は一度、転移の炉をくぐったんだ」"],
+            [f_nana, "ナナ", "「それなのに、また戻ってきちゃったんだ」"],
+            [f_kimi, "キミロフ", "「はて･･･、おかしいな･･･」"],
+        ]);
+        s.end();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set("第34話『契約の謎』", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    //地下200階の門クリア
+    //このストーリー後、塔地下へのボタンが出現、押すとイベント、ルイン達とジスロフ達合流
+    Story3.runMain35 = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_kimi = new Img("img/face/p_kimi.jpg");
+        const f_sayaka = new Img("img/face/p_sayaka.jpg");
+        const f_jisrof = new Img("img/face/p_jis.jpg");
+        const f_nana = new Img("img/face/p_nana.jpg");
+        const f_kabe2 = new Img("img/face/p_majo2.jpg"); //帽子無し
+        const s = new Story();
+        yield s.set(Img.empty, [
+            [f_empty, "", "地球塔地下２００階にて、ジスロフ達は再び「契約書保管室」と書かれた扉の前に立っていた。"],
+            [f_jisrof, "ジスロフ", "「ここだ･･･また来たな･･･」"],
+            [f_empty, "", "ジスロフが扉を開こうとすると、以前とは違いなんのひっかかりも無く扉はすっと開いた。"],
+        ]);
+        yield s.set(new Img("img/story/s_pic36.jpg"), [
+            [f_empty, "", "室内に蔓延っていたはずの植物は全く見当たらず、かわりに沢山の書物と書類が散乱していた。"],
+            [f_jisrof, "ジスロフ", "「どうなっているんだ･･･」"],
+            [f_empty, "", "ジスロフは中央の机の上に目をやった。"],
+            [f_empty, "", "そこに、キミロフ家との契約書らしきものがあるのを発見した。"],
+            [f_jisrof, "ジスロフ", "「これか･･･、全部破ってしまおう」"],
+            [f_empty, "", "ジスロフは数枚の契約書を全て破り捨てた。"],
+            [f_empty, "", "「あ、貴方達･･･何者です！！」"],
+            [f_empty, "", "部屋の入り口から聞き覚えのある声が聞こえた。"],
+            [f_jisrof, "ジスロフ", "「！！まえは･･･！！」"],
+            [f_nana, "ナナ", "「カベイリアさん･･･？」"],
+            [f_kabe2, "カベイリア", "「どうして私の名を！？･･･そ、それにどうやってここへ入って来たのです！！」"],
+            [f_empty, "", "カベイリアの視線が、ジスロフの足元の破り捨てられた契約書をとらえた。"],
+            [f_kabe2, "カベイリア", "「キャアアア！！！」"],
+            [f_kabe2, "カベイリア", "「あ、貴方！そ、その足に落ちてる･･･そ、それは･･･まさか･･･」"],
+            [f_empty, "", "カベイリアは慌ててバラバラになった契約書をかき集めた。"],
+            [f_jisrof, "ジスロフ", "「キミロフ家との契約相手はおまえだったのか･･･」"],
+            [f_kabe2, "カベイリア", "「ああ･･･なんてこと･･･！！」"],
+            [f_kabe2, "カベイリア", "「もうお終いだわ･･･！！！！」"],
+            [f_nana, "ナナ", "「カベイリアさん･･･？どうしたの･･･？」"],
+            [f_kabe2, "カベイリア", "「貴方達がこれを破ってしまったせいよ！！」"],
+            [f_kabe2, "カベイリア", "「これを保管する事が私の仕事だったのに･･･、これじゃあ契約違反になっちゃうじゃない！！」"],
+            [f_nana, "ナナ", "「契約違反？」"],
+            [f_kabe2, "カベイリア", "「そうよ！！」"],
+            [f_kabe2, "カベイリア", "「･･･ああ、どうしよう･･･私はもう永遠に王朝の奴隷になってしまう･･･！！」"],
+            [f_nana, "ナナ", "「ええっ･･･」"],
+            [f_nana, "ナナ", "「これって･･･ジ、ジスロフ･･･！カベイリアさんを王朝の奴隷にさせたのは･･･僕達なの！？」"],
+            [f_jisrof, "ジスロフ", "「･････････」"],
+            [f_kabe2, "カベイリア", "「キャア！！！手が･･･、ああっ、体が･･･！！」"],
+            [f_empty, "", "カベイリアの体がだんだんと薄く透明になっていく。"],
+            [f_kabe2, "カベイリア", "「もうお終いだわ･･･ああ･･･冥界に連れられてしまう･･･ああ･･･貴方達のせいよ！！」"],
+            [f_empty, "", "ジスロフは慌てて、消えゆこうとするカベイリアの手を掴もうとすると、誰かの別の手が、ジスロフのその手を掴んだ。"],
+            [f_jisrof, "ジスロフ", "「！？」"],
+            [f_kimi, "キミロフ", "「おっと･･･そこまで」"],
+            [f_jisrof, "ジスロフ", "「おまえ･･･どうして」"],
+            [f_empty, "", "いつのまにかジスロフの隣にキミロフが立っていた。"],
+            [f_empty, "", "隣には沙耶香もいる。"],
+            [f_kimi, "キミロフ", "「今、そいつに触れたら、あんたまで冥界の奴隷になっちまうぜ」"],
+            [f_jisrof, "ジスロフ", "「どうしたらいいっ」"],
+            [f_kimi, "キミロフ", "「それでいいんだ」"],
+            [f_nana, "ナナ", "「それでいいって！？」"],
+            [f_kimi, "キミロフ", "「あんたが破いたその契約書は、俺達一族だけの契約書じゃない」"],
+            [f_kimi, "キミロフ", "「俺や沙耶香、それに他の大勢の冥界に囚われた常界人達の契約書だ」"],
+            [f_jisrof, "ジスロフ", "「カベイリアはどうなる」"],
+            [f_kimi, "キミロフ", "「あんた、未来で会ったんだろ？この契約書保管人に」"],
+            [f_kimi, "キミロフ", "「･･･おかしいと思って占ってみたのさ。あんた達の未来･･･」"],
+            [f_empty, "", "カベイリアの体はもうほとんど消え、彼女の声は既に聞こえない。"],
+            [f_kimi, "キミロフ", "「あんたが契約書を破らなければ、この保管人が冥界に囚われる事はなかったかもしれない」"],
+            [f_kimi, "キミロフ", "「だが、未来のあんた達はどうなる？」"],
+            [f_kimi, "キミロフ", "「あんた達は、未来でこの保管人に助けられたはずだ」"],
+            [f_kimi, "キミロフ", "「この保管人が未来の冥界にいなければ･･･、あんた達は永久に冥界から出られない･･･もしくは殺されていたかもしれないぜ･･･」"],
+            [f_nana, "ナナ", "「･･･カベイリアさんは･･････！」"],
+            [f_nana, "ナナ", "「未来のカベイリアさんは･･･、それを知っていたの？！」"],
+            [f_kimi, "キミロフ", "「そうだろうな･･･、未来でおまえ達を助けさえしなければ、おまえ達が契約書を破くこともない」"],
+            [f_kimi, "キミロフ", "「だが、知ってておまえ達をここへ寄越し、契約書を破らせたんだ」"],
+            [f_nana, "ナナ", "「他の常界人のため･･･？」"],
+            [f_kimi, "キミロフ", "「分からないが･･･多分な･･･」"],
+            [f_kimi, "キミロフ", "「その答えは･･･、未来で聞くといい･･･」"],
+            [f_nana, "ナナ", "「え？」"],
+            [f_empty, "", "見ると、キミロフの体が霞んで見える。"],
+            [f_empty, "", "違った･･･体が消えようとしているのは、ジスロフ達の方だ。"],
+            [f_jisrof, "ジスロフ", "「これは･･･」"],
+            [f_kimi, "キミロフ", "「行くんだろ？あの保管人を助けに･･･」"],
+            [f_kimi, "キミロフ", "「相手は冥界王朝だ。厳しいぞ･･･、覚悟しろ」"],
+            [f_empty, "", "ジスロフ達は今まさに再び未来へと戻り始めたのだ。"],
+            [f_kimi, "キミロフ", "「おい、おまえ」"],
+            [f_empty, "", "そう言って、キミロフは消え行くジスロフを見た。"],
+            [f_jisrof, "ジスロフ", "「なんだ･･･」"],
+            [f_kimi, "キミロフ", "「ナナを大切にな･･･」"],
+            [f_jisrof, "ジスロフ", "「フン･･･おまえに言われるまでもない」"],
+            [f_kimi, "キミロフ", "「そうか？･･･大切な物の側に長くいると、何が一番大切なのか忘れちまう」"],
+            [f_kimi, "キミロフ", "「俺がそうだった」"],
+        ]);
+        yield s.set(new Img("img/story/s_pic37.jpg"), [
+            [f_empty, "", "キミロフは沙耶香の腰にそっと手をまわし、自分の体へ引き寄せた。"],
+            [f_sayaka, "沙耶香", "「･･･キミロフ様･･･」"],
+            [f_kimi, "キミロフ", "「そうだ。沙耶香と俺の間に産まれてくる子におまえの名前の一部を取ろう」"],
+            [f_kimi, "キミロフ", "「男の子だったらジスカル･･･、女の子だったらナナから名を取るよ･･･」"],
+            [f_nana, "ナナ", "「キミロフさん･･･、沙耶香さん･･･ありがとう！」"],
+            [f_empty, "", "キミロフの口が「またな」と動くのが見えた。"],
+        ]);
+        yield s.set(new Img("img/story/s_pic35.jpg"), [
+            [f_empty, "", "次の瞬間、ジスロフ達は、元の現代の地球塔の契約書保管室にいた。"],
+        ]);
+        /*
+                [f_empty,  "",          ""],
+                [f_kimi,   "キミロフ",  ""],
+                [f_sayaka, "沙耶香爺",  ""],
+                [f_kabe2,  "カベイリア",""],
+                [f_jisrof, "ジスロフ",  ""],
+                [f_nana,   "ナナ",      ""],
+         */
+        s.end();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.L_GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set("第35話『さよなら、殿下』", Color.L_GRAY);
         Sound.moji.play();
         yield cwait();
     });
@@ -194,8 +502,11 @@ export var Story3;
         const f_syao  = new Img("img/face/p_syao.jpg");
         const f_vinus  = new Img("img/face/p_vinus.jpg");
         const f_kabe  = new Img("img/face/p_majo.jpg");
+        const f_kabe2  = new Img("img/face/p_majo2.jpg");//帽子無し
+        const f_kimi  = new Img("img/face/p_kimi.jpg");
+        const f_sayaka  = new Img("img/face/p_sayaka.jpg");
 
-    export const runMain30 = async()=>{
+    export const runMain31 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();
@@ -203,7 +514,7 @@ export var Story3;
         await s.set(
             new Img("img/story/s_pic21.jpg"),
             [
-                [f_empty,  "",         ""],
+                [f_empty,  "",          ""],
             ]
         );
 
