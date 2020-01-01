@@ -709,7 +709,7 @@ export class EUnit extends Unit{
     static readonly DEF_AI = async(attacker:Unit, targetCandidates:Unit[])=>{
         let activeTecs:ActiveTec[] = attacker.tecs.filter(tec=> tec instanceof ActiveTec) as ActiveTec[];
         if(activeTecs.length === 0){
-            Tec.何もしない.use( attacker, [attacker] );
+            await Tec.何もしない.use( attacker, [attacker] );
             return;
         }
 
@@ -723,7 +723,7 @@ export class EUnit extends Unit{
             }
         }
 
-        Tec.殴る.use( attacker, attacker.searchUnits( Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker) ) );
+        await Tec.殴る.use( attacker, attacker.searchUnits( Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker) ) );
     };
 
     yen:number = 0;

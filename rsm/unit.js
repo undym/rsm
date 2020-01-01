@@ -709,7 +709,7 @@ export class EUnit extends Unit {
 EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, function* () {
     let activeTecs = attacker.tecs.filter(tec => tec instanceof ActiveTec);
     if (activeTecs.length === 0) {
-        Tec.何もしない.use(attacker, [attacker]);
+        yield Tec.何もしない.use(attacker, [attacker]);
         return;
     }
     for (let i = 0; i < 10; i++) {
@@ -723,7 +723,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
             return;
         }
     }
-    Tec.殴る.use(attacker, attacker.searchUnits(Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker)));
+    yield Tec.殴る.use(attacker, attacker.searchUnits(Tec.殴る.targetings, Tec.殴る.rndAttackNum(attacker)));
 });
 (function (Unit) {
     class FXFont {
