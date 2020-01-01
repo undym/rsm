@@ -253,10 +253,10 @@ export namespace Music{
 
 
 
-    export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);
-    export const hesoumi    = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/true);
-    export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/true);
-    export const aenai      = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/true);
+    export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/false);
+    export const hesoumi    = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/false);
+    export const tuchi2     = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/false);
+    export const aenai      = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/false);
 
     export const anokoro    = createMusic("ex",      "sound/music/anokoro.mp3", /*lazy*/false);
 
