@@ -336,14 +336,23 @@ export namespace Mix{
             Player.一号.ins.prm(Prm.DRK).base += 1;
         },
     });
-    // const           ウェルダン:Mix = new Mix({
-    //     uniqueName:"ウェルダン", limit:10, info:"一号の闇+1",
-    //     materials:()=>[[Item.肉, 1], [Item.針金, 1]],
-    //     isVisible:()=>Player.一号.member && ルインドアースLv4.count > 0,
-    //     action:()=>{
-    //         Player.一号.ins.prm(Prm.DRK).base += 1;
-    //     },
-    // });
+    const           大きなお弁当箱:Mix = new Mix({
+        uniqueName:"大きなお弁当箱", limit:10, info:"一号の最大HP+1",
+        materials:()=>[[Item.杉, 10], [Item.ヒノキ, 10]],
+        isVisible:()=>Player.一号.member && ルインドアースLv8.count > 0,
+        action:()=>{
+            Player.一号.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const           ツルの銃:Mix = new Mix({
+        uniqueName:"ツルの銃", limit:10, info:"一号の闇+1",
+        materials:()=>[[Item.発砲ツル, 2], [Item.土, 4]],
+        isVisible:()=>Player.一号.member && ルインドアースLv10.count > 0,
+        action:()=>{
+            Player.一号.ins.prm(Prm.DRK).base += 1;
+        },
+    });
+
 
     const           レア:Mix = new Mix({
         uniqueName:"レア", limit:10, info:"雪の鎖+1",
@@ -353,6 +362,23 @@ export namespace Mix{
             Player.雪.ins.prm(Prm.CHN).base += 1;
         },
     });
+    const           ビー玉:Mix = new Mix({
+        uniqueName:"ビー玉", limit:10, info:"雪の最大HP+1",
+        materials:()=>[[Item.ガラス, 4], [Item.砂, 8]],
+        isVisible:()=>Player.雪.member && ルインドアースLv8.count > 0,
+        action:()=>{
+            Player.雪.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const           おもちゃの鎖:Mix = new Mix({
+        uniqueName:"おもちゃの鎖", limit:10, info:"雪の力+1",
+        materials:()=>[[Item.針金, 4], [Item.銅, 5]],
+        isVisible:()=>Player.雪.member && ルインドアースLv10.count > 0,
+        action:()=>{
+            Player.雪.ins.prm(Prm.CHN).base += 1;
+        },
+    });
+
 
     const           ガンステーキ:Mix = new Mix({
         uniqueName:"ガンステーキ", limit:10, info:"lukaの銃+1",
@@ -362,6 +388,8 @@ export namespace Mix{
             Player.luka.ins.prm(Prm.GUN).base += 1;
         },
     });
+
+
     const           石焼き肉:Mix = new Mix({
         uniqueName:"石焼き肉", limit:10, info:"ベガの最大HP+1",
         materials:()=>[[Item.肉, 1], [Item.石, 2]],
@@ -370,6 +398,23 @@ export namespace Mix{
             Player.ベガ.ins.prm(Prm.MAX_HP).base += 1;
         },
     });
+    const           ただれた肉:Mix = new Mix({
+        uniqueName:"ただれた肉", limit:10, info:"ベガの最大HP+1",
+        materials:()=>[[Item.肉, 1], [Item.呪い水, 5]],
+        isVisible:()=>Player.ベガ.member && ルインドアースLv8.count > 0,
+        action:()=>{
+            Player.ベガ.ins.prm(Prm.MAX_HP).base += 1;
+        },
+    });
+    const           ししおどし:Mix = new Mix({
+        uniqueName:"ししおどし", limit:10, info:"ベガの力+1",
+        materials:()=>[[Item.かんな, 7], [Item.竹, 5]],
+        isVisible:()=>Player.ベガ.member && ルインドアースLv10.count > 0,
+        action:()=>{
+            Player.ベガ.ins.prm(Prm.STR).base += 1;
+        },
+    });
+
     const           ハンバーグ:Mix = new Mix({
         uniqueName:"ハンバーグ", limit:10, info:"ジスロフの力+1",
         materials:()=>[[Item.肉, 1], [Item.岩塩, 2]],
