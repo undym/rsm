@@ -1300,7 +1300,7 @@ export namespace Tec{
                               mul:0.5, num:1, hit:1.1, mp:2,
         });}
         sound(){Sound.drain.play();}
-        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_吸収(target.imgCenter, attacker.imgCenter);}
+        effect(attacker:Unit, target:Unit, dmg:Dmg){FX_吸収(attacker.imgCenter, target.imgCenter);}
         async runInner(attacker:Unit, target:Unit, dmg:Dmg){
             await super.runInner(attacker, target, dmg);
 

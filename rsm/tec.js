@@ -1491,7 +1491,7 @@ ActiveTec._valueOf = new Map();
             });
         }
         sound() { Sound.drain.play(); }
-        effect(attacker, target, dmg) { FX_吸収(target.imgCenter, attacker.imgCenter); }
+        effect(attacker, target, dmg) { FX_吸収(attacker.imgCenter, target.imgCenter); }
         runInner(attacker, target, dmg) {
             const _super = Object.create(null, {
                 runInner: { get: () => super.runInner }
