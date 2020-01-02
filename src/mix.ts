@@ -388,6 +388,14 @@ export namespace Mix{
             Player.luka.ins.prm(Prm.GUN).base += 1;
         },
     });
+    const           おもちゃの銃:Mix = new Mix({
+        uniqueName:"おもちゃの銃", limit:10, info:"lukaの銃+1",
+        materials:()=>[[Item.石, 1], [Item.発砲ツル, 1]],
+        isVisible:()=>Player.luka.member && ルインドアースLv8.count > 0,
+        action:()=>{
+            Player.luka.ins.prm(Prm.GUN).base += 1;
+        },
+    });
 
 
     const           石焼き肉:Mix = new Mix({
