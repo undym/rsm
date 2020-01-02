@@ -32,7 +32,7 @@ export class Force{
     attackNum(action:Action, unit:Unit, aForce:AttackNumForce){}
     async beforeDoAtk(dmg:Dmg){}
     async beforeBeAtk(dmg:Dmg){}
-    /**ダメージを受ける直前、calc()された後に通る. */
+    /**ダメージを受ける直前、calc()された後に通る。resultを操作。 */
     async beDamage(dmg:Dmg){}
     async afterDoAtk(dmg:Dmg){}
     async afterBeAtk(dmg:Dmg){}
@@ -68,6 +68,7 @@ export class AttackNumForce{
 
 export type DmgType = 
                  "格闘"|"槍"|"魔法"|"神格"|"暗黒"|"怨霊"|"鎖術"|"過去"|"銃"|"機械"|"弓"
+                |"追加攻撃"
                 |"毒"|"ペット"|"罠"
                 ;
 
@@ -109,7 +110,7 @@ export class Dmg{
     /**calc()で出された結果のbak. */
     result = {value:0, isHit:false};
     /**追加ダメージ値を返す。 */
-    additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
+    // additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
     /** */
     types:DmgType[] = [];
     /**一つでも持っていたらtrue. */
@@ -177,7 +178,7 @@ export class Dmg{
         this.result.value = 0;
         this.result.isHit = false;
 
-        this.additionalAttacks = [];
+        // this.additionalAttacks = [];
 
         this.types = [];
     }
@@ -233,7 +234,7 @@ export class Dmg{
         if(this.result.isHit){
             const _doDmg = async(value:number)=>{
                 effect(value);
-                if(this.target.pet && value >= this.target.hp){
+                if(this.target.pet && (value >= this.target.hp || Math.random() < 0.25)){
                     Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`); await wait(1);
 
                     this.target.pet.hp--;
@@ -253,13 +254,13 @@ export class Dmg{
             await _doDmg(value);
             Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
 
-            for(let i = 0; i < this.additionalAttacks.length; i++){
-                await wait(1);
+            // for(let i = 0; i < this.additionalAttacks.length; i++){
+            //     await wait(1);
 
-                const value = this.additionalAttacks[i]( this, i );
-                await _doDmg(value);
-                Util.msg.set(`+${value}`, Color.RED.bright);
-            }
+            //     const value = this.additionalAttacks[i]( this, i );
+            //     await _doDmg(value);
+            //     Util.msg.set(`+${value}`, Color.RED.bright);
+            // }
         }else{
             FX_RotateStr(font, "MISS", point, Color.L_GRAY);
             Util.msg.set("MISS", Color.L_GRAY);
@@ -329,13 +330,6 @@ export class Heal{
 
     action:Object|undefined;
 
-    // constructor(args:{
-    //     healer:Unit,
-    //     target:Unit,
-    //     type:HealType,
-    //     value:number,
-    //     action?:Object,
-    // }){
     private constructor(
         type:HealType,
         value:number,
@@ -353,43 +347,6 @@ export class Heal{
             Heal.font = new Font( Font.def.size * 2 );
         }
     }
-    /**
-     * @return 回復値を返す.
-     */
-    // run(msg:boolean):number{
-    //     if(!this.target.exists || this.target.dead){return 0;}
-
-    //     this.healer.doHeal(this);
-    //     this.target.beHeal(this);
-
-    //     switch(this.type){
-    //         case "HP":{
-    //             this.target.hp += this.value;
-        
-    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy - this.target.imgBounds.h / 2);
-    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.GREEN);
-
-    //             if(msg){Util.msg.set(`${this.target.name}のHPが${this.value}回復した！`, Color.GREEN.bright);}
-    //             }break;
-    //         case "MP":{//TODO
-    //             this.target.mp += this.value;
-        
-    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy);
-    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.PINK);
-
-    //             if(msg){Util.msg.set(`${this.target.name}のMPが${this.value}回復した！`, Color.GREEN.bright);}
-    //             }break;
-    //         case "TP":{
-    //             this.target.tp += this.value;
-        
-    //             const p = new Point(this.target.imgBounds.cx, this.target.imgBounds.cy + this.target.imgBounds.h / 2);
-    //             FX_RotateStr(Heal.font, `${this.value}`, p, Color.CYAN);
-
-    //             if(msg){Util.msg.set(`${this.target.name}のTPが${this.value}回復した！`, Color.GREEN.bright);}
-    //             }break;
-    //     }
-    //     return this.value;
-    // }
 }
 
 

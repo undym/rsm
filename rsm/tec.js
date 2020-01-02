@@ -954,12 +954,16 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                beforeDoAtk(dmg) {
+                afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘")) {
-                            dmg.additionalAttacks.push((dmg, i) => {
-                                return dmg.result.value / 2;
-                            });
+                            yield new Dmg({
+                                attacker: dmg.attacker,
+                                target: dmg.target,
+                                absPow: dmg.result.value / 2,
+                                types: ["追加攻撃"],
+                            }).run();
+                            yield wait(1);
                         }
                     });
                 }
@@ -4150,7 +4154,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (Math.random() < 0.5) {
+                        if (Math.random() < 0.33) {
                             const value = Heal.run("HP", 5, dmg.target, dmg.attacker, Tec.血技の技巧, false);
                             dmg.attacker.hp -= value;
                             Sound.drain.play();

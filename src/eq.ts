@@ -283,11 +283,15 @@ export namespace Eq{
         constructor(){super({uniqueName:"忍者ソード", info:"格闘攻撃時、稀に追加攻撃",
                                 pos:EqPos.武, lv:105});}
         createForce(_this:Eq){return new class extends Force{
-            async beforeDoAtk(dmg:Dmg){
+            async afterDoAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && Math.random() < 0.75){
-                    dmg.additionalAttacks.push((dmg,i)=>{
-                        return dmg.result.value / 2;
-                    });
+                    await new Dmg({
+                        attacker:dmg.attacker,
+                        target:dmg.target,
+                        absPow:dmg.result.value / 2,
+                        types:["追加攻撃"],
+                    }).run();
+                    await wait(1);
                 }
             }
         };}
@@ -299,9 +303,13 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("銃") && Math.random() < 0.5){
-                    dmg.additionalAttacks.push((dmg,i)=>{
-                        return dmg.result.value / 2;
-                    });
+                    await new Dmg({
+                        attacker:dmg.attacker,
+                        target:dmg.target,
+                        absPow:dmg.result.value / 2,
+                        types:["追加攻撃"],
+                    }).run();
+                    await wait(1);
                 }
             }
         };}

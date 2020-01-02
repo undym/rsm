@@ -34,7 +34,7 @@ export class Force {
     beforeBeAtk(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-    /**ダメージを受ける直前、calc()された後に通る. */
+    /**ダメージを受ける直前、calc()された後に通る。resultを操作。 */
     beDamage(dmg) {
         return __awaiter(this, void 0, void 0, function* () { });
     }
@@ -85,7 +85,7 @@ export class Dmg {
         /**calc()で出された結果のbak. */
         this.result = { value: 0, isHit: false };
         /**追加ダメージ値を返す。 */
-        this.additionalAttacks = [];
+        // additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
         /** */
         this.types = [];
         /**カウンター可能かどうか。自傷技にもつける。 */
@@ -174,7 +174,7 @@ export class Dmg {
         };
         this.result.value = 0;
         this.result.isHit = false;
-        this.additionalAttacks = [];
+        // this.additionalAttacks = [];
         this.types = [];
     }
     calc() {
@@ -221,7 +221,7 @@ export class Dmg {
             if (this.result.isHit) {
                 const _doDmg = (value) => __awaiter(this, void 0, void 0, function* () {
                     effect(value);
-                    if (this.target.pet && value >= this.target.hp) {
+                    if (this.target.pet && (value >= this.target.hp || Math.random() < 0.25)) {
                         Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`);
                         yield wait(1);
                         this.target.pet.hp--;
@@ -241,12 +241,12 @@ export class Dmg {
                 const value = this.result.value;
                 yield _doDmg(value);
                 Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
-                for (let i = 0; i < this.additionalAttacks.length; i++) {
-                    yield wait(1);
-                    const value = this.additionalAttacks[i](this, i);
-                    yield _doDmg(value);
-                    Util.msg.set(`+${value}`, Color.RED.bright);
-                }
+                // for(let i = 0; i < this.additionalAttacks.length; i++){
+                //     await wait(1);
+                //     const value = this.additionalAttacks[i]( this, i );
+                //     await _doDmg(value);
+                //     Util.msg.set(`+${value}`, Color.RED.bright);
+                // }
             }
             else {
                 FX_RotateStr(font, "MISS", point, Color.L_GRAY);
@@ -300,13 +300,6 @@ export class Heal {
     }
     get value() { return this._value | 0; }
     set value(v) { this._value = v; }
-    // constructor(args:{
-    //     healer:Unit,
-    //     target:Unit,
-    //     type:HealType,
-    //     value:number,
-    //     action?:Object,
-    // }){
     constructor(type, value, healer, target, action) {
         this.healer = healer;
         this.target = target;

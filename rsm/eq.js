@@ -274,12 +274,16 @@ EqEar._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                beforeDoAtk(dmg) {
+                afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘") && Math.random() < 0.75) {
-                            dmg.additionalAttacks.push((dmg, i) => {
-                                return dmg.result.value / 2;
-                            });
+                            yield new Dmg({
+                                attacker: dmg.attacker,
+                                target: dmg.target,
+                                absPow: dmg.result.value / 2,
+                                types: ["追加攻撃"],
+                            }).run();
+                            yield wait(1);
                         }
                     });
                 }
@@ -297,9 +301,13 @@ EqEar._valueOf = new Map();
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("銃") && Math.random() < 0.5) {
-                            dmg.additionalAttacks.push((dmg, i) => {
-                                return dmg.result.value / 2;
-                            });
+                            yield new Dmg({
+                                attacker: dmg.attacker,
+                                target: dmg.target,
+                                absPow: dmg.result.value / 2,
+                                types: ["追加攻撃"],
+                            }).run();
+                            yield wait(1);
                         }
                     });
                 }

@@ -883,11 +883,15 @@ export namespace Tec{
                                 sort:TecSort.格闘, type:TecType.格闘,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
-            async beforeDoAtk(dmg:Dmg){
+            async afterDoAtk(dmg:Dmg){
                 if(dmg.hasType("格闘")){
-                    dmg.additionalAttacks.push((dmg,i)=>{
-                        return dmg.result.value / 2;
-                    });
+                    await new Dmg({
+                        attacker:dmg.attacker,
+                        target:dmg.target,
+                        absPow:dmg.result.value / 2,
+                        types:["追加攻撃"],
+                    }).run();
+                    await wait(1);
                 }
             }
         };}
@@ -3321,7 +3325,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
-                if(Math.random() < 0.5){
+                if(Math.random() < 0.33){
                     
                     const value = Heal.run("HP", 5, dmg.target, dmg.attacker, Tec.血技の技巧, false);
                     dmg.attacker.hp -= value;
