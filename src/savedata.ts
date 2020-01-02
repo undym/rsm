@@ -17,14 +17,8 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,31,4);
+    static readonly NOW = new Version(0,31,5);
     static readonly updateInfo =    [
-                                        "(0.29.2)音追加",
-                                        "(0.29.3)音修正",
-                                        "(0.29.4)音楽の調整",
-                                        "(0.30.0)いろいろ",
-                                        "(0.30.1)ゲーム開始時の音をつけた",
-                                        "(0.30.2)やっぱりやめた",
                                         "(0.30.3)なにか",
                                         "(0.30.4)雪が最初からペガサスになってしまっていた",
                                         "(0.30.5)敵の装備がおかしかった",
@@ -35,6 +29,7 @@ export class Version{
                                         "(0.31.2)音楽の読み込み方法を戻した",
                                         "(0.31.3)合成追加",
                                         "(0.31.4)バグ修正",
+                                        "(0.31.5)音楽の読み込みの変更  他",
                                     ];
 
     private values:number[];
