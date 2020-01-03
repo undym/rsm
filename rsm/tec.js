@@ -149,12 +149,16 @@ TecType._values = [];
         effect(attacker, target, dmg) { FX_暗黒(target.imgBounds.center); }
         sound() { Sound.KEN.play(); }
     };
+    //ghost/500
+    //be30dmg = 15000ghost
+    //15000ghost -> do300dmg
+    //300 / 15000 = 3 / 150 = 1 / 50
     TecType.怨霊 = new class extends TecType {
         constructor() { super("怨霊"); }
         createDmg(attacker, target) {
             const pow = attacker.tecs.some(tec => tec === Tec.怨霊使い)
-                ? attacker.prm(Prm.GHOST).total * 0.1
-                : attacker.prm(Prm.GHOST).total * 0.01;
+                ? attacker.prm(Prm.GHOST).total * 0.02
+                : attacker.prm(Prm.GHOST).total * 0.002;
             return new Dmg({
                 attacker: attacker,
                 target: target,
@@ -1784,7 +1788,7 @@ ActiveTec._valueOf = new Map();
     /**霊術戦士. */
     Tec.怨霊使い = new class extends PassiveTec {
         constructor() {
-            super({ uniqueName: "怨霊使い", info: "倒した相手のHPを怨霊として吸収できるようになる 行動開始時、HP-<怨霊値÷500+1>",
+            super({ uniqueName: "怨霊使い", info: "倒した相手のLvを怨霊として吸収できるようになる 行動開始時、HP-<怨霊値÷500+1>",
                 sort: TecSort.暗黒, type: TecType.怨霊,
             });
         }
@@ -1792,7 +1796,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        const value = unit.ghost / 500 + 1;
+                        const value = (unit.ghost / 500 + 1) | 0;
                         FX_RotateStr(Font.def, `${value}`, unit.imgCenter, Color.WHITE);
                         unit.hp -= value;
                     });
@@ -1805,9 +1809,8 @@ ActiveTec._valueOf = new Map();
                         if (Battle.getPhaseUnit() !== me) {
                             return;
                         }
-                        const value = deadUnit.prm(Prm.MAX_HP).total * 0.334;
+                        const value = deadUnit.prm(Prm.LV).total;
                         me.ghost += value;
-                        deadUnit.prm(Prm.MAX_HP).battle -= value;
                     });
                 }
             };
