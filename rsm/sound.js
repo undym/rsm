@@ -124,11 +124,12 @@ export class Music {
         this.audio.pause();
         this.audio.currentTime = 0;
         this.audio.loop = (options && options.loop) ? true : false;
+        this.audio.muted = false;
         this.audio.play();
     }
     stop() {
         this.audio.pause();
-        this.audio.blur();
+        this.audio.muted = true;
     }
 }
 (function (Sound) {
