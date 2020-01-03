@@ -109,6 +109,7 @@ export class Music {
     load() {
         this.loaded = true;
         // this.audio.src = this.path;
+        // this.audio.src = this.path;
         // this.audio.load();
     }
     play(options) {
@@ -241,17 +242,19 @@ export class Music {
     }
     Music.stop = stop;
     let volume = 0;
-    function getVolume() { return volume; }
+    function getVolume() { return volume | 0; }
     Music.getVolume = getVolume;
     function setVolume(v) {
         v = v | 0;
-        if (v > Sound.MAX_VOLUME) {
-            v = Sound.MAX_VOLUME;
+        const min = 0;
+        const max = 10;
+        if (v > max) {
+            v = max;
         }
-        if (v < Sound.MIN_VOLUME) {
-            v = Sound.MIN_VOLUME;
+        if (v < min) {
+            v = min;
         }
-        this.volume = v;
+        volume = v;
         Music.values().forEach(m => m.volume = v / 10);
     }
     Music.setVolume = setVolume;

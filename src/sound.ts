@@ -140,6 +140,7 @@ export class Music{
         this.loaded = true;
         
         // this.audio.src = this.path;
+        // this.audio.src = this.path;
         // this.audio.load();
     }
 
@@ -285,13 +286,15 @@ export namespace Music{
     }
 
     let volume = 0;
-    export function getVolume():number{return volume;}
+    export function getVolume():number{return volume|0;}
     export function setVolume(v:number){
         v = v|0;
-        if(v > Sound.MAX_VOLUME){v = Sound.MAX_VOLUME;}
-        if(v < Sound.MIN_VOLUME){v = Sound.MIN_VOLUME;}
+        const min = 0;
+        const max = 10;
+        if(v > max){v = max;}
+        if(v < min){v = min;}
 
-        this.volume = v;
+        volume = v;
         Music.values().forEach(m=> m.volume = v / 10);
     }
 

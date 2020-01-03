@@ -79,6 +79,7 @@ export class OptionScene extends Scene {
             center: () => "効果音+",
             push: elm => {
                 Sound.setVolume(Sound.getVolume() + 1);
+                Util.msg.set("効果音音量:" + Sound.getVolume());
                 Sound.save.play();
             },
         });
@@ -86,6 +87,7 @@ export class OptionScene extends Scene {
             center: () => "効果音-",
             push: elm => {
                 Sound.setVolume(Sound.getVolume() - 1);
+                Util.msg.set("効果音音量:" + Sound.getVolume());
                 Sound.save.play();
             },
         });
@@ -93,12 +95,14 @@ export class OptionScene extends Scene {
             center: () => "音楽+",
             push: elm => {
                 Music.setVolume(Music.getVolume() + 1);
+                Util.msg.set("音楽音量:" + Music.getVolume());
             },
         });
         this.list.add({
             center: () => "音楽-",
             push: elm => {
                 Music.setVolume(Music.getVolume() - 1);
+                Util.msg.set("音楽音量:" + Music.getVolume());
             },
         });
         this.list.add({
