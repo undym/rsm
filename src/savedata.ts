@@ -29,7 +29,7 @@ export class Version{
                                         "(0.31.5)音楽の読み込みの変更  他",
                                         "(0.31.6)m",
                                         "(0.31.7)怨霊",
-                                        "(0.31.8)test",
+                                        "(0.31.8)test2",
                                     ];
 
     private values:number[];

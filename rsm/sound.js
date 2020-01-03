@@ -108,8 +108,8 @@ export class Music {
     }
     load() {
         this.loaded = true;
-        this.audio.src = this.path;
-        this.audio.load();
+        // this.audio.src = this.path;
+        // this.audio.load();
     }
     play(options) {
         if (Sound.context.state !== "running") {
