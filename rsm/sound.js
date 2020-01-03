@@ -128,6 +128,7 @@ export class Music {
     }
     stop() {
         this.audio.pause();
+        this.audio.blur();
     }
 }
 (function (Sound) {
