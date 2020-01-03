@@ -4,36 +4,24 @@ import { Util } from "./util.js";
 
 
 export class Sound{
-    private static readonly GAIN_SOUND = 0;
-    private static readonly GAIN_MUSIC = 1;
-    private static readonly GAIN_NUM = 2;
 
     static readonly MIN_VOLUME = -10;
     static readonly MAX_VOLUME = 10;
 
-
     private static _context:AudioContext;
     static get context(){return this._context;}
-    private static gains:{gain:GainNode, volume:number}[] = [];
-    static getVolume(type:"sound"|"music"):number{
-        if(type === "sound"){return this.gains[ Sound.GAIN_SOUND ].volume;}
-        if(type === "music"){return this.gains[ Sound.GAIN_MUSIC ].volume;}
-        return 0;
+    private static gainNode:GainNode;
+    private static volume:number;
+    static getVolume():number{
+        return this.volume;
     }
-    static setVolume(type:"sound"|"music", v:number){
+    static setVolume(v:number){
         v = v|0;
         if(v > this.MAX_VOLUME){v = this.MAX_VOLUME;}
         if(v < this.MIN_VOLUME){v = this.MIN_VOLUME;}
-        if(type === "sound"){
-            const set = this.gains[ Sound.GAIN_SOUND ];
-            set.volume = v;
-            set.gain.gain.value = v / 10;
-        }
-        if(type === "music"){
-            const set = this.gains[ Sound.GAIN_MUSIC ];
-            set.volume = v;
-            set.gain.gain.value = v / 10;
-        }
+
+        this.volume = v;
+        this.gainNode.gain.value = v / 10;
 
     }
 
@@ -43,11 +31,10 @@ export class Sound{
         const AC = (w.AudioContext || w.webkitAudioContext);
         this._context = new AC();
 
-        for(let i = 0; i < this.GAIN_NUM; i++){
-            const gain = this.context.createGain();
-            gain.connect(this.context.destination);
-            this.gains.push( {gain:gain, volume:0});
-        }
+        const gain = this.context.createGain();
+        gain.connect(this.context.destination);
+        this.gainNode = gain;
+        this.volume = 0;
     }
 
     private buffer:AudioBuffer;
@@ -57,7 +44,7 @@ export class Sound{
     private doStop = false;
 
     
-    constructor(readonly path:string, readonly gainType:"sound"|"music", readonly lazyLoad = false){
+    constructor(readonly path:string, readonly lazyLoad = false){
     }
     
     load(ondecoded?:()=>void){
@@ -81,6 +68,7 @@ export class Sound{
 
             })
             ;
+
     }
 
     play(options?:{
@@ -108,8 +96,7 @@ export class Sound{
         const src = Sound.context.createBufferSource();
         src.buffer = this.buffer;
         src.connect(Sound.context.destination);
-        if(this.gainType === "sound"){src.connect(Sound.gains[ Sound.GAIN_SOUND ].gain);}
-        if(this.gainType === "music"){src.connect(Sound.gains[ Sound.GAIN_MUSIC ].gain);}
+        src.connect(Sound.gainNode);
         if(options && options.loop){
             src.loop = true;
         }
@@ -134,13 +121,59 @@ export class Sound{
 }
 
 
+export class Music{
+
+    private audio:HTMLAudioElement;
+    private loaded:boolean;
+    private _volume:number = 0;
+    get volume(){return this._volume;}
+    set volume(v:number){
+        this._volume = v;
+        this.audio.volume = v;
+    }
+
+    constructor(readonly path:string, readonly lazyLoad = false){
+        this.audio = new Audio(this.path);
+    }
+
+    load(){
+        this.loaded = true;
+        
+        this.audio.src = this.path;
+        this.audio.load();
+    }
+
+    play(options?:{
+        loop?:boolean,
+    }){
+        if(Sound.context.state !== "running"){
+            Sound.context.resume();
+        }
+
+        if(!this.loaded){
+            this.load();
+            this.play(options);
+            return;
+        }
+
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.loop = (options && options.loop) ? true : false;
+        this.audio.play();
+    }
+
+    stop(){
+        this.audio.pause();
+    }
+}
+
 
 export namespace Sound{
     const _values:Sound[] = [];
     export function values():ReadonlyArray<Sound>{return _values;}
 
     function createSound(path:string):Sound{
-        const s = new Sound(path, "sound");
+        const s = new Sound(path);
         _values.push(s);
         return s;
     }
@@ -220,24 +253,24 @@ export namespace Sound{
 
 
 export namespace Music{
-    const _values:Sound[] = [];
-    export function values():ReadonlyArray<Sound>{
+    const _values:Music[] = [];
+    export function values():ReadonlyArray<Music>{
         return _values;
     }
 
-    const musics = new Map<"dungeon"|"boss"|"ex", Sound[]>([
+    const musics = new Map<"dungeon"|"boss"|"ex", Music[]>([
         ["dungeon",[]],
         ["boss",[]],
         ["ex",[]],
     ]);
 
-    export const getMusics = (type:"dungeon"|"boss"|"ex"):ReadonlyArray<Sound>=>{
+    export const getMusics = (type:"dungeon"|"boss"|"ex"):ReadonlyArray<Music>=>{
         const m = musics.get(type);
         return m ? m : [];
     };
     
-    function createMusic(type:"dungeon"|"boss"|"ex", src:string, lazy:boolean):Sound{
-        const s = new Sound(src, "music", lazy);
+    function createMusic(type:"dungeon"|"boss"|"ex", src:string, lazy:boolean):Music{
+        const s = new Music(src, lazy);
         _values.push(s);
         
         // musics.get(type)?.push(s);
@@ -251,6 +284,16 @@ export namespace Music{
         Music.values().forEach(m=> m.stop());
     }
 
+    let volume = 0;
+    export function getVolume():number{return volume;}
+    export function setVolume(v:number){
+        v = v|0;
+        if(v > Sound.MAX_VOLUME){v = Sound.MAX_VOLUME;}
+        if(v < Sound.MIN_VOLUME){v = Sound.MIN_VOLUME;}
+
+        this.volume = v;
+        Music.values().forEach(m=> m.volume = v / 10);
+    }
 
 
     export const ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/true);

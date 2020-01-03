@@ -1,23 +1,16 @@
 export class Sound {
-    constructor(path, gainType, lazyLoad = false) {
+    constructor(path, lazyLoad = false) {
         this.path = path;
-        this.gainType = gainType;
         this.lazyLoad = lazyLoad;
         this.loaded = false;
         this.playing = false;
         this.doStop = false;
     }
     static get context() { return this._context; }
-    static getVolume(type) {
-        if (type === "sound") {
-            return this.gains[Sound.GAIN_SOUND].volume;
-        }
-        if (type === "music") {
-            return this.gains[Sound.GAIN_MUSIC].volume;
-        }
-        return 0;
+    static getVolume() {
+        return this.volume;
     }
-    static setVolume(type, v) {
+    static setVolume(v) {
         v = v | 0;
         if (v > this.MAX_VOLUME) {
             v = this.MAX_VOLUME;
@@ -25,27 +18,18 @@ export class Sound {
         if (v < this.MIN_VOLUME) {
             v = this.MIN_VOLUME;
         }
-        if (type === "sound") {
-            const set = this.gains[Sound.GAIN_SOUND];
-            set.volume = v;
-            set.gain.gain.value = v / 10;
-        }
-        if (type === "music") {
-            const set = this.gains[Sound.GAIN_MUSIC];
-            set.volume = v;
-            set.gain.gain.value = v / 10;
-        }
+        this.volume = v;
+        this.gainNode.gain.value = v / 10;
     }
     /**AudioContextの初期化。ブラウザの制限のため、TouchEventの中で初期化しなければならない。 */
     static init() {
         const w = window;
         const AC = (w.AudioContext || w.webkitAudioContext);
         this._context = new AC();
-        for (let i = 0; i < this.GAIN_NUM; i++) {
-            const gain = this.context.createGain();
-            gain.connect(this.context.destination);
-            this.gains.push({ gain: gain, volume: 0 });
-        }
+        const gain = this.context.createGain();
+        gain.connect(this.context.destination);
+        this.gainNode = gain;
+        this.volume = 0;
     }
     load(ondecoded) {
         this.loaded = true;
@@ -87,12 +71,7 @@ export class Sound {
         const src = Sound.context.createBufferSource();
         src.buffer = this.buffer;
         src.connect(Sound.context.destination);
-        if (this.gainType === "sound") {
-            src.connect(Sound.gains[Sound.GAIN_SOUND].gain);
-        }
-        if (this.gainType === "music") {
-            src.connect(Sound.gains[Sound.GAIN_MUSIC].gain);
-        }
+        src.connect(Sound.gainNode);
         if (options && options.loop) {
             src.loop = true;
         }
@@ -113,18 +92,49 @@ export class Sound {
         }
     }
 }
-Sound.GAIN_SOUND = 0;
-Sound.GAIN_MUSIC = 1;
-Sound.GAIN_NUM = 2;
 Sound.MIN_VOLUME = -10;
 Sound.MAX_VOLUME = 10;
-Sound.gains = [];
+export class Music {
+    constructor(path, lazyLoad = false) {
+        this.path = path;
+        this.lazyLoad = lazyLoad;
+        this._volume = 0;
+        this.audio = new Audio(this.path);
+    }
+    get volume() { return this._volume; }
+    set volume(v) {
+        this._volume = v;
+        this.audio.volume = v;
+    }
+    load() {
+        this.loaded = true;
+        this.audio.src = this.path;
+        this.audio.load();
+    }
+    play(options) {
+        if (Sound.context.state !== "running") {
+            Sound.context.resume();
+        }
+        if (!this.loaded) {
+            this.load();
+            this.play(options);
+            return;
+        }
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        this.audio.loop = (options && options.loop) ? true : false;
+        this.audio.play();
+    }
+    stop() {
+        this.audio.pause();
+    }
+}
 (function (Sound) {
     const _values = [];
     function values() { return _values; }
     Sound.values = values;
     function createSound(path) {
-        const s = new Sound(path, "sound");
+        const s = new Sound(path);
         _values.push(s);
         return s;
     }
@@ -201,7 +211,6 @@ Sound.gains = [];
     /**arr. */
     Sound.ya = createSound("sound/ya.mp3");
 })(Sound || (Sound = {}));
-export var Music;
 (function (Music) {
     const _values = [];
     function values() {
@@ -218,7 +227,7 @@ export var Music;
         return m ? m : [];
     };
     function createMusic(type, src, lazy) {
-        const s = new Sound(src, "music", lazy);
+        const s = new Music(src, lazy);
         _values.push(s);
         // musics.get(type)?.push(s);
         const m = musics.get(type);
@@ -231,6 +240,21 @@ export var Music;
         Music.values().forEach(m => m.stop());
     }
     Music.stop = stop;
+    let volume = 0;
+    function getVolume() { return volume; }
+    Music.getVolume = getVolume;
+    function setVolume(v) {
+        v = v | 0;
+        if (v > Sound.MAX_VOLUME) {
+            v = Sound.MAX_VOLUME;
+        }
+        if (v < Sound.MIN_VOLUME) {
+            v = Sound.MIN_VOLUME;
+        }
+        this.volume = v;
+        Music.values().forEach(m => m.volume = v / 10);
+    }
+    Music.setVolume = setVolume;
     Music.ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/ true);
     Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ true);
     Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ true);

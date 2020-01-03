@@ -17,7 +17,7 @@ import { Player } from "../player.js";
 import { SaveData } from "../savedata.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
-import { Sound } from "../sound.js";
+import { Sound, Music } from "../sound.js";
 import { Dungeon } from "../dungeon/dungeon.js";
 import { DrawYen, DrawSTBoxes, DrawUnitDetail } from "./sceneutil.js";
 export class OptionScene extends Scene {
@@ -75,34 +75,30 @@ export class OptionScene extends Scene {
                 this.setReload();
             },
         });
-        const addVolume = (type, v) => {
-            Sound.setVolume(type, Sound.getVolume(type) + v);
-            Util.msg.set(`${Sound.getVolume(type)}`);
-        };
         this.list.add({
             center: () => "効果音+",
             push: elm => {
-                addVolume("sound", 1);
+                Sound.setVolume(Sound.getVolume() + 1);
                 Sound.save.play();
             },
         });
         this.list.add({
             center: () => "効果音-",
             push: elm => {
-                addVolume("sound", -1);
+                Sound.setVolume(Sound.getVolume() - 1);
                 Sound.save.play();
             },
         });
         this.list.add({
             center: () => "音楽+",
             push: elm => {
-                addVolume("music", 1);
+                Music.setVolume(Music.getVolume() + 1);
             },
         });
         this.list.add({
             center: () => "音楽-",
             push: elm => {
-                addVolume("music", -1);
+                Music.setVolume(Music.getVolume() - 1);
             },
         });
         this.list.add({

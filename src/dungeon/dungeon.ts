@@ -214,7 +214,7 @@ export abstract class Dungeon{
     //
     //
     //-----------------------------------------------------------------
-    musics(type:"dungeon"|"boss"|"ex"):ReadonlyArray<Sound>{
+    musics(type:"dungeon"|"boss"|"ex"):ReadonlyArray<Music>{
         return Music.getMusics(type);
     }
     /**ランダムな曲を流す. */

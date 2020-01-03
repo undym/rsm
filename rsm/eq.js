@@ -298,9 +298,10 @@ EqEar._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
-                beforeDoAtk(dmg) {
+                afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("銃") && Math.random() < 0.5) {
+                            Util.msg.set("≫コスモガン");
                             yield new Dmg({
                                 attacker: dmg.attacker,
                                 target: dmg.target,

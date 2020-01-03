@@ -11,7 +11,7 @@ import { Color } from "./undym/type.js";
 import { Mix } from "./mix.js";
 import { PartySkill } from "./partyskill.js";
 import { CollectingSkill } from "./collectingskill.js";
-import { Sound } from "./sound.js";
+import { Sound, Music } from "./sound.js";
 import { PetFactory } from "./pet.js";
 export class Version {
     /**Integer. */
@@ -42,11 +42,8 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 31, 7);
+Version.NOW = new Version(0, 31, 8);
 Version.updateInfo = [
-    "(0.30.3)なにか",
-    "(0.30.4)雪が最初からペガサスになってしまっていた",
-    "(0.30.5)敵の装備がおかしかった",
     "(0.30.6)音楽の仕様変更　ジョブ追加　バグ修正",
     "(0.30.7)バグ修正",
     "(0.31.0)ダンジョン追加  バグ修正  内部処理の変更",
@@ -57,6 +54,7 @@ Version.updateInfo = [
     "(0.31.5)音楽の読み込みの変更  他",
     "(0.31.6)m",
     "(0.31.7)怨霊",
+    "(0.31.8)test",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -551,8 +549,8 @@ const storagePlayData = (type, json) => {
             }
         });
     }
-    ioInt(type, json, "SoundVolume", Sound.getVolume("sound"), load => Sound.setVolume("sound", load));
-    ioInt(type, json, "MusicVolume", Sound.getVolume("music"), load => Sound.setVolume("music", load));
+    ioInt(type, json, "SoundVolume", Sound.getVolume(), load => Sound.setVolume(load));
+    ioInt(type, json, "MusicVolume", Music.getVolume(), load => Music.setVolume(load));
     const flagObj = ioObject(type, json, "Flag");
     for (const flag of Flag.values()) {
         ioBool(type, flagObj, flag.uniqueName, flag.done, load => flag.done = load);

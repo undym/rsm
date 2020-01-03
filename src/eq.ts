@@ -301,8 +301,9 @@ export namespace Eq{
         constructor(){super({uniqueName:"コスモガン", info:"銃攻撃時稀に追加攻撃",
                                 pos:EqPos.武, lv:95});}
         createForce(_this:Eq){return new class extends Force{
-            async beforeDoAtk(dmg:Dmg){
+            async afterDoAtk(dmg:Dmg){
                 if(dmg.hasType("銃") && Math.random() < 0.5){
+                    Util.msg.set("≫コスモガン");
                     await new Dmg({
                         attacker:dmg.attacker,
                         target:dmg.target,
