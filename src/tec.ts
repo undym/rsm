@@ -2165,6 +2165,7 @@ export namespace Tec{
                                   sort:TecSort.弓, type:TecType.弓, targetings:["select"],
                                   mul:1, num:1, hit:0.8,
             });}
+            sound(){Sound.ya.play();}
             effect(attacker:Unit, target:Unit, dmg:Dmg){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         };
 
@@ -2183,8 +2184,8 @@ export namespace Tec{
                             
                             const realTargets = attacker.searchUnits( tec.targetings, tec.rndAttackNum( attacker ) );
                             realTargets.filter(t=> t.exists && !t.dead)
-                                .forEach(t=>{
-                                    tec.inner.run(attacker, t);
+                                .forEach(async t=>{
+                                    await tec.inner.run(attacker, t);
                                 });
     
                             attacker.removeInvisibleCondition(_this);
@@ -2220,6 +2221,7 @@ export namespace Tec{
                                   sort:TecSort.弓, type:TecType.弓, targetings:["select"],
                                   mul:1, num:1, hit:0.8,
             });}
+            sound(){Sound.ya.play();}
             effect(attacker:Unit, target:Unit, dmg:Dmg){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         };
 
@@ -2237,8 +2239,8 @@ export namespace Tec{
 
                         const realTargets = attacker.searchUnits( tec.targetings, tec.rndAttackNum( attacker ) );
                         realTargets.filter(t=> t.exists && !t.dead)
-                            .forEach(t=>{
-                                tec.inner.run(attacker, t);
+                            .forEach(async t=>{
+                                await tec.inner.run(attacker, t);
                             });
 
                         attacker.removeInvisibleCondition(this);

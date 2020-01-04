@@ -2607,6 +2607,7 @@ ActiveTec._valueOf = new Map();
                         mul: 1, num: 1, hit: 0.8,
                     });
                 }
+                sound() { Sound.ya.play(); }
                 effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
             };
         }
@@ -2632,9 +2633,9 @@ ActiveTec._valueOf = new Map();
                                         yield wait();
                                         const realTargets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
                                         realTargets.filter(t => t.exists && !t.dead)
-                                            .forEach(t => {
-                                            tec.inner.run(attacker, t);
-                                        });
+                                            .forEach((t) => __awaiter(this, void 0, void 0, function* () {
+                                            yield tec.inner.run(attacker, t);
+                                        }));
                                         attacker.removeInvisibleCondition(_this);
                                     });
                                 }
@@ -2677,6 +2678,7 @@ ActiveTec._valueOf = new Map();
                         mul: 1, num: 1, hit: 0.8,
                     });
                 }
+                sound() { Sound.ya.play(); }
                 effect(attacker, target, dmg) { FX_ナーガ着弾(attacker.imgCenter, target.imgCenter); }
             };
         }
@@ -2700,9 +2702,9 @@ ActiveTec._valueOf = new Map();
                                 yield wait();
                                 const realTargets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
                                 realTargets.filter(t => t.exists && !t.dead)
-                                    .forEach(t => {
-                                    tec.inner.run(attacker, t);
-                                });
+                                    .forEach((t) => __awaiter(this, void 0, void 0, function* () {
+                                    yield tec.inner.run(attacker, t);
+                                }));
                                 attacker.removeInvisibleCondition(this);
                             });
                         }
