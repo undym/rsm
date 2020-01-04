@@ -1927,7 +1927,7 @@ export namespace Tec{
                         }
                         Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
     
-                        tec.inner.run(attacker, target);
+                        await tec.inner.run(attacker, target);
     
                         attacker.removeInvisibleCondition(_this);
                     }
@@ -1972,7 +1972,7 @@ export namespace Tec{
                         }
                         Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
     
-                        tec.inner.run(attacker, target);
+                        await tec.inner.run(attacker, target);
     
                         attacker.removeInvisibleCondition(_this);
                     }
@@ -2017,7 +2017,7 @@ export namespace Tec{
                         }
                         Util.msg.set("空からミサイルが降り注ぐ！"); await wait();
     
-                        tec.inner.run(attacker, target);
+                        await tec.inner.run(attacker, target);
     
                         attacker.removeInvisibleCondition(_this);
                     }

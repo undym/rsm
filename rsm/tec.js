@@ -2311,7 +2311,7 @@ ActiveTec._valueOf = new Map();
                                     }
                                     Util.msg.set("空からミサイルが降り注ぐ！");
                                     yield wait();
-                                    tec.inner.run(attacker, target);
+                                    yield tec.inner.run(attacker, target);
                                     attacker.removeInvisibleCondition(_this);
                                 });
                             }
@@ -2366,7 +2366,7 @@ ActiveTec._valueOf = new Map();
                                     }
                                     Util.msg.set("空からミサイルが降り注ぐ！");
                                     yield wait();
-                                    tec.inner.run(attacker, target);
+                                    yield tec.inner.run(attacker, target);
                                     attacker.removeInvisibleCondition(_this);
                                 });
                             }
@@ -2421,7 +2421,7 @@ ActiveTec._valueOf = new Map();
                                     }
                                     Util.msg.set("空からミサイルが降り注ぐ！");
                                     yield wait();
-                                    tec.inner.run(attacker, target);
+                                    yield tec.inner.run(attacker, target);
                                     attacker.removeInvisibleCondition(_this);
                                 });
                             }
