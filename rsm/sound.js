@@ -1,3 +1,4 @@
+let context;
 export class Sound {
     constructor(path, lazyLoad = false) {
         this.path = path;
@@ -6,7 +7,6 @@ export class Sound {
         this.playing = false;
         this.doStop = false;
     }
-    static get context() { return this._context; }
     static getVolume() {
         return this.volume;
     }
@@ -25,9 +25,9 @@ export class Sound {
     static init() {
         const w = window;
         const AC = (w.AudioContext || w.webkitAudioContext);
-        this._context = new AC();
-        const gain = this.context.createGain();
-        gain.connect(this.context.destination);
+        context = new AC();
+        const gain = context.createGain();
+        gain.connect(context.destination);
         this.gainNode = gain;
         this.volume = 0;
         Music.init();
@@ -38,7 +38,7 @@ export class Sound {
             .then(res => {
             res.arrayBuffer()
                 .then(audioData => {
-                Sound.context.decodeAudioData(audioData, buffer => {
+                context.decodeAudioData(audioData, buffer => {
                     this.buffer = buffer;
                     if (ondecoded) {
                         ondecoded();
@@ -51,8 +51,8 @@ export class Sound {
     }
     play(options) {
         this.doStop = false;
-        if (Sound.context.state !== "running") {
-            Sound.context.resume();
+        if (context.state !== "running") {
+            context.resume();
         }
         if (!this.loaded) {
             this.load(() => {
@@ -69,9 +69,9 @@ export class Sound {
         if (this.src && this.src.loop) { //ループがついているsrcを見失うと止められなくなるので
             this.stop();
         }
-        const src = Sound.context.createBufferSource();
+        const src = context.createBufferSource();
         src.buffer = this.buffer;
-        src.connect(Sound.context.destination);
+        src.connect(context.destination);
         src.connect(Sound.gainNode);
         if (options && options.loop) {
             src.loop = true;
@@ -99,28 +99,25 @@ export class Music {
     constructor(path, lazyLoad = false) {
         this.path = path;
         this.lazyLoad = lazyLoad;
-        this._volume = 0;
         this.audio = new Audio(this.path);
+        this.audio.preload = lazyLoad ? "none" : "auto";
     }
     static init() {
-        this.gainNode = Sound.context.createGain();
+        this.gainNode = context.createGain();
     }
-    get volume() { return this._volume; }
     set volume(v) {
-        // this._volume = v;
-        // this.audio.volume = v;
         Music.gainNode.gain.value = v;
     }
     load() {
         this.audio.load();
     }
     play(options) {
-        if (Sound.context.state !== "running") {
-            Sound.context.resume();
+        if (context.state !== "running") {
+            context.resume();
         }
         if (!this.src) {
-            this.src = Sound.context.createMediaElementSource(this.audio);
-            this.src.connect(Music.gainNode).connect(Sound.context.destination);
+            this.src = context.createMediaElementSource(this.audio);
+            this.src.connect(Music.gainNode).connect(context.destination);
         }
         this.audio.pause();
         this.audio.currentTime = 0;
@@ -234,7 +231,6 @@ Music.mute = false;
     function createMusic(type, src, lazy) {
         const s = new Music(src, lazy);
         _values.push(s);
-        // musics.get(type)?.push(s);
         const m = musics.get(type);
         if (m) {
             m.push(s);
@@ -245,12 +241,6 @@ Music.mute = false;
         Music.values().forEach(m => m.stop());
     }
     Music.stop = stop;
-    // export function setMute(mute:boolean):void{
-    //     if(mute){
-    //         Music.stop();
-    //     }
-    //     Music.mute = mute;
-    // }
     let volume = 0;
     function getVolume() { return volume | 0; }
     Music.getVolume = getVolume;
