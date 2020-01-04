@@ -276,7 +276,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘") && Math.random() < 0.75) {
+                        if (dmg.result.isHit && dmg.hasType("格闘") && Math.random() < 0.75) {
                             yield new Dmg({
                                 attacker: dmg.attacker,
                                 target: dmg.target,
@@ -300,7 +300,7 @@ EqEar._valueOf = new Map();
             return new class extends Force {
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("銃") && Math.random() < 0.5) {
+                        if (dmg.result.isHit && dmg.hasType("銃") && Math.random() < 0.5) {
                             Util.msg.set("≫コスモガン");
                             yield new Dmg({
                                 attacker: dmg.attacker,
@@ -557,6 +557,7 @@ EqEar._valueOf = new Map();
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4) {
+                            Util.msg.set("≫いばらの鎧");
                             yield Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                         }
                     });

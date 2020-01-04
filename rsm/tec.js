@@ -960,7 +960,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("格闘")) {
+                        if (dmg.result.isHit && dmg.hasType("格闘")) {
                             yield new Dmg({
                                 attacker: dmg.attacker,
                                 target: dmg.target,

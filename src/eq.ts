@@ -284,7 +284,7 @@ export namespace Eq{
                                 pos:EqPos.武, lv:105});}
         createForce(_this:Eq){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
-                if(dmg.hasType("格闘") && Math.random() < 0.75){
+                if(dmg.result.isHit && dmg.hasType("格闘") && Math.random() < 0.75){
                     await new Dmg({
                         attacker:dmg.attacker,
                         target:dmg.target,
@@ -302,7 +302,7 @@ export namespace Eq{
                                 pos:EqPos.武, lv:95});}
         createForce(_this:Eq){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
-                if(dmg.hasType("銃") && Math.random() < 0.5){
+                if(dmg.result.isHit && dmg.hasType("銃") && Math.random() < 0.5){
                     Util.msg.set("≫コスモガン");
                     await new Dmg({
                         attacker:dmg.attacker,
@@ -477,6 +477,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4){
+                    Util.msg.set("≫いばらの鎧");
                     await Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                 }
             }

@@ -888,7 +888,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
-                if(dmg.hasType("格闘")){
+                if(dmg.result.isHit && dmg.hasType("格闘")){
                     await new Dmg({
                         attacker:dmg.attacker,
                         target:dmg.target,
