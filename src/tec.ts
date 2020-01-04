@@ -1340,6 +1340,11 @@ export namespace Tec{
         });}
         sound(){Sound.drain.play();}
         effect(attacker:Unit, target:Unit, dmg:Dmg){FX_吸収(attacker.imgCenter, target.imgCenter);}
+        createDmg(attacker:Unit, target:Unit):Dmg{
+            const dmg = super.createDmg(attacker, target);
+            dmg.types.push("吸収");
+            return dmg;
+        }
         async runInner(attacker:Unit, target:Unit, dmg:Dmg){
             await super.runInner(attacker, target, dmg);
 
@@ -1485,24 +1490,47 @@ export namespace Tec{
     //--------------------------------------------------------------------------
     /**霊術戦士. */
     export const                          鎌:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"鎌", info:"一体に怨霊攻撃 怨霊-10% -怨霊使い-をセットしている必要がある",
+        constructor(){super({ uniqueName:"鎌", info:"一体に怨霊攻撃  怨霊-10%  -怨霊使い-をセットしている必要がある",
                               sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
                               mul:1, num:1, hit:1, mp:1,
         });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            if(!attacker.tecs.some(tec=> tec === Tec.怨霊使い)){
+                dmg.pow.base *= 0.01;
+            }
+            return dmg;
+        }
         async run(attacker:Unit, target:Unit){
-            super.run(attacker, target);
-            attacker.prm(Prm.GHOST).base *= 0.9;
+            await super.run(attacker, target);
+            attacker.ghost *= 0.9;
         }
     }
     /**落武者. */
     export const                          武者鎌:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"武者鎌", info:"一体に怨霊攻撃x2 怨霊使いのセットが必要",
+        constructor(){super({ uniqueName:"武者鎌", info:"一体に怨霊攻撃x2  怨霊-10%  怨霊使いのセットが必要",
                               sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
                               mul:2, num:1, hit:1, tp:1,
         });}
         async run(attacker:Unit, target:Unit){
-            super.run(attacker, target);
-            attacker.prm(Prm.GHOST).base *= 0.9;
+            await super.run(attacker, target);
+            attacker.ghost *= 0.9;
+        }
+    }
+    /**ネクロマンサー. */
+    export const                          大鎌:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"大鎌", info:"一体とそれに隣接したユニットに怨霊攻撃  怨霊-10%  怨霊使いのセットが必要",
+                              sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
+                              mul:1, num:1, hit:1, mp:3,
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run(attacker, target);
+
+            for(const u of target.searchUnitsEx("top","bottom")){
+                await super.run(attacker, u);
+            }
+
+            attacker.ghost *= 0.9;
         }
     }
     /**敵:霊術戦士. */
@@ -1521,7 +1549,7 @@ export namespace Tec{
     }
     /**落武者. */
     export const                          成仏:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"成仏", info:"自分の怨霊値の10%分のダメージを敵に与える HP=0 怨霊使いのセットが必要",
+        constructor(){super({ uniqueName:"成仏", info:"自分の怨霊値の10%分のダメージを敵に与える HP=0  怨霊使いのセットが必要",
                               sort:TecSort.暗黒, type:TecType.怨霊, targetings:["all"],
                               mul:1, num:1, hit:1, ep:1,
         });}
@@ -1536,7 +1564,7 @@ export namespace Tec{
             return new Dmg({
                 attacker:attacker,
                 target:target,
-                absPow:attacker.ghost * 0.01
+                absPow:attacker.ghost * 0.001
             });
         }
         async use(attacker:Unit, targets:Unit[]){
@@ -1578,7 +1606,7 @@ export namespace Tec{
                 if(me.isFriend( deadUnit )){return;}
                 if(Battle.getPhaseUnit() !== me){return;}
     
-                const value = deadUnit.prm(Prm.LV).total;
+                const value = deadUnit.prm(Prm.LV).total * 10;
                 me.ghost += value;
             }
         };}
@@ -1636,6 +1664,62 @@ export namespace Tec{
                         }
                     }
                 });
+            }
+        };}
+    };
+    /**ネクロマンサー. */
+    export const                         生き血:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"生き血", info:"怨霊攻撃後、自分の最大HPの5%分吸収",
+                                sort:TecSort.暗黒, type:TecType.怨霊,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async afterDoAtk(dmg:Dmg){
+                if(dmg.hasType("怨霊") && dmg.result.isHit){
+                    const value = dmg.attacker.prm(Prm.MAX_HP).total * 0.05;
+
+                    await new Dmg({
+                        attacker:dmg.attacker,
+                        target:dmg.target,
+                        absPow:value,
+                        canCounter:false,
+                        types:["吸収"],
+                    }).run(false);
+                    Heal.run("HP", value, dmg.attacker, dmg.attacker, Tec.生き血, false);
+                }
+            }
+        };}
+    };
+    /**ネクロマンサー. */
+    export const                         マゾ:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"マゾ", info:"被攻撃時、受けたダメージx2の怨霊を得る  ただしLvの2倍を超えない",
+                                sort:TecSort.暗黒, type:TecType.怨霊,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async afterBeAtk(dmg:Dmg){
+                if(dmg.result.isHit){
+                    const lim = dmg.target.prm(Prm.LV).total * 2;
+                    const value = dmg.result.value < lim ? dmg.result.value : lim;
+                    dmg.target.ghost += value;
+                }
+            }
+        };}
+    };
+    /**ネクロマンサー. */
+    export const                         霊族意識:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"霊族意識", info:"暗黒・怨霊攻撃を吸収  吸血を無効化  行動開始時HP-10%",
+                                sort:TecSort.暗黒, type:TecType.怨霊,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async beDamage(dmg:Dmg){
+                if(dmg.hasType("吸収")){
+                    dmg.result.value = 0;
+                    return;
+                }
+                if(dmg.result.isHit && dmg.hasType("暗黒","怨霊")){
+                    Util.msg.set("＞霊族意識");
+                    Heal.run("HP", dmg.result.value, dmg.attacker, dmg.attacker, Tec.霊族意識, true);
+                    dmg.result.isHit = false;
+                }
             }
         };}
     };
@@ -1863,7 +1947,7 @@ export namespace Tec{
     };
     /**霊弾の射手. */
     export const                         ブラッドブレッド:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"ブラッドブレッド", info:"銃攻撃後、与えたダメージの1%をHPとして吸収",
+        constructor(){super({uniqueName:"ブラッドブレッド", info:"銃攻撃後、与えたダメージの1%分のHPを回復",
                                 sort:TecSort.銃, type:TecType.銃,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1885,10 +1969,10 @@ export namespace Tec{
                               mul:1, num:1, hit:1.1, tp:1, item:()=>[[Item.バッテリー, 1]],
         });}
         async run(attacker:Unit, target:Unit){
-            super.run( attacker, target );
+            await super.run( attacker, target );
 
             for(const u of target.searchUnitsEx("top","bottom")){
-                super.run( attacker, u );
+                await super.run( attacker, u );
             }
         }
     }
@@ -3373,14 +3457,21 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(Math.random() < 0.33){
-                    
-                    const value = Heal.run("HP", 5, dmg.target, dmg.attacker, Tec.血技の技巧, false);
-                    dmg.attacker.hp -= value;
-                    
                     Sound.drain.play();
                     FX_吸収(dmg.target.imgCenter, dmg.attacker.imgCenter);
                     Util.msg.set("＞血技の技巧");
-                    Util.msg.set(`HPを${value}吸収した`); await wait();
+
+                    const value = 5;
+                    const _dmg = new Dmg({
+                        attacker:dmg.target,
+                        target:dmg.attacker,
+                        absPow:value,
+                        canCounter:false,
+                        types:["吸収"],
+                    })
+                    await _dmg.run(false);
+                    Heal.run("HP", _dmg.result.value, dmg.target, dmg.attacker, Tec.血技の技巧, true);
+                    
                 }
             }
         };}
@@ -3781,7 +3872,7 @@ export namespace Tec{
                               mul:1, num:1, hit:1, tp:1,
         });}
         async runInner(attacker:Unit, target:Unit, dmg:Dmg){
-            super.runInner(attacker, target, dmg);
+            await super.runInner(attacker, target, dmg);
 
             if(dmg.result.isHit){
                 Sound.drain.play();

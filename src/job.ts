@@ -128,6 +128,8 @@ export abstract class Job{
 
         e.ep = Math.random() < 0.01 ? 1 : 0;
 
+        e.ghost *= 50;
+
         for(const pos of EqPos.values){
             e.setEq(pos, Eq.rnd(pos, lv));
         }
@@ -630,6 +632,17 @@ export namespace Job{
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.エヴィン, Tec.オグマ, Tec.ジョンD, Tec.ヘルメス, Tec.MP自動回復2, Tec.魔力開放, Tec.メイガス];
             e.prm(Prm.MAX_MP).base *= 2;
+        }
+    };
+    export const                         ネクロマンサー:Job = new class extends Job{
+        constructor(){super({uniqueName:"ネクロマンサー", info:"",
+                                appearLv:140, img:new Img("img/unit/unit43.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.STR, 1], [Prm.DRK, 2],],
+                                learningTecs:()=>[Tec.生き血, Tec.大鎌, Tec.マゾ, Tec.霊族意識],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.鎌, Tec.怨霊使い, Tec.生き血, Tec.大鎌, Tec.マゾ, Tec.霊族意識];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

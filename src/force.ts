@@ -70,6 +70,7 @@ export type DmgType =
                  "格闘"|"槍"|"魔法"|"神格"|"暗黒"|"怨霊"|"鎖術"|"過去"|"銃"|"機械"|"弓"
                 |"追加攻撃"
                 |"毒"|"ペット"|"罠"
+                |"吸収"
                 ;
 
 export class Dmg{
@@ -209,7 +210,7 @@ export class Dmg{
     }
 
 
-    async run():Promise<void>{
+    async run(msg?:boolean):Promise<void>{
         if(!this.target.exists || this.target.dead){return;}
 
         
@@ -232,35 +233,28 @@ export class Dmg{
         this.target.beDamage(this);
 
         if(this.result.isHit){
-            const _doDmg = async(value:number)=>{
-                effect(value);
-                if(this.target.pet && (value >= this.target.hp || Math.random() < 0.25)){
-                    Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`); await wait(1);
 
-                    this.target.pet.hp--;
-                    if(this.target.pet.hp <= 0){
-                        const petName = this.target.pet.toString();
-                        this.target.pet = undefined;
-                        Sound.pet_die.play();
-                        FX_PetDie( this.target.imgCenter );
-                        Util.msg.set(`${petName}は砕け散った...`); await wait();
-                    }
-                }else{
-                    this.target.hp -= value;
+            const value = this.result.value|0;
+            
+            effect(value);
+            if(this.target.pet && (value >= this.target.hp || Math.random() < 0.25)){
+                Util.msg.set(`${this.target.pet}が${value}のダメージを引き受けた`); await wait(1);
+
+                this.target.pet.hp--;
+                if(this.target.pet.hp <= 0){
+                    const petName = this.target.pet.toString();
+                    this.target.pet = undefined;
+                    Sound.pet_die.play();
+                    FX_PetDie( this.target.imgCenter );
+                    Util.msg.set(`${petName}は砕け散った...`); await wait();
                 }
-            };
+            }else{
+                this.target.hp -= value;
+                if(msg){
+                    Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
+                }
+            }
 
-            const value = this.result.value;
-            await _doDmg(value);
-            Util.msg.set(`${this.target.name}に${value}のダメージ`, Color.RED.bright);
-
-            // for(let i = 0; i < this.additionalAttacks.length; i++){
-            //     await wait(1);
-
-            //     const value = this.additionalAttacks[i]( this, i );
-            //     await _doDmg(value);
-            //     Util.msg.set(`+${value}`, Color.RED.bright);
-            // }
         }else{
             FX_RotateStr(font, "MISS", point, Color.L_GRAY);
             Util.msg.set("MISS", Color.L_GRAY);
