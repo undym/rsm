@@ -55,7 +55,7 @@ Version.updateInfo = [
     "(0.31.7)怨霊",
     "(0.31.8)test6",
     "(0.31.9)音楽の鳴らし方を変えた",
-    "(0.31.10)音楽の鳴らし方を変えた",
+    "(0.31.10)バグ修正",
 ];
 let saveDataVersion;
 export class SaveData {

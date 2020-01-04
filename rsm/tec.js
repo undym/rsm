@@ -2588,7 +2588,7 @@ ActiveTec._valueOf = new Map();
     Tec.ヤクシャ = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ヤクシャ", info: "一体に2回弓攻撃",
-                sort: TecSort.弓, type: TecType.弓, targetings: ["random"],
+                sort: TecSort.弓, type: TecType.弓, targetings: ["select"],
                 mul: 1, num: 2, hit: 0.8, tp: 1, item: () => [[Item.夜叉の矢, 2]],
             });
         }
