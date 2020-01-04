@@ -481,14 +481,6 @@ export namespace Story3{
                 [f_empty,  "",          "次の瞬間、ジスロフ達は、元の現代の地球塔の契約書保管室にいた。"],
             ]
         );
-        /*
-                [f_empty,  "",          ""],
-                [f_kimi,   "キミロフ",  ""],
-                [f_sayaka, "沙耶香爺",  ""],
-                [f_kabe2,  "カベイリア",""],
-                [f_jisrof, "ジスロフ",  ""],
-                [f_nana,   "ナナ",      ""],
-         */
 
         s.end();
         
@@ -496,6 +488,140 @@ export namespace Story3{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set("第35話『さよなら、殿下』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    //塔地下へのボタン
+    export const runMain35a = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_ruin   = new Img("img/face/p_ruin.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic25.jpg"),
+            [
+                [f_empty,  "",          "････････････････････････"],
+                [f_empty,  "",          "････････････････････････････････････････････････"],
+                [f_empty,  "",          "「セイントガール･･･、心配しなくていいよ」"],
+                [f_empty,  "",          "「君の子供は、僕らが育てる･･･」"],
+                [f_empty,  "",          "「おやすみ･･･セイントガール･･･」"],
+                [f_empty,  "",          "「･･･おんぎゃあ！！」"],
+                [f_empty,  "",          "「その子をどうするの？」"],
+                [f_empty,  "",          "「この子に僕らの力を封印するんだ」"],
+                [f_empty,  "",          "「この子、妹が死んだの。海藤ウイルスで」"],
+                [f_empty,  "",          "「･･･海藤ウイルス？･･･」"],
+                [f_empty,  "",          `「貴方の"ぞうお"をキューブが読心して、停止する最後に造った創造物よ」`],
+                [f_empty,  "",          "「大勢の人が感染して死んだわ･･･」"],
+                [f_empty,  "",          "「･･･もう会えなくなるよ」"],
+                [f_empty,  "",          "「･･･私、海藤ウイルスに感染してるの」"],
+                [f_empty,  "",          "「キューブとペルセポネの力･･･それらは、僕ら人間が最初から持っている力だよ」"],
+                [f_empty,  "",          "「私達、人間が･･･あのペルセポネっていう巨人の想像だというなら･･･」"],
+                [f_empty,  "",          "「･･･私も想像したの･･･」"],
+                [f_empty,  "",          "「誰も傷ついたり、脅えたりしない世界を･･･」"],
+                [f_empty,  "",          "「妹と安心して眠れる世界を･･･」"],
+                [f_empty,  "",          "「･･･マァマァ･･･」"],
+                [f_empty,  "",          "「･･･ラブ、おまえのこのちっちゃな肩に頼っちゃってごめんよ」"],
+                [f_empty,  "",          "「･･･セイントガール、この子は永遠に生きる」"],
+                [f_empty,  "",          "「･･･何万年も、何億年もずっと」"],
+                [f_empty,  "",          "「･･･いつか、我等の末裔がこのほこらを見つけ、力を得るだろう」"],
+                [f_empty,  "",          "「そして宇宙を常に連続させ続ける力となる」"],
+                [f_empty,  "",          "「･･･！！やめろ！！時間が止まってしまう！！」"],
+                [f_empty,  "",          "「もう無駄だ、エグゼよ･･･我等はもう永久にこの赤子に触れられない」"],
+                [f_empty,  "",          "「コレは、キューブが見テる夢ダ」"],
+                [f_empty,  "",          "「･･･おまえの、ほんとうの、おまえを、しっていますようよです･･･」"],
+                [f_empty,  "",          "「ひどい、みにくい、おそろしい、くるった、ギラギラしてくからのる！！」"],
+                [f_empty,  "",          "「こわい･･･」"],
+                [f_empty,  "",          "「こわい･･････」"],
+                [f_empty,  "",          "････････････････････････"],
+                [f_empty,  "",          "････････････････････････････････････････････････"],
+            ]
+        );
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",          "･･･ルインがその扉に触れた瞬間、ルインの脳内にキューブとペルセポネに融合したミッド・ポイントの記憶が流れこんできた。"],
+                [f_empty,  "",          "･･･いや、正確にはそれらは、それら全てを内包する赤子ラブの見る夢だった。"],
+                [f_empty,  "",          "ラブはミッド・ポイントの記憶と共に、この塔そのものであった。"],
+                [f_ruin,   "ルイン",    "「･･･君だね？･･･」"],
+                [f_empty,  "",          "そしてルインは、この赤子こそが自分をこの今に引き寄せた張本人であることをその時悟った。"],
+                [f_empty,  "",          "皆が見守る中、果てしなく長い時間決して開かれることのなかった扉が、重く鈍い音を立ててついに開いた。"],
+                [f_empty,  "",          "扉は更なる塔深部へと繋がっているはずだ･･････。"],
+            ]
+        );
+
+        s.end();
+    };
+    //塔地下777階クリア。このストーリーの後、オランピア・ドラギャレットとの戦闘。
+    export const runMain36 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_luka   = new Img("img/face/p_luka.jpg");
+        const f_nana  = new Img("img/face/p_nana.jpg");
+        const f_ruin   = new Img("img/face/p_ruin.jpg");
+        const f_siki  = new Img("img/face/p_siki.jpg");
+        const f_pea    = new Img("img/face/p_pea.jpg");
+        const f_oranpia  = new Img("img/face/p_oranpia.jpg");
+        const f_dora  = new Img("img/face/p_dora.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic22.jpg"),
+            [
+                [f_empty,  "",          "皆が戸惑い静まる中、一号が口を開いた。"],
+                [f_1,      "一号",      "「俺は、もうアンタを恨むのはやめた」"],
+                [f_jisrof, "ジスロフ",  "「･････････」"],
+                [f_1,      "一号",      "「俺もlukaも、生きる意味を見付けたからだ」"],
+                [f_luka,   "luka",      "「･････････」"],
+                [f_luka,   "luka",      "「･･･でも、私･･･、ジスマに会ったら･･･一号のようになれないかもしれない･･･」"],
+                [f_nana,   "ナナ",      "「･･･ごめんなさい。lukaさん」"],
+                [f_luka,   "luka",      "「え･･････」"],
+                [f_empty,  "",          "沈黙するジスロフの前にナナが立ち、lukaに言った。"],
+                [f_nana,   "ナナ",      "「･･･ジスマは我を失っています」"],
+                [f_nana,   "ナナ",      "「ジスマを止めるのが僕達の務め･･････、だから一緒に行かせてください」"],
+                [f_ruin,   "ルイン",    "「一緒に行こう･･･」"],
+                [f_ruin,   "ルイン",    "「･･･僕たちはまだ弱いんだ･･･」"],
+                [f_ruin,   "ルイン",    "「この星や、大勢の人を守るために、もっと力が必要だから」"],
+                [f_nana,   "ナナ",      "「ありがとうルイン」"],
+                [f_empty,  "",          "「これは驚いたなっ･･･」"],
+                [f_empty,  "",          "皆の後ろで声がした。"],
+                [f_siki,   "シキ",      "「先代様じゃありませんか」"],
+                [f_ruin,   "ルイン",    "「･･･！」"],
+                [f_jisrof, "ジスロフ",  "「おまえは･･････、ハルの子か･･･」"],
+                [f_siki,   "シキ",      "「とっくに死んだと聞いていましたが？」"],
+                [f_pea,    "ピアー",    "「シキィ！･･･おまえ･･･またルインを殺しにきたなっ！！」"],
+                [f_empty,  "",          "ピアーを始め、一号や雪が身構えた。"],
+                [f_siki,   "シキ",      "「ああ、おまえ達にこれ以上強くなってもらっちゃ困るんでね」"],
+                [f_siki,   "シキ",      "「･･････おまえ達は何も分かっちゃいないんだよ」"],
+                [f_siki,   "シキ",      "「この地球塔、そしてヒルトンへ潜る意味がな！！」"],
+                [f_siki,   "シキ",      "「おまえ達のような分際で、辿り付かれてたまるものか･･････」"],
+                [f_empty,  "",          "シキの後の影から、ぼうっと２つの影が浮かび上がった。"],
+                [f_oranpia,"オランピア","「･･･ジスロフ王がいるなんて聞いてないわよ･･･？」"],
+                [f_dora,"ドラギャレット","「･･･うむ、しかし羅文の力とやらが感じとれない･･･」"],
+                [f_dora,"ドラギャレット","「予定外に苦戦を強いられそうな事に変わりはなさそうだが･･･」"],
+                [f_oranpia,"オランピア","「･･････こんな事なら、やっぱりラプソディアを止めておけば良かったわ」"],
+                [f_oranpia,"オランピア","「スペシャリストを生きたまま保存したいから連れて帰るだなんて、子供みたい･･･」"],
+            ]
+        );
+        /*
+                [f_empty,  "",          ""],
+                [f_1,      "一号",      ""],
+                [f_jisrof, "ジスロフ",  ""],
+                [f_nana,   "ナナ",      ""],
+                [f_luka,   "luka",      ""],
+                [f_ruin,   "ルイン",    ""],
+                [f_siki,   "シキ",      ""],
+                [f_pea,    "ピアー",    ""],
+                [f_oranpia,"オランピア",""],
+                [f_dora,"ドラギャレット",""],
+        */
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第n話『』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }
 /*
@@ -527,7 +653,7 @@ export namespace Story3{
         const f_kimi  = new Img("img/face/p_kimi.jpg");
         const f_sayaka  = new Img("img/face/p_sayaka.jpg");
 
-    export const runMain31 = async()=>{
+    export const runMain37 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();

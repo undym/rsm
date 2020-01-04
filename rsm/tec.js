@@ -1515,7 +1515,7 @@ ActiveTec._valueOf = new Map();
     Tec.VAMPIRE_VLOODY_STAR = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "VAMPIRE_VLOODY_STAR", info: "敵全体からHPを吸収  暗黒依存",
-                sort: TecSort.暗黒, type: TecType.暗黒, targetings: ["select"],
+                sort: TecSort.暗黒, type: TecType.暗黒, targetings: ["all"],
                 mul: 0.5, num: 1, hit: 1.1, ep: 1,
             });
         }
