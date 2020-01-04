@@ -557,7 +557,7 @@ EqEar._valueOf = new Map();
                 afterBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4) {
-                            Util.msg.set("≫いばらの鎧");
+                            Util.msg.set("＞いばらの鎧");
                             yield Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                         }
                     });

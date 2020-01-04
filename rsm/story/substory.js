@@ -14,7 +14,7 @@ import { Img } from "../graphics/texture.js";
 import { Story } from "./story.js";
 export var SubStory;
 (function (SubStory) {
-    SubStory.runMain20 = () => __awaiter(this, void 0, void 0, function* () {
+    SubStory.runMaya0 = () => __awaiter(this, void 0, void 0, function* () {
         const f_empty = new Img("img/face/p_rs.jpg");
         const f_maya = new Img("img/face/p_maya.jpg"); //泣き顔
         const f_maya2 = new Img("img/face/p_maya2.jpg"); //笑顔
@@ -35,9 +35,36 @@ export var SubStory;
             [f_maya2, "北条院真夜", "「マーザンとヤハンに交易があった時代に使われていた水路らしいが･･･」"],
             [f_maya2, "北条院真夜", "「さっ･･･俺は冒険で忙しいんだ。邪魔しないでくれないか？フン」"],
             [f_empty, "", "青年は颯爽と去って行った...."],
-            [f_maya, "北条院真夜", ""],
-            [f_maya2, "北条院真夜", ""],
         ]);
+        s.end();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
+    //塔最上階クリア
+    SubStory.runWarmHole = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_1 = new Img("img/face/p_1.jpg");
+        const f_pea = new Img("img/face/p_pea.jpg");
+        const s = new Story();
+        yield s.set(new Img("img/story/s_pic13.jpg"), [
+            [f_1, "一号", "「俺やlukaが通ってきたこのワームホール･･･」"],
+            [f_1, "一号", "「こちら側からもうまく使えないだろうか」"],
+            [f_pea, "ピアー", "「ワシらが古代武器でドカンとフッ飛ばしてもーてのぅ、うまく機能するかどうか･･･」"],
+            [f_1, "一号", "「壊れたワームホール装置を復元できれば、こちら側からもワームホールを使って向こう側へ行けるかもしれないな」"],
+            [f_empty, "", "【ワームホール装置の復元】のレシピが『建造』に加わりました。"],
+        ]);
+        /*
+                [f_empty,  "",      ""],
+                [f_1,      "一号",  ""],
+                [f_pea,    "ピアー",""],
+        */
         s.end();
         Util.msg.set(".", Color.GRAY);
         Sound.moji.play();

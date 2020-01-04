@@ -477,7 +477,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4){
-                    Util.msg.set("≫いばらの鎧");
+                    Util.msg.set("＞いばらの鎧");
                     await Tec.格闘カウンター.run(dmg.target, dmg.attacker);
                 }
             }
