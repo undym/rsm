@@ -305,7 +305,7 @@ export class Heal{
                 const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy);
                 FX_RotateStr(Heal.font, `${heal.value}`, p, Color.PINK);
 
-                if(msg){Util.msg.set(`${heal.target.name}のMPが${heal.value}回復した！`, Color.GREEN.bright);}
+                if(msg){Util.msg.set(`${heal.target.name}のMPが${heal.value}回復した！`, Color.PINK.bright);}
                 }break;
             case "TP":{
                 heal.target.tp += heal.value;
@@ -313,7 +313,7 @@ export class Heal{
                 const p = new Point(heal.target.imgBounds.cx, heal.target.imgBounds.cy + heal.target.imgBounds.h / 2);
                 FX_RotateStr(Heal.font, `${heal.value}`, p, Color.CYAN);
 
-                if(msg){Util.msg.set(`${heal.target.name}のTPが${heal.value}回復した！`, Color.GREEN.bright);}
+                if(msg){Util.msg.set(`${heal.target.name}のTPが${heal.value}回復した！`, Color.CYAN.bright);}
                 }break;
         }
         return heal.value;
