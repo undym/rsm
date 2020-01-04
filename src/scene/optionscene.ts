@@ -1,17 +1,12 @@
 import { Scene } from "../undym/scene.js";
 import { Place, Util, Debug, PlayData } from "../util.js";
-import { Rect, Color, Size } from "../undym/type.js";
-import { YLayout, ILayout, Layout, Label, FlowLayout, RatioLayout, VariableLayout } from "../undym/layout.js";
 import { Btn } from "../widget/btn.js";
-import { TownScene } from "./townscene.js";
 import { List, ListElm } from "../widget/list.js";
 import { FXTest, EffectTest } from "../fx/fx.js";
 import { Item, ItemType } from "../item.js";
-import { Font, Graphics } from "../graphics/graphics.js";
 import { ActiveTec, PassiveTec } from "../tec.js";
 import { Player } from "../player.js";
 import { SaveData } from "../savedata.js";
-import { DungeonEvent } from "../dungeon/dungeonevent.js";
 import { EqEar, Eq } from "../eq.js";
 import { PartySkill } from "../partyskill.js";
 import { Sound, Music } from "../sound.js";
@@ -112,9 +107,6 @@ export class OptionScene extends Scene{
             push:elm=>{
                 Music.setVolume( Music.getVolume() + 1 );
                 Util.msg.set("音楽音量:"+Music.getVolume());
-
-                // Music.setMute(false);
-                // Util.msg.set("音楽ON");
             },
         });
         this.list.add({
@@ -122,9 +114,6 @@ export class OptionScene extends Scene{
             push:elm=>{
                 Music.setVolume( Music.getVolume() - 1 );
                 Util.msg.set("音楽音量:"+Music.getVolume());
-
-                // Music.setMute(true);
-                // Util.msg.set("音楽OFF");
             },
         });
         this.list.add({
