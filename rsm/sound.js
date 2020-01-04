@@ -30,6 +30,7 @@ export class Sound {
         gain.connect(this.context.destination);
         this.gainNode = gain;
         this.volume = 0;
+        Music.init();
     }
     load(ondecoded) {
         this.loaded = true;
@@ -101,25 +102,25 @@ export class Music {
         this._volume = 0;
         this.audio = new Audio(this.path);
     }
+    static init() {
+        this.gainNode = Sound.context.createGain();
+    }
     get volume() { return this._volume; }
     set volume(v) {
-        this._volume = v;
-        this.audio.volume = v;
+        // this._volume = v;
+        // this.audio.volume = v;
+        Music.gainNode.gain.value = v;
     }
     load() {
-        this.loaded = true;
-        // this.audio.src = this.path;
-        // this.audio.src = this.path;
-        // this.audio.load();
+        this.audio.load();
     }
     play(options) {
         if (Sound.context.state !== "running") {
             Sound.context.resume();
         }
-        if (!this.loaded) {
-            this.load();
-            this.play(options);
-            return;
+        if (!this.src) {
+            this.src = Sound.context.createMediaElementSource(this.audio);
+            this.src.connect(Music.gainNode).connect(Sound.context.destination);
         }
         this.audio.pause();
         this.audio.currentTime = 0;
@@ -132,6 +133,7 @@ export class Music {
         this.audio.muted = true;
     }
 }
+Music.mute = false;
 (function (Sound) {
     const _values = [];
     function values() { return _values; }
@@ -243,6 +245,12 @@ export class Music {
         Music.values().forEach(m => m.stop());
     }
     Music.stop = stop;
+    // export function setMute(mute:boolean):void{
+    //     if(mute){
+    //         Music.stop();
+    //     }
+    //     Music.mute = mute;
+    // }
     let volume = 0;
     function getVolume() { return volume | 0; }
     Music.getVolume = getVolume;

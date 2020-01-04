@@ -212,7 +212,6 @@ const title = () => {
         }
         ctrl();
         setInterval(draw, 1000 / 30);
-        // window.requestAnimationFrame(draw);
         Graphics.getRenderTarget().canvas.removeEventListener("touchend", listener);
         Graphics.getRenderTarget().canvas.removeEventListener("click", listener);
     };

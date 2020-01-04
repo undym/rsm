@@ -96,6 +96,8 @@ export class OptionScene extends Scene {
             push: elm => {
                 Music.setVolume(Music.getVolume() + 1);
                 Util.msg.set("音楽音量:" + Music.getVolume());
+                // Music.setMute(false);
+                // Util.msg.set("音楽ON");
             },
         });
         this.list.add({
@@ -103,6 +105,8 @@ export class OptionScene extends Scene {
             push: elm => {
                 Music.setVolume(Music.getVolume() - 1);
                 Util.msg.set("音楽音量:" + Music.getVolume());
+                // Music.setMute(true);
+                // Util.msg.set("音楽OFF");
             },
         });
         this.list.add({
