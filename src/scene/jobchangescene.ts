@@ -9,9 +9,7 @@ import { Place } from "../util.js";
 import { Graphics, Font } from "../graphics/graphics.js";
 import { List, ListElm } from "../widget/list.js";
 import { TownScene } from "./townscene.js";
-import { TecType, Tec, ActiveTec } from "../tec.js";
 import { FX_Str } from "../fx/fx.js";
-import { Eq, EqPos, EqEar } from "../eq.js";
 import { Job } from "../job.js";
 import { Sound } from "../sound.js";
 
@@ -123,11 +121,12 @@ export class JobChangeScene extends Scene{
                         choosedJob = job;
 
                         const jobImgH = 0.1;
+                        const jobImgW = Graphics.pixelH * jobImgH / Graphics.pixelW;
                         this.info = new Labels(Font.def)
                                         .add(()=>`${job}`)
                                         .addLayout(ILayout.create({draw:bounds=>{
                                             job.img.drawEx({
-                                                dstRatio:new Rect(bounds.x, bounds.y, 0.1, jobImgH),
+                                                dstRatio:new Rect(bounds.x, bounds.y, jobImgW, jobImgH),
                                                 keepRatio:true,
                                             })
                                         }}) ,()=> jobImgH)

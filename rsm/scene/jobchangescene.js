@@ -97,11 +97,12 @@ export class JobChangeScene extends Scene {
                     Sound.system.play();
                     choosedJob = job;
                     const jobImgH = 0.1;
+                    const jobImgW = Graphics.pixelH * jobImgH / Graphics.pixelW;
                     this.info = new Labels(Font.def)
                         .add(() => `${job}`)
                         .addLayout(ILayout.create({ draw: bounds => {
                             job.img.drawEx({
-                                dstRatio: new Rect(bounds.x, bounds.y, 0.1, jobImgH),
+                                dstRatio: new Rect(bounds.x, bounds.y, jobImgW, jobImgH),
                                 keepRatio: true,
                             });
                         } }), () => jobImgH)

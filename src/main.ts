@@ -152,69 +152,6 @@ const setInput = ()=>{
 };
 
 
-// const setTitle = ()=>{
-//     Graphics.fillRect(Rect.FULL, Color.BLACK);
-//     const img = new Img("img/title.png", {
-//         lazyLoad:false,
-//         onload:img=>{
-//             // const h = 1;
-//             // const w = img.pixelW / img.pixelH;
-//             // img.draw(new Rect(
-//             //     0.5 - w / 2,
-//             //     0.5 - h / 2,
-//             //     w,
-//             //     h
-//             // ));
-//             img.drawEx({
-//                 dstRatio:Rect.FULL,
-//                 keepRatio:true,
-//             });
-            
-//             const msg:string[] = [`Version(${Version.NOW})`];
-//             for(const s of Version.updateInfo){
-//                 msg.push(s);
-//             }
-//             msg.push("test");
-
-//             msg.forEach((s,i)=>{
-//                 Font.def.draw(s, new Point(0, i * Font.def.ratioH), Color.WHITE);
-//             });
-//         },
-//     });
-    
-
-//     let done = false;
-//     const listener:(this:Document, ev:TouchEvent|MouseEvent)=>any = ev=>{
-//         if(done){return;}
-//         done = true;
-
-//         Sound.init();
-
-//         for(const sound of Sound.values){
-//             sound.load();
-//         }
-
-
-//         if(SaveData.exists()){
-//             continueGame();
-//             ctrl();
-//         }else{
-//             newGame();
-//             Scene.load( TownScene.ins );
-//             ctrl();
-//         }
-    
-//         setInterval( draw, 1000 / 30 );
-
-
-//         Graphics.getRenderTarget().canvas.removeEventListener("touchend", listener);
-//         Graphics.getRenderTarget().canvas.removeEventListener("click", listener);
-//     };
-//     Graphics.getRenderTarget().canvas.addEventListener("touchend", listener);
-//     Graphics.getRenderTarget().canvas.addEventListener("click", listener);
-// };
-
-
 const title = ()=>{
     
 
