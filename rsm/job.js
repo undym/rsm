@@ -412,6 +412,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.かばう, Tec.聖なる守護, Tec.聖なる守護, Tec.殴る, Tec.聖剣, Tec.光の護封剣, Tec.光の護封剣];
+            e.prm(Prm.STR).base *= 2;
         }
     };
     Job.精霊使い = new class extends Job {
@@ -437,7 +438,8 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.五月雨, Tec.時雨, Tec.格闘連携, Tec.格闘能力UP, Tec.殴る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.五月雨, Tec.時雨, Tec.格闘連携, Tec.格闘能力UP, Tec.時雨, Tec.時雨, Tec.五月雨];
+            e.prm(Prm.STR).base *= 1.5;
         }
     };
     Job.ガーディアン = new class extends Job {
@@ -465,7 +467,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.念力, Tec.スネイク, Tec.射る, Tec.撃つ, Tec.殴る, Tec.殴る, Tec.殴る];
+            e.tecs = [Tec.念力, Tec.スネイク, Tec.射る, Tec.撃つ];
         }
     };
     Job.落武者 = new class extends Job {
@@ -662,6 +664,20 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.念, Tec.念力, Tec.念力2, Tec.MP自動回復, Tec.念力2, Tec.パワーストーン, Tec.オルゴン, Tec.封印回路];
+            e.prm(Prm.MAX_MP).base *= 2;
+        }
+    };
+    Job.メイガス = new class extends Job {
+        constructor() {
+            super({ uniqueName: "メイガス", info: "",
+                appearLv: 130, img: new Img("img/unit/unit42.png"),
+                lvupExp: Job.DEF_LVUP_EXP * 3,
+                growthPrms: () => [[Prm.MAX_MP, 1], [Prm.MAG, 2],],
+                learningTecs: () => [Tec.ヘルメス, Tec.MP自動回復2, Tec.魔力開放, Tec.メイガス],
+            });
+        }
+        setEnemyInner(e) {
+            e.tecs = [Tec.エヴィン, Tec.オグマ, Tec.ジョンD, Tec.ヘルメス, Tec.MP自動回復2, Tec.魔力開放, Tec.メイガス];
             e.prm(Prm.MAX_MP).base *= 2;
         }
     };

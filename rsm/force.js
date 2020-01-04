@@ -257,6 +257,7 @@ export class Dmg {
     }
 }
 export class Heal {
+    //回復した値を返す。
     static run(type, value, healer, target, action, msg) {
         if (!target.exists || target.dead) {
             return 0;

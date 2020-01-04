@@ -319,6 +319,7 @@ const setDefJobChangeList = (map, u) => {
     }
     add(Job.魔法使い, [Job.訓練生]);
     add(Job.ウィザード, [Job.魔法使い]);
+    add(Job.メイガス, [Job.ウィザード, Job.精霊使い]);
     add(Job.アルケミスト, [Job.ウィザード, Job.考古学者]);
     add(Job.エスパー, [Job.アルケミスト]);
     add(Job.天使, [Job.訓練生]);

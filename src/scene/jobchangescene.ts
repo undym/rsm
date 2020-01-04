@@ -120,7 +120,7 @@ export class JobChangeScene extends Scene{
                         Sound.system.play();
                         choosedJob = job;
 
-                        const jobImgH = 0.1;
+                        const jobImgH = 0.2;
                         const jobImgW = Graphics.pixelH * jobImgH / Graphics.pixelW;
                         this.info = new Labels(Font.def)
                                         .add(()=>`${job}`)

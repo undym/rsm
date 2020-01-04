@@ -262,9 +262,9 @@ Music.mute = false;
     }
     Music.setVolume = setVolume;
     Music.ifuudoudou = createMusic("dungeon", "sound/music/ifuudoudou.mp3", /*lazy*/ true);
-    Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ false);
-    Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ false);
-    Music.aenai = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/ false);
+    Music.hesoumi = createMusic("dungeon", "sound/music/hesoumi.mp3", /*lazy*/ true);
+    Music.tuchi2 = createMusic("dungeon", "sound/music/tuchi2.mp3", /*lazy*/ true);
+    Music.aenai = createMusic("dungeon", "sound/music/aenai.mp3", /*lazy*/ true);
     Music.anokoro = createMusic("ex", "sound/music/anokoro.mp3", /*lazy*/ false);
     Music.rs7 = createMusic("boss", "sound/music/rs7.mp3", /*lazy*/ false);
 })(Music || (Music = {}));

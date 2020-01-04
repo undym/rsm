@@ -1270,6 +1270,7 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    /**鬼火. */
     Tec.ファイアボール = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ファイアボール", info: "一体とその両脇に魔法攻撃",
@@ -1282,10 +1283,19 @@ ActiveTec._valueOf = new Map();
                 run: { get: () => super.run }
             });
             return __awaiter(this, void 0, void 0, function* () {
-                _super.run.call(this, attacker, target);
+                yield _super.run.call(this, attacker, target);
                 for (const u of target.searchUnitsEx("top", "bottom").filter(u => !u.dead)) {
-                    _super.run.call(this, attacker, u);
+                    yield _super.run.call(this, attacker, u);
                 }
+            });
+        }
+    };
+    /**メイガス. */
+    Tec.ヘルメス = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ヘルメス", info: "一体に魔法攻撃x3",
+                sort: TecSort.魔法, type: TecType.魔法, targetings: ["select"],
+                mul: 3, num: 1, hit: 1.2, mp: 11,
             });
         }
     };
@@ -1311,6 +1321,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-魔法Active
     //魔法Passive
     //
     //--------------------------------------------------------------------------
@@ -1349,6 +1360,41 @@ ActiveTec._valueOf = new Map();
                             yield wait();
                             yield Tec.魔法カウンター.run(me, dmg.target);
                         }
+                    });
+                }
+            };
+        }
+    };
+    /**メイガス. */
+    Tec.メイガス = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "メイガス", info: "魔法攻撃+50%  ターン経過毎に効果減少",
+                sort: TecSort.魔法, type: TecType.魔法,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                battleStart(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        let mul = 1.5;
+                        unit.addInvisibleCondition(new class extends InvisibleCondition {
+                            constructor() {
+                                super(...arguments);
+                                this.uniqueName = Tec.メイガス.uniqueName;
+                            }
+                            beforeDoAtk(dmg) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    if (dmg.hasType("魔法")) {
+                                        dmg.pow.mul *= mul;
+                                    }
+                                });
+                            }
+                            phaseEnd(unit) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    mul = mul * 0.9 + 1 * 0.1;
+                                });
+                            }
+                        });
                     });
                 }
             };
@@ -4113,6 +4159,24 @@ ActiveTec._valueOf = new Map();
             };
         }
     };
+    /**メイガス. */
+    Tec.MP自動回復2 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "MP自動回復2", info: "行動開始時MP+2",
+                sort: TecSort.回復, type: TecType.回復,
+            });
+        }
+        toString() { return "MP自動回復Ⅱ"; }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        Heal.run("MP", 1, unit, unit, this, false);
+                    });
+                }
+            };
+        }
+    };
     /**ガーディアン. */
     Tec.HPMP回復 = new class extends PassiveTec {
         constructor() {
@@ -4211,6 +4275,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-回復Passive
     //その他Active
     //
     //--------------------------------------------------------------------------
@@ -4235,7 +4300,6 @@ ActiveTec._valueOf = new Map();
                 sort: TecSort.その他, type: TecType.その他, targetings: ["all"],
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
-            this.dmgValue = 0;
         }
         use(attacker, targets) {
             const _super = Object.create(null, {
@@ -4246,7 +4310,6 @@ ActiveTec._valueOf = new Map();
                 Util.msg.set(`${attacker.name}の体から光が溢れる...`);
                 yield wait();
                 if (canUse) {
-                    this.dmgValue = attacker.hp;
                     this.soundAndFX = true;
                 }
                 yield _super.use.call(this, attacker, targets);
@@ -4277,6 +4340,7 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**ドラゴン. */
     Tec.ドラゴンブレス = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "ドラゴンブレス", info: "敵全体に[最大HP-現在HP]のダメージを与える",
@@ -4290,6 +4354,47 @@ ActiveTec._valueOf = new Map();
                     attacker: attacker,
                     target: target,
                     absPow: attacker.prm(Prm.MAX_HP).total - attacker.hp,
+                });
+                yield dmg.run();
+                yield wait();
+            });
+        }
+    };
+    /**メイガス. */
+    Tec.魔力開放 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "魔力開放", info: "敵全体に魔+現在MPのダメージ",
+                sort: TecSort.その他, type: TecType.その他, targetings: ["all"],
+                mul: 1, num: 1, hit: 1, xp: 1,
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                const canUse = this.checkCost(attacker);
+                if (canUse) {
+                    this.soundAndFX = true;
+                }
+                yield _super.use.call(this, attacker, targets);
+                if (canUse) {
+                    attacker.mp = 0;
+                }
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.soundAndFX) {
+                    this.soundAndFX = false;
+                    Sound.bom2.play();
+                    FX_BOM(attacker.imgCenter);
+                }
+                const dmg = new Dmg({
+                    attacker: attacker,
+                    target: target,
+                    absPow: attacker.mp,
+                    canCounter: false,
                 });
                 yield dmg.run();
                 yield wait();

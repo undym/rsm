@@ -1116,18 +1116,26 @@ export namespace Tec{
             return dmg;
         }
     }
+    /**鬼火. */
     export const                          ファイアボール:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ファイアボール", info:"一体とその両脇に魔法攻撃",
                               sort:TecSort.魔法, type:TecType.魔法, targetings:["select"],
                               mul:1, num:1, hit:1.2, mp:8,
         });}
         async run(attacker:Unit, target:Unit){
-            super.run( attacker, target );
+            await super.run( attacker, target );
 
             for(const u of target.searchUnitsEx("top","bottom").filter(u=> !u.dead)){
-                super.run( attacker, u );
+                await super.run( attacker, u );
             }
         }
+    }
+    /**メイガス. */
+    export const                          ヘルメス:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ヘルメス", info:"一体に魔法攻撃x3",
+                              sort:TecSort.魔法, type:TecType.魔法, targetings:["select"],
+                              mul:3, num:1, hit:1.2, mp:11,
+        });}
     }
     // export const                          ルー:ActiveTec = new class extends ActiveTec{
     //     constructor(){super({ uniqueName:"ルー", info:"一体に魔法攻撃x3",
@@ -1149,6 +1157,7 @@ export namespace Tec{
     }
     //--------------------------------------------------------------------------
     //
+    //-魔法Active
     //魔法Passive
     //
     //--------------------------------------------------------------------------
@@ -1176,6 +1185,28 @@ export namespace Tec{
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
                     await Tec.魔法カウンター.run(me, dmg.target);
                 }
+            }
+        };}
+    };
+    /**メイガス. */
+    export const                         メイガス:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"メイガス", info:"魔法攻撃+50%  ターン経過毎に効果減少",
+                                sort:TecSort.魔法, type:TecType.魔法,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async battleStart(unit:Unit){
+                let mul = 1.5;
+                unit.addInvisibleCondition(new class extends InvisibleCondition{
+                    readonly uniqueName = Tec.メイガス.uniqueName;
+                    async beforeDoAtk(dmg:Dmg){
+                        if(dmg.hasType("魔法")){
+                            dmg.pow.mul *= mul;
+                        }
+                    }
+                    async phaseEnd(unit:Unit){
+                        mul = mul * 0.9 + 1 * 0.1;
+                    }
+                });
             }
         };}
     };
@@ -3299,6 +3330,18 @@ export namespace Tec{
             }
         };}
     };
+    /**メイガス. */
+    export const                         MP自動回復2:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"MP自動回復2", info:"行動開始時MP+2",
+                                sort:TecSort.回復, type:TecType.回復,
+        });}
+        toString(){return "MP自動回復Ⅱ";}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async phaseStart(unit:Unit){
+                Heal.run("MP", 1, unit, unit, this, false);
+            }
+        };}
+    };
     /**ガーディアン. */
     export const                         HPMP回復:PassiveTec = new class extends PassiveTec{
         constructor(){super({uniqueName:"HPMP回復", info:"行動開始時HP+1%MP+1",
@@ -3368,6 +3411,7 @@ export namespace Tec{
     };
     //--------------------------------------------------------------------------
     //
+    //-回復Passive
     //その他Active
     //
     //--------------------------------------------------------------------------
@@ -3387,7 +3431,6 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
 
-        dmgValue = 0;
         soundAndFX:boolean;
 
         async use(attacker:Unit, targets:Unit[]){
@@ -3396,7 +3439,6 @@ export namespace Tec{
             Util.msg.set(`${attacker.name}の体から光が溢れる...`); await wait();
 
             if(canUse){
-                this.dmgValue = attacker.hp;
                 this.soundAndFX = true;
             }
             await super.use(attacker, targets);
@@ -3422,6 +3464,7 @@ export namespace Tec{
             await dmg.run(); await wait();
         }
     }
+    /**ドラゴン. */
     export const                          ドラゴンブレス:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ドラゴンブレス", info:"敵全体に[最大HP-現在HP]のダメージを与える",
                               sort:TecSort.その他, type:TecType.その他, targetings:["all"],
@@ -3432,6 +3475,42 @@ export namespace Tec{
                 attacker:attacker,
                 target:target,
                 absPow:attacker.prm(Prm.MAX_HP).total - attacker.hp,
+            });
+            await dmg.run(); await wait();
+        }
+    }
+    /**メイガス. */
+    export const                          魔力開放:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"魔力開放", info:"敵全体に魔+現在MPのダメージ",
+                              sort:TecSort.その他, type:TecType.その他, targetings:["all"],
+                              mul:1, num:1, hit:1, xp:1,
+        });}
+
+        soundAndFX:boolean;
+
+        async use(attacker:Unit, targets:Unit[]){
+            const canUse = this.checkCost(attacker);
+
+            if(canUse){
+                this.soundAndFX = true;
+            }
+            await super.use(attacker, targets);
+            
+            if(canUse){
+                attacker.mp = 0;
+            }
+        }
+        async run(attacker:Unit, target:Unit){
+            if(this.soundAndFX){
+                this.soundAndFX = false;
+                Sound.bom2.play();
+                FX_BOM( attacker.imgCenter );
+            }
+            const dmg = new Dmg({
+                attacker:attacker,
+                target:target,
+                absPow:attacker.mp,
+                canCounter:false,
             });
             await dmg.run(); await wait();
         }

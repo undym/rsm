@@ -275,7 +275,7 @@ type HealType = "HP"|"MP"|"TP";
 
 export class Heal{
     private static font:Font;
-
+    //回復した値を返す。
     static run(
         type:HealType,
         value:number,
