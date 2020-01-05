@@ -659,6 +659,17 @@ export namespace Job{
             e.tecs = [Tec.断末魔, Tec.感染, Tec.ゾンビタッチ, Tec.腐敗, Tec.ゾンビタッチ, Tec.金切り声];
         }
     };
+    export const                         魔剣士:Job = new class extends Job{
+        constructor(){super({uniqueName:"魔剣士", info:"",
+                                appearLv:150, img:new Img("img/unit/unit45.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.STR, 1], [Prm.MAG, 2],],
+                                learningTecs:()=>[Tec.魔剣, Tec.ミルテの魔壁, Tec.トロスの魔力, Tec.二人の悲歌],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.魔剣, Tec.ミルテの魔壁, Tec.トロスの魔力, Tec.二人の悲歌];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),
@@ -683,8 +694,8 @@ export namespace Job{
     };
     //--------------------------------------------------
     //
-    //-人間
-    //獣
+    //-人間ジョブ
+    //獣ジョブ
     //
     //--------------------------------------------------
     export const                         雷鳥:Job = new class extends Job{
