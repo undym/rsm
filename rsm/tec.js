@@ -2037,6 +2037,16 @@ ActiveTec._valueOf = new Map();
         }
         createForce(_this) {
             return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield new Dmg({
+                            attacker: unit,
+                            target: unit,
+                            absPow: unit.prm(Prm.MAX_HP).total * 0.1,
+                            types: ["怨霊"],
+                        }).run(false);
+                    });
+                }
                 beDamage(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("吸収")) {

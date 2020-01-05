@@ -1710,6 +1710,14 @@ export namespace Tec{
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                await new Dmg({
+                    attacker:unit,
+                    target:unit,
+                    absPow:unit.prm(Prm.MAX_HP).total * 0.1,
+                    types:["怨霊"],
+                }).run(false);
+            }
             async beDamage(dmg:Dmg){
                 if(dmg.hasType("吸収")){
                     dmg.result.value = 0;
