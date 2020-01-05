@@ -670,6 +670,17 @@ export namespace Job{
             e.tecs = [Tec.魔剣, Tec.ミルテの魔壁, Tec.トロスの魔力, Tec.二人の悲歌];
         }
     };
+    export const                         プリースト:Job = new class extends Job{
+        constructor(){super({uniqueName:"プリースト", info:"",
+                                appearLv:160, img:new Img("img/unit/unit46.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.MAX_MP, 1], [Prm.STR, 1], [Prm.MAG, 2],],
+                                learningTecs:()=>[Tec.ヨトゥンヘイム, Tec.約束, Tec.エンジェル1, Tec.スピリット2],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.天籟, Tec.良き占い, Tec.衛生, Tec.ヨトゥンヘイム, Tec.約束, Tec.エンジェル1, Tec.スピリット2];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

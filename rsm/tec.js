@@ -12,7 +12,7 @@ import { wait } from "./undym/scene.js";
 import { Force, Dmg, AttackNumForce, Heal } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff, FX_RemoveCondition } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -3509,6 +3509,22 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**プリースト. */
+    Tec.約束 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "約束", info: "一体を＜約＞化する",
+                sort: TecSort.強化, type: TecType.状態, targetings: ["select"],
+                mul: 1, num: 1, hit: 1, mp: 19,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                FX_回復(target.imgCenter);
+                Sound.sin.play();
+                Unit.setCondition(target, Condition.約束, 1);
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-強化Active
@@ -4238,6 +4254,31 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**プリースト. */
+    Tec.ヨトゥンヘイム = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ヨトゥンヘイム", info: "第2ユグドラシル",
+                sort: TecSort.回復, type: TecType.回復, targetings: ["all", "friendOnly", "withDead"],
+                mul: 1, num: 1, hit: 1, xp: 1,
+            });
+        }
+        use(attacker, targets) {
+            const _super = Object.create(null, {
+                use: { get: () => super.use }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.checkCost(attacker)) {
+                    Sound.sin.play();
+                }
+                yield _super.use.call(this, attacker, targets);
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield Tec.ユグドラシル.run(attacker, target);
+            });
+        }
+    };
     /**忍者. */
     Tec.ジライヤ = new class extends ActiveTec {
         constructor() {
@@ -4308,7 +4349,7 @@ ActiveTec._valueOf = new Map();
     Tec.解毒 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "解毒", info: "一体の＜毒＞を解除",
-                sort: TecSort.回復, type: TecType.回復, targetings: ["select"],
+                sort: TecSort.回復, type: TecType.回復, targetings: ["select", "friendOnly"],
                 mul: 1, num: 1, hit: 1, mp: 3,
             });
         }
@@ -4466,6 +4507,40 @@ ActiveTec._valueOf = new Map();
                         Util.msg.add(`${enemy.name}に${value}のダメージ`, Color.RED.bright);
                     }
                 }
+            });
+        }
+    };
+    /**プリースト. */
+    Tec.エンジェル1 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "エンジェル1", info: "対象の＜契約＞以外のLv1状態異常を解除",
+                sort: TecSort.回復, type: TecType.回復, targetings: ["select", "friendOnly"],
+                mul: 1, num: 1, hit: 1, mp: 8,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.KAIFUKU.play();
+                FX_RemoveCondition(target.imgCenter);
+                if (!target.hasCondition(Condition.契約)) {
+                    target.removeCondition(ConditionType.BAD_LV1);
+                }
+            });
+        }
+    };
+    /**プリースト. */
+    Tec.スピリット2 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "スピリット2", info: "対象のLv2状態異常を解除",
+                sort: TecSort.回復, type: TecType.回復, targetings: ["select", "friendOnly"],
+                mul: 1, num: 1, hit: 1, mp: 8,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.KAIFUKU.play();
+                FX_RemoveCondition(target.imgCenter);
+                target.removeCondition(ConditionType.BAD_LV2);
             });
         }
     };
