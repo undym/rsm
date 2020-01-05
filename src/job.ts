@@ -104,12 +104,15 @@ export abstract class Job{
     
     async setEnemy(e:EUnit, lv:number){
 
+        const prmMul = Math.pow(1.25, 1 + lv / 80);
         for(const prm of Prm.values){
             const set = e.prm(prm);
             set.base = 4 * Math.random() + lv * Math.random();
+            set.base *= prmMul;
             set.battle = 0;
             set.eq = 0;
         }
+
 
         e.name = this.toString();
         e.job = this;
@@ -643,6 +646,17 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.鎌, Tec.怨霊使い, Tec.生き血, Tec.大鎌, Tec.マゾ, Tec.霊族意識];
+        }
+    };
+    export const                         ゾンビ:Job = new class extends Job{
+        constructor(){super({uniqueName:"ゾンビ", info:"",
+                                appearLv:140, img:new Img("img/unit/unit44.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.STR, 1], [Prm.DRK, 2],],
+                                learningTecs:()=>[Tec.腐敗, Tec.ゾンビタッチ, Tec.金切り声],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.断末魔, Tec.感染, Tec.ゾンビタッチ, Tec.腐敗, Tec.ゾンビタッチ, Tec.金切り声];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

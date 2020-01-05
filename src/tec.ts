@@ -1512,6 +1512,13 @@ export namespace Tec{
                               sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
                               mul:2, num:1, hit:1, tp:1,
         });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            if(!attacker.tecs.some(tec=> tec === Tec.怨霊使い)){
+                dmg.pow.base *= 0.01;
+            }
+            return dmg;
+        }
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
             attacker.ghost *= 0.9;
@@ -1523,6 +1530,13 @@ export namespace Tec{
                               sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
                               mul:1, num:1, hit:1, mp:3,
         });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            if(!attacker.tecs.some(tec=> tec === Tec.怨霊使い)){
+                dmg.pow.base *= 0.01;
+            }
+            return dmg;
+        }
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
 
@@ -1585,8 +1599,31 @@ export namespace Tec{
             FX_RotateStr(Font.def, ""+value, target.imgCenter, Color.WHITE);
         }
     }
+    /**ゾンビ. */
+    export const                          ゾンビタッチ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ゾンビタッチ", info:"一体に怨霊攻撃  稀に相手を＜病気＞化  怨霊-10%  怨霊使いのセットが必要",
+                              sort:TecSort.暗黒, type:TecType.怨霊, targetings:["select"],
+                              mul:1, num:1, hit:1, tp:1,
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            if(!attacker.tecs.some(tec=> tec === Tec.怨霊使い)){
+                dmg.pow.base *= 0.01;
+            }
+            return dmg;
+        }
+        async runInner(attacker:Unit, target:Unit, dmg:Dmg){
+            await super.runInner(attacker, target, dmg);
+
+            if(dmg.result.isHit && Math.random() < 0.5){
+                Unit.setCondition(dmg.target, Condition.病気, dmg.attacker.prm(Prm.DRK).total * 2 + 1); await wait();
+            }
+            attacker.ghost *= 0.9;
+        }
+    }
     //--------------------------------------------------------------------------
     //
+    //-怨霊Active
     //怨霊Passive
     //
     //--------------------------------------------------------------------------
@@ -1727,6 +1764,27 @@ export namespace Tec{
                     Util.msg.set("＞霊族意識");
                     Heal.run("HP", dmg.result.value, dmg.attacker, dmg.attacker, Tec.霊族意識, true);
                     dmg.result.isHit = false;
+                }
+            }
+        };}
+    };
+    /**ゾンビ. */
+    export const                         腐敗:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"腐敗", info:"怨霊攻撃+50%  行動開始時HP-5%",
+                                sort:TecSort.暗黒, type:TecType.怨霊,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                await new Dmg({
+                    attacker:unit,
+                    target:unit,
+                    absPow:unit.prm(Prm.MAX_HP).total * 0.05,
+                    types:["怨霊"],
+                }).run(false);
+            }
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("怨霊")){
+                    dmg.pow.mul *= 1.5;
                 }
             }
         };}
@@ -2678,6 +2736,33 @@ export namespace Tec{
             Unit.setCondition( target, Condition.反射, 2 );
         }
     }
+    /**ゾンビ. */
+    export const                          金切り声:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"金切り声", info:"敵全体のHPを10%削り、自分の最大HPに加算",
+                              sort:TecSort.強化, type:TecType.状態, targetings:["all"],
+                              mul:1, num:1, hit:1, ep:1,
+        });}
+        async use(attacker:Unit, targets:Unit[]){
+            if(this.checkCost(attacker)){
+                Sound.DARK.play();
+            }
+            await super.use(attacker, targets);
+        }
+        async run(attacker:Unit, target:Unit){
+            FX_吸収(attacker.imgCenter, target.imgCenter);
+            Sound.drain.play();
+            const dmg = new Dmg({
+                attacker:attacker,
+                target:target,
+                absPow:target.hp * 0.1,
+                types:["吸収"],
+            });
+            await dmg.run(false);
+            attacker.prm(Prm.MAX_HP).battle += dmg.result.value;
+            Heal.run("HP", dmg.result.value, attacker, attacker, this, false);
+            Util.msg.set(`${target.name}からHP${dmg.result.value}を吸収した！`);
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //-強化Active
@@ -3070,7 +3155,20 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             Sound.down.play();
             FX_Debuff( target.imgCenter );
-            Unit.setCondition( target, Condition.混乱, 1 );
+            Unit.setCondition( target, Condition.混乱, 1 ); await wait(1);
+        }
+    }
+    /**敵:ゾンビ. */
+    export const                          断末魔:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"断末魔", info:"一体の力を1/10にする",
+                              sort:TecSort.弱体, type:TecType.状態, targetings:["select"],
+                              mul:1, num:1, hit:1, sp:1,
+        });}
+        async run(attacker:Unit, target:Unit){
+            Sound.DARK.play();
+            FX_Debuff( target.imgCenter );
+            target.prm(Prm.STR).battle -= target.prm(Prm.STR).total * 0.9;
+            Util.msg.set(`${target.name}の力が1/10になった！`); await wait();
         }
     }
     //--------------------------------------------------------------------------
