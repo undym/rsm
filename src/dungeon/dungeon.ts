@@ -1281,7 +1281,7 @@ export namespace Dungeon{
             e.img = new Img("img/unit/boss_syao.png");
             e.prm(Prm.MAX_HP).base = 1500;
             e.prm(Prm.STR).base = 51;
-            e.tecs.push( Tec.閻魔の笏 );
+            e.tecs.push( Tec.閻魔の笏, Tec.暴れる );
             e.setEq(Eq.小鬼の腕輪.pos, Eq.小鬼の腕輪);
             e.setCondition( Condition.暴走, 40 );
         };
