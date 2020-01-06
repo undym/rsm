@@ -84,7 +84,7 @@ export class Job {
     get maxLv() { return 20; }
     setEnemy(e, lv) {
         return __awaiter(this, void 0, void 0, function* () {
-            const prmMul = Math.pow(1.25, 1 + lv / 80);
+            const prmMul = Math.pow(1.1, 1 + lv / 10);
             for (const prm of Prm.values) {
                 const set = e.prm(prm);
                 set.base = 4 * Math.random() + lv * Math.random();

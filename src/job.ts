@@ -104,7 +104,7 @@ export abstract class Job{
     
     async setEnemy(e:EUnit, lv:number){
 
-        const prmMul = Math.pow(1.25, 1 + lv / 80);
+        const prmMul = Math.pow(1.1, 1 + lv / 10);
         for(const prm of Prm.values){
             const set = e.prm(prm);
             set.base = 4 * Math.random() + lv * Math.random();
