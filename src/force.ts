@@ -210,7 +210,7 @@ export class Dmg{
     }
 
 
-    async run(msg?:boolean):Promise<void>{
+    async run(msg:boolean = true):Promise<void>{
         if(!this.target.exists || this.target.dead){return;}
 
         

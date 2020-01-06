@@ -198,7 +198,7 @@ export class Dmg {
         this.result.value = value > 0 ? value | 0 : 0;
         this.result.isHit = isHit;
     }
-    run(msg) {
+    run(msg = true) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.target.exists || this.target.dead) {
                 return;
