@@ -102,8 +102,8 @@ export class Job {
             e.prm(Prm.EXP).base = lv + 1;
             e.yen = lv + 1;
             e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
-            e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
-            e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
+            e.prm(Prm.MAX_MP).base = 3 + lv / 10 + Math.random() * lv / 5;
+            e.prm(Prm.MAX_TP).base = 3 + lv / 10 + Math.random() * lv / 5;
             e.ep = Math.random() < 0.01 ? 1 : 0;
             e.ghost *= 50;
             for (const pos of EqPos.values) {
@@ -153,7 +153,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         get maxLv() { return super.maxLv + 1; }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.何もしない, Tec.癒しの風, Tec.大いなる動き];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.掌覇, Tec.何もしない, Tec.癒しの風, Tec.大いなる動き];
         }
     };
     Job.シーフ = new class extends Job {
@@ -193,7 +193,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         get maxLv() { return super.maxLv + 1; }
         setEnemyInner(e) {
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.パワーファクト, Tec.閻魔の笏];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.心, Tec.パワーファクト, Tec.閻魔の笏];
         }
     };
     Job.忍者 = new class extends Job {
@@ -219,7 +219,7 @@ Job.DEF_LVUP_EXP = 10;
             });
         }
         setEnemyInner(e) {
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.エヴィン, Tec.ジョンD];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.魔法攻撃UP, Tec.エヴィン, Tec.ジョンD];
         }
     };
     Job.ウィザード = new class extends Job {

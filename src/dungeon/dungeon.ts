@@ -1261,7 +1261,7 @@ export namespace Dungeon{
     };
     export const                         小鬼:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"小鬼", info:"",
-                                rank:4, enemyLv:12, au:1, btn:[DungeonArea.冥界, new Rect(0.55, 0.4, 0.3, 0.1)],
+                                rank:4, enemyLv:12, au:1, btn:[DungeonArea.冥界, new Rect(0.45, 0.4, 0.3, 0.1)],
                                 treasures:  ()=>[],
                                 exItems:    ()=>[],
                                 trendItems: ()=>[],
@@ -1269,12 +1269,18 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
         setBossInner = ()=>{
+            for(const e of Unit.enemies){
+                for(const prm of Prm.values){
+                    e.prm(prm).base *= 1.25;
+                }
+            }
+
             let e = Unit.enemies[0];
             Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "小鬼";
             e.img = new Img("img/unit/boss_syao.png");
             e.prm(Prm.MAX_HP).base = 1500;
-            e.prm(Prm.STR).base = 31;
+            e.prm(Prm.STR).base = 51;
             e.tecs.push( Tec.閻魔の笏 );
             e.setEq(Eq.小鬼の腕輪.pos, Eq.小鬼の腕輪);
             e.setCondition( Condition.暴走, 40 );

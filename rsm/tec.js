@@ -3451,10 +3451,13 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 FX_吸収(attacker.imgCenter, target.imgCenter);
                 Sound.drain.play();
+                const lv = attacker.prm(Prm.LV).total;
+                let value = target.hp * 0.1;
+                value = value < lv ? value : lv;
                 const dmg = new Dmg({
                     attacker: attacker,
                     target: target,
-                    absPow: target.hp * 0.1,
+                    absPow: value,
                     types: ["吸収"],
                 });
                 yield dmg.run(false);

@@ -126,8 +126,8 @@ export abstract class Job{
         e.yen = lv + 1;
 
         e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
-        e.prm(Prm.MAX_MP).base = 1 + lv / 20 + Math.random() * lv / 5;
-        e.prm(Prm.MAX_TP).base = 1 + lv / 20 + Math.random() * lv / 5;
+        e.prm(Prm.MAX_MP).base = 3 + lv / 10 + Math.random() * lv / 5;
+        e.prm(Prm.MAX_TP).base = 3 + lv / 10 + Math.random() * lv / 5;
 
         e.ep = Math.random() < 0.01 ? 1 : 0;
 
@@ -185,7 +185,7 @@ export namespace Job{
         });}
         get maxLv(){return super.maxLv + 1;}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.何もしない, Tec.癒しの風, Tec.大いなる動き];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.掌覇, Tec.何もしない, Tec.癒しの風, Tec.大いなる動き];
         }
     };
     export const                         シーフ:Job = new class extends Job{
@@ -219,7 +219,7 @@ export namespace Job{
         });}
         get maxLv(){return super.maxLv + 1;}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.パワーファクト, Tec.閻魔の笏];
+            e.tecs = [Tec.殴る, Tec.殴る, Tec.殴る, Tec.斬る, Tec.斬る, Tec.斬る, Tec.心, Tec.パワーファクト, Tec.閻魔の笏];
         }
     };
     export const                         忍者:Job = new class extends Job{
@@ -241,7 +241,7 @@ export namespace Job{
                                 learningTecs:()=>[Tec.ヴァハ, Tec.魔法攻撃UP, Tec.エヴィン, Tec.ジョンD],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.エヴィン, Tec.ジョンD];
+            e.tecs = [Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.ヴァハ, Tec.魔法攻撃UP, Tec.エヴィン, Tec.ジョンD];
         }
     };
     export const                         ウィザード:Job = new class extends Job{
