@@ -213,8 +213,14 @@ const createTecInfo = (tec, unit) => {
         let res = "";
         if (tec instanceof ActiveTec) {
             for (const cost of tec.costs) {
-                res += `${cost.prm}:${cost.value}`;
+                res += `${cost.prm}:${cost.value} `;
             }
+        }
+        return res;
+    })
+        .addln(() => {
+        let res = "";
+        if (tec instanceof ActiveTec) {
             for (const set of tec.itemCost) {
                 res += `${set.item}-${set.num}(${set.item.num}) `;
             }

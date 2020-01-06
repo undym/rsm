@@ -233,27 +233,6 @@ export class SetTecScene extends Scene{
         });
     }
 
-    // private createLearnBtn(tec:Tec, unit:PUnit){
-    //     return new Btn("覚える", async()=>{
-    //         const learning = tec.learning;
-    //         if(!learning){return;}
-    //         if(unit.bp < learning.bp){
-    //             FX_Str(Font.def, `BPが足りない`, Point.CENTER, Color.WHITE);
-    //             return;
-    //         }
-
-    //         unit.bp -= learning.bp;
-    //         unit.setMasteredTec(tec, true);
-    //         FX_Str(Font.def, `${unit.name}は[${tec}]を習得した`, Point.CENTER, Color.WHITE);
-
-    //         for(const gp of learning.growthPrms){
-    //             unit.prm(gp.prm).base += gp.value;
-    //         }
-            
-    //         this.useBtn = this.createSetBtn(tec, unit);
-    //         this.resetList(true);
-    //     });
-    // }
 }
 
 
@@ -265,8 +244,14 @@ const createTecInfo = (tec:Tec, unit:PUnit)=>{
                         let res = "";
                         if(tec instanceof ActiveTec){
                             for(const cost of tec.costs){
-                                res += `${cost.prm}:${cost.value}`;
+                                res += `${cost.prm}:${cost.value} `;
                             }
+                        }
+                        return res;
+                    })
+                    .addln(()=>{
+                        let res = "";
+                        if(tec instanceof ActiveTec){
                             for(const set of tec.itemCost){
                                 res += `${set.item}-${set.num}(${set.item.num}) `
                             }
