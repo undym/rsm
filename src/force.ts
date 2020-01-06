@@ -123,7 +123,7 @@ export class Dmg{
         }
         return false;
     }
-    /**カウンター可能かどうか。自傷技にもつける。 */
+    
     canCounter = true;
 
     constructor(args:{

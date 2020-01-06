@@ -11,7 +11,7 @@ import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color, Rect } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
-import { Dmg, Heal } from "./force.js";
+import { Dmg, Force, Heal } from "./force.js";
 import { Job } from "./job.js";
 import { FX_Str, FX_LVUP, FX_反射 } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -752,27 +752,31 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 super(...arguments);
                 this.uniqueName = "反射";
             }
-            beDamage(dmg) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    dmg.target.removeInvisibleCondition(this);
-                    if (!dmg.canCounter || dmg.attacker === dmg.target) {
-                        return;
-                    }
-                    if (dmg.result.isHit) {
-                        FX_反射(dmg.target.imgCenter, dmg.attacker.imgCenter);
-                        Util.msg.set("＞反射");
-                        const refDmg = new Dmg({
-                            attacker: dmg.target,
-                            target: dmg.attacker,
-                            absPow: dmg.result.value,
-                            canCounter: false,
+            createForce(_this) {
+                return new class extends Force {
+                    beDamage(dmg) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            dmg.target.removeInvisibleCondition(_this);
+                            if (!dmg.canCounter || dmg.attacker === dmg.target) {
+                                return;
+                            }
+                            if (dmg.result.isHit) {
+                                FX_反射(dmg.target.imgCenter, dmg.attacker.imgCenter);
+                                Util.msg.set("＞反射");
+                                const refDmg = new Dmg({
+                                    attacker: dmg.target,
+                                    target: dmg.attacker,
+                                    absPow: dmg.result.value,
+                                    canCounter: false,
+                                });
+                                yield refDmg.run();
+                                yield wait();
+                                dmg.result.value = 0;
+                            }
+                            ;
                         });
-                        yield refDmg.run();
-                        yield wait();
-                        dmg.result.value = 0;
                     }
-                    ;
-                });
+                };
             }
         });
     };
@@ -787,19 +791,23 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
                 super(...arguments);
                 this.uniqueName = name;
             }
-            beDamage(dmg) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    dmg.target.removeInvisibleCondition(this);
-                    if (dmg.result.isHit) {
-                        const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
-                        Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
-                        yield wait();
-                        dmg.result.value = 0;
-                        if (drainSuccessAction) {
-                            drainSuccessAction();
-                        }
+            createForce(_this) {
+                return new class extends Force {
+                    beDamage(dmg) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            dmg.target.removeInvisibleCondition(_this);
+                            if (dmg.result.isHit) {
+                                const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
+                                Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN);
+                                yield wait();
+                                dmg.result.value = 0;
+                                if (drainSuccessAction) {
+                                    drainSuccessAction();
+                                }
+                            }
+                        });
                     }
-                });
+                };
             }
         });
     };

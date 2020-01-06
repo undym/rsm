@@ -770,25 +770,27 @@ export namespace Unit{
     export const set反射Inv = (unit:Unit)=>{
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = "反射";
-            async beDamage(dmg:Dmg){
-                dmg.target.removeInvisibleCondition(this);
-
-                if(!dmg.canCounter || dmg.attacker === dmg.target){return;}
-
-                if(dmg.result.isHit){
-                    FX_反射( dmg.target.imgCenter, dmg.attacker.imgCenter );
-                    Util.msg.set("＞反射");
-                    const refDmg =  new Dmg({
-                                        attacker:dmg.target,
-                                        target:dmg.attacker,
-                                        absPow:dmg.result.value,
-                                        canCounter:false,
-                                    });
-                    await refDmg.run(); await wait();
-
-                    dmg.result.value = 0;
-                };
-            }
+            createForce(_this:InvisibleCondition){return new class extends Force{
+                async beDamage(dmg:Dmg){
+                    dmg.target.removeInvisibleCondition(_this);
+    
+                    if(!dmg.canCounter || dmg.attacker === dmg.target){return;}
+    
+                    if(dmg.result.isHit){
+                        FX_反射( dmg.target.imgCenter, dmg.attacker.imgCenter );
+                        Util.msg.set("＞反射");
+                        const refDmg =  new Dmg({
+                                            attacker:dmg.target,
+                                            target:dmg.attacker,
+                                            absPow:dmg.result.value,
+                                            canCounter:false,
+                                        });
+                        await refDmg.run(); await wait();
+    
+                        dmg.result.value = 0;
+                    };
+                }
+            };}
         });
     };
     /** */
@@ -797,19 +799,21 @@ export namespace Unit{
         if(unit.hasInvisibleCondition(name)){return;}
         unit.addInvisibleCondition(new class extends InvisibleCondition{
             readonly uniqueName = name;
-            async beDamage(dmg:Dmg){
-                dmg.target.removeInvisibleCondition(this);
-
-                if(dmg.result.isHit){
-                    const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
-                    Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
+            createForce(_this:InvisibleCondition){return new class extends Force{
+                async beDamage(dmg:Dmg){
+                    dmg.target.removeInvisibleCondition(_this);
     
-                    dmg.result.value = 0;
-                    if(drainSuccessAction){
-                        drainSuccessAction();
+                    if(dmg.result.isHit){
+                        const value = Heal.run("HP", dmg.result.value, dmg.attacker, unit, this, false);
+                        Util.msg.set(`＞${value}のダメージを吸収`, Color.GREEN); await wait();
+        
+                        dmg.result.value = 0;
+                        if(drainSuccessAction){
+                            drainSuccessAction();
+                        }
                     }
                 }
-            }
+            };}
         });
     };
     // /** */

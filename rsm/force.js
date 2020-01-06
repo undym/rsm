@@ -88,7 +88,6 @@ export class Dmg {
         // additionalAttacks:((dmg:Dmg,index:number)=>number)[] = [];
         /** */
         this.types = [];
-        /**カウンター可能かどうか。自傷技にもつける。 */
         this.canCounter = true;
         this.clear();
         this.attacker = args.attacker;
