@@ -1271,7 +1271,7 @@ export namespace Dungeon{
         setBossInner = ()=>{
             for(const e of Unit.enemies){
                 for(const prm of Prm.values){
-                    e.prm(prm).base *= 1.25;
+                    e.prm(prm).base *= 1.5;
                 }
             }
 
