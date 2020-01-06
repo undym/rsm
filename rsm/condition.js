@@ -564,7 +564,7 @@ Condition._valueOf = new Map();
                                 types: ["毒"],
                             });
                             yield dmg.run();
-                            yield wait();
+                            yield wait(1);
                         }
                         unit.setCondition(_this, value * 0.666);
                         if (unit.getConditionValue(_this) < unit.prm(Prm.DRK).total + 1) {

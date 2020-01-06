@@ -480,7 +480,7 @@ export namespace Condition{
                         absPow:value,
                         types:["毒"],
                     });
-                    await dmg.run(); await wait();
+                    await dmg.run(); await wait(1);
                 }
     
                 unit.setCondition(_this, value * 0.666);
