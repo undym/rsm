@@ -82,6 +82,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_格闘(dmg.target.imgBounds.center); }
         sound() { Sound.PUNCH.play(); }
+        getCounterTec() { return Tec.格闘反撃; }
     };
     TecType.槍 = new class extends TecType {
         constructor() { super("槍"); }
@@ -96,6 +97,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_格闘(dmg.target.imgBounds.center); }
         sound() { Sound.PUNCH.play(); }
+        getCounterTec() { return Tec.格闘反撃; }
     };
     TecType.魔法 = new class extends TecType {
         constructor() { super("魔法"); }
@@ -110,6 +112,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_魔法(dmg.target.imgBounds.center); }
         sound() { Sound.MAGIC.play(); }
+        getCounterTec() { return Tec.魔法反撃; }
     };
     TecType.神格 = new class extends TecType {
         constructor() { super("神格"); }
@@ -124,6 +127,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_神格(dmg.target.imgBounds.center); }
         sound() { Sound.sin.play(); }
+        getCounterTec() { return Tec.神格反撃; }
     };
     TecType.暗黒 = new class extends TecType {
         constructor() { super("暗黒"); }
@@ -138,6 +142,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_暗黒(dmg.target.imgBounds.center); }
         sound() { Sound.KEN.play(); }
+        getCounterTec() { return Tec.暗黒反撃; }
     };
     //ghost/500
     //be30dmg = 15000ghost
@@ -159,6 +164,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_暗黒(dmg.target.imgCenter); }
         sound() { Sound.KEN.play(); }
+        getCounterTec() { return Tec.暗黒反撃; }
     };
     TecType.鎖術 = new class extends TecType {
         constructor() { super("鎖術"); }
@@ -173,6 +179,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_鎖術(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center); }
         sound() { Sound.chain.play(); }
+        getCounterTec() { return Tec.鎖術反撃; }
     };
     TecType.過去 = new class extends TecType {
         constructor() { super("過去"); }
@@ -187,6 +194,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_過去(dmg.target.imgBounds.center); }
         sound() { Sound.kako.play(); }
+        getCounterTec() { return Tec.過去反撃; }
     };
     TecType.銃 = new class extends TecType {
         constructor() { super("銃"); }
@@ -201,6 +209,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_銃(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center); }
         sound() { Sound.gun.play(); }
+        getCounterTec() { return Tec.銃反撃; }
     };
     TecType.機械 = new class extends TecType {
         constructor() { super("機械"); }
@@ -215,6 +224,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_機械(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center); }
         sound() { Sound.lazer.play(); }
+        getCounterTec() { return Tec.銃反撃; }
     };
     TecType.弓 = new class extends TecType {
         constructor() { super("弓"); }
@@ -229,6 +239,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_弓(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center); }
         sound() { Sound.ya.play(); }
+        getCounterTec() { return Tec.弓反撃; }
     };
     TecType.状態 = new class extends TecType {
         constructor() { super("状態"); }
@@ -240,6 +251,7 @@ TecType._values = [];
         }
         effect(dmg) { }
         sound() { }
+        getCounterTec() { return Tec.格闘反撃; }
     };
     TecType.回復 = new class extends TecType {
         constructor() { super("回復"); }
@@ -252,6 +264,7 @@ TecType._values = [];
         }
         effect(dmg) { FX_回復(dmg.target.imgBounds.center); }
         sound() { }
+        getCounterTec() { return Tec.格闘反撃; }
     };
     TecType.その他 = new class extends TecType {
         constructor() { super("その他"); }
@@ -263,6 +276,7 @@ TecType._values = [];
         }
         effect(dmg) { }
         sound() { }
+        getCounterTec() { return Tec.格闘反撃; }
     };
     // export const             ペット = new class extends TecType{
     //     constructor(){super("ペット");}
@@ -290,7 +304,6 @@ export class Tec {
 export class PassiveTec extends Tec {
     constructor(args) {
         super(args.uniqueName, args.info, args.sort, args.type);
-        this.args = args;
         PassiveTec._values.push(this);
         if (PassiveTec._valueOf.has(this.uniqueName)) {
             console.log(`PassiveTec already has uniqueName "${this.uniqueName}".`);
@@ -372,6 +385,7 @@ export class ActiveTec extends Tec {
     }
     get hit() { return this.args.hit; }
     get targetings() { return this.args.targetings; }
+    get counter() { return this.args.counter ? true : false; }
     createForce(_this) { return Force.empty; }
     ;
     //--------------------------------------------------------------------------
@@ -444,6 +458,9 @@ export class ActiveTec extends Tec {
             this.sound();
             yield dmg.run();
             yield wait();
+            if (this.counter) {
+                yield this.type.getCounterTec().run(dmg.target, dmg.attacker);
+            }
         });
     }
     createDmg(attacker, target) {
@@ -511,16 +528,7 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "斬る", info: "一体に格闘攻撃x2　反撃有",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                 mul: 2, num: 1, hit: 1, tp: 1,
-            });
-        }
-        run(attacker, target) {
-            const _super = Object.create(null, {
-                run: { get: () => super.run }
-            });
-            return __awaiter(this, void 0, void 0, function* () {
-                yield _super.run.call(this, attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
+                counter: true,
             });
         }
     };
@@ -567,16 +575,7 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "閻魔の笏", info: "一体に格闘攻撃5回　反撃有",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                 mul: 1, num: 5, hit: 1, ep: 1,
-            });
-        }
-        run(attacker, target) {
-            const _super = Object.create(null, {
-                run: { get: () => super.run }
-            });
-            return __awaiter(this, void 0, void 0, function* () {
-                yield _super.run.call(this, attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
+                counter: true,
             });
         }
     };
@@ -624,6 +623,7 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ひっかく", info: "一体に格闘攻撃　確率で相手を＜毒＞化　反撃有",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                 mul: 1, num: 1, hit: 1, tp: 1,
+                counter: true,
             });
         }
         run(attacker, target) {
@@ -635,8 +635,6 @@ ActiveTec._valueOf = new Map();
                 if (Math.random() < 0.7) {
                     yield Tec.ポイズンバタフライ.run(attacker, target);
                 }
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
             });
         }
     };
@@ -679,6 +677,7 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "体当たり", info: "一体に格闘攻撃x2 確率で相手を＜眠1＞化　反撃有",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                 mul: 2, num: 1, hit: 1, tp: 2,
+                counter: true,
             });
         }
         run(attacker, target) {
@@ -690,8 +689,6 @@ ActiveTec._valueOf = new Map();
                 if (Math.random() < 0.7) {
                     Unit.setCondition(target, Condition.眠, 1);
                 }
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
             });
         }
     };
@@ -782,16 +779,7 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "踏み潰す", info: "対象に格闘攻撃x3  稀に＜衰弱5＞(行動開始時最大HP-10%)化  反撃有",
                 sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                 mul: 3, num: 1, hit: 1, tp: 7,
-            });
-        }
-        run(attacker, target) {
-            const _super = Object.create(null, {
-                run: { get: () => super.run }
-            });
-            return __awaiter(this, void 0, void 0, function* () {
-                yield _super.run.call(this, attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
+                counter: true,
             });
         }
         runInner(dmg) {
@@ -818,6 +806,7 @@ ActiveTec._valueOf = new Map();
                     super({ uniqueName: "魔剣Inner1", info: "一体に格闘攻撃",
                         sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                         mul: 1, num: 1, hit: 1,
+                        counter: true,
                     });
                 }
                 createDmg(attacker, target) {
@@ -831,6 +820,7 @@ ActiveTec._valueOf = new Map();
                     super({ uniqueName: "魔剣Inner2", info: "一体に魔法攻撃",
                         sort: TecSort.格闘, type: TecType.魔法, targetings: ["select"],
                         mul: 1, num: 1, hit: 1,
+                        counter: true,
                     });
                 }
                 createDmg(attacker, target) {
@@ -843,11 +833,7 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield this.魔剣格闘Inner.run(attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
                 yield this.魔剣魔法Inner.run(attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.魔法カウンター.run(target, attacker);
             });
         }
     };
@@ -863,6 +849,7 @@ ActiveTec._valueOf = new Map();
                     super({ uniqueName: "二人の悲歌Inner1", info: "一体に格闘攻撃",
                         sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
                         mul: 1, num: 1, hit: 1,
+                        counter: true,
                     });
                 }
                 createDmg(attacker, target) {
@@ -876,6 +863,7 @@ ActiveTec._valueOf = new Map();
                     super({ uniqueName: "二人の悲歌Inner2", info: "一体に魔法攻撃",
                         sort: TecSort.格闘, type: TecType.魔法, targetings: ["select"],
                         mul: 1, num: 1, hit: 1,
+                        counter: true,
                     });
                 }
                 createDmg(attacker, target) {
@@ -888,27 +876,8 @@ ActiveTec._valueOf = new Map();
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield this.二人の悲歌格闘Inner.run(attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.格闘カウンター.run(target, attacker);
                 yield this.二人の悲歌魔法Inner.run(attacker, target);
-                Util.msg.set("＞反撃");
-                yield Tec.魔法カウンター.run(target, attacker);
             });
-        }
-    };
-    /**無習得技. */
-    Tec.格闘カウンター = new class extends ActiveTec {
-        constructor() {
-            super({ uniqueName: "格闘カウンター", info: "！カウンター技用",
-                sort: TecSort.格闘, type: TecType.格闘, targetings: ["select"],
-                mul: 0.5, num: 1, hit: 1,
-            });
-        }
-        toString() { return "殴る"; }
-        createDmg(attacker, target) {
-            const dmg = super.createDmg(attacker, target);
-            dmg.canCounter = false;
-            return dmg;
         }
     };
     /**無習得技. */
@@ -1022,7 +991,7 @@ ActiveTec._valueOf = new Map();
                         if (dmg.hasType("格闘") && dmg.canCounter) {
                             Util.msg.set("＞カウンター");
                             yield wait();
-                            yield Tec.格闘カウンター.run(dmg.target, dmg.attacker);
+                            yield Tec.格闘反撃.run(dmg.target, dmg.attacker);
                         }
                     });
                 }
@@ -1112,7 +1081,7 @@ ActiveTec._valueOf = new Map();
                         if (dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.tecs.some(tec => tec === Tec.格闘連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
-                            yield Tec.格闘カウンター.run(me, dmg.target);
+                            yield Tec.格闘反撃.run(me, dmg.target);
                         }
                     });
                 }
@@ -1409,20 +1378,6 @@ ActiveTec._valueOf = new Map();
     //                           mul:3, num:1, hit:1.2, mp:4,
     //     });}
     // }
-    /**無習得技. */
-    Tec.魔法カウンター = new class extends ActiveTec {
-        constructor() {
-            super({ uniqueName: "魔法カウンター", info: "！カウンター・連携用",
-                sort: TecSort.魔法, type: TecType.魔法, targetings: ["select"],
-                mul: 0.5, num: 1, hit: 1,
-            });
-        }
-        createDmg(attacker, target) {
-            const dmg = super.createDmg(attacker, target);
-            dmg.canCounter = false;
-            return dmg;
-        }
-    };
     //--------------------------------------------------------------------------
     //
     //-魔法Active
@@ -1462,7 +1417,7 @@ ActiveTec._valueOf = new Map();
                         if (dmg.hasType("魔法") && dmg.canCounter && dmg.attacker.tecs.some(tec => tec === Tec.魔道連携)) {
                             Util.msg.set(`${me.name}の連携攻撃`);
                             yield wait();
-                            yield Tec.魔法カウンター.run(me, dmg.target);
+                            yield Tec.魔法反撃.run(me, dmg.target);
                         }
                     });
                 }
@@ -5235,4 +5190,33 @@ ActiveTec._valueOf = new Map();
             return dmg;
         }
     };
+    //--------------------------------------------------------------------------
+    //
+    //-ペットActive
+    //カウンター（無習得）
+    //
+    //--------------------------------------------------------------------------
+    const createCounter = (type) => {
+        return new class extends ActiveTec {
+            constructor() {
+                super({ uniqueName: type.toString() + "反撃", info: "反撃",
+                    sort: TecSort.その他, type, targetings: ["select"],
+                    mul: 1, num: 1, hit: 1,
+                });
+            }
+            createDmg(attacker, target) {
+                const dmg = super.createDmg(attacker, target);
+                dmg.canCounter = false;
+                return dmg;
+            }
+        };
+    };
+    Tec.格闘反撃 = createCounter(TecType.格闘);
+    Tec.魔法反撃 = createCounter(TecType.魔法);
+    Tec.神格反撃 = createCounter(TecType.神格);
+    Tec.暗黒反撃 = createCounter(TecType.暗黒);
+    Tec.鎖術反撃 = createCounter(TecType.鎖術);
+    Tec.過去反撃 = createCounter(TecType.過去);
+    Tec.銃反撃 = createCounter(TecType.銃);
+    Tec.弓反撃 = createCounter(TecType.弓);
 })(Tec || (Tec = {}));

@@ -66,6 +66,7 @@ export abstract class TecType{
     abstract createDmg(attacker:Unit, target:Unit):Dmg;
     abstract effect(dmg:Dmg):void;
     abstract sound():void;
+    abstract getCounterTec():ActiveTec;
 
     /**一つでも当てはまればtrue. */
     any(...types:TecType[]){
@@ -92,6 +93,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_格闘(dmg.target.imgBounds.center);}
         sound(){Sound.PUNCH.play();}
+        getCounterTec(){return Tec.格闘反撃;}
     };
     export const             槍 = new class extends TecType{
         constructor(){super("槍");}
@@ -106,6 +108,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_格闘(dmg.target.imgBounds.center);}
         sound(){Sound.PUNCH.play();}
+        getCounterTec(){return Tec.格闘反撃;}
     };
     export const             魔法 = new class extends TecType{
         constructor(){super("魔法");}
@@ -120,6 +123,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_魔法(dmg.target.imgBounds.center);}
         sound(){Sound.MAGIC.play();}
+        getCounterTec(){return Tec.魔法反撃;}
     };
     export const             神格 = new class extends TecType{
         constructor(){super("神格");}
@@ -134,6 +138,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_神格(dmg.target.imgBounds.center);}
         sound(){Sound.sin.play();}
+        getCounterTec(){return Tec.神格反撃;}
     };
     export const             暗黒 = new class extends TecType{
         constructor(){super("暗黒");}
@@ -148,6 +153,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_暗黒(dmg.target.imgBounds.center);}
         sound(){Sound.KEN.play();}
+        getCounterTec(){return Tec.暗黒反撃;}
     };
     //ghost/500
     //be30dmg = 15000ghost
@@ -170,6 +176,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_暗黒(dmg.target.imgCenter);}
         sound(){Sound.KEN.play();}
+        getCounterTec(){return Tec.暗黒反撃;}
     };
     export const             鎖術 = new class extends TecType{
         constructor(){super("鎖術");}
@@ -184,6 +191,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_鎖術(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
         sound(){Sound.chain.play();}
+        getCounterTec(){return Tec.鎖術反撃;}
     };
     export const             過去 = new class extends TecType{
         constructor(){super("過去");}
@@ -198,6 +206,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_過去(dmg.target.imgBounds.center);}
         sound(){Sound.kako.play();}
+        getCounterTec(){return Tec.過去反撃;}
     };
     export const             銃 = new class extends TecType{
         constructor(){super("銃");}
@@ -212,6 +221,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_銃(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
         sound(){Sound.gun.play();}
+        getCounterTec(){return Tec.銃反撃;}
     };
     export const             機械 = new class extends TecType{
         constructor(){super("機械");}
@@ -226,6 +236,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_機械(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
         sound(){Sound.lazer.play();}
+        getCounterTec(){return Tec.銃反撃;}
     };
     export const             弓 = new class extends TecType{
         constructor(){super("弓");}
@@ -240,6 +251,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_弓(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
         sound(){Sound.ya.play();}
+        getCounterTec(){return Tec.弓反撃;}
     };
     export const             状態 = new class extends TecType{
         constructor(){super("状態");}
@@ -249,6 +261,7 @@ export namespace TecType{
         });}
         effect(dmg:Dmg){}
         sound(){}
+        getCounterTec(){return Tec.格闘反撃;}
     };
     export const             回復 = new class extends TecType{
         constructor(){super("回復");}
@@ -261,6 +274,7 @@ export namespace TecType{
         }
         effect(dmg:Dmg){FX_回復(dmg.target.imgBounds.center);}
         sound(){}
+        getCounterTec(){return Tec.格闘反撃;}
     };
     export const             その他 = new class extends TecType{
         constructor(){super("その他");}
@@ -270,6 +284,7 @@ export namespace TecType{
         });}
         effect(dmg:Dmg){}
         sound(){}
+        getCounterTec(){return Tec.格闘反撃;}
     };
     // export const             ペット = new class extends TecType{
     //     constructor(){super("ペット");}
@@ -315,7 +330,7 @@ export abstract class PassiveTec extends Tec{
     
 
     protected constructor(
-        private args:{
+        args:{
             uniqueName:string,
             info:string,
             sort:TecSort,
@@ -325,11 +340,8 @@ export abstract class PassiveTec extends Tec{
         super(args.uniqueName, args.info, args.sort, args.type);
 
         PassiveTec._values.push(this);
-        if(PassiveTec._valueOf.has(this.uniqueName)){
-            console.log(`PassiveTec already has uniqueName "${this.uniqueName}".`);
-        }else{
-            PassiveTec._valueOf.set( this.uniqueName, this );
-        }
+        if(PassiveTec._valueOf.has(this.uniqueName)){console.log(`PassiveTec already has uniqueName "${this.uniqueName}".`);}
+        else                                        {PassiveTec._valueOf.set( this.uniqueName, this );}
     }
 
     toString():string{return `-${this.uniqueName}-`;}
@@ -385,6 +397,7 @@ export abstract class ActiveTec extends Tec implements Action{
     }
     get hit():number{return this.args.hit;}
     get targetings():Targeting[]{return this.args.targetings;}
+    get counter():boolean{return this.args.counter ? true : false;}
     //--------------------------------------------------------------------------
     //
     //
@@ -406,6 +419,7 @@ export abstract class ActiveTec extends Tec implements Action{
             xp?:number,
             sp?:number,
             item?:()=>[Item,number][],
+            counter?:boolean,
     }){
         super(args.uniqueName, args.info, args.sort, args.type);
 
@@ -489,6 +503,10 @@ export abstract class ActiveTec extends Tec implements Action{
         this.effect(dmg);
         this.sound();
         await dmg.run(); await wait();
+
+        if(this.counter){
+            await this.type.getCounterTec().run(dmg.target, dmg.attacker);
+        }
     }
 
     createDmg(attacker:Unit, target:Unit):Dmg{
@@ -552,12 +570,8 @@ export namespace Tec{
         constructor(){super({ uniqueName:"斬る", info:"一体に格闘攻撃x2　反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:2, num:1, hit:1, tp:1,
+                              counter:true,
         });}
-        async run(attacker:Unit, target:Unit){
-            await super.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
-        }
     }
     /**訓練生. */
     export const                          大いなる動き:ActiveTec = new class extends ActiveTec{
@@ -592,12 +606,8 @@ export namespace Tec{
         constructor(){super({ uniqueName:"閻魔の笏", info:"一体に格闘攻撃5回　反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:1, num:5, hit:1, ep:1,
+                              counter:true,
         });}
-        async run(attacker:Unit, target:Unit){
-            await super.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
-        }
     }
     /**ドラゴン. */
     export const                          龍撃:ActiveTec = new class extends ActiveTec{
@@ -636,6 +646,7 @@ export namespace Tec{
         constructor(){super({ uniqueName:"ひっかく", info:"一体に格闘攻撃　確率で相手を＜毒＞化　反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:1, num:1, hit:1, tp:1,
+                              counter:true,
         });}
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
@@ -643,9 +654,6 @@ export namespace Tec{
             if(Math.random() < 0.7){
                 await Tec.ポイズンバタフライ.run(attacker, target);
             }
-
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
         }
     }
     /**テンプルナイト. */
@@ -680,6 +688,7 @@ export namespace Tec{
         constructor(){super({ uniqueName:"体当たり", info:"一体に格闘攻撃x2 確率で相手を＜眠1＞化　反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:2, num:1, hit:1, tp:2,
+                              counter:true,
         });}
         async run(attacker:Unit, target:Unit){
             await super.run(attacker, target);
@@ -687,9 +696,6 @@ export namespace Tec{
             if(Math.random() < 0.7){
                 Unit.setCondition( target, Condition.眠, 1 );
             }
-
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
         }
     }
     /**月狼. */
@@ -761,12 +767,8 @@ export namespace Tec{
         constructor(){super({ uniqueName:"踏み潰す", info:"対象に格闘攻撃x3  稀に＜衰弱5＞(行動開始時最大HP-10%)化  反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:3, num:1, hit:1, tp:7,
+                              counter:true,
         });}
-        async run(attacker:Unit, target:Unit){
-            await super.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
-        }
         async runInner(dmg:Dmg){
             await super.runInner(dmg);
             if(dmg.result.isHit && Math.random() < 0.7){
@@ -785,6 +787,7 @@ export namespace Tec{
             constructor(){super({ uniqueName:"魔剣Inner1", info:"一体に格闘攻撃",
                                   sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                                   mul:1, num:1, hit:1,
+                                  counter:true,
             });}
             createDmg(attacker:Unit, target:Unit){
                 const dmg = super.createDmg(attacker,target);
@@ -796,6 +799,7 @@ export namespace Tec{
             constructor(){super({ uniqueName:"魔剣Inner2", info:"一体に魔法攻撃",
                                   sort:TecSort.格闘, type:TecType.魔法, targetings:["select"],
                                   mul:1, num:1, hit:1,
+                                  counter:true,
             });}
             createDmg(attacker:Unit, target:Unit){
                 const dmg = super.createDmg(attacker,target);
@@ -805,12 +809,7 @@ export namespace Tec{
         };
         async run(attacker:Unit, target:Unit){
             await this.魔剣格闘Inner.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
-
             await this.魔剣魔法Inner.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.魔法カウンター.run( target, attacker );
         }
     }
     /**魔剣士. */
@@ -824,6 +823,7 @@ export namespace Tec{
             constructor(){super({ uniqueName:"二人の悲歌Inner1", info:"一体に格闘攻撃",
                                   sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                                   mul:1, num:1, hit:1,
+                                  counter:true,
             });}
             createDmg(attacker:Unit, target:Unit){
                 const dmg = super.createDmg(attacker,target);
@@ -835,6 +835,7 @@ export namespace Tec{
             constructor(){super({ uniqueName:"二人の悲歌Inner2", info:"一体に魔法攻撃",
                                   sort:TecSort.格闘, type:TecType.魔法, targetings:["select"],
                                   mul:1, num:1, hit:1,
+                                  counter:true,
             });}
             createDmg(attacker:Unit, target:Unit){
                 const dmg = super.createDmg(attacker,target);
@@ -844,25 +845,7 @@ export namespace Tec{
         };
         async run(attacker:Unit, target:Unit){
             await this.二人の悲歌格闘Inner.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.格闘カウンター.run( target, attacker );
-
             await this.二人の悲歌魔法Inner.run(attacker, target);
-            Util.msg.set("＞反撃");
-            await Tec.魔法カウンター.run( target, attacker );
-        }
-    }
-    /**無習得技. */
-    export const                          格闘カウンター:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"格闘カウンター", info:"！カウンター技用",
-                              sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
-                              mul:0.5, num:1, hit:1,
-        });}
-        toString(){return "殴る";}
-        createDmg(attacker:Unit, target:Unit){
-            const dmg = super.createDmg(attacker, target);
-            dmg.canCounter = false;
-            return dmg;
         }
     }
     /**無習得技. */
@@ -943,7 +926,7 @@ export namespace Tec{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && dmg.canCounter){
                     Util.msg.set("＞カウンター"); await wait();
-                    await Tec.格闘カウンター.run( dmg.target, dmg.attacker );
+                    await Tec.格闘反撃.run( dmg.target, dmg.attacker );
                 }
             }
         };}
@@ -1006,7 +989,7 @@ export namespace Tec{
             async memberAfterDoAtk(me:Unit, dmg:Dmg){
                 if(dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.tecs.some(tec=> tec === Tec.格闘連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
-                    await Tec.格闘カウンター.run(me, dmg.target);
+                    await Tec.格闘反撃.run(me, dmg.target);
                 }
             }
         };}
@@ -1226,18 +1209,6 @@ export namespace Tec{
     //                           mul:3, num:1, hit:1.2, mp:4,
     //     });}
     // }
-    /**無習得技. */
-    export const                          魔法カウンター:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"魔法カウンター", info:"！カウンター・連携用",
-                              sort:TecSort.魔法, type:TecType.魔法, targetings:["select"],
-                              mul:0.5, num:1, hit:1,
-        });}
-        createDmg(attacker:Unit, target:Unit){
-            const dmg = super.createDmg(attacker, target);
-            dmg.canCounter = false;
-            return dmg;
-        }
-    }
     //--------------------------------------------------------------------------
     //
     //-魔法Active
@@ -1266,7 +1237,7 @@ export namespace Tec{
             async memberAfterDoAtk(me:Unit, dmg:Dmg){
                 if(dmg.hasType("魔法") && dmg.canCounter && dmg.attacker.tecs.some(tec=> tec === Tec.魔道連携)){
                     Util.msg.set(`${me.name}の連携攻撃`); await wait();
-                    await Tec.魔法カウンター.run(me, dmg.target);
+                    await Tec.魔法反撃.run(me, dmg.target);
                 }
             }
         };}
@@ -4161,4 +4132,31 @@ export namespace Tec{
             return dmg;
         }
     }
+    //--------------------------------------------------------------------------
+    //
+    //-ペットActive
+    //カウンター（無習得）
+    //
+    //--------------------------------------------------------------------------
+    const createCounter = (type:TecType)=>{
+        return new class extends ActiveTec{
+            constructor(){super({ uniqueName:type.toString()+"反撃", info:"反撃",
+                                  sort:TecSort.その他, type, targetings:["select"],
+                                  mul:1, num:1, hit:1,
+            });}
+            createDmg(attacker:Unit, target:Unit){
+                const dmg = super.createDmg(attacker, target);
+                dmg.canCounter = false;
+                return dmg;
+            }
+        }
+    };
+    export const         格闘反撃 = createCounter(TecType.格闘);
+    export const         魔法反撃 = createCounter(TecType.魔法);
+    export const         神格反撃 = createCounter(TecType.神格);
+    export const         暗黒反撃 = createCounter(TecType.暗黒);
+    export const         鎖術反撃 = createCounter(TecType.鎖術);
+    export const         過去反撃 = createCounter(TecType.過去);
+    export const         銃反撃   = createCounter(TecType.銃);
+    export const         弓反撃   = createCounter(TecType.弓);
 }

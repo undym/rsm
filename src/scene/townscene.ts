@@ -32,6 +32,7 @@ import { Pet } from "../pet.js";
 import { EqPos } from "../eq.js";
 import { choice } from "../undym/random.js";
 import { OptionScene } from "./optionscene.js";
+import { Tec } from "../tec.js";
 
 
 let choosedDungeon:Dungeon|undefined;

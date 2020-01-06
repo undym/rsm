@@ -478,7 +478,7 @@ export namespace Eq{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4){
                     Util.msg.set("＞いばらの鎧");
-                    await Tec.格闘カウンター.run(dmg.target, dmg.attacker);
+                    await Tec.格闘反撃.run(dmg.target, dmg.attacker);
                 }
             }
         };} 
@@ -679,7 +679,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("魔法","過去") && dmg.canCounter && Math.random() < 0.7){
-                    await Tec.魔法カウンター.run(dmg.target, dmg.attacker);
+                    await Tec.魔法反撃.run(dmg.target, dmg.attacker);
                 }
             }
         };}
