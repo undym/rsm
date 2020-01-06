@@ -114,6 +114,7 @@ export class Job {
             yield e.equip();
             e.hp = e.prm(Prm.MAX_HP).total;
             e.mp = Math.random() * (e.prm(Prm.MAX_MP).total + 1);
+            e.tp = Math.random() * (e.prm(Prm.MAX_TP).total + 1);
         });
     }
     setEnemyInner(e) { }
