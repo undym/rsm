@@ -454,12 +454,21 @@ export class ActiveTec extends Tec {
     }
     runInner(dmg) {
         return __awaiter(this, void 0, void 0, function* () {
+            const _wait = () => __awaiter(this, void 0, void 0, function* () {
+                if (this.targetings.some(t => t === "all")) {
+                    yield wait(1);
+                }
+                else {
+                    yield wait();
+                }
+            });
             this.effect(dmg);
             this.sound();
             yield dmg.run();
-            yield wait();
+            yield _wait();
             if (this.counter) {
                 yield this.type.getCounterTec().run(dmg.target, dmg.attacker);
+                yield _wait();
             }
         });
     }
@@ -2499,6 +2508,25 @@ ActiveTec._valueOf = new Map();
             };
         }
     };
+    /**コールドシリーズ. */
+    Tec.装甲 = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "装甲", info: "被銃・弓攻撃半減",
+                sort: TecSort.銃, type: TecType.銃,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeBeAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("銃", "弓")) {
+                            dmg.pow.mul /= 2;
+                        }
+                    });
+                }
+            };
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //機械Active
@@ -2509,6 +2537,26 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "レーザー", info: "一体とその両脇に機械攻撃",
                 sort: TecSort.銃, type: TecType.機械, targetings: ["select"],
                 mul: 1, num: 1, hit: 1.1, tp: 1, item: () => [[Item.バッテリー, 1]],
+            });
+        }
+        run(attacker, target) {
+            const _super = Object.create(null, {
+                run: { get: () => super.run }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.run.call(this, attacker, target);
+                for (const u of target.searchUnitsEx("top", "bottom")) {
+                    yield _super.run.call(this, attacker, u);
+                }
+            });
+        }
+    };
+    /**コールドシリーズ. */
+    Tec.コールドレーザー = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "コールドレーザー", info: "一体とその両脇に機械攻撃x1.5",
+                sort: TecSort.銃, type: TecType.機械, targetings: ["select"],
+                mul: 1.5, num: 1, hit: 1.1, tp: 1, item: () => [[Item.高出力バッテリー, 1]],
             });
         }
         run(attacker, target) {
@@ -2787,6 +2835,7 @@ ActiveTec._valueOf = new Map();
     };
     //--------------------------------------------------------------------------
     //
+    //-機械Active
     //機械Passive
     //
     //--------------------------------------------------------------------------
@@ -2845,8 +2894,34 @@ ActiveTec._valueOf = new Map();
             };
         }
     };
+    /**コールドシリーズ. */
+    Tec.VIRGINリンク = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "VIRGINリンク", info: "機械攻撃時追加攻撃",
+                sort: TecSort.銃, type: TecType.機械,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                afterDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("機械")) {
+                            yield new Dmg({
+                                attacker: dmg.attacker,
+                                target: dmg.target,
+                                absPow: dmg.result.value / 2,
+                                types: ["追加攻撃"],
+                            }).run();
+                            yield wait(1);
+                        }
+                    });
+                }
+            };
+        }
+    };
     //--------------------------------------------------------------------------
     //
+    //-機械Passive
     //弓Active
     //
     //--------------------------------------------------------------------------
@@ -4455,14 +4530,14 @@ ActiveTec._valueOf = new Map();
                 for (const party of attacker.searchUnitsEx("party")) {
                     const value = Heal.run("HP", party.prm(Prm.MAX_HP).total * 0.1, attacker, party, this, false);
                     for (const enemy of party.searchUnitsEx("faceToFace")) {
+                        FX_鎖術(party.imgCenter, enemy.imgCenter);
                         const dmg = new Dmg({
                             attacker: attacker,
                             target: enemy,
                             absPow: value,
                         });
                         yield dmg.run();
-                        FX_鎖術(party.imgCenter, enemy.imgCenter);
-                        Util.msg.add(`${enemy.name}に${value}のダメージ`, Color.RED.bright);
+                        yield wait(1);
                     }
                 }
             });
@@ -4755,7 +4830,7 @@ ActiveTec._valueOf = new Map();
                     canCounter: false,
                 });
                 yield dmg.run();
-                yield wait();
+                yield wait(1);
             });
         }
     };
@@ -4775,7 +4850,7 @@ ActiveTec._valueOf = new Map();
                     absPow: attacker.prm(Prm.MAX_HP).total - attacker.hp,
                 });
                 yield dmg.run();
-                yield wait();
+                yield wait(1);
             });
         }
     };
@@ -4816,7 +4891,7 @@ ActiveTec._valueOf = new Map();
                     canCounter: false,
                 });
                 yield dmg.run();
-                yield wait();
+                yield wait(1);
             });
         }
     };
@@ -4942,6 +5017,26 @@ ActiveTec._valueOf = new Map();
                 FX_Buff(attacker.imgCenter);
                 Sound.warp.play();
                 Util.msg.set("フランケンシュタインが召喚された！");
+                yield wait();
+            });
+        }
+    };
+    /**コールドシリーズ. */
+    Tec.VIRGINデルタ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "VIRGINデルタ", info: "宇宙戦艦VIRGIN-⊿を召喚する",
+                sort: TecSort.その他, type: TecType.その他, targetings: ["self"],
+                mul: 1, num: 1, hit: 1, mp: 10, item: () => [[Item.VIRGINデルタ, 1]],
+            });
+        }
+        toString() { return "VIRGIN-⊿"; }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const hp = randomInt(1, 2, "[]");
+                attacker.pet = Pet.VIRGINデルタ.create(hp);
+                FX_Buff(attacker.imgCenter);
+                Sound.warp.play();
+                Util.msg.set("VIRGIN-⊿が召喚された！");
                 yield wait();
             });
         }
@@ -5191,6 +5286,56 @@ ActiveTec._valueOf = new Map();
             dmg.pow.base = attacker.prm(Prm.LV).total;
             dmg.types.push("ペット");
             return dmg;
+        }
+    };
+    /**ペット:VIRGIN. */
+    Tec.VIRGINレーザー = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "VIRGINレーザー", info: "敵全体に機械攻撃",
+                sort: TecSort.その他, type: TecType.機械, targetings: ["select"],
+                mul: 1, num: 1, hit: 1, tp: 3,
+            });
+        }
+        createDmg(attacker, target) {
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.types.push("ペット");
+            return dmg;
+        }
+    };
+    /**ペット:VIRGIN. */
+    Tec.VIRGINバリア = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "VIRGINバリア", info: "味方一体を＜バリア＞化",
+                sort: TecSort.その他, type: TecType.機械, targetings: ["select", "friendOnly"],
+                mul: 1, num: 1, hit: 1, tp: 3,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                FX_Buff(target.imgCenter);
+                Sound.baria2.play();
+                Unit.setCondition(target, Condition.バリア, 1, true);
+                yield wait();
+            });
+        }
+    };
+    /**ペット:VIRGIN. */
+    Tec.補給 = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "補給", info: "味方一体のMPとTPを10%回復",
+                sort: TecSort.その他, type: TecType.機械, targetings: ["select", "friendOnly"],
+                mul: 1, num: 1, hit: 1, tp: 3,
+            });
+        }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                FX_回復(target.imgCenter);
+                Sound.KAIFUKU.play();
+                Heal.run("MP", target.prm(Prm.MAX_MP).total * 0.1, attacker, target, this, true);
+                Heal.run("TP", target.prm(Prm.MAX_TP).total * 0.1, attacker, target, this, true);
+                yield wait();
+            });
         }
     };
     //--------------------------------------------------------------------------

@@ -202,4 +202,19 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             };
         }
     };
+    Pet.VIRGINデルタ = new class extends PetFactory {
+        constructor() { super("VIRGINデルタ", new Img("img/pet/pet11.png", { transparence: Color.BLACK })); }
+        toString() { return "VERIGIN-⊿"; }
+        create(hp) {
+            const factory = this;
+            return new class extends Pet {
+                constructor() { super(factory.uniqueName, factory.img, hp); }
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
+                    });
+                }
+            };
+        }
+    };
 })(Pet || (Pet = {}));

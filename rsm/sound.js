@@ -145,6 +145,8 @@ Music.mute = false;
     }
     /**毒. */
     Sound.awa = createSound("sound/awa.mp3");
+    /**バリア. */
+    Sound.baria2 = createSound("sound/baria2.mp3");
     /**封印回路. */
     Sound.BELL = createSound("sound/BELL.mp3");
     /**罠発動. */

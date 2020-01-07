@@ -189,6 +189,8 @@ export namespace Sound{
     }
     /**毒. */
     export const awa        = createSound("sound/awa.mp3");
+    /**バリア. */
+    export const baria2     = createSound("sound/baria2.mp3");
     /**封印回路. */
     export const BELL       = createSound("sound/BELL.mp3");
     /**罠発動. */

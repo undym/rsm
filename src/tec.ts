@@ -500,12 +500,16 @@ export abstract class ActiveTec extends Tec implements Action{
     }
 
     async runInner(dmg:Dmg){
+        const _wait = async()=>{
+            if(this.targetings.some(t=> t === "all"))   {await wait(1);}
+            else                                        {await wait();}
+        };
         this.effect(dmg);
         this.sound();
-        await dmg.run(); await wait();
+        await dmg.run(); await _wait();
 
         if(this.counter){
-            await this.type.getCounterTec().run(dmg.target, dmg.attacker);
+            await this.type.getCounterTec().run(dmg.target, dmg.attacker); await _wait();
         }
     }
 
@@ -2078,6 +2082,19 @@ export namespace Tec{
             }
         };}
     };
+    /**コールドシリーズ. */
+    export const                         装甲:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"装甲", info:"被銃・弓攻撃半減",
+                                sort:TecSort.銃, type:TecType.銃,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async beforeBeAtk(dmg:Dmg){
+                if(dmg.hasType("銃","弓")){
+                    dmg.pow.mul /= 2;
+                }
+            }
+        };}
+    };
     //--------------------------------------------------------------------------
     //
     //機械Active
@@ -2087,6 +2104,20 @@ export namespace Tec{
         constructor(){super({ uniqueName:"レーザー", info:"一体とその両脇に機械攻撃",
                     　        sort:TecSort.銃, type:TecType.機械, targetings:["select"],
                               mul:1, num:1, hit:1.1, tp:1, item:()=>[[Item.バッテリー, 1]],
+        });}
+        async run(attacker:Unit, target:Unit){
+            await super.run( attacker, target );
+
+            for(const u of target.searchUnitsEx("top","bottom")){
+                await super.run( attacker, u );
+            }
+        }
+    }
+    /**コールドシリーズ. */
+    export const                          コールドレーザー:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"コールドレーザー", info:"一体とその両脇に機械攻撃x1.5",
+                    　        sort:TecSort.銃, type:TecType.機械, targetings:["select"],
+                              mul:1.5, num:1, hit:1.1, tp:1, item:()=>[[Item.高出力バッテリー, 1]],
         });}
         async run(attacker:Unit, target:Unit){
             await super.run( attacker, target );
@@ -2314,6 +2345,7 @@ export namespace Tec{
     }
     //--------------------------------------------------------------------------
     //
+    //-機械Active
     //機械Passive
     //
     //--------------------------------------------------------------------------
@@ -2354,8 +2386,28 @@ export namespace Tec{
             }
         };}
     };
+    /**コールドシリーズ. */
+    export const                         VIRGINリンク:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"VIRGINリンク", info:"機械攻撃時追加攻撃",
+                                sort:TecSort.銃, type:TecType.機械,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async afterDoAtk(dmg:Dmg){
+                if(dmg.hasType("機械")){
+                    await new Dmg({
+                        attacker:dmg.attacker,
+                        target:dmg.target,
+                        absPow:dmg.result.value / 2,
+                        types:["追加攻撃"],
+                    }).run();
+                    await wait(1);
+                }
+            }
+        };}
+    };
     //--------------------------------------------------------------------------
     //
+    //-機械Passive
     //弓Active
     //
     //--------------------------------------------------------------------------
@@ -3566,15 +3618,13 @@ export namespace Tec{
                 const value = Heal.run("HP", party.prm(Prm.MAX_HP).total * 0.1, attacker, party, this, false);
 
                 for(const enemy of party.searchUnitsEx("faceToFace")){
+                    FX_鎖術( party.imgCenter, enemy.imgCenter );
                     const dmg = new Dmg({
                         attacker:attacker,
                         target:enemy,
                         absPow:value,
                     });
-                    await dmg.run();
-
-                    FX_鎖術( party.imgCenter, enemy.imgCenter );
-                    Util.msg.add(`${enemy.name}に${value}のダメージ`, Color.RED.bright);
+                    await dmg.run(); await wait(1);
                 }
             }
         }
@@ -3795,7 +3845,7 @@ export namespace Tec{
                 absPow:attacker.hp,
                 canCounter:false,
             });
-            await dmg.run(); await wait();
+            await dmg.run(); await wait(1);
         }
     }
     /**ドラゴン. */
@@ -3810,7 +3860,7 @@ export namespace Tec{
                 target:target,
                 absPow:attacker.prm(Prm.MAX_HP).total - attacker.hp,
             });
-            await dmg.run(); await wait();
+            await dmg.run(); await wait(1);
         }
     }
     /**メイガス. */
@@ -3846,7 +3896,7 @@ export namespace Tec{
                 absPow:attacker.mp,
                 canCounter:false,
             });
-            await dmg.run(); await wait();
+            await dmg.run(); await wait(1);
         }
     }
     export const                          ドゥエルガル:ActiveTec = new class extends ActiveTec{
@@ -3945,6 +3995,22 @@ export namespace Tec{
             FX_Buff( attacker.imgCenter );
             Sound.warp.play();
             Util.msg.set("フランケンシュタインが召喚された！"); await wait();
+        }
+    }
+    /**コールドシリーズ. */
+    export const                          VIRGINデルタ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"VIRGINデルタ", info:"宇宙戦艦VIRGIN-⊿を召喚する",
+                              sort:TecSort.その他, type:TecType.その他, targetings:["self"],
+                              mul:1, num:1, hit:1, mp:10, item:()=>[[Item.VIRGINデルタ, 1]],
+        });}
+        toString(){return "VIRGIN-⊿";}
+        async run(attacker:Unit, target:Unit){
+            const hp = randomInt(1,2,"[]");
+            attacker.pet = Pet.VIRGINデルタ.create(hp);
+            
+            FX_Buff( attacker.imgCenter );
+            Sound.warp.play();
+            Util.msg.set("VIRGIN-⊿が召喚された！"); await wait();
         }
     }
     export const                          死体除去:ActiveTec = new class extends ActiveTec{
@@ -4135,6 +4201,46 @@ export namespace Tec{
             dmg.pow.base = attacker.prm(Prm.LV).total;
             dmg.types.push("ペット");
             return dmg;
+        }
+    }
+    /**ペット:VIRGIN. */
+    export const                          VIRGINレーザー:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"VIRGINレーザー", info:"敵全体に機械攻撃",
+                              sort:TecSort.その他, type:TecType.機械, targetings:["select"],
+                              mul:1, num:1, hit:1, tp:3,
+        });}
+        createDmg(attacker:Unit, target:Unit){
+            const dmg = super.createDmg(attacker, target);
+            dmg.pow.base = attacker.prm(Prm.LV).total;
+            dmg.types.push("ペット");
+            return dmg;
+        }
+    }
+    /**ペット:VIRGIN. */
+    export const                          VIRGINバリア:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"VIRGINバリア", info:"味方一体を＜バリア＞化",
+                              sort:TecSort.その他, type:TecType.機械, targetings:["select","friendOnly"],
+                              mul:1, num:1, hit:1, tp:3,
+        });}
+        async run(attacker:Unit, target:Unit){
+            FX_Buff( target.imgCenter );
+            Sound.baria2.play();
+            Unit.setCondition(target, Condition.バリア, 1, true); await wait();
+        }
+    }
+    /**ペット:VIRGIN. */
+    export const                          補給:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"補給", info:"味方一体のMPとTPを10%回復",
+                              sort:TecSort.その他, type:TecType.機械, targetings:["select","friendOnly"],
+                              mul:1, num:1, hit:1, tp:3,
+        });}
+        async run(attacker:Unit, target:Unit){
+            FX_回復( target.imgCenter );
+            Sound.KAIFUKU.play();
+            Heal.run("MP", target.prm(Prm.MAX_MP).total * 0.1, attacker, target, this, true);
+            Heal.run("TP", target.prm(Prm.MAX_TP).total * 0.1, attacker, target, this, true);
+
+            await wait();
         }
     }
     //--------------------------------------------------------------------------

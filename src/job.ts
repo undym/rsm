@@ -682,6 +682,17 @@ export namespace Job{
             e.tecs = [Tec.天籟, Tec.良き占い, Tec.衛生, Tec.ヨトゥンヘイム, Tec.約束, Tec.エンジェル1, Tec.スピリット2];
         }
     };
+    export const                         コールドシリーズ:Job = new class extends Job{
+        constructor(){super({uniqueName:"コールドシリーズ", info:"",
+                                appearLv:170, img:new Img("img/unit/unit47.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.GUN, 3],],
+                                learningTecs:()=>[Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.バベル, Tec.レーザー, Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ];
+        }
+    };
     // export const                         サマナー:Job = new class extends Job{
     //     constructor(){super({uniqueName:"サマナー", info:"絵画から伝説の獣を呼び出す",
     //                             appearLv:125, img:new Img("img/unit/unit18.png"),

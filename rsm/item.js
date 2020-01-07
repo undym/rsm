@@ -1384,6 +1384,21 @@ Item.DEF_NUM_LIMIT = 9999;
                 consumable: true });
         }
     };
+    Item.高出力バッテリー = new class extends Item {
+        constructor() {
+            super({ uniqueName: "高出力バッテリー", info: "コールドレーザーに使用",
+                type: ItemType.弾, rank: 11, drop: ItemDrop.NO,
+                consumable: true });
+        }
+    };
+    Item.VIRGINデルタ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "VIRGINデルタ", info: "VIRGIN-⊿に使用",
+                type: ItemType.弾, rank: 11, drop: ItemDrop.NO,
+                consumable: true });
+        }
+        toString() { return "VIRGIN-⊿"; }
+    };
     Item.絵画母なる星の緑の丘 = new class extends Item {
         constructor() {
             super({ uniqueName: "絵画母なる星の緑の丘", info: "ドゥエルガルに使用",

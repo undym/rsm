@@ -1243,6 +1243,17 @@ export namespace Item{
                                 type:ItemType.弾, rank:11, drop:ItemDrop.NO,
                                 consumable:true})}
     };
+    export const                         高出力バッテリー:Item = new class extends Item{
+        constructor(){super({uniqueName:"高出力バッテリー", info:"コールドレーザーに使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+    };
+    export const                         VIRGINデルタ:Item = new class extends Item{
+        constructor(){super({uniqueName:"VIRGINデルタ", info:"VIRGIN-⊿に使用",
+                                type:ItemType.弾, rank:11, drop:ItemDrop.NO,
+                                consumable:true})}
+        toString(){return "VIRGIN-⊿";}
+    };
     export const                         絵画母なる星の緑の丘:Item = new class extends Item{
         constructor(){super({uniqueName:"絵画母なる星の緑の丘", info:"ドゥエルガルに使用",
                                 type:ItemType.弾, rank:12, drop:ItemDrop.NO,

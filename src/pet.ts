@@ -186,5 +186,19 @@ export namespace Pet{
             };
         }
     };
+    export const             VIRGINデルタ:PetFactory = new class extends PetFactory{
+        constructor(){super("VIRGINデルタ", new Img("img/pet/pet11.png", {transparence:Color.BLACK}));}
+        toString(){return "VERIGIN-⊿";}
+        create(hp:number){
+            const factory = this;
+            return new class extends Pet{
+                constructor(){super(factory.uniqueName, factory.img, hp);}
+    
+                async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                    await this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
+                }
+            };
+        }
+    };
 }
 
