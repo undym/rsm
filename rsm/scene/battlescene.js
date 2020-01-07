@@ -99,7 +99,9 @@ export class BattleScene extends Scene {
                     }
                     //init
                     for (const u of Unit.all) {
-                        u.tp = 0;
+                        if (u instanceof PUnit) {
+                            u.tp = 0;
+                        }
                         u.sp = 1;
                         for (const prm of Prm.values) {
                             u.prm(prm).battle = 0;
