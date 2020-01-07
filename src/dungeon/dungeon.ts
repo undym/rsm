@@ -1235,6 +1235,12 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.ハデスの腹.dungeonClearCount >= 1 && !Dungeon.小鬼.isVisible();
         setBossInner = ()=>{
+            for(const e of Unit.enemies){
+                for(const prm of Prm.values){
+                    e.prm(prm).base *= 1.5;
+                }
+            }
+            
             let e = Unit.enemies[0];
             Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "絶望の大クグワ";
