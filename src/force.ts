@@ -99,7 +99,7 @@ export class Dmg{
 
     attacker:Unit;
     target:Unit;
-    action:Action|undefined;
+    action:Object|undefined;
     /**攻撃力。*/
     pow:{base:number, add:number, mul:number};
     /**防御力。 */
@@ -129,7 +129,7 @@ export class Dmg{
     constructor(args:{
         attacker:Unit,
         target:Unit,
-        action?:Action,
+        action?:Object,
         pow?:number,
         mul?:number,
         hit?:number,

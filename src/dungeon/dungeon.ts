@@ -272,7 +272,7 @@ export abstract class Dungeon{
         if(Math.random() < 0.13){return DungeonEvent.BATTLE;}
         if(Math.random() < 0.03){return DungeonEvent.TRAP;}
         
-        if(Math.random() < 0.01){
+        if(Math.random() < 0.03){
             const collectingEvents:DungeonEvent[] = [];
             if(this.rank >= 1){collectingEvents.push(DungeonEvent.TREE);}
             if(this.rank >= 2){collectingEvents.push(DungeonEvent.STRATUM);}
@@ -1240,7 +1240,7 @@ export namespace Dungeon{
                     e.prm(prm).base *= 1.5;
                 }
             }
-            
+
             let e = Unit.enemies[0];
             Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "絶望の大クグワ";
@@ -1285,11 +1285,10 @@ export namespace Dungeon{
             Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "小鬼";
             e.img = new Img("img/unit/boss_syao.png");
-            e.prm(Prm.MAX_HP).base = 1500;
-            e.prm(Prm.STR).base = 51;
+            e.prm(Prm.MAX_HP).base = 2000;
+            e.prm(Prm.STR).base = 41;
             e.tecs.push( Tec.閻魔の笏, Tec.暴れる );
             e.setEq(Eq.小鬼の腕輪.pos, Eq.小鬼の腕輪);
-            e.setCondition( Condition.暴走, 40 );
         };
         setExInner = ()=>{
         };

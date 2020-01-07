@@ -690,7 +690,18 @@ export namespace Job{
                                 learningTecs:()=>[Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.バベル, Tec.レーザー, Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ];
+            e.tecs = [Tec.TP自動回復, Tec.バベル, Tec.レーザー, Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ];
+        }
+    };
+    export const                         阿修羅:Job = new class extends Job{
+        constructor(){super({uniqueName:"阿修羅", info:"",
+                                appearLv:180, img:new Img("img/unit/unit48.png"),
+                                lvupExp:Job.DEF_LVUP_EXP * 2,
+                                growthPrms:()=>[[Prm.DRK, 3],],
+                                learningTecs:()=>[Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ],
+        });}
+        setEnemyInner(e:EUnit){
+            e.tecs = [Tec.TP自動回復, Tec.バベル, Tec.レーザー, Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

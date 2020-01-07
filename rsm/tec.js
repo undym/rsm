@@ -1192,7 +1192,7 @@ ActiveTec._valueOf = new Map();
                         if (unit.dead) {
                             return;
                         }
-                        Unit.setCondition(unit, Condition.暴走, 3, true);
+                        Unit.setCondition(unit, Condition.暴走, 10, true);
                     });
                 }
             };
@@ -1797,6 +1797,7 @@ ActiveTec._valueOf = new Map();
     // };
     //--------------------------------------------------------------------------
     //
+    //-暗黒Passive
     //怨霊Active
     //
     //--------------------------------------------------------------------------

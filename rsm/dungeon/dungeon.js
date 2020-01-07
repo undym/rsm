@@ -24,7 +24,6 @@ import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
 import { Story3 } from "../story/story3.js";
-import { Condition } from "../condition.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns, _areaItems) {
         this.uniqueName = uniqueName;
@@ -231,7 +230,7 @@ export class Dungeon {
         if (Math.random() < 0.03) {
             return DungeonEvent.TRAP;
         }
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.03) {
             const collectingEvents = [];
             if (this.rank >= 1) {
                 collectingEvents.push(DungeonEvent.TREE);
@@ -1421,11 +1420,10 @@ Dungeon.musicCount = 0;
                 Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "小鬼";
                 e.img = new Img("img/unit/boss_syao.png");
-                e.prm(Prm.MAX_HP).base = 1500;
-                e.prm(Prm.STR).base = 51;
+                e.prm(Prm.MAX_HP).base = 2000;
+                e.prm(Prm.STR).base = 41;
                 e.tecs.push(Tec.閻魔の笏, Tec.暴れる);
                 e.setEq(Eq.小鬼の腕輪.pos, Eq.小鬼の腕輪);
-                e.setCondition(Condition.暴走, 40);
             };
             this.setExInner = () => {
             };

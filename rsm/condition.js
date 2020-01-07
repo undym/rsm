@@ -452,6 +452,25 @@ Condition._valueOf = new Map();
             };
         }
     };
+    /**毎ターンHP半減.最大999. */
+    Condition.呪 = new class extends Condition {
+        constructor() { super("呪", ConditionType.BAD_LV1); }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield new Dmg({
+                            attacker: unit,
+                            target: unit,
+                            absPow: unit.hp * 0.5,
+                            action: _this,
+                        }).run(false);
+                        unit.addConditionValue(_this, -1);
+                    });
+                }
+            };
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //BAD_LV2

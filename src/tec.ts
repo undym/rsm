@@ -1061,7 +1061,7 @@ export namespace Tec{
         createForce(_this:PassiveTec){return new class extends Force{
             async battleStart(unit:Unit){
                 if(unit.dead){return;}
-                Unit.setCondition( unit, Condition.暴走, 3, true );
+                Unit.setCondition( unit, Condition.暴走, 10, true );
             }
         };}
     };
@@ -1543,6 +1543,7 @@ export namespace Tec{
     // };
     //--------------------------------------------------------------------------
     //
+    //-暗黒Passive
     //怨霊Active
     //
     //--------------------------------------------------------------------------

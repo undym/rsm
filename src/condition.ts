@@ -389,6 +389,22 @@ export namespace Condition{
             }
         };}
     };
+    /**毎ターンHP半減.最大999. */
+    export const             呪:Condition = new class extends Condition{
+        constructor(){super("呪", ConditionType.BAD_LV1);}
+        createForce(_this:Condition){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                await new Dmg({
+                    attacker:unit,
+                    target:unit,
+                    absPow:unit.hp * 0.5,
+                    action:_this,
+                }).run(false);
+
+                unit.addConditionValue(_this, -1);
+            }
+        };}
+    };
     //--------------------------------------------------------------------------
     //
     //BAD_LV2
