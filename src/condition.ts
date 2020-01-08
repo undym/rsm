@@ -50,9 +50,9 @@ export class ConditionType{
     static readonly GOOD_LV1 = new ConditionType("GOOD_LV1", Color.CYAN.bright);
     static readonly GOOD_LV2 = new ConditionType("GOOD_LV2", Color.CYAN.bright);
     static readonly GOOD_LV3 = new ConditionType("GOOD_LV3", Color.CYAN.bright);
-    static readonly BAD_LV1  = new ConditionType("BAD_LV1", Color.RED.bright);
-    static readonly BAD_LV2  = new ConditionType("BAD_LV2", Color.RED.bright);
-    static readonly BAD_LV3  = new ConditionType("BAD_LV3", Color.RED.bright);
+    static readonly BAD_LV1  = new ConditionType("BAD_LV1",  Color.RED.bright);
+    static readonly BAD_LV2  = new ConditionType("BAD_LV2",  Color.RED.bright);
+    static readonly BAD_LV3  = new ConditionType("BAD_LV3",  Color.RED.bright);
 }
 
 
