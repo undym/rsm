@@ -3460,7 +3460,7 @@ ActiveTec._valueOf = new Map();
     Tec.バリア = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "バリア", info: "自分を＜バリア2＞(多くの攻撃を無効化)化する",
-                sort: TecSort.強化, type: TecType.状態, targetings: ["select"],
+                sort: TecSort.強化, type: TecType.状態, targetings: ["self"],
                 mul: 1, num: 1, hit: 1, mp: 5,
             });
         }

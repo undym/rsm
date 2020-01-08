@@ -2810,7 +2810,7 @@ export namespace Tec{
     /**羅文騎士. */
     export const                          バリア:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"バリア", info:"自分を＜バリア2＞(多くの攻撃を無効化)化する",
-                              sort:TecSort.強化, type:TecType.状態, targetings:["select"],
+                              sort:TecSort.強化, type:TecType.状態, targetings:["self"],
                               mul:1, num:1, hit:1, mp:5,
         });}
         async run(attacker:Unit, target:Unit){
@@ -2834,7 +2834,7 @@ export namespace Tec{
     /**エスパー. */
     export const                          封印回路:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"封印回路", info:"味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
-                              sort:TecSort.強化, type:TecType.状態, targetings:["all"],
+                              sort:TecSort.強化, type:TecType.状態, targetings:["all","friendOnly"],
                               mul:1, num:1, hit:1, xp:1,
         });}
         async run(attacker:Unit, target:Unit){
