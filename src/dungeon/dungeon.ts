@@ -234,7 +234,7 @@ export abstract class Dungeon{
     }
 
     rndEvent():DungeonEvent{
-        if(++Dungeon.musicCount >= 100 && Math.random() < 0.01){
+        if(++Dungeon.musicCount >= 200 && Math.random() < 0.003){
             this.playMusic("dungeon");
         }
 
@@ -1302,14 +1302,14 @@ export namespace Dungeon{
     };
     export const                         ハデスの口:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"ハデスの口", info:"湖+",
-                                rank:5, enemyLv:14, au:355, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
+                                rank:5, enemyLv:14, au:255, btn:[DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.回避の指輪],
                                 exItems:    ()=>[Eq.卯月ベルト],
                                 trendItems: ()=>[Item.鬼火, Item.旧式ミサイル, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.クリスタル, Item.大型隕石],
                                 trendEvents:()=>[[DungeonEvent.LAKE, 0.05]],
                                 ghost:true,
         });}
-        isVisible = ()=>Dungeon.小鬼.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
+        isVisible = ()=>Dungeon.小鬼.dungeonClearCount >= 1;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
             Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
