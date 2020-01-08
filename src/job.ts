@@ -698,10 +698,10 @@ export namespace Job{
                                 appearLv:180, img:new Img("img/unit/unit48.png"),
                                 lvupExp:Job.DEF_LVUP_EXP * 2,
                                 growthPrms:()=>[[Prm.DRK, 3],],
-                                learningTecs:()=>[Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ],
+                                learningTecs:()=>[Tec.恐怖を超えて, Tec.闇そのもの, Tec.ナイトインナイツ, Tec.明日世界が終わる],
         });}
         setEnemyInner(e:EUnit){
-            e.tecs = [Tec.TP自動回復, Tec.バベル, Tec.レーザー, Tec.VIRGINリンク, Tec.コールドレーザー, Tec.装甲, Tec.VIRGINデルタ];
+            e.tecs = [Tec.暗黒剣, Tec.ポイズンバタフライ, Tec.恐怖を超えて, Tec.闇そのもの, Tec.ナイトインナイツ, Tec.明日世界が終わる];
         }
     };
     // export const                         サマナー:Job = new class extends Job{

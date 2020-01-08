@@ -4,6 +4,7 @@ import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
+import { FX_BOM, FX_格闘 } from "./fx/fx.js";
 
 
 
@@ -40,17 +41,17 @@ export class ConditionType{
 
     readonly ordinal:number;
 
-    private constructor(public readonly uniqueName:string){
+    private constructor(public readonly uniqueName:string, readonly color:(cnt:number)=>Color){
         this.ordinal = ConditionType.ordinalNow++;
         ConditionType._values.push(this);
     }
 
-    static readonly GOOD_LV1 = new ConditionType("GOOD_LV1");
-    static readonly GOOD_LV2 = new ConditionType("GOOD_LV2");
-    static readonly GOOD_LV3 = new ConditionType("GOOD_LV3");
-    static readonly BAD_LV1  = new ConditionType("BAD_LV1");
-    static readonly BAD_LV2  = new ConditionType("BAD_LV2");
-    static readonly BAD_LV3  = new ConditionType("BAD_LV3");
+    static readonly GOOD_LV1 = new ConditionType("GOOD_LV1", Color.CYAN.bright);
+    static readonly GOOD_LV2 = new ConditionType("GOOD_LV2", Color.CYAN.bright);
+    static readonly GOOD_LV3 = new ConditionType("GOOD_LV3", Color.CYAN.bright);
+    static readonly BAD_LV1  = new ConditionType("BAD_LV1", Color.RED.bright);
+    static readonly BAD_LV2  = new ConditionType("BAD_LV2", Color.RED.bright);
+    static readonly BAD_LV3  = new ConditionType("BAD_LV3", Color.RED.bright);
 }
 
 
@@ -73,6 +74,8 @@ export abstract class Condition implements ForceIns{
     }
 
     toString():string{return `${this.uniqueName}`;}
+    /**`${condition}になった`の文字列表示時の色。 */
+    color(cnt:number){return this.type.color(cnt);}
     
     private forceIns:Force;
     get force():Force{return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
@@ -518,6 +521,45 @@ export namespace Condition{
                 if(value > lim){value = lim;}
                 unit.prm(Prm.MAX_HP).battle -= value;
     
+                unit.addConditionValue(_this, -1);
+            }
+        };}
+    };
+    export const             時限:Condition = new class extends Condition{
+        constructor(){super("時限", ConditionType.BAD_LV3);}
+        createForce(_this:Condition){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                if(unit.getConditionValue(_this) === 1){
+                    Util.msg.set(`${unit.name}に終わりの鐘が鳴り響く...`); await wait();
+                    Unit.setCondition(unit, Condition.爆弾, 1, true); await wait();
+
+                }else{
+                    unit.addConditionValue(_this, -1);
+                }
+            }
+        };}
+    };
+    export const             爆弾:Condition = new class extends Condition{
+        constructor(){super("爆弾", ConditionType.BAD_LV3);}
+        createForce(_this:Condition){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                FX_BOM(unit.imgCenter);
+                Util.msg.set(`${unit.name}は爆発した！`); await wait();
+                
+                const lim = 9999;
+                const value = unit.hp < lim ? unit.hp : lim;
+
+                for(const t of unit.searchUnits(["all"],1)){
+                    FX_格闘( t.imgCenter );
+                    await new Dmg({
+                        attacker:unit,
+                        target:t,
+                        absPow:value,
+                        canCounter:false,
+                        action:_this,
+                    }).run(true);
+                    await wait(1);
+                }
                 unit.addConditionValue(_this, -1);
             }
         };}

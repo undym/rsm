@@ -1699,6 +1699,15 @@ ActiveTec._valueOf = new Map();
             });
         }
     };
+    /**阿修羅. */
+    Tec.ナイトインナイツ = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "ナイトインナイツ", info: "敵全体に暗黒攻撃",
+                sort: TecSort.暗黒, type: TecType.暗黒, targetings: ["all"],
+                mul: 1, num: 1, hit: 1,
+            });
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-暗黒Active
@@ -1769,6 +1778,50 @@ ActiveTec._valueOf = new Map();
                         });
                         yield counter.run();
                         yield wait();
+                    });
+                }
+            };
+        }
+    };
+    /**阿修羅. */
+    Tec.恐怖を超えて = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "恐怖を超えて", info: "戦闘開始時、光・過去値を暗黒値に変換",
+                sort: TecSort.暗黒, type: TecType.暗黒,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                battleStart(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        unit.prm(Prm.DRK).battle += unit.prm(Prm.LIG).total;
+                        unit.prm(Prm.LIG).battle -= unit.prm(Prm.LIG).total;
+                        unit.prm(Prm.DRK).battle += unit.prm(Prm.PST).total;
+                        unit.prm(Prm.PST).battle -= unit.prm(Prm.PST).total;
+                    });
+                }
+            };
+        }
+    };
+    /**阿修羅. */
+    Tec.闇そのもの = new class extends PassiveTec {
+        constructor() {
+            super({ uniqueName: "闇そのもの", info: "戦闘開始時＜呪3＞化、暗黒攻撃x2",
+                sort: TecSort.暗黒, type: TecType.暗黒,
+            });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                battleStart(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        Unit.setCondition(unit, Condition.呪, 3, true);
+                    });
+                }
+                beforeDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("暗黒")) {
+                            dmg.pow.mul *= 2;
+                        }
                     });
                 }
             };
@@ -3492,7 +3545,7 @@ ActiveTec._valueOf = new Map();
     Tec.封印回路 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "封印回路", info: "味方全員を＜反射2＞(魔法・神格・過去攻撃反射)化する",
-                sort: TecSort.強化, type: TecType.状態, targetings: ["all"],
+                sort: TecSort.強化, type: TecType.状態, targetings: ["all", "friendOnly"],
                 mul: 1, num: 1, hit: 1, xp: 1,
             });
         }
@@ -3547,7 +3600,7 @@ ActiveTec._valueOf = new Map();
     Tec.約束 = new class extends ActiveTec {
         constructor() {
             super({ uniqueName: "約束", info: "一体を＜約＞化する",
-                sort: TecSort.強化, type: TecType.状態, targetings: ["select"],
+                sort: TecSort.強化, type: TecType.状態, targetings: ["select", "friendOnly"],
                 mul: 1, num: 1, hit: 1, mp: 19,
             });
         }
@@ -4148,6 +4201,24 @@ ActiveTec._valueOf = new Map();
                 target.prm(Prm.STR).battle -= target.prm(Prm.STR).total * 0.9;
                 Util.msg.set(`${target.name}の力が1/10になった！`);
                 yield wait();
+            });
+        }
+    };
+    /**阿修羅. */
+    Tec.明日世界が終わる = new class extends ActiveTec {
+        constructor() {
+            super({ uniqueName: "明日世界が終わる", info: "敵全体を＜時3＞（3ターン後に＜爆弾＞化）化する",
+                sort: TecSort.弱体, type: TecType.状態, targetings: ["all"],
+                mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        toString() { return "明日、世界が終わる"; }
+        run(attacker, target) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Sound.DARK.play();
+                FX_Debuff(target.imgCenter);
+                Unit.setCondition(target, Condition.時限, 3, true);
+                yield wait(1);
             });
         }
     };

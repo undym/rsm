@@ -65,6 +65,7 @@ export class Prm {
         Prm._values.push(this);
     }
     static get values() { return this._values; }
+    static get atkPrms() { return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR]; }
 }
 Prm._values = [];
 Prm.ordinalNow = 0;
@@ -612,8 +613,8 @@ export class PUnit extends Unit {
     }
     getNextLvExp() {
         const lv = this.prm(Prm.LV).base;
-        const grade = (lv / 100 + 1) | 0;
-        return (lv * grade * 7) | 0;
+        const grade = (lv / 49 + 1) | 0;
+        return (lv * grade * 5) | 0;
     }
     //---------------------------------------------------------
     //
@@ -743,7 +744,7 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         }
         target.setCondition(condition, value);
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
-        Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
+        Util.msg.set(`${target.name}は<${condition}${value}>になった`, condition.color);
     };
     /** */
     Unit.set反射Inv = (unit) => {

@@ -1468,6 +1468,13 @@ export namespace Tec{
             await wait();
         }
     }
+    /**阿修羅. */
+    export const                          ナイトインナイツ:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"ナイトインナイツ", info:"敵全体に暗黒攻撃",
+                              sort:TecSort.暗黒, type:TecType.暗黒, targetings:["all"],
+                              mul:1, num:1, hit:1,
+        });}
+    }
     //--------------------------------------------------------------------------
     //
     //-暗黒Active
@@ -1517,6 +1524,35 @@ export namespace Tec{
                     canCounter:false,
                 });
                 await counter.run(); await wait();
+            }
+        };}
+    };
+    /**阿修羅. */
+    export const                         恐怖を超えて:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"恐怖を超えて", info:"戦闘開始時、光・過去値を暗黒値に変換",
+                                sort:TecSort.暗黒, type:TecType.暗黒,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async battleStart(unit:Unit){
+                unit.prm(Prm.DRK).battle += unit.prm(Prm.LIG).total;
+                unit.prm(Prm.LIG).battle -= unit.prm(Prm.LIG).total;
+
+                unit.prm(Prm.DRK).battle += unit.prm(Prm.PST).total;
+                unit.prm(Prm.PST).battle -= unit.prm(Prm.PST).total;
+            }
+        };}
+    };
+    /**阿修羅. */
+    export const                         闇そのもの:PassiveTec = new class extends PassiveTec{
+        constructor(){super({uniqueName:"闇そのもの", info:"戦闘開始時＜呪3＞化、暗黒攻撃x2",
+                                sort:TecSort.暗黒, type:TecType.暗黒,
+        });}
+        createForce(_this:PassiveTec){return new class extends Force{
+            async battleStart(unit:Unit){
+                Unit.setCondition(unit, Condition.呪, 3, true);
+            }
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("暗黒")){dmg.pow.mul *= 2;}
             }
         };}
     };
@@ -2878,7 +2914,7 @@ export namespace Tec{
     /**プリースト. */
     export const                          約束:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"約束", info:"一体を＜約＞化する",
-                              sort:TecSort.強化, type:TecType.状態, targetings:["select"],
+                              sort:TecSort.強化, type:TecType.状態, targetings:["select","friendOnly"],
                               mul:1, num:1, hit:1, mp:19,
         });}
         async run(attacker:Unit, target:Unit){
@@ -3316,6 +3352,20 @@ export namespace Tec{
             FX_Debuff( target.imgCenter );
             target.prm(Prm.STR).battle -= target.prm(Prm.STR).total * 0.9;
             Util.msg.set(`${target.name}の力が1/10になった！`); await wait();
+        }
+    }
+    /**阿修羅. */
+    export const                          明日世界が終わる:ActiveTec = new class extends ActiveTec{
+        constructor(){super({ uniqueName:"明日世界が終わる", info:"敵全体を＜時3＞（3ターン後に＜爆弾＞化）化する",
+                              sort:TecSort.弱体, type:TecType.状態, targetings:["all"],
+                              mul:1, num:1, hit:1, ep:1,
+        });}
+        toString(){return "明日、世界が終わる";}
+        async run(attacker:Unit, target:Unit){
+            Sound.DARK.play();
+            FX_Debuff( target.imgCenter );
+            
+            Unit.setCondition(target, Condition.時限, 3, true); await wait(1);
         }
     }
     //--------------------------------------------------------------------------

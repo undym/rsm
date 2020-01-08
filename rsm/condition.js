@@ -12,9 +12,11 @@ import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
+import { FX_BOM, FX_格闘 } from "./fx/fx.js";
 export class ConditionType {
-    constructor(uniqueName) {
+    constructor(uniqueName, color) {
         this.uniqueName = uniqueName;
+        this.color = color;
         this.ordinal = ConditionType.ordinalNow++;
         ConditionType._values.push(this);
     }
@@ -44,12 +46,12 @@ export class ConditionType {
 }
 ConditionType._values = [];
 ConditionType.ordinalNow = 0;
-ConditionType.GOOD_LV1 = new ConditionType("GOOD_LV1");
-ConditionType.GOOD_LV2 = new ConditionType("GOOD_LV2");
-ConditionType.GOOD_LV3 = new ConditionType("GOOD_LV3");
-ConditionType.BAD_LV1 = new ConditionType("BAD_LV1");
-ConditionType.BAD_LV2 = new ConditionType("BAD_LV2");
-ConditionType.BAD_LV3 = new ConditionType("BAD_LV3");
+ConditionType.GOOD_LV1 = new ConditionType("GOOD_LV1", Color.CYAN.bright);
+ConditionType.GOOD_LV2 = new ConditionType("GOOD_LV2", Color.CYAN.bright);
+ConditionType.GOOD_LV3 = new ConditionType("GOOD_LV3", Color.CYAN.bright);
+ConditionType.BAD_LV1 = new ConditionType("BAD_LV1", Color.RED.bright);
+ConditionType.BAD_LV2 = new ConditionType("BAD_LV2", Color.RED.bright);
+ConditionType.BAD_LV3 = new ConditionType("BAD_LV3", Color.RED.bright);
 export class Condition {
     constructor(uniqueName, type) {
         this.uniqueName = uniqueName;
@@ -67,6 +69,8 @@ export class Condition {
         return this._valueOf.get(uniqueName);
     }
     toString() { return `${this.uniqueName}`; }
+    /**`${condition}になった`の文字列表示時の色。 */
+    color(cnt) { return this.type.color(cnt); }
     get force() { return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this)); }
 }
 Condition._values = [];
@@ -609,6 +613,54 @@ Condition._valueOf = new Map();
                             value = lim;
                         }
                         unit.prm(Prm.MAX_HP).battle -= value;
+                        unit.addConditionValue(_this, -1);
+                    });
+                }
+            };
+        }
+    };
+    Condition.時限 = new class extends Condition {
+        constructor() { super("時限", ConditionType.BAD_LV3); }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (unit.getConditionValue(_this) === 1) {
+                            Util.msg.set(`${unit.name}に終わりの鐘が鳴り響く...`);
+                            yield wait();
+                            Unit.setCondition(unit, Condition.爆弾, 1, true);
+                            yield wait();
+                        }
+                        else {
+                            unit.addConditionValue(_this, -1);
+                        }
+                    });
+                }
+            };
+        }
+    };
+    Condition.爆弾 = new class extends Condition {
+        constructor() { super("爆弾", ConditionType.BAD_LV3); }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        FX_BOM(unit.imgCenter);
+                        Util.msg.set(`${unit.name}は爆発した！`);
+                        yield wait();
+                        const lim = 9999;
+                        const value = unit.hp < lim ? unit.hp : lim;
+                        for (const t of unit.searchUnits(["all"], 1)) {
+                            FX_格闘(t.imgCenter);
+                            yield new Dmg({
+                                attacker: unit,
+                                target: t,
+                                absPow: value,
+                                canCounter: false,
+                                action: _this,
+                            }).run(true);
+                            yield wait(1);
+                        }
                         unit.addConditionValue(_this, -1);
                     });
                 }

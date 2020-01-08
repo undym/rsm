@@ -56,6 +56,8 @@ export class Prm{
     private static _values:Prm[] = [];
     static get values():ReadonlyArray<Prm>{return this._values;}
 
+    static get atkPrms():Prm[]{return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR];}
+
     private static ordinalNow:number = 0;
 
     static readonly HP      = new Prm("HP");
@@ -623,8 +625,8 @@ export class PUnit extends Unit{
 
     getNextLvExp():number{
         const lv = this.prm(Prm.LV).base;
-        const grade = (lv/100+1)|0;
-        return (lv * grade * 7)|0;
+        const grade = (lv/49+1)|0;
+        return (lv * grade * 5)|0;
     }
     //---------------------------------------------------------
     //
@@ -763,8 +765,9 @@ export namespace Unit{
         if(!overwrite && target.getCondition(condition.type) !== Condition.empty){return;}
 
         target.setCondition(condition, value);
+
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
-        Util.msg.set(`${target.name}は<${condition}${value}>になった`, Color.CYAN.bright);
+        Util.msg.set(`${target.name}は<${condition}${value}>になった`, condition.color);
     };
     /** */
     export const set反射Inv = (unit:Unit)=>{

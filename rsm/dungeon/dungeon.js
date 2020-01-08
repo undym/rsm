@@ -235,13 +235,13 @@ export class Dungeon {
             if (this.rank >= 1) {
                 collectingEvents.push(DungeonEvent.TREE);
             }
-            if (this.rank >= 2) {
+            if (this.rank >= 1) {
                 collectingEvents.push(DungeonEvent.STRATUM);
             }
-            if (this.rank >= 3) {
+            if (this.rank >= 2) {
                 collectingEvents.push(DungeonEvent.LAKE);
             }
-            if (this.rank >= 4) {
+            if (this.rank >= 3) {
                 collectingEvents.push(DungeonEvent.FOSSIL);
             }
             if (collectingEvents.length > 0) {
@@ -1366,7 +1366,7 @@ Dungeon.musicCount = 0;
             this.isVisible = () => Dungeon.ハデスの腹.dungeonClearCount >= 1 && !Dungeon.小鬼.isVisible();
             this.setBossInner = () => {
                 for (const e of Unit.enemies) {
-                    for (const prm of Prm.values) {
+                    for (const prm of Prm.atkPrms) {
                         e.prm(prm).base *= 1.5;
                     }
                 }
@@ -1412,7 +1412,7 @@ Dungeon.musicCount = 0;
             this.isVisible = () => Dungeon.魂人の廃都.dungeonClearCount >= 1 && this.dungeonClearCount === 0;
             this.setBossInner = () => {
                 for (const e of Unit.enemies) {
-                    for (const prm of Prm.values) {
+                    for (const prm of Prm.atkPrms) {
                         e.prm(prm).base *= 1.5;
                     }
                 }
@@ -1446,7 +1446,7 @@ Dungeon.musicCount = 0;
     Dungeon.ハデスの口 = new class extends Dungeon {
         constructor() {
             super({ uniqueName: "ハデスの口", info: "湖+",
-                rank: 5, enemyLv: 14, au: 255, btn: [DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
+                rank: 5, enemyLv: 15, au: 255, btn: [DungeonArea.冥界, new Rect(0.05, 0.3, 0.3, 0.1)],
                 treasures: () => [Eq.回避の指輪],
                 exItems: () => [Eq.卯月ベルト],
                 trendItems: () => [Item.鬼火, Item.旧式ミサイル, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.クリスタル, Item.大型隕石],
@@ -1455,10 +1455,15 @@ Dungeon.musicCount = 0;
             });
             this.isVisible = () => Dungeon.小鬼.dungeonClearCount >= 1;
             this.setBossInner = () => {
+                for (const e of Unit.enemies) {
+                    for (const prm of Prm.atkPrms) {
+                        e.prm(prm).base *= 1.5;
+                    }
+                }
                 let e = Unit.enemies[0];
                 Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "口に住まう亡霊";
-                e.prm(Prm.MAX_HP).base = 700;
+                e.prm(Prm.MAX_HP).base = 1000;
             };
             this.setExInner = () => {
                 let e = Unit.enemies[0];
