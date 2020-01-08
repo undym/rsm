@@ -13,6 +13,7 @@ import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
 import { FX_BOM, FX_格闘 } from "./fx/fx.js";
+import { Sound } from "./sound.js";
 export class ConditionType {
     constructor(uniqueName, color) {
         this.uniqueName = uniqueName;
@@ -348,6 +349,7 @@ Condition._valueOf = new Map();
                         }
                         unit.dead = false;
                         Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.45, unit, unit, Condition.約束, false);
+                        Sound.KAIFUKU.play();
                         Util.msg.set(`${unit.name}は生き返った！`);
                         yield wait();
                         unit.addConditionValue(_this, -1);

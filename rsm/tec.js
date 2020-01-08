@@ -1704,7 +1704,7 @@ ActiveTec._valueOf = new Map();
         constructor() {
             super({ uniqueName: "ナイトインナイツ", info: "敵全体に暗黒攻撃",
                 sort: TecSort.暗黒, type: TecType.暗黒, targetings: ["all"],
-                mul: 1, num: 1, hit: 1,
+                mul: 1, num: 1, hit: 1, xp: 1,
             });
         }
     };

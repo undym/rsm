@@ -5,6 +5,7 @@ import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
 import { FX_BOM, FX_格闘 } from "./fx/fx.js";
+import { Sound } from "./sound.js";
 
 
 
@@ -41,7 +42,7 @@ export class ConditionType{
 
     readonly ordinal:number;
 
-    private constructor(public readonly uniqueName:string, readonly color:(cnt:number)=>Color){
+    private constructor(public readonly uniqueName:string, public readonly color:(cnt:number)=>Color){
         this.ordinal = ConditionType.ordinalNow++;
         ConditionType._values.push(this);
     }
@@ -307,6 +308,8 @@ export namespace Condition{
     
                 unit.dead = false;
                 Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.45, unit, unit, Condition.約束, false);
+                
+                Sound.KAIFUKU.play();
                 Util.msg.set(`${unit.name}は生き返った！`); await wait();
                 
                 unit.addConditionValue(_this, -1);

@@ -1472,7 +1472,7 @@ export namespace Tec{
     export const                          ナイトインナイツ:ActiveTec = new class extends ActiveTec{
         constructor(){super({ uniqueName:"ナイトインナイツ", info:"敵全体に暗黒攻撃",
                               sort:TecSort.暗黒, type:TecType.暗黒, targetings:["all"],
-                              mul:1, num:1, hit:1,
+                              mul:1, num:1, hit:1, xp:1,
         });}
     }
     //--------------------------------------------------------------------------
