@@ -441,6 +441,19 @@ export namespace Eq{
             }  
         };} 
     }
+    /**冥界王朝宮EX. */
+    export const                         僧兵の盾:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"僧兵の盾", info:"被攻撃時、神格反撃",
+                                pos:EqPos.盾, lv:32});}
+        createForce(_this:Eq){return new class extends Force{
+            async afterBeAtk(dmg:Dmg){
+                if(dmg.canCounter && dmg.hasType("神格")){
+                    Util.msg.set("＞僧兵の盾");
+                    await Tec.神格反撃.run(dmg.target, dmg.attacker);
+                }
+            }  
+        };} 
+    }
     //--------------------------------------------------------------------------
     //
     //-盾
@@ -772,6 +785,20 @@ export namespace Eq{
                 
                 if(Battle.turn % 5 === 0){
                     unit.removeCondition(Condition.暴走);
+                }
+            }
+        };}
+    }
+    /**冥界王朝宮財宝. */
+    export const                         僧兵の腕輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"僧兵の腕輪", info:"格闘攻撃時、『天籟』発動  MP-1  TP-1",
+                                pos:EqPos.手, lv:79});}
+        createForce(_this:Eq){return new class extends Force{
+            async afterDoAtk(dmg:Dmg){
+                if(dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.mp >= 1 && dmg.attacker.tp >= 1){
+                    dmg.attacker.mp -= 1;
+                    dmg.attacker.tp -= 1;
+                    await Tec.天籟.run( dmg.attacker, dmg.target );
                 }
             }
         };}

@@ -1179,7 +1179,7 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain26();
             }
-            if(Dungeon.ハデスの口.dungeonClearCount >= 1 && !Flag.story_Kabe0.done){
+            if(this.dungeonClearCount >= 2 && !Flag.story_Kabe0.done){
                 Flag.story_Kabe0.done = true;
                 await Story3.runKabe0();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 5);
@@ -1213,7 +1213,7 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain27();
             }
-            if(Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
+            if(this.dungeonClearCount >= 2 && Flag.story_Kabe0.done && !Flag.story_Kabe1.done){
                 Flag.story_Kabe1.done = true;
                 await Story3.runKabe1();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 10);
@@ -1258,7 +1258,7 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain28();
             }
-            if(Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
+            if(this.dungeonClearCount >= 2 && Flag.story_Kabe1.done && !Flag.story_Kabe2.done){
                 Flag.story_Kabe2.done = true;
                 await Story3.runKabe2();
                 Unit.players.filter(u=> u.exists).forEach(u=> u.prm(Prm.MAX_HP).base += 15);
@@ -1334,9 +1334,51 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain29();
             }
-            if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
-                Flag.story_Main30.done = true;
+            // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
+            //     Flag.story_Main30.done = true;
 
+            //     await Story3.runMain30();
+            //     DungeonArea.now = DungeonArea.中央島;
+            // }
+        }
+    };
+    export const                         冥界王朝宮:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"冥界王朝宮", info:"",
+                                rank:6, enemyLv:17, au:266, btn:[DungeonArea.冥界, new Rect(0.1, 0.85, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.僧兵の腕輪],
+                                exItems:    ()=>[Eq.僧兵の盾],
+                                trendItems: ()=>[Item.鬼火, Item.松, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.クリスタル, Item.桜],
+                                ghost:true,
+        });}
+        isVisible = ()=>{
+            if(Dungeon.ハデスの口.dungeonClearCount === 0){return false;}
+            if(!Flag.story_Kabe2.done){return false;}
+            if(Flag.story_Main30.done){return false;}
+            return true;
+        };
+        setBossInner = ()=>{
+            for(const e of Unit.enemies){
+                for(const prm of Prm.atkPrms){
+                    e.prm(prm).base *= 1.5;
+                }
+            }
+            
+            let e = Unit.enemies[0];
+            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "王朝兵";
+            e.prm(Prm.MAX_HP).base = 1200;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "アリラン";
+            e.img = new Img("img/unit/ex_ariran.png");
+            e.prm(Prm.MAX_HP).base = 2200;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                Flag.story_Main30.done = true;
                 await Story3.runMain30();
                 DungeonArea.now = DungeonArea.中央島;
             }
