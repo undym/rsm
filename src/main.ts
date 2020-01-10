@@ -17,7 +17,7 @@ import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { XLayout, ILayout, Label } from "./undym/layout.js";
 import { Job } from "./job.js";
 import { PartySkill } from "./partyskill.js";
-import { randomInt, randomFloat } from "./undym/random.js";
+import { randomInt, randomFloat, choice } from "./undym/random.js";
 import { Sound, Music } from "./sound.js";
 import { CollectingSkill } from "./collectingskill.js";
 
@@ -154,8 +154,8 @@ const setInput = ()=>{
 
 const title = ()=>{
     
-
-    const img = new Img("img/title.png", {lazyLoad:false,});
+    const titleImgPath = ["img/title.png", "img/title2.png", "img/title3.png", "img/title4.png"];
+    const img = new Img(choice( titleImgPath ), {lazyLoad:false,});
     const updateMsgs:string[] = [`Version(${Version.NOW})`];
     for(const s of Version.updateInfo){
         updateMsgs.push(s);

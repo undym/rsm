@@ -22,6 +22,7 @@ import { Item } from "./item.js";
 import { SaveData, Version } from "./savedata.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import { PartySkill } from "./partyskill.js";
+import { choice } from "./undym/random.js";
 import { Sound, Music } from "./sound.js";
 // {
 //     const run = document.getElementById("runreload") as HTMLButtonElement;
@@ -128,7 +129,8 @@ const setInput = () => {
     }
 };
 const title = () => {
-    const img = new Img("img/title.png", { lazyLoad: false, });
+    const titleImgPath = ["img/title.png", "img/title2.png", "img/title3.png", "img/title4.png"];
+    const img = new Img(choice(titleImgPath), { lazyLoad: false, });
     const updateMsgs = [`Version(${Version.NOW})`];
     for (const s of Version.updateInfo) {
         updateMsgs.push(s);

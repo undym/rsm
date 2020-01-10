@@ -428,29 +428,6 @@ export abstract class Unit{
         const set = this.conditions[type.ordinal];
         return {condition:set.condition, value:set.value};
     }
-    // /**1未満になるとemptyをセットする。 */
-    // addConditionValue(condition:Condition|ConditionType, value:number){
-    //     value = value|0;
-
-    //     if(condition instanceof Condition){
-    //         const set = this.conditions[condition.type.ordinal];
-    //         if(set.condition === condition){
-    //             set.value += value;
-    //             if(set.value < 1){
-    //                 set.condition = Condition.empty;
-    //             }
-    //         }
-    //         return;
-    //     }
-    //     if(condition instanceof ConditionType){
-    //         const set = this.conditions[condition.ordinal];
-    //         set.value += value;
-    //         if(set.value < 1){
-    //             set.condition = Condition.empty;
-    //         }
-    //         return;
-    //     }
-    // }
     //---------------------------------------------------------
     //
     //InvisibleCondition
