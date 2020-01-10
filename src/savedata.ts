@@ -17,7 +17,7 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,31,20);
+    static readonly NOW = new Version(0,31,21);
     static readonly updateInfo =    [
                                         "(0.31.9)音楽の鳴らし方を変えた",
                                         "(0.31.10)バグ修正",
@@ -31,6 +31,7 @@ export class Version{
                                         "(0.31.18)バランス調整",
                                         "(0.31.19)バグ修正",
                                         "(0.31.20)バグ修正",
+                                        "(0.31.21)いろいろ",
                                     ];
 
     private values:number[];
