@@ -313,7 +313,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.マーラーカオ = new class extends Item {
         constructor() {
-            super({ uniqueName: "マーラーカオ", info: "HP+70",
+            super({ uniqueName: "マーラーカオ", info: "マーラーの顔をかたどったパン  HP+70",
                 type: ItemType.HP回復, rank: 2, drop: ItemDrop.BOX,
                 use: (user, target) => __awaiter(this, void 0, void 0, function* () { return yield itemHeal("HP", 70, user, target, this); }),
             });
@@ -575,11 +575,6 @@ Item.DEF_NUM_LIMIT = 9999;
             });
         }
     };
-    //-----------------------------------------------------------------
-    //
-    //
-    //
-    //-----------------------------------------------------------------
     Item.ヴァイスドラッグ = new class extends Item {
         constructor() {
             super({ uniqueName: "ヴァイスドラッグ", info: "HP+20 MP+2",
@@ -653,7 +648,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     //-----------------------------------------------------------------
     //
-    //-回復
+    //-MP回復
     //状態回復
     //
     //-----------------------------------------------------------------
@@ -2031,6 +2026,20 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
         }
         toString() { return "エレ・タの絵の具"; }
+    };
+    Item.小説38万キロの恋 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "小説38万キロの恋", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
+        }
+        toString() { return "小説『３８万キロの恋』"; }
+    };
+    Item.小説おやすみコネコ = new class extends Item {
+        constructor() {
+            super({ uniqueName: "小説おやすみコネコ", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
+        }
+        toString() { return "小説『おやすみ、コネコ』"; }
     };
     Item.うんち = new class extends Item {
         constructor() {

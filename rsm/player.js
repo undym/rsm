@@ -1,9 +1,19 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { PUnit, Prm, Unit } from "./unit.js";
 import { Tec } from "./tec.js";
 import { Job } from "./job.js";
 import { Eq } from "./eq.js";
 import { Img } from "./graphics/texture.js";
 import { Flag } from "./util.js";
+import { Force } from "./force.js";
+import { Mix } from "./mix.js";
 export class Player {
     constructor(uniqueName, sex) {
         this.uniqueName = uniqueName;
@@ -21,6 +31,7 @@ export class Player {
         }
         return this._ins;
     }
+    get force() { return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this)); }
     calcJobChangeList() {
         const map = new Map();
         this.setJobChangeList(map);
@@ -59,6 +70,11 @@ Player._valueOf = new Map();
             p.exists = false;
         }
         setJobChangeList(map) { }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.ルイン = new class extends Player {
         constructor() { super("ルイン", "♂"); }
@@ -78,6 +94,11 @@ Player._valueOf = new Map();
             ];
         }
         setJobChangeList(map) { setDefJobChangeList(map, this.ins); }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.ピアー = new class extends Player {
         constructor() { super("ピアー", "♂"); }
@@ -101,6 +122,11 @@ Player._valueOf = new Map();
             map.set(Job.魔法使い, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.一号 = new class extends Player {
         constructor() { super("一号", "♂"); }
@@ -124,6 +150,11 @@ Player._valueOf = new Map();
             map.set(Job.暗黒戦士, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.雪 = new class extends Player {
         constructor() { super("雪", "♂"); }
@@ -156,6 +187,11 @@ Player._valueOf = new Map();
                 setDefJobChangeList(map, this.ins);
             }
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
         get ins() {
             const _ins = super.ins;
             if (Flag.yuki_beastOnly.done) {
@@ -189,6 +225,11 @@ Player._valueOf = new Map();
             map.set(Job.ドラゴン, true);
             setBeastJobChangeList(map, this.ins);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.luka = new class extends Player {
         constructor() { super("luka", "♀"); }
@@ -210,6 +251,11 @@ Player._valueOf = new Map();
         setJobChangeList(map) {
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.ジスロフ = new class extends Player {
         constructor() { super("ジスロフ", "♂"); }
@@ -232,6 +278,11 @@ Player._valueOf = new Map();
         setJobChangeList(map) {
             map.set(Job.羅文騎士, true);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.ナナ = new class extends Player {
         constructor() { super("ナナ", "♂"); }
@@ -256,6 +307,11 @@ Player._valueOf = new Map();
             map.set(Job.僧兵, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() { return []; }
     };
     Player.白い鳥 = new class extends Player {
         constructor() { super("白い鳥", "♂"); }
@@ -292,6 +348,30 @@ Player._valueOf = new Map();
                     }
                 }
             }
+        }
+        createForce(_this) {
+            return new class extends Force {
+                walk(unit, au) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (Mix.飛行.count > 0 && au.add > 0 && Math.random() < 0.3) {
+                            au.add += 1;
+                        }
+                        if (Mix.飛行2.count > 0 && au.add > 0 && Math.random() < 0.3) {
+                            au.add += 1;
+                        }
+                    });
+                }
+            };
+        }
+        getSpecialInfo() {
+            const res = [];
+            if (Mix.飛行.count > 0) {
+                res.push("進む時稀に+1");
+            }
+            if (Mix.飛行2.count > 0) {
+                res.push("進む時稀に+1");
+            }
+            return res;
         }
     };
 })(Player || (Player = {}));

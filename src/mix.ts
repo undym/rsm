@@ -440,6 +440,20 @@ export namespace Mix{
         },
     });
 
+    //Force
+    export const    飛行:Mix = new Mix({
+        uniqueName:"飛行", limit:1, info:"白い鳥が特性[進む時稀に+1]を覚える",
+        materials:()=>[[Item.小説38万キロの恋, 1], [Item.バッタ, 5]],
+        isVisible:()=>Player.白い鳥.member && ルインドアースLv11.count > 0,
+    });
+    export const    飛行2:Mix = new Mix({
+        uniqueName:"飛行2", limit:1, info:"白い鳥が特性[進む時稀に+1]を覚える",
+        to_string:"飛行+",
+        materials:()=>[[Item.小説38万キロの恋, 1], [Item.バッタ, 10]],
+        isVisible:()=>Player.白い鳥.member && ルインドアースLv12.count > 0 && 飛行.count > 0,
+    });
+    //-Force
+
 
     const           技の極み:Mix = new Mix({
         uniqueName:"技の極み", limit:1, info:"技セット上限数増加アイテムの合成が解放される",
@@ -463,6 +477,12 @@ export namespace Mix{
         uniqueName:"健康保険証", limit:1, info:"お店に新しい商品が並ぶ",
         materials:()=>[[Item.ドラッグ, 5], [Item.草, 5]],
         isVisible:()=>ルインドアースLv5.count > 0,
+    });
+
+    const           生命倫理:Mix = new Mix({
+        uniqueName:"生命倫理", limit:1, info:"新たなアイテムの合成が解放される",
+        materials:()=>[[Item.思い出そのもの, 10], [Item.スカイフェアリーの死体, 1]],
+        isVisible:()=>ルインドアースLv12.count > 0,
     });
     // //--------------------------------------------------------
     // //
@@ -519,25 +539,25 @@ export namespace Mix{
         uniqueName:"Dフラスコ", limit:Mix.LIMIT_INF,
         result:()=>[Item.Dフラスコ, 1],
         materials:()=>[[Item.マーザン, 1], [Item.ガラス, 5],],
-        isVisible:()=>Item.マーザン.totalGetCount > 0,
+        isVisible:()=>生命倫理.count > 0,
     });
     const           マーメイド:Mix = new Mix({
         uniqueName:"マーメイド", limit:Mix.LIMIT_INF,
         result:()=>[Item.マーメイド, 1],
         materials:()=>[[Item.マーザン, 1], [Item.呪い水, 4], [Item.少女の心を持ったおっさん, 1],],
-        isVisible:()=>Item.マーザン.totalGetCount > 0,
+        isVisible:()=>生命倫理.count > 0,
     });
     const           ホムンクルス:Mix = new Mix({
         uniqueName:"ホムンクルス", limit:Mix.LIMIT_INF,
         result:()=>[Item.ホムンクルス, 1],
         materials:()=>[[Item.マーザン, 1], [Item.精霊の涙, 2], [Item.王子の素, 2],],
-        isVisible:()=>Item.マーザン.totalGetCount > 0,
+        isVisible:()=>生命倫理.count > 0,
     });
     const           フランケンシュタイン:Mix = new Mix({
         uniqueName:"フランケンシュタイン", limit:Mix.LIMIT_INF,
         result:()=>[Item.フランケンシュタイン, 1],
         materials:()=>[[Item.マーザン, 1], [Item.思い出そのもの, 2], [Item.針金, 6],],
-        isVisible:()=>Item.マーザン.totalGetCount > 0,
+        isVisible:()=>生命倫理.count > 0,
     });
 
     const           魔弾:Mix = new Mix({

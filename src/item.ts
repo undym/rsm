@@ -342,7 +342,7 @@ export namespace Item{
         })}
     };
     export const                         マーラーカオ:Item = new class extends Item{
-        constructor(){super({uniqueName:"マーラーカオ", info:"HP+70",
+        constructor(){super({uniqueName:"マーラーカオ", info:"マーラーの顔をかたどったパン  HP+70",
                                 type:ItemType.HP回復, rank:2, drop:ItemDrop.BOX,
                                 use:async(user,target)=>await itemHeal("HP", 70, user, target, this),
         })}
@@ -543,11 +543,7 @@ export namespace Item{
                                 use:async(user,target)=>await itemHeal("MP", 20, user, target, this),
         })}
     };
-    //-----------------------------------------------------------------
-    //
-    //
-    //
-    //-----------------------------------------------------------------
+    
     export const                         ヴァイスドラッグ:Item = new class extends Item{
         constructor(){super({uniqueName:"ヴァイスドラッグ", info:"HP+20 MP+2",
                                 type:ItemType.MP回復, rank:1, drop:ItemDrop.BOX,
@@ -609,7 +605,7 @@ export namespace Item{
     };
     //-----------------------------------------------------------------
     //
-    //-回復
+    //-MP回復
     //状態回復
     //
     //-----------------------------------------------------------------
@@ -1577,6 +1573,7 @@ export namespace Item{
                 "金色のまぼろし", /*rank*/6, /*value*/90);
     export const 緋色のまぼろし = createMaborosi(
                 "緋色のまぼろし", /*rank*/8, /*value*/110);
+
     export const                         アーク素子:Item = new class extends Item{
         constructor(){super({uniqueName:"アーク素子", info:"",
                                 type:ItemType.ドーピング, rank:1, drop:ItemDrop.BOX,
@@ -1757,6 +1754,16 @@ export namespace Item{
         constructor(){super({uniqueName:"エレタの絵の具", info:"ぬりぬりしようね",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
         toString(){return "エレ・タの絵の具";}
+    };
+    export const                         小説38万キロの恋:Item = new class extends Item{
+        constructor(){super({uniqueName:"小説38万キロの恋", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX})}
+        toString(){return "小説『３８万キロの恋』";}
+    };
+    export const                         小説おやすみコネコ:Item = new class extends Item{
+        constructor(){super({uniqueName:"小説おやすみコネコ", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX})}
+        toString(){return "小説『おやすみ、コネコ』";}
     };
     export const                         うんち:Item = new class extends Item{
         constructor(){super({uniqueName:"うんち", info:"",

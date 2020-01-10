@@ -243,7 +243,20 @@ export class DrawUnitDetail extends InnerLayout {
             .add(() => `闇:${getUnit().prm(Prm.DRK).total}`)
             .add(() => `過:${getUnit().prm(Prm.PST).total}`)
             .add(() => `弓:${getUnit().prm(Prm.ARR).total}`)))
-            .add(ILayout.empty))
+            .add(new Labels(font)
+            .br()
+            .addArray(() => {
+            const u = getUnit();
+            if (u instanceof PUnit) {
+                const res = [];
+                u.player.getSpecialInfo().forEach(info => res.push(["-" + info, Color.WHITE]));
+                if (res.length > 0) {
+                    res.unshift(["特性:", Color.WHITE]);
+                }
+                return res;
+            }
+            return [];
+        })))
             .add((() => {
             let infoIsEar = true;
             let infoEarIndex = 0;

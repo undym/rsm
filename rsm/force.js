@@ -17,6 +17,7 @@ import { Sound } from "./sound.js";
 export class Force {
     static get empty() { return this._empty ? this._empty : (this._empty = new Force()); }
     equip(unit) { }
+    walk(unit, au) { }
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     battleStart(unit) {
         return __awaiter(this, void 0, void 0, function* () { });
@@ -71,6 +72,11 @@ export class Force {
 export class PhaseStartForce {
     constructor() {
         this.phaseSkip = false;
+    }
+}
+export class AUForce {
+    constructor(add) {
+        this.add = add;
     }
 }
 export class AttackNumForce {

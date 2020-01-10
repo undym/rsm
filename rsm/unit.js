@@ -279,6 +279,9 @@ export class Unit {
             yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return f.equip(this); }));
         });
     }
+    walk(au) {
+        return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.walk(this, au); })); });
+    }
     battleStart() {
         return __awaiter(this, void 0, void 0, function* () { yield this.force((f) => __awaiter(this, void 0, void 0, function* () { return yield f.battleStart(this); })); });
     }

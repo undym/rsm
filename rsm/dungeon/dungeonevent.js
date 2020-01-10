@@ -20,7 +20,7 @@ import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
-import { Dmg, Heal } from "../force.js";
+import { Dmg, Heal, AUForce } from "../force.js";
 import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { PartySkillOpenBox, PartySkill } from "../partyskill.js";
@@ -550,7 +550,9 @@ class AdvanceBtn {
             this._ins = new Btn(() => "進む", () => __awaiter(this, void 0, void 0, function* () {
                 Sound.walk.play();
                 FX_Advance(Place.MAIN);
-                Dungeon.auNow += 1;
+                const au = new AUForce(1);
+                Unit.players.forEach(u => u.walk(au));
+                Dungeon.auNow += au.add;
                 if (Dungeon.auNow >= Dungeon.now.au) {
                     Dungeon.auNow = Dungeon.now.au;
                     yield DungeonEvent.BOSS_BATTLE.happen();
@@ -569,7 +571,9 @@ class ReturnBtn {
             this._ins = new Btn(() => "戻る", () => __awaiter(this, void 0, void 0, function* () {
                 Sound.walk.play();
                 FX_Return(Place.MAIN);
-                Dungeon.auNow -= 1;
+                const au = new AUForce(-1);
+                Unit.players.forEach(u => u.walk(au));
+                Dungeon.auNow += au.add;
                 if (Dungeon.auNow < 0) {
                     Dungeon.auNow = 0;
                     yield DungeonEvent.ESCAPE_DUNGEON.happen();

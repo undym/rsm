@@ -583,5 +583,5 @@ export abstract class InvisibleCondition implements ForceIns{
 
     private forceIns:Force;
     get force():Force{return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
-    protected createForce(_this:InvisibleCondition):Force{return new Force();}
+    protected abstract createForce(_this:InvisibleCondition):Force;
 }

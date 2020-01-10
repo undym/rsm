@@ -12,7 +12,7 @@ import { Battle, BattleType, BattleResult } from "../battle.js";
 import { BattleScene } from "../scene/battlescene.js";
 import DungeonScene from "../scene/dungeonscene.js";
 import { ItemScene } from "../scene/itemscene.js";
-import { Dmg, Heal } from "../force.js";
+import { Dmg, Heal, AUForce } from "../force.js";
 import { Img } from "../graphics/texture.js";
 import { SaveData } from "../savedata.js";
 import { Input } from "../undym/input.js";
@@ -566,7 +566,10 @@ class AdvanceBtn{
                 Sound.walk.play();
                 FX_Advance( Place.MAIN );
 
-                Dungeon.auNow += 1;
+                const au = new AUForce(1);
+                Unit.players.forEach(u=> u.walk(au));
+
+                Dungeon.auNow += au.add;
                 if(Dungeon.auNow >= Dungeon.now.au){
                     Dungeon.auNow = Dungeon.now.au;
 
@@ -591,7 +594,11 @@ class ReturnBtn{
             this._ins = new Btn(()=>"戻る", async()=>{
                 Sound.walk.play();
                 FX_Return( Place.MAIN );
-                Dungeon.auNow -= 1;
+
+                const au = new AUForce(-1);
+                Unit.players.forEach(u=> u.walk(au));
+
+                Dungeon.auNow += au.add;
                 if(Dungeon.auNow < 0){
                     Dungeon.auNow = 0;
                     await DungeonEvent.ESCAPE_DUNGEON.happen();

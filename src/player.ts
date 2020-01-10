@@ -5,10 +5,11 @@ import { Eq } from "./eq.js";
 import { Img } from "./graphics/texture.js";
 import { SaveData } from "./savedata.js";
 import { Flag } from "./util.js";
+import { Force, ForceIns, AUForce } from "./force.js";
+import { Mix } from "./mix.js";
 
 
-
-export abstract class Player{
+export abstract class Player implements ForceIns{
     private static _values:Player[] = [];
     static get values():ReadonlyArray<Player>{return this._values;}
     private static _valueOf = new Map<string,Player>();
@@ -33,6 +34,11 @@ export abstract class Player{
     
     abstract createInner(p:PUnit):void;
     abstract setJobChangeList(map:Map<Job,true>):void;
+    abstract getSpecialInfo():string[];
+    
+    private forceIns:Force;
+    get force(){return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this));}
+    protected abstract createForce(_this:Player):Force;
 
     calcJobChangeList():Job[]{
         const map = new Map<Job,true>();
@@ -82,6 +88,10 @@ export namespace Player{
             p.exists = false;
         }
         setJobChangeList(map:Map<Job,true>){}
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             ルイン = new class extends Player{
         constructor(){super("ルイン", "♂");}
@@ -102,6 +112,10 @@ export namespace Player{
             ];
         }
         setJobChangeList(map:Map<Job,true>){setDefJobChangeList(map, this.ins);}
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             ピアー = new class extends Player{
         constructor(){super("ピアー", "♂");}
@@ -126,6 +140,10 @@ export namespace Player{
             map.set(Job.魔法使い, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             一号 = new class extends Player{
         constructor(){super("一号", "♂");}
@@ -150,6 +168,10 @@ export namespace Player{
             map.set(Job.暗黒戦士, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             雪 = new class extends Player{
         private uma:Img;
@@ -187,6 +209,10 @@ export namespace Player{
                 setDefJobChangeList(map, this.ins);
             }
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
         get ins(){
             const _ins = super.ins;
             if(Flag.yuki_beastOnly.done){
@@ -221,6 +247,10 @@ export namespace Player{
             map.set(Job.ドラゴン, true);
             setBeastJobChangeList(map, this.ins);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             luka = new class extends Player{
         constructor(){super("luka", "♀");}
@@ -244,6 +274,10 @@ export namespace Player{
         setJobChangeList(map:Map<Job,true>){
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             ジスロフ = new class extends Player{
         constructor(){super("ジスロフ", "♂");}
@@ -268,6 +302,10 @@ export namespace Player{
         setJobChangeList(map:Map<Job,true>){
             map.set(Job.羅文騎士, true);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             ナナ = new class extends Player{
         constructor(){super("ナナ", "♂");}
@@ -294,6 +332,10 @@ export namespace Player{
             map.set(Job.僧兵, true);
             setDefJobChangeList(map, this.ins);
         }
+        createForce(_this:Player){return new class extends Force{
+
+        };}
+        getSpecialInfo(){return [];}
     };
     export const             白い鳥 = new class extends Player{
         constructor(){super("白い鳥", "♂");}
@@ -328,6 +370,18 @@ export namespace Player{
                     if(this.ins.isMasteredJob(Job.魔獣ドンゴ)){map.set(Job.朱雀, true);}
                 }
             }
+        }
+        createForce(_this:Player){return new class extends Force{
+            async walk(unit:Unit, au:AUForce){
+                if(Mix.飛行.count > 0 && au.add > 0 && Math.random() < 0.3){au.add += 1;}
+                if(Mix.飛行2.count > 0 && au.add > 0 && Math.random() < 0.3){au.add += 1;}
+            }
+        };}
+        getSpecialInfo(){
+            const res:string[] = [];
+            if(Mix.飛行.count > 0){res.push("進む時稀に+1");}
+            if(Mix.飛行2.count > 0){res.push("進む時稀に+1");}
+            return res;
         }
     };
 }

@@ -315,7 +315,21 @@ export class DrawUnitDetail extends InnerLayout{
                                         .add(()=>`弓:${getUnit().prm(Prm.ARR).total}`)
                                     )
                             )
-                            .add(ILayout.empty)
+                            .add(new Labels(font)
+                                .br()
+                                .addArray(()=>{
+                                    const u = getUnit();
+                                    if(u instanceof PUnit){
+                                        const res:[string,Color][] = [];
+                                        u.player.getSpecialInfo().forEach(info=> res.push(["-"+info, Color.WHITE]));
+                                        if(res.length > 0){
+                                            res.unshift(["特性:", Color.WHITE]);
+                                        }
+                                        return res;
+                                    }
+                                    return [];
+                                })
+                            )
                         )
                         .add((()=>{
                             let infoIsEar = true;

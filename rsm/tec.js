@@ -1461,17 +1461,21 @@ ActiveTec._valueOf = new Map();
                                 super(...arguments);
                                 this.uniqueName = Tec.メイガス.uniqueName;
                             }
-                            beforeDoAtk(dmg) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    if (dmg.hasType("魔法")) {
-                                        dmg.pow.mul *= mul;
+                            createForce(_this) {
+                                return new class extends Force {
+                                    beforeDoAtk(dmg) {
+                                        return __awaiter(this, void 0, void 0, function* () {
+                                            if (dmg.hasType("魔法")) {
+                                                dmg.pow.mul *= mul;
+                                            }
+                                        });
                                     }
-                                });
-                            }
-                            phaseEnd(unit) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    mul = mul * 0.9 + 1 * 0.1;
-                                });
+                                    phaseEnd(unit) {
+                                        return __awaiter(this, void 0, void 0, function* () {
+                                            mul = mul * 0.9 + 1 * 0.1;
+                                        });
+                                    }
+                                };
                             }
                         });
                     });
@@ -2127,29 +2131,33 @@ ActiveTec._valueOf = new Map();
                                 super(...arguments);
                                 this.uniqueName = Tec.アンデッド.uniqueName;
                             }
-                            phaseStart(u) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    u.removeInvisibleCondition(this);
-                                });
-                            }
-                            deadPhaseStart(u) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    if (!u.dead) {
-                                        return;
+                            createForce(_this) {
+                                return new class extends Force {
+                                    phaseStart(u) {
+                                        return __awaiter(this, void 0, void 0, function* () {
+                                            u.removeInvisibleCondition(_this);
+                                        });
                                     }
-                                    if (--turnCount <= 0) {
-                                        u.dead = false;
-                                        u.hp = 1;
-                                        FX_回復(u.imgCenter);
-                                        Util.msg.set(`${u.name}は生き返った！`);
-                                        yield wait();
-                                        u.removeInvisibleCondition(this);
+                                    deadPhaseStart(u) {
+                                        return __awaiter(this, void 0, void 0, function* () {
+                                            if (!u.dead) {
+                                                return;
+                                            }
+                                            if (--turnCount <= 0) {
+                                                u.dead = false;
+                                                u.hp = 1;
+                                                FX_回復(u.imgCenter);
+                                                Util.msg.set(`${u.name}は生き返った！`);
+                                                yield wait();
+                                                u.removeInvisibleCondition(_this);
+                                            }
+                                            else {
+                                                Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`);
+                                                yield wait();
+                                            }
+                                        });
                                     }
-                                    else {
-                                        Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`);
-                                        yield wait();
-                                    }
-                                });
+                                };
                             }
                         });
                     });
@@ -3130,17 +3138,21 @@ ActiveTec._valueOf = new Map();
                             super(...arguments);
                             this.uniqueName = Tec.キンナラ.uniqueName;
                         }
-                        phaseStart(u) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                Util.msg.set("空から矢が降り注ぐ！");
-                                yield wait();
-                                const realTargets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
-                                realTargets.filter(t => t.exists && !t.dead)
-                                    .forEach((t) => __awaiter(this, void 0, void 0, function* () {
-                                    yield tec.inner.run(attacker, t);
-                                }));
-                                attacker.removeInvisibleCondition(this);
-                            });
+                        createForce(_this) {
+                            return new class extends Force {
+                                phaseStart(u) {
+                                    return __awaiter(this, void 0, void 0, function* () {
+                                        Util.msg.set("空から矢が降り注ぐ！");
+                                        yield wait();
+                                        const realTargets = attacker.searchUnits(tec.targetings, tec.rndAttackNum(attacker));
+                                        realTargets.filter(t => t.exists && !t.dead)
+                                            .forEach((t) => __awaiter(this, void 0, void 0, function* () {
+                                            yield tec.inner.run(attacker, t);
+                                        }));
+                                        attacker.removeInvisibleCondition(_this);
+                                    });
+                                }
+                            };
                         }
                     });
                     for (const t of fakeTargets) {
@@ -3406,10 +3418,14 @@ ActiveTec._valueOf = new Map();
                             super(...arguments);
                             this.uniqueName = Tec.アンドロメダ.uniqueName;
                         }
-                        beforeBeAtk(dmg) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                dmg.def.mul *= 1.2;
-                            });
+                        createForce(_this) {
+                            return new class extends Force {
+                                beforeBeAtk(dmg) {
+                                    return __awaiter(this, void 0, void 0, function* () {
+                                        dmg.def.mul *= 1.2;
+                                    });
+                                }
+                            };
                         }
                     });
                     Sound.seikou.play();
@@ -4515,30 +4531,34 @@ ActiveTec._valueOf = new Map();
                             super(...arguments);
                             this.uniqueName = tec.uniqueName;
                         }
-                        phaseStart(u) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                u.removeInvisibleCondition(this);
-                            });
-                        }
-                        deadPhaseStart(u) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                if (!u.dead) {
-                                    u.removeInvisibleCondition(this);
-                                    return;
+                        createForce(_this) {
+                            return new class extends Force {
+                                phaseStart(u) {
+                                    return __awaiter(this, void 0, void 0, function* () {
+                                        u.removeInvisibleCondition(_this);
+                                    });
                                 }
-                                if (--turnCount <= 0) {
-                                    u.dead = false;
-                                    u.hp = u.prm(Prm.MAX_HP).total * 0.3;
-                                    FX_回復(u.imgCenter);
-                                    Util.msg.set(`${u.name}は生き返った！`);
-                                    yield wait();
-                                    u.removeInvisibleCondition(this);
+                                deadPhaseStart(u) {
+                                    return __awaiter(this, void 0, void 0, function* () {
+                                        if (!u.dead) {
+                                            u.removeInvisibleCondition(_this);
+                                            return;
+                                        }
+                                        if (--turnCount <= 0) {
+                                            u.dead = false;
+                                            u.hp = u.prm(Prm.MAX_HP).total * 0.3;
+                                            FX_回復(u.imgCenter);
+                                            Util.msg.set(`${u.name}は生き返った！`);
+                                            yield wait();
+                                            u.removeInvisibleCondition(_this);
+                                        }
+                                        else {
+                                            Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`);
+                                            yield wait();
+                                        }
+                                    });
                                 }
-                                else {
-                                    Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`);
-                                    yield wait();
-                                }
-                            });
+                            };
                         }
                     });
                 }

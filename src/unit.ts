@@ -3,7 +3,7 @@ import { Util, PlayData } from "./util.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Color, Rect, Point } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec, TecType } from "./tec.js";
-import { Dmg, Force, Action, PhaseStartForce, AttackNumForce, Heal } from "./force.js";
+import { Dmg, Force, Action, PhaseStartForce, AttackNumForce, Heal, AUForce } from "./force.js";
 import { Job } from "./job.js";
 import { FX_ShakeStr, FX_RotateStr, FX_Shake, FX_Str, FX_LVUP, FX_PetDie, FX_反射, FX_RemoveCondition } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
@@ -325,6 +325,7 @@ export abstract class Unit{
         }
         await this.force(async f=> f.equip(this));
     }
+    async walk(au:AUForce)                                  {await this.force(async f=> await f.walk(this,au));}
     async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
     async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}
     async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}

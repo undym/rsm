@@ -1261,13 +1261,17 @@ export namespace Tec{
                 let mul = 1.5;
                 unit.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = Tec.メイガス.uniqueName;
-                    async beforeDoAtk(dmg:Dmg){
-                        if(dmg.hasType("魔法")){
-                            dmg.pow.mul *= mul;
-                        }
-                    }
-                    async phaseEnd(unit:Unit){
-                        mul = mul * 0.9 + 1 * 0.1;
+                    createForce(_this:InvisibleCondition){
+                        return new class extends Force{
+                            async beforeDoAtk(dmg:Dmg){
+                                if(dmg.hasType("魔法")){
+                                    dmg.pow.mul *= mul;
+                                }
+                            }
+                            async phaseEnd(unit:Unit){
+                                mul = mul * 0.9 + 1 * 0.1;
+                            }
+                        };
                     }
                 });
             }
@@ -1784,21 +1788,25 @@ export namespace Tec{
                 let turnCount = 4;
                 unit.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = Tec.アンデッド.uniqueName;
-                    async phaseStart(u:Unit){
-                        u.removeInvisibleCondition(this);
-                    }
-                    async deadPhaseStart(u:Unit){
-                        if(!u.dead){return;}
-    
-                        if(--turnCount <= 0){
-                            u.dead = false;
-                            u.hp = 1;
-                            FX_回復( u.imgCenter );
-                            Util.msg.set(`${u.name}は生き返った！`); await wait();
-                            u.removeInvisibleCondition(this);
-                        }else{
-                            Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`); await wait();
-                        }
+                    createForce(_this:InvisibleCondition){
+                        return new class extends Force{
+                            async phaseStart(u:Unit){
+                                u.removeInvisibleCondition(_this);
+                            }
+                            async deadPhaseStart(u:Unit){
+                                if(!u.dead){return;}
+            
+                                if(--turnCount <= 0){
+                                    u.dead = false;
+                                    u.hp = 1;
+                                    FX_回復( u.imgCenter );
+                                    Util.msg.set(`${u.name}は生き返った！`); await wait();
+                                    u.removeInvisibleCondition(_this);
+                                }else{
+                                    Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`); await wait();
+                                }
+                            }
+                        };
                     }
                 });
             }
@@ -2563,16 +2571,20 @@ export namespace Tec{
                 const tec = this;
                 attacker.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = Tec.キンナラ.uniqueName;
-                    async phaseStart(u:Unit){
-                        Util.msg.set("空から矢が降り注ぐ！"); await wait();
-
-                        const realTargets = attacker.searchUnits( tec.targetings, tec.rndAttackNum( attacker ) );
-                        realTargets.filter(t=> t.exists && !t.dead)
-                            .forEach(async t=>{
-                                await tec.inner.run(attacker, t);
-                            });
-
-                        attacker.removeInvisibleCondition(this);
+                    createForce(_this:InvisibleCondition){
+                        return new class extends Force{
+                            async phaseStart(u:Unit){
+                                Util.msg.set("空から矢が降り注ぐ！"); await wait();
+        
+                                const realTargets = attacker.searchUnits( tec.targetings, tec.rndAttackNum( attacker ) );
+                                realTargets.filter(t=> t.exists && !t.dead)
+                                    .forEach(async t=>{
+                                        await tec.inner.run(attacker, t);
+                                    });
+        
+                                attacker.removeInvisibleCondition(_this);
+                            }
+                        };
                     }
                 });
 
@@ -2761,9 +2773,11 @@ export namespace Tec{
             if(!target.getInvisibleConditions().some(inv=> inv.uniqueName === Tec.アンドロメダ.uniqueName)){
                 target.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = Tec.アンドロメダ.uniqueName;
-                    async beforeBeAtk(dmg:Dmg){
-                        dmg.def.mul *= 1.2;
-                    }
+                    createForce(_this:InvisibleCondition){return new class extends Force{
+                        async beforeBeAtk(dmg:Dmg){
+                            dmg.def.mul *= 1.2;
+                        }
+                    };}
                 });
                 Sound.seikou.play();
                 FX_Buff( target.imgCenter );
@@ -3594,25 +3608,27 @@ export namespace Tec{
                 let turnCount = 2;
                 target.addInvisibleCondition(new class extends InvisibleCondition{
                     readonly uniqueName = tec.uniqueName;
-                    async phaseStart(u:Unit){
-                        u.removeInvisibleCondition(this);
-                    }
-                    async deadPhaseStart(u:Unit){
-                        if(!u.dead){
-                            u.removeInvisibleCondition(this);
-                            return;
+                    createForce(_this:InvisibleCondition){return new class extends Force{
+                        async phaseStart(u:Unit){
+                            u.removeInvisibleCondition(_this);
                         }
-
-                        if(--turnCount <= 0){
-                            u.dead = false;
-                            u.hp = u.prm(Prm.MAX_HP).total * 0.3;
-                            FX_回復( u.imgCenter );
-                            Util.msg.set(`${u.name}は生き返った！`); await wait();
-                            u.removeInvisibleCondition(this);
-                        }else{
-                            Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`); await wait();
+                        async deadPhaseStart(u:Unit){
+                            if(!u.dead){
+                                u.removeInvisibleCondition(_this);
+                                return;
+                            }
+    
+                            if(--turnCount <= 0){
+                                u.dead = false;
+                                u.hp = u.prm(Prm.MAX_HP).total * 0.3;
+                                FX_回復( u.imgCenter );
+                                Util.msg.set(`${u.name}は生き返った！`); await wait();
+                                u.removeInvisibleCondition(_this);
+                            }else{
+                                Util.msg.set(`${u.name}蘇りまで残り${turnCount}ターン...`); await wait();
+                            }
                         }
-                    }
+                    };}
                 });
             }
         }

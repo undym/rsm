@@ -679,5 +679,4 @@ Condition._valueOf = new Map();
 })(Condition || (Condition = {}));
 export class InvisibleCondition {
     get force() { return this.forceIns ? this.forceIns : (this.forceIns = this.createForce(this)); }
-    createForce(_this) { return new Force(); }
 }

@@ -25,6 +25,8 @@ export class Force{
     static get empty(){return this._empty ? this._empty : (this._empty = new Force());}
 
     equip(unit:Unit){}
+
+    walk(unit:Unit, au:AUForce){}
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
     async battleStart(unit:Unit){}
     async phaseStart(unit:Unit, pForce:PhaseStartForce){}
@@ -54,6 +56,10 @@ export class Force{
 
 export class PhaseStartForce{
     phaseSkip:boolean = false;
+}
+
+export class AUForce{
+    constructor(public add:number){}
 }
 
 export class AttackNumForce{
