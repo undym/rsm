@@ -173,7 +173,7 @@ export class Dungeon {
         }
     }
     rndEvent() {
-        if (++Dungeon.musicCount >= 200 && Math.random() < 0.003) {
+        if (++Dungeon.musicCount >= 200 && Math.random() < 0.002) {
             this.playMusic("dungeon");
         }
         for (const set of DungeonArea.now.areaItems) {

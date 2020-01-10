@@ -492,7 +492,7 @@ export namespace DungeonEvent{
                             item.add(1); await wait();
                         }
 
-                        Dungeon.now.playMusic("dungeon");
+                        Music.stop();
                         Scene.load( DungeonScene.ins );
                         break;
                     case BattleResult.LOSE:

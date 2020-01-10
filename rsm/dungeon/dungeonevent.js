@@ -482,7 +482,7 @@ class EventImg {
                                 item.add(1);
                                 yield wait();
                             }
-                            Dungeon.now.playMusic("dungeon");
+                            Music.stop();
                             Scene.load(DungeonScene.ins);
                             break;
                         case BattleResult.LOSE:
