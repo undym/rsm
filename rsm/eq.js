@@ -382,7 +382,7 @@ EqEar._valueOf = new Map();
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (unit.hasCondition(Condition.眠)) {
-                            unit.addConditionValue(Condition.眠, -1);
+                            Unit.addConditionValue(unit, Condition.眠, -1);
                         }
                     });
                 }

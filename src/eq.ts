@@ -358,7 +358,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
                 if(unit.hasCondition(Condition.眠)){
-                    unit.addConditionValue(Condition.眠, -1);
+                    Unit.addConditionValue( unit, Condition.眠, -1 );
                 }
             }
         };}

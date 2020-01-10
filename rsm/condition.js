@@ -12,7 +12,7 @@ import { Unit, Prm } from "./unit.js";
 import { Util } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Color } from "./undym/type.js";
-import { FX_BOM, FX_格闘 } from "./fx/fx.js";
+import { FX_BOM, FX_格闘, FX_RemoveCondition } from "./fx/fx.js";
 import { Sound } from "./sound.js";
 export class ConditionType {
     constructor(uniqueName, color) {
@@ -101,7 +101,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("格闘", "神格", "鎖術", "銃", "弓")) {
                             Util.msg.set("＞練");
                             dmg.pow.mul *= (1 + dmg.attacker.getConditionValue(_this) * 0.5);
-                            dmg.attacker.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.attacker, _this, -1);
                         }
                     });
                 }
@@ -117,7 +117,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("格闘", "鎖術")) {
                             Util.msg.set("＞無効");
                             dmg.pow.base = 0;
-                            dmg.attacker.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.attacker, _this, -1);
                         }
                     });
                 }
@@ -133,7 +133,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("魔法", "過去")) {
                             Util.msg.set("＞無効");
                             dmg.pow.base = 0;
-                            dmg.attacker.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.attacker, _this, -1);
                         }
                     });
                 }
@@ -149,7 +149,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("銃", "弓")) {
                             Util.msg.set("＞無効");
                             dmg.pow.base = 0;
-                            dmg.attacker.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.attacker, _this, -1);
                         }
                     });
                 }
@@ -168,7 +168,7 @@ Condition._valueOf = new Map();
                         yield wait();
                         const targets = unit.searchUnits(Tec.殴る.targetings, Tec.殴る.rndAttackNum(unit));
                         yield Tec.殴る.use(unit, targets);
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
                 beforeBeAtk(dmg) {
@@ -189,7 +189,7 @@ Condition._valueOf = new Map();
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
                         unit.prm(Prm.MAX_HP).battle += unit.prm(Prm.MAX_HP).get("base", "eq") * 0.1;
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -203,7 +203,7 @@ Condition._valueOf = new Map();
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
                         unit.tp += 1;
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -223,7 +223,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("格闘", "神格", "鎖術", "銃", "弓")) {
                             Util.msg.set("＞盾");
                             dmg.pow.mul /= (1 + dmg.target.getConditionValue(_this) * 0.5);
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -239,7 +239,7 @@ Condition._valueOf = new Map();
                         if (dmg.hasType("魔法", "神格", "過去")) {
                             Util.msg.set("＞雲");
                             dmg.pow.mul /= (1 + dmg.target.getConditionValue(_this) * 0.5);
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -254,7 +254,7 @@ Condition._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘", "槍", "鎖術", "銃", "弓", "怨霊")) {
                             dmg.hit.mul = 0;
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -268,7 +268,7 @@ Condition._valueOf = new Map();
                 beforeBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘", "神格", "怨霊", "鎖術", "銃", "弓")) {
-                            Unit.set吸収Inv(dmg.target, () => dmg.target.addConditionValue(_this, -1));
+                            Unit.set吸収Inv(dmg.target, () => Unit.addConditionValue(dmg.target, _this, -1));
                         }
                     });
                 }
@@ -284,7 +284,7 @@ Condition._valueOf = new Map();
                         if (!dmg.hasType("槍", "怨霊")) {
                             Util.msg.set("＞バリア");
                             dmg.pow.mul = 0;
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -299,7 +299,7 @@ Condition._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("魔法", "神格", "過去")) {
                             Unit.set反射Inv(dmg.target);
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -318,7 +318,7 @@ Condition._valueOf = new Map();
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
                         Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1, unit, unit, Condition.癒, false);
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -331,7 +331,7 @@ Condition._valueOf = new Map();
                 phaseStart(unit) {
                     return __awaiter(this, void 0, void 0, function* () {
                         Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.2, unit, unit, Condition.治, false);
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -352,7 +352,7 @@ Condition._valueOf = new Map();
                         Sound.KAIFUKU.play();
                         Util.msg.set(`${unit.name}は生き返った！`);
                         yield wait();
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -370,7 +370,7 @@ Condition._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
                 beforeDoAtk(dmg) {
@@ -391,7 +391,7 @@ Condition._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         Util.msg.set("＞防↓");
                         dmg.def.mul *= 0.5;
-                        dmg.target.addConditionValue(_this, -1);
+                        Unit.addConditionValue(dmg.target, _this, -1);
                     });
                 }
             };
@@ -404,7 +404,7 @@ Condition._valueOf = new Map();
             return new class extends Force {
                 phaseStart(unit, pForce) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
                 beforeDoAtk(dmg) {
@@ -434,6 +434,7 @@ Condition._valueOf = new Map();
                         unit.setCondition(_this, value * 0.666);
                         if (unit.getConditionValue(_this) < unit.prm(Prm.DRK).total + 1) {
                             unit.removeCondition(_this);
+                            FX_RemoveCondition(unit.imgCenter);
                             Util.msg.set(`${unit.name}の＜毒＞が解除された`);
                             yield wait();
                         }
@@ -471,7 +472,7 @@ Condition._valueOf = new Map();
                             absPow: unit.hp * 0.5,
                             action: _this,
                         }).run(false);
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -491,7 +492,7 @@ Condition._valueOf = new Map();
                         pForce.phaseSkip = true;
                         Util.msg.set(`${unit.name}は眠っている...`);
                         yield wait();
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
                 afterBeAtk(dmg) {
@@ -515,7 +516,7 @@ Condition._valueOf = new Map();
                         pForce.phaseSkip = true;
                         Util.msg.set(`${unit.name}は動けない...`);
                         yield wait();
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -532,7 +533,7 @@ Condition._valueOf = new Map();
                             pForce.phaseSkip = true;
                             Util.msg.set(`${unit.name}は鎖に縛られている...`);
                             yield wait();
-                            unit.addConditionValue(_this, -1);
+                            Unit.addConditionValue(unit, _this, -1);
                         }
                     });
                 }
@@ -552,14 +553,14 @@ Condition._valueOf = new Map();
                             yield wait();
                             const targets = unit.searchUnits(Tec.混乱殴り.targetings, Tec.混乱殴り.rndAttackNum(unit));
                             yield Tec.混乱殴り.use(unit, targets);
-                            unit.addConditionValue(_this, -1);
+                            Unit.addConditionValue(unit, _this, -1);
                         }
                     });
                 }
                 beforeBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.hasType("格闘", "槍", "鎖術", "機械", "怨霊") && Math.random() < 0.5) {
-                            dmg.target.addConditionValue(_this, -1);
+                            Unit.addConditionValue(dmg.target, _this, -1);
                         }
                     });
                 }
@@ -594,6 +595,7 @@ Condition._valueOf = new Map();
                         unit.setCondition(_this, value * 0.666);
                         if (unit.getConditionValue(_this) < unit.prm(Prm.DRK).total + 1) {
                             unit.removeCondition(_this);
+                            FX_RemoveCondition(unit.imgCenter);
                             Util.msg.set(`${unit.name}の＜病気＞が解除された`);
                             yield wait();
                         }
@@ -615,7 +617,7 @@ Condition._valueOf = new Map();
                             value = lim;
                         }
                         unit.prm(Prm.MAX_HP).battle -= value;
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };
@@ -634,7 +636,7 @@ Condition._valueOf = new Map();
                             yield wait();
                         }
                         else {
-                            unit.addConditionValue(_this, -1);
+                            Unit.addConditionValue(unit, _this, -1);
                         }
                     });
                 }
@@ -663,7 +665,7 @@ Condition._valueOf = new Map();
                             }).run(true);
                             yield wait(1);
                         }
-                        unit.addConditionValue(_this, -1);
+                        Unit.addConditionValue(unit, _this, -1);
                     });
                 }
             };

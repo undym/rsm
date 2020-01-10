@@ -11,7 +11,7 @@ import { Util, SceneType } from "./util.js";
 import { Color, Point } from "./undym/type.js";
 import { Scene, wait } from "./undym/scene.js";
 import { Unit, Prm, PUnit } from "./unit.js";
-import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition } from "./fx/fx.js";
+import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition, FX_約束 } from "./fx/fx.js";
 import { Dmg, Heal } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
@@ -226,7 +226,7 @@ Item.DEF_NUM_LIMIT = 9999;
         target.hp = 0;
         Heal.run("HP", hp, target, target, item, false);
         Sound.KAIFUKU.play();
-        FX_回復(itemUnitCenter(target));
+        FX_約束(itemUnitCenter(target));
         if (SceneType.now === SceneType.BATTLE) {
             Util.msg.set(`${target.name}は生き返った`);
             yield wait();

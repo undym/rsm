@@ -13,7 +13,7 @@ import { Color, Rect } from "./undym/type.js";
 import { Tec, ActiveTec, PassiveTec } from "./tec.js";
 import { Dmg, Force, Heal } from "./force.js";
 import { Job } from "./job.js";
-import { FX_Str, FX_LVUP, FX_反射 } from "./fx/fx.js";
+import { FX_Str, FX_LVUP, FX_反射, FX_RemoveCondition } from "./fx/fx.js";
 import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
@@ -410,28 +410,28 @@ export class Unit {
         const set = this.conditions[type.ordinal];
         return { condition: set.condition, value: set.value };
     }
-    /**1未満になるとemptyをセットする。 */
-    addConditionValue(condition, value) {
-        value = value | 0;
-        if (condition instanceof Condition) {
-            const set = this.conditions[condition.type.ordinal];
-            if (set.condition === condition) {
-                set.value += value;
-                if (set.value < 1) {
-                    set.condition = Condition.empty;
-                }
-            }
-            return;
-        }
-        if (condition instanceof ConditionType) {
-            const set = this.conditions[condition.ordinal];
-            set.value += value;
-            if (set.value < 1) {
-                set.condition = Condition.empty;
-            }
-            return;
-        }
-    }
+    // /**1未満になるとemptyをセットする。 */
+    // addConditionValue(condition:Condition|ConditionType, value:number){
+    //     value = value|0;
+    //     if(condition instanceof Condition){
+    //         const set = this.conditions[condition.type.ordinal];
+    //         if(set.condition === condition){
+    //             set.value += value;
+    //             if(set.value < 1){
+    //                 set.condition = Condition.empty;
+    //             }
+    //         }
+    //         return;
+    //     }
+    //     if(condition instanceof ConditionType){
+    //         const set = this.conditions[condition.ordinal];
+    //         set.value += value;
+    //         if(set.value < 1){
+    //             set.condition = Condition.empty;
+    //         }
+    //         return;
+    //     }
+    // }
     //---------------------------------------------------------
     //
     //InvisibleCondition
@@ -745,6 +745,17 @@ EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, f
         target.setCondition(condition, value);
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, cnt => condition.color(cnt));
+    };
+    /** */
+    Unit.addConditionValue = (target, condition, add) => {
+        if (!target.hasCondition(condition)) {
+            return;
+        }
+        const nowValue = target.getConditionValue(condition);
+        target.setCondition(condition, nowValue + add);
+        if (!target.hasCondition(condition)) {
+            FX_RemoveCondition(target.imgCenter);
+        }
     };
     /** */
     Unit.set反射Inv = (unit) => {

@@ -428,29 +428,29 @@ export abstract class Unit{
         const set = this.conditions[type.ordinal];
         return {condition:set.condition, value:set.value};
     }
-    /**1未満になるとemptyをセットする。 */
-    addConditionValue(condition:Condition|ConditionType, value:number){
-        value = value|0;
+    // /**1未満になるとemptyをセットする。 */
+    // addConditionValue(condition:Condition|ConditionType, value:number){
+    //     value = value|0;
 
-        if(condition instanceof Condition){
-            const set = this.conditions[condition.type.ordinal];
-            if(set.condition === condition){
-                set.value += value;
-                if(set.value < 1){
-                    set.condition = Condition.empty;
-                }
-            }
-            return;
-        }
-        if(condition instanceof ConditionType){
-            const set = this.conditions[condition.ordinal];
-            set.value += value;
-            if(set.value < 1){
-                set.condition = Condition.empty;
-            }
-            return;
-        }
-    }
+    //     if(condition instanceof Condition){
+    //         const set = this.conditions[condition.type.ordinal];
+    //         if(set.condition === condition){
+    //             set.value += value;
+    //             if(set.value < 1){
+    //                 set.condition = Condition.empty;
+    //             }
+    //         }
+    //         return;
+    //     }
+    //     if(condition instanceof ConditionType){
+    //         const set = this.conditions[condition.ordinal];
+    //         set.value += value;
+    //         if(set.value < 1){
+    //             set.condition = Condition.empty;
+    //         }
+    //         return;
+    //     }
+    // }
     //---------------------------------------------------------
     //
     //InvisibleCondition
@@ -768,6 +768,16 @@ export namespace Unit{
 
         FX_Str(FXFont.def, `<${condition}>`, target.boxBounds.center, Color.WHITE);
         Util.msg.set(`${target.name}は<${condition}${value}>になった`, cnt=>condition.color(cnt));
+    };
+    /** */
+    export const addConditionValue = (target:Unit, condition:Condition, add:number)=>{
+        if(!target.hasCondition(condition)){return;}
+
+        const nowValue = target.getConditionValue(condition);
+        target.setCondition(condition, nowValue + add);
+        if(!target.hasCondition(condition)){
+            FX_RemoveCondition(target.imgCenter);
+        }
     };
     /** */
     export const set反射Inv = (unit:Unit)=>{
