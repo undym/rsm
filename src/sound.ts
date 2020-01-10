@@ -212,6 +212,8 @@ export namespace Sound{
     export const death      = createSound("sound/death.mp3");
     /**弱体. */
     export const down       = createSound("sound/down.mp3");
+    export const dragon     = createSound("sound/dragon.mp3");
+    export const ep         = createSound("sound/ep.mp3");
     export const exp        = createSound("sound/exp.mp3");
     export const gameover   = createSound("sound/gameover.mp3");
     export const gun        = createSound("sound/gun.mp3");
@@ -259,6 +261,7 @@ export namespace Sound{
     export const walk2      = createSound("sound/walk2.mp3");
     /**ペット召喚. */
     export const warp       = createSound("sound/warp.mp3");
+    export const xp         = createSound("sound/xp.mp3");
     /**arr. */
     export const ya         = createSound("sound/ya.mp3");
 }

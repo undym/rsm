@@ -168,6 +168,8 @@ Music.mute = false;
     Sound.death = createSound("sound/death.mp3");
     /**弱体. */
     Sound.down = createSound("sound/down.mp3");
+    Sound.dragon = createSound("sound/dragon.mp3");
+    Sound.ep = createSound("sound/ep.mp3");
     Sound.exp = createSound("sound/exp.mp3");
     Sound.gameover = createSound("sound/gameover.mp3");
     Sound.gun = createSound("sound/gun.mp3");
@@ -215,6 +217,7 @@ Music.mute = false;
     Sound.walk2 = createSound("sound/walk2.mp3");
     /**ペット召喚. */
     Sound.warp = createSound("sound/warp.mp3");
+    Sound.xp = createSound("sound/xp.mp3");
     /**arr. */
     Sound.ya = createSound("sound/ya.mp3");
 })(Sound || (Sound = {}));

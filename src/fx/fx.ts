@@ -296,6 +296,48 @@ FXTest.add(FX_Shake.name, ()=>{
 });
 
 
+
+export const FX_EP = (center:Point)=>{
+    const addFX = ()=>{
+        FX.add(count=>{
+            const over = 25;
+            const r = 0.15 * (1.0 - count / over);
+            Graphics.setLineWidth(Graphics.pixelW * 0.04 * (1.0 - count / over), ()=>{
+                Graphics.drawOval(center, r, count % 8 !== 0 ? Color.WHITE : Color.GRAY);
+            });
+            return count < over;
+        });
+    };
+    FX.add((count)=>{
+        if(count === 0 || count === 4){addFX();}
+        return count < 5;
+    });
+};
+FXTest.add(FX_EP.name, ()=> FX_EP(FXTest.attacker));
+
+
+export const FX_XP = (bounds:Rect)=>{
+    const addFX = ()=>{
+        const over = 5 + Math.random() * 10;
+        const x = bounds.x + Math.random() * bounds.w;
+        const p1 = new Point(x, bounds.y);
+        const p2 = new Point(x, bounds.yh);
+        FX.add(count=>{
+            Graphics.setLineWidth(Graphics.pixelW * 0.1 * (1.0 - count / over), ()=>{
+                Graphics.line(p1, p2, Math.random() < 0.7 ? Color.WHITE : Color.L_GRAY);
+            });
+            return count < over;
+        });
+    };
+    FX.add((count)=>{
+        const over = 15;
+        if(count % 2 === 0){addFX();}
+        return count < over;
+    });
+};
+FXTest.add(FX_XP.name, ()=> FX_XP(Rect.FULL));
+
+
 export const FX_格闘 = (center:{x:number, y:number})=>{
     let particles:{x:number, y:number, vx:number, vy:number, lifeTime:number}[] = [];
     for(let i = 0; i < 40; i++){
@@ -329,6 +371,47 @@ export const FX_格闘 = (center:{x:number, y:number})=>{
 };
 FXTest.add(FX_格闘.name, ()=> FX_格闘(FXTest.target));
 
+
+export const FX_槍 = (center:{x:number, y:number})=>{
+    const addLine = ()=>{
+        const rndRange1 = 0.01;
+        const rnd1x = randomFloat(-rndRange1, rndRange1);
+        const rnd1y = randomFloat(-rndRange1, rndRange1);
+        const w = 0.04;
+        const h = 0.08;
+        const x = center.x + rnd1x;
+        const y = center.y + rnd1y;
+        FX.add(count=>{
+            const over = 9;
+            Graphics.setLineWidth(Graphics.pixelW * 0.005 * (1.0 - count / over), ()=>{
+                Graphics.line(new Point(x + w, y - h), new Point(x - w, y + h), Math.random() < 0.7 ? Color.RED : Color.WHITE);
+            });
+            return count < over;
+        });
+    };
+    const addBubble = ()=>{
+        const rndRange = 0.04;
+        const p = new Point(
+            center.x + randomFloat(-rndRange, rndRange),
+            center.y + randomFloat(-rndRange, rndRange),
+        );
+        FX.add(count=>{
+            const over = 5;
+            Graphics.setLineWidth(Graphics.pixelW * 0.005 , ()=>{
+                const w = 0.015;
+                Graphics.drawOval(p, w * (1.0 - count / over), Math.random() < 0.7 ? Color.RED : Color.BLACK);
+            });
+            return count < over;
+        });
+    };
+    FX.add((count)=>{
+        const over = 20;
+        if(count % 2 === 0){addLine();}
+        if(count % 3 !== 0){addBubble();}
+        return count < over;
+    });
+};
+FXTest.add(FX_槍.name, ()=> FX_槍(FXTest.target));
 
 
 export const FX_魔法 = (center:{x:number, y:number}) => {
@@ -522,7 +605,7 @@ export const FX_過去 = (target:{x:number, y:number})=>{
         const points:{x:number,y:number}[] = [];
         for(let i = 0; i < loop; i++){
             const rad = Math.PI * 2 * i / loop * 2.5;
-            const r = 25 * i / loop + 40 * Math.random();
+            const r = 40 * i / loop + 40 * Math.random();
             let x = target.x + Math.cos(rad) * r * Graphics.dotW;
             let y = target.y + Math.sin(rad) * r * Graphics.dotH;
             points.push({x:x, y:y});
@@ -670,21 +753,45 @@ export const FX_回復 = (target:Point)=>{
 FXTest.add(FX_回復.name, () => FX_回復( FXTest.target ));
 
 
+export const FX_約束 = (target:Point)=>{
+    const addStar = (x:number, y:number)=>{
+        let w = 0.025;
+        let h = w * 1.5 * Graphics.pixelW / Graphics.pixelH;
+        FX.add(count=>{
+            if(count % 2){return true;}
+
+            Graphics.setLineWidth(4, ()=>{
+                const rnd = ()=>0.7 + Math.random() * 0.3;
+                const color = new Color(rnd(), rnd(), rnd());
+                Graphics.line(new Point(x - w * 0.5, y), new Point(x + w * 0.5, y), color);
+                Graphics.line(new Point(x, y - h * 0.4), new Point(x, y + h * 0.6), color);
+            });
+            return count < 10;
+        });
+    };
+    FX.add((count)=>{
+        const over = 20;
+
+        const rad = -count * 0.6;
+        const r = 70;
+        const x = target.x + Math.cos(rad) * (1 - count / over) * Graphics.dotW * r;
+        const y = target.y + Math.sin(rad) * (1 - count / over) * Graphics.dotH * r;
+        addStar(x, y);
+
+        return count < over;
+    });
+};
+FXTest.add(FX_約束.name, () => FX_約束( FXTest.target ));
+
+
+
 export const FX_吸収 = (attacker:Point, target:Point)=>{
     const size = 0.005;
 
     const drawElm = (x:number, y:number, _size:number)=>{
-        Graphics.setLineWidth(1, ()=>{     
-            Graphics.line(
-                new Point(x - _size, y),
-                new Point(x + _size, y),
-                Color.RED
-            );
-            Graphics.line(
-                new Point(x, y - _size),
-                new Point(x, y + _size),
-                Color.RED
-            );
+        Graphics.setLineWidth(2, ()=>{     
+            Graphics.line(new Point(x - _size, y), new Point(x + _size, y), Color.RED);
+            Graphics.line(new Point(x, y - _size), new Point(x, y + _size), Color.RED);
         });
 
     };
@@ -692,7 +799,9 @@ export const FX_吸収 = (attacker:Point, target:Point)=>{
     const addLine = (p1:Point, p2:Point)=>{
         FX.add(count=>{
             const over = 10;
-            Graphics.line(p1, p2, new Color(1,0,0, 1.0 - count / over));
+            Graphics.setLineWidth(2, ()=>{
+                Graphics.line(p1, p2, new Color(1,0,0, 1.0 - count / over));
+            });
             return count < over;
         });
     };

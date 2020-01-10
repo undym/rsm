@@ -7,12 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Unit, Prm, PUnit, EUnit } from "./unit.js";
-import { Util } from "./util.js";
+import { Util, Place } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Force, Dmg, AttackNumForce, Heal } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff, FX_RemoveCondition } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_Debuff, FX_RemoveCondition, FX_槍, FX_XP, FX_EP } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Item } from "./item.js";
@@ -95,7 +95,7 @@ TecType._values = [];
                 types: ["槍"],
             });
         }
-        effect(dmg) { FX_格闘(dmg.target.imgBounds.center); }
+        effect(dmg) { FX_槍(dmg.target.imgBounds.center); }
         sound() { Sound.PUNCH.play(); }
         getCounterTec() { return Tec.格闘反撃; }
     };
@@ -424,10 +424,23 @@ export class ActiveTec extends Tec {
     sound() {
         this.type.sound();
     }
-    use(attacker, targets) {
+    useMessage(attacker) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.args.ep) {
+                FX_EP(attacker.imgCenter);
+                Sound.ep.play();
+            }
+            if (this.args.xp) {
+                FX_XP(Place.MAIN);
+                Sound.xp.play();
+            }
             Util.msg.set(`${attacker.name}の[${this}]`, Color.D_GREEN.bright);
             yield wait();
+        });
+    }
+    use(attacker, targets) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.useMessage(attacker);
             if (targets.length === 0) {
                 return;
             }
@@ -564,17 +577,15 @@ ActiveTec._valueOf = new Map();
             dmg.def.mul = 0;
             return dmg;
         }
-        runInner(dmg) {
+        run(attacker, target) {
             const _super = Object.create(null, {
-                runInner: { get: () => super.runInner }
+                run: { get: () => super.run }
             });
             return __awaiter(this, void 0, void 0, function* () {
-                yield _super.runInner.call(this, dmg);
-                if (dmg.result.isHit) {
-                    for (const type of ConditionType.goodConditions()) {
-                        dmg.target.removeCondition(type);
-                    }
+                for (const type of ConditionType.goodConditions()) {
+                    target.removeCondition(type);
                 }
+                yield _super.run.call(this, attacker, target);
             });
         }
     };
@@ -3337,7 +3348,7 @@ ActiveTec._valueOf = new Map();
                 Sound.up.play();
                 FX_Buff(target.imgCenter);
                 Unit.setCondition(target, Condition.回避, 2);
-                yield wait();
+                yield wait(1);
             });
         }
     };
@@ -3404,7 +3415,7 @@ ActiveTec._valueOf = new Map();
                     Sound.seikou.play();
                     FX_Buff(target.imgCenter);
                     Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright);
-                    yield wait();
+                    yield wait(1);
                 }
             });
         }
@@ -3565,15 +3576,15 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
-        use(attacker, targets) {
+        useMessage(attacker) {
             const _super = Object.create(null, {
-                use: { get: () => super.use }
+                useMessage: { get: () => super.useMessage }
             });
             return __awaiter(this, void 0, void 0, function* () {
+                yield _super.useMessage.call(this, attacker);
                 if (this.checkCost(attacker)) {
                     Sound.DARK.play();
                 }
-                yield _super.use.call(this, attacker, targets);
             });
         }
         run(attacker, target) {
@@ -4003,16 +4014,16 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
-        use(attacker, targets) {
+        useMessage(attacker) {
             const _super = Object.create(null, {
-                use: { get: () => super.use }
+                useMessage: { get: () => super.useMessage }
             });
             return __awaiter(this, void 0, void 0, function* () {
+                yield _super.useMessage.call(this, attacker);
                 if (this.checkCost(attacker)) {
                     Sound.up.play();
                     Sound.awa.play();
                 }
-                yield _super.use.call(this, attacker, targets);
             });
         }
         run(attacker, target) {
@@ -4073,7 +4084,7 @@ ActiveTec._valueOf = new Map();
             return __awaiter(this, void 0, void 0, function* () {
                 Sound.sin.play();
                 Unit.setCondition(target, Condition.眠, 1);
-                yield wait();
+                yield wait(1);
             });
         }
     };
@@ -4334,15 +4345,15 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
-        use(attacker, targets) {
+        useMessage(attacker) {
             const _super = Object.create(null, {
-                use: { get: () => super.use }
+                useMessage: { get: () => super.useMessage }
             });
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.checkCost(attacker)) {
                     Sound.sin.play();
                 }
-                yield _super.use.call(this, attacker, targets);
+                yield _super.useMessage.call(this, attacker);
             });
         }
         run(attacker, target) {
@@ -4365,17 +4376,6 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ヨトゥンヘイム", info: "第2ユグドラシル",
                 sort: TecSort.回復, type: TecType.回復, targetings: ["all", "friendOnly", "withDead"],
                 mul: 1, num: 1, hit: 1, xp: 1,
-            });
-        }
-        use(attacker, targets) {
-            const _super = Object.create(null, {
-                use: { get: () => super.use }
-            });
-            return __awaiter(this, void 0, void 0, function* () {
-                if (this.checkCost(attacker)) {
-                    Sound.sin.play();
-                }
-                yield _super.use.call(this, attacker, targets);
             });
         }
         run(attacker, target) {
@@ -4867,17 +4867,26 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
+        useMessage(attacker) {
+            const _super = Object.create(null, {
+                useMessage: { get: () => super.useMessage }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                Util.msg.set(`${attacker.name}の体から光が溢れる...`);
+                yield wait();
+                yield _super.useMessage.call(this, attacker);
+                if (this.checkCost(attacker)) {
+                    Sound.bom2.play();
+                    FX_BOM(attacker.imgCenter);
+                }
+            });
+        }
         use(attacker, targets) {
             const _super = Object.create(null, {
                 use: { get: () => super.use }
             });
             return __awaiter(this, void 0, void 0, function* () {
                 const canUse = this.checkCost(attacker);
-                Util.msg.set(`${attacker.name}の体から光が溢れる...`);
-                yield wait();
-                if (canUse) {
-                    this.soundAndFX = true;
-                }
                 yield _super.use.call(this, attacker, targets);
                 if (canUse) {
                     attacker.hp = 0;
@@ -4890,11 +4899,6 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.soundAndFX) {
-                    this.soundAndFX = false;
-                    Sound.bom2.play();
-                    FX_BOM(attacker.imgCenter);
-                }
                 const dmg = new Dmg({
                     attacker: attacker,
                     target: target,
@@ -4912,6 +4916,15 @@ ActiveTec._valueOf = new Map();
             super({ uniqueName: "ドラゴンブレス", info: "敵全体に[最大HP-現在HP]のダメージを与える",
                 sort: TecSort.その他, type: TecType.その他, targetings: ["all"],
                 mul: 1, num: 1, hit: 1, ep: 1,
+            });
+        }
+        useMessage(attacker) {
+            const _super = Object.create(null, {
+                useMessage: { get: () => super.useMessage }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.useMessage.call(this, attacker);
+                Sound.dragon.play();
             });
         }
         run(attacker, target) {
@@ -4934,15 +4947,24 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, xp: 1,
             });
         }
+        useMessage(attacker) {
+            const _super = Object.create(null, {
+                useMessage: { get: () => super.useMessage }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.useMessage.call(this, attacker);
+                if (this.checkCost(attacker)) {
+                    Sound.bom2.play();
+                    FX_BOM(attacker.imgCenter);
+                }
+            });
+        }
         use(attacker, targets) {
             const _super = Object.create(null, {
                 use: { get: () => super.use }
             });
             return __awaiter(this, void 0, void 0, function* () {
                 const canUse = this.checkCost(attacker);
-                if (canUse) {
-                    this.soundAndFX = true;
-                }
                 yield _super.use.call(this, attacker, targets);
                 if (canUse) {
                     attacker.mp = 0;
@@ -4951,11 +4973,8 @@ ActiveTec._valueOf = new Map();
         }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.soundAndFX) {
-                    this.soundAndFX = false;
-                    Sound.bom2.play();
-                    FX_BOM(attacker.imgCenter);
-                }
+                FX_格闘(target.imgCenter);
+                TecType.格闘.sound();
                 const dmg = new Dmg({
                     attacker: attacker,
                     target: target,

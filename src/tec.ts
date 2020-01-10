@@ -1,10 +1,10 @@
 import { Unit, Prm, PUnit, EUnit, Targeting } from "./unit.js";
-import { Util } from "./util.js";
+import { Util, Place } from "./util.js";
 import { wait } from "./undym/scene.js";
 import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal } from "./force.js";
 import { Condition, ConditionType, InvisibleCondition } from "./condition.js";
 import { Color } from "./undym/type.js";
-import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_反射, FX_Debuff, FX, FX_RemoveCondition } from "./fx/fx.js";
+import { FX_Str, FX_格闘, FX_魔法, FX_神格, FX_暗黒, FX_鎖術, FX_過去, FX_銃, FX_回復, FX_吸収, FX_弓, FX_ナーガ, FX_Poison, FX_Buff, FX_RotateStr, FX_PetDie, FX_機械, FX_BOM, FX_ナーガ着弾, FX_反射, FX_Debuff, FX, FX_RemoveCondition, FX_槍, FX_XP, FX_EP } from "./fx/fx.js";
 import { Font } from "./graphics/graphics.js";
 import { Battle } from "./battle.js";
 import { Num } from "./mix.js";
@@ -106,7 +106,7 @@ export namespace TecType{
                 types:["槍"],
             });
         }
-        effect(dmg:Dmg){FX_格闘(dmg.target.imgBounds.center);}
+        effect(dmg:Dmg){FX_槍(dmg.target.imgBounds.center);}
         sound(){Sound.PUNCH.play();}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -470,9 +470,16 @@ export abstract class ActiveTec extends Tec implements Action{
         this.type.sound();
     }
 
-    async use(attacker:Unit, targets:Unit[]){
+    async useMessage(attacker:Unit){
+        if(this.args.ep){FX_EP(attacker.imgCenter); Sound.ep.play();}
+        if(this.args.xp){FX_XP(Place.MAIN); Sound.xp.play();}
 
         Util.msg.set(`${attacker.name}の[${this}]`, Color.D_GREEN.bright); await wait();
+    }
+
+    async use(attacker:Unit, targets:Unit[]){
+        
+        await this.useMessage(attacker);
 
         if(targets.length === 0){return;}
 
@@ -596,13 +603,11 @@ export namespace Tec{
             dmg.def.mul = 0;
             return dmg;
         }
-        async runInner(dmg:Dmg){
-            await super.runInner(dmg);
-            if(dmg.result.isHit){
-                for(const type of ConditionType.goodConditions()){
-                    dmg.target.removeCondition(type);
-                }
+        async run(attacker:Unit, target:Unit){
+            for(const type of ConditionType.goodConditions()){
+                target.removeCondition(type);
             }
+            await super.run(attacker, target);
         }
     }
     /**剣士. */
@@ -2718,7 +2723,7 @@ export namespace Tec{
         async run(attacker:Unit, target:Unit){
             Sound.up.play();
             FX_Buff( target.imgCenter );
-            Unit.setCondition( target, Condition.回避, 2 ); await wait();
+            Unit.setCondition( target, Condition.回避, 2 ); await wait(1);
         }
     }
     /**格闘家. */
@@ -2762,7 +2767,7 @@ export namespace Tec{
                 });
                 Sound.seikou.play();
                 FX_Buff( target.imgCenter );
-                Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright); await wait();
+                Util.msg.set(`${target.name}は頑丈になった！`, Color.WHITE.bright); await wait(1);
             }
         }
     }
@@ -2885,11 +2890,11 @@ export namespace Tec{
                               sort:TecSort.強化, type:TecType.状態, targetings:["all"],
                               mul:1, num:1, hit:1, ep:1,
         });}
-        async use(attacker:Unit, targets:Unit[]){
+        async useMessage(attacker:Unit){
+            await super.useMessage(attacker);
             if(this.checkCost(attacker)){
                 Sound.DARK.play();
             }
-            await super.use(attacker, targets);
         }
         async run(attacker:Unit, target:Unit){
             FX_吸収(attacker.imgCenter, target.imgCenter);
@@ -3206,14 +3211,14 @@ export namespace Tec{
                               sort:TecSort.弱体, type:TecType.状態, targetings:["all","withFriend"],
                               mul:1, num:1, hit:1, ep:1,
         });}
-        async use(attacker:Unit, targets:Unit[]){
+        async useMessage(attacker:Unit){
+            await super.useMessage(attacker);
             if(this.checkCost(attacker)){
                 Sound.up.play();
                 Sound.awa.play();
             }
-            await super.use(attacker, targets);
-
         }
+
         async run(attacker:Unit, target:Unit){
             if(target.isFriend( attacker )){
                 Unit.setCondition(target, Condition.癒, 3);
@@ -3255,7 +3260,7 @@ export namespace Tec{
         toString(){return "SORRY, C･STEF";}
         async run(attacker:Unit, target:Unit){
             Sound.sin.play();
-            Unit.setCondition( target, Condition.眠, 1 ); await wait();
+            Unit.setCondition( target, Condition.眠, 1 ); await wait(1);
         }
     }
     /**ホークマン. */
@@ -3456,12 +3461,11 @@ export namespace Tec{
                               sort:TecSort.回復, type:TecType.回復, targetings:["all","friendOnly","withDead"],
                               mul:1, num:1, hit:1, ep:1,
         });}
-        async use(attacker:Unit, targets:Unit[]){
+        async useMessage(attacker:Unit){
             if(this.checkCost(attacker)){
                 Sound.sin.play();
             }
-            await super.use(attacker, targets);
-
+            await super.useMessage(attacker);
         }
         async run(attacker:Unit, target:Unit){
             target.dead = false;
@@ -3482,13 +3486,6 @@ export namespace Tec{
                               sort:TecSort.回復, type:TecType.回復, targetings:["all","friendOnly","withDead"],
                               mul:1, num:1, hit:1, xp:1,
         });}
-        async use(attacker:Unit, targets:Unit[]){
-            if(this.checkCost(attacker)){
-                Sound.sin.play();
-            }
-            await super.use(attacker, targets);
-
-        }
         async run(attacker:Unit, target:Unit){
             await Tec.ユグドラシル.run(attacker, target);
         }
@@ -3866,16 +3863,19 @@ export namespace Tec{
                               mul:1, num:1, hit:1, ep:1,
         });}
 
-        soundAndFX:boolean;
+        async useMessage(attacker:Unit){
+            Util.msg.set(`${attacker.name}の体から光が溢れる...`); await wait();
+            await super.useMessage(attacker);
+
+            if(this.checkCost(attacker)){
+                Sound.bom2.play();
+                FX_BOM( attacker.imgCenter );
+            }
+        }
 
         async use(attacker:Unit, targets:Unit[]){
             const canUse = this.checkCost(attacker);
 
-            Util.msg.set(`${attacker.name}の体から光が溢れる...`); await wait();
-
-            if(canUse){
-                this.soundAndFX = true;
-            }
             await super.use(attacker, targets);
             
             if(canUse){
@@ -3885,11 +3885,6 @@ export namespace Tec{
             }
         }
         async run(attacker:Unit, target:Unit){
-            if(this.soundAndFX){
-                this.soundAndFX = false;
-                Sound.bom2.play();
-                FX_BOM( attacker.imgCenter );
-            }
             const dmg = new Dmg({
                 attacker:attacker,
                 target:target,
@@ -3905,6 +3900,10 @@ export namespace Tec{
                               sort:TecSort.その他, type:TecType.その他, targetings:["all"],
                               mul:1, num:1, hit:1, ep:1,
         });}
+        async useMessage(attacker:Unit){
+            await super.useMessage(attacker);
+            Sound.dragon.play();
+        }
         async run(attacker:Unit, target:Unit){
             const dmg = new Dmg({
                 attacker:attacker,
@@ -3920,15 +3919,16 @@ export namespace Tec{
                               sort:TecSort.その他, type:TecType.その他, targetings:["all"],
                               mul:1, num:1, hit:1, xp:1,
         });}
-
-        soundAndFX:boolean;
-
+        async useMessage(attacker:Unit){
+            await super.useMessage(attacker);
+            if(this.checkCost(attacker)){
+                Sound.bom2.play();
+                FX_BOM( attacker.imgCenter );
+            }
+        }
         async use(attacker:Unit, targets:Unit[]){
             const canUse = this.checkCost(attacker);
 
-            if(canUse){
-                this.soundAndFX = true;
-            }
             await super.use(attacker, targets);
             
             if(canUse){
@@ -3936,11 +3936,8 @@ export namespace Tec{
             }
         }
         async run(attacker:Unit, target:Unit){
-            if(this.soundAndFX){
-                this.soundAndFX = false;
-                Sound.bom2.play();
-                FX_BOM( attacker.imgCenter );
-            }
+            FX_格闘( target.imgCenter );
+            TecType.格闘.sound();
             const dmg = new Dmg({
                 attacker:attacker,
                 target:target,
