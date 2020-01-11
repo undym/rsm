@@ -375,7 +375,7 @@ EqEar._valueOf = new Map();
     Eq.ぱとバット = new class extends Eq {
         constructor() {
             super({ uniqueName: "ぱとバット", info: "＜眠＞から目覚めやすくなる",
-                pos: EqPos.武, lv: 100 });
+                pos: EqPos.武, lv: 0 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -553,7 +553,7 @@ EqEar._valueOf = new Map();
     Eq.オールマント = new class extends Eq {
         constructor() {
             super({ uniqueName: "オールマント", info: "全ステータス+20",
-                pos: EqPos.体, lv: 55 });
+                pos: EqPos.体, lv: 20 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -569,7 +569,7 @@ EqEar._valueOf = new Map();
     Eq.いばらの鎧 = new class extends Eq {
         constructor() {
             super({ uniqueName: "いばらの鎧", info: "被格闘攻撃時、稀に格闘反撃",
-                pos: EqPos.体, lv: 55 });
+                pos: EqPos.体, lv: 15 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -604,7 +604,7 @@ EqEar._valueOf = new Map();
     Eq.ダークネスロード = new class extends Eq {
         constructor() {
             super({ uniqueName: "ダークネスロード", info: "攻撃倍率+10%　防御倍率-20%",
-                pos: EqPos.体, lv: 35 });
+                pos: EqPos.体, lv: 6 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -625,7 +625,7 @@ EqEar._valueOf = new Map();
     Eq.猛者の鎧 = new class extends Eq {
         constructor() {
             super({ uniqueName: "猛者の鎧", info: "格闘攻撃+15%　被格闘攻撃+15%",
-                pos: EqPos.体, lv: 35 });
+                pos: EqPos.体, lv: 3 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -650,7 +650,7 @@ EqEar._valueOf = new Map();
     Eq.鎖のマント = new class extends Eq {
         constructor() {
             super({ uniqueName: "鎖のマント", info: "鎖術攻撃+20%",
-                pos: EqPos.体, lv: 15 });
+                pos: EqPos.体, lv: 0 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -668,7 +668,7 @@ EqEar._valueOf = new Map();
     Eq.ルナローブ = new class extends Eq {
         constructor() {
             super({ uniqueName: "ルナローブ", info: "行動開始時TP+1",
-                pos: EqPos.体, lv: 25 });
+                pos: EqPos.体, lv: 20 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -749,7 +749,7 @@ EqEar._valueOf = new Map();
     Eq.ライダーベルト = new class extends Eq {
         constructor() {
             super({ uniqueName: "ライダーベルト", info: "攻撃+10",
-                pos: EqPos.腰, lv: 35 });
+                pos: EqPos.腰, lv: 17 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -869,7 +869,7 @@ EqEar._valueOf = new Map();
     Eq.妖魔の手 = new class extends Eq {
         constructor() {
             super({ uniqueName: "妖魔の手", info: "被魔法・過去攻撃時、稀に魔法反撃",
-                pos: EqPos.手, lv: 45 });
+                pos: EqPos.手, lv: 20 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -968,7 +968,7 @@ EqEar._valueOf = new Map();
     Eq.洗浄の腕輪 = new class extends Eq {
         constructor() {
             super({ uniqueName: "洗浄の腕輪", info: "＜毒・病気＞耐性",
-                pos: EqPos.手, lv: 199 });
+                pos: EqPos.手, lv: 50 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -1015,6 +1015,7 @@ EqEar._valueOf = new Map();
                         }
                         if (Battle.turn % 5 === 0) {
                             unit.removeCondition(Condition.暴走);
+                            unit.removeCondition(Condition.混乱);
                         }
                     });
                 }
@@ -1024,8 +1025,8 @@ EqEar._valueOf = new Map();
     /**冥界王朝宮財宝. */
     Eq.僧兵の腕輪 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "僧兵の腕輪", info: "格闘攻撃時、『天籟』発動  MP-1  TP-1",
-                pos: EqPos.手, lv: 79 });
+            super({ uniqueName: "僧兵の腕輪", info: "格闘攻撃時、『天籟』発動  MP-1TP-1",
+                pos: EqPos.手, lv: 29 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -1057,7 +1058,7 @@ EqEar._valueOf = new Map();
     Eq.アカデミーバッヂ = new class extends Eq {
         constructor() {
             super({ uniqueName: "アカデミーバッヂ", info: "全ステータス+10",
-                pos: EqPos.指, lv: 30 });
+                pos: EqPos.指, lv: 20 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -1089,7 +1090,7 @@ EqEar._valueOf = new Map();
     Eq.アメーバリング = new class extends Eq {
         constructor() {
             super({ uniqueName: "アメーバリング", info: "被魔法・神格・過去攻撃-20%",
-                pos: EqPos.指, lv: 40 });
+                pos: EqPos.指, lv: 7 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -1139,7 +1140,7 @@ EqEar._valueOf = new Map();
     Eq.エスペラント = new class extends Eq {
         constructor() {
             super({ uniqueName: "エスペラント", info: "魔法・神格・過去・ペット攻撃+20%",
-                pos: EqPos.指, lv: 77 });
+                pos: EqPos.指, lv: 0 });
         }
         createForce(_this) {
             return new class extends Force {
@@ -1182,7 +1183,7 @@ EqEar._valueOf = new Map();
     Eq.力の指輪 = new class extends Eq {
         constructor() {
             super({ uniqueName: "力の指輪", info: "格闘攻撃+20%",
-                pos: EqPos.指, lv: 30 });
+                pos: EqPos.指, lv: 20 });
         }
         createForce(_this) {
             return new class extends Force {

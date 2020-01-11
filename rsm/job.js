@@ -102,8 +102,8 @@ export class Job {
             e.prm(Prm.EXP).base = lv + 1;
             e.yen = lv + 1;
             e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
-            e.prm(Prm.MAX_MP).base = 3 + lv / 10 + Math.random() * lv / 5;
-            e.prm(Prm.MAX_TP).base = 3 + lv / 10 + Math.random() * lv / 5;
+            e.prm(Prm.MAX_MP).base = 3 + lv / 8 + Math.random() * lv / 5;
+            e.prm(Prm.MAX_TP).base = 3 + lv / 8 + Math.random() * lv / 5;
             e.ep = Math.random() < 0.01 ? 1 : 0;
             e.ghost *= 50;
             for (const pos of EqPos.values) {
@@ -233,6 +233,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.ヴァハ, Tec.オグマ, Tec.ルー, Tec.エヴァ, Tec.殴る];
+            e.prm(Prm.MAX_MP).base *= 2;
         }
     };
     Job.天使 = new class extends Job {
@@ -299,6 +300,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.念力, Tec.殴る, Tec.光の護封剣, Tec.SORRYCSTEF];
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     Job.カウボーイ = new class extends Job {
@@ -668,7 +670,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.念, Tec.念力, Tec.念力2, Tec.MP自動回復, Tec.念力2, Tec.パワーストーン, Tec.オルゴン, Tec.封印回路];
-            e.prm(Prm.MAX_MP).base *= 2;
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     Job.メイガス = new class extends Job {
@@ -682,7 +684,7 @@ Job.DEF_LVUP_EXP = 10;
         }
         setEnemyInner(e) {
             e.tecs = [Tec.エヴィン, Tec.オグマ, Tec.ジョンD, Tec.ヘルメス, Tec.MP自動回復2, Tec.魔力開放, Tec.メイガス];
-            e.prm(Prm.MAX_MP).base *= 2;
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     Job.ネクロマンサー = new class extends Job {

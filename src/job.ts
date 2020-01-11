@@ -126,8 +126,8 @@ export abstract class Job{
         e.yen = lv + 1;
 
         e.prm(Prm.MAX_HP).base = randomInt(1, 7) + (lv * lv * 0.35);
-        e.prm(Prm.MAX_MP).base = 3 + lv / 10 + Math.random() * lv / 5;
-        e.prm(Prm.MAX_TP).base = 3 + lv / 10 + Math.random() * lv / 5;
+        e.prm(Prm.MAX_MP).base = 3 + lv / 8 + Math.random() * lv / 5;
+        e.prm(Prm.MAX_TP).base = 3 + lv / 8 + Math.random() * lv / 5;
 
         e.ep = Math.random() < 0.01 ? 1 : 0;
 
@@ -253,6 +253,7 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.ヴァハ, Tec.オグマ, Tec.ルー, Tec.エヴァ, Tec.殴る];
+            e.prm(Prm.MAX_MP).base *= 2;
         }
     };
     export const                         天使:Job = new class extends Job{
@@ -309,6 +310,7 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.念力, Tec.念力, Tec.念, Tec.念力, Tec.殴る, Tec.光の護封剣, Tec.SORRYCSTEF];
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     export const                         カウボーイ:Job = new class extends Job{
@@ -623,7 +625,7 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.念, Tec.念力, Tec.念力2, Tec.MP自動回復, Tec.念力2, Tec.パワーストーン, Tec.オルゴン, Tec.封印回路];
-            e.prm(Prm.MAX_MP).base *= 2;
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     export const                         メイガス:Job = new class extends Job{
@@ -635,7 +637,7 @@ export namespace Job{
         });}
         setEnemyInner(e:EUnit){
             e.tecs = [Tec.エヴィン, Tec.オグマ, Tec.ジョンD, Tec.ヘルメス, Tec.MP自動回復2, Tec.魔力開放, Tec.メイガス];
-            e.prm(Prm.MAX_MP).base *= 2;
+            e.prm(Prm.MAX_MP).base *= 3;
         }
     };
     export const                         ネクロマンサー:Job = new class extends Job{

@@ -354,7 +354,7 @@ export namespace Eq{
     /**塔4000階EX. */
     export const                         ぱとバット:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ぱとバット", info:"＜眠＞から目覚めやすくなる",
-                                pos:EqPos.武, lv:100});}
+                                pos:EqPos.武, lv:0});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
                 if(unit.hasCondition(Condition.眠)){
@@ -476,7 +476,7 @@ export namespace Eq{
     /**はじまりの丘財宝. */
     export const                         オールマント:Eq = new class extends Eq{
         constructor(){super({uniqueName:"オールマント", info:"全ステータス+20",
-                                pos:EqPos.体, lv:55});}
+                                pos:EqPos.体, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async equip(unit:Unit){
                 [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> unit.prm(prm).eq += 20);
@@ -486,7 +486,7 @@ export namespace Eq{
     /**予感の街レEX. */
     export const                         いばらの鎧:Eq = new class extends Eq{
         constructor(){super({uniqueName:"いばらの鎧", info:"被格闘攻撃時、稀に格闘反撃",
-                                pos:EqPos.体, lv:55});}
+                                pos:EqPos.体, lv:15});}
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘") && dmg.canCounter && Math.random() < 0.4){
@@ -509,7 +509,7 @@ export namespace Eq{
     /**黒遺跡財宝. */
     export const                         ダークネスロード:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ダークネスロード", info:"攻撃倍率+10%　防御倍率-20%",
-                                pos:EqPos.体, lv:35});}
+                                pos:EqPos.体, lv:6});}
         createForce(_this:Eq){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
                 dmg.def.mul *= 0.8;
@@ -522,7 +522,7 @@ export namespace Eq{
     /**トトの郊外EX. */
     export const                         猛者の鎧:Eq = new class extends Eq{
         constructor(){super({uniqueName:"猛者の鎧", info:"格闘攻撃+15%　被格闘攻撃+15%",
-                                pos:EqPos.体, lv:35});}
+                                pos:EqPos.体, lv:3});}
         createForce(_this:Eq){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
                 if(dmg.hasType("格闘")){
@@ -539,7 +539,7 @@ export namespace Eq{
     /**テント樹林財宝. */
     export const                         鎖のマント:Eq = new class extends Eq{
         constructor(){super({uniqueName:"鎖のマント", info:"鎖術攻撃+20%",
-                                pos:EqPos.体, lv:15});}
+                                pos:EqPos.体, lv:0});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("鎖術")){
@@ -551,7 +551,7 @@ export namespace Eq{
     /**聖なる洞窟EX. */
     export const                         ルナローブ:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ルナローブ", info:"行動開始時TP+1",
-                                pos:EqPos.体, lv:25});}
+                                pos:EqPos.体, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
                 Heal.run("TP", 1, unit, unit, Eq.ルナローブ, false);
@@ -606,7 +606,7 @@ export namespace Eq{
     }
     export const                         ライダーベルト:Eq = new class extends Eq{
         constructor(){super({uniqueName:"ライダーベルト", info:"攻撃+10",
-                                pos:EqPos.腰, lv:35});}
+                                pos:EqPos.腰, lv:17});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 dmg.pow.add += 10;
@@ -688,7 +688,7 @@ export namespace Eq{
     /**黒平原EX. */
     export const                         妖魔の手:Eq = new class extends Eq{
         constructor(){super({uniqueName:"妖魔の手", info:"被魔法・過去攻撃時、稀に魔法反撃",
-                                pos:EqPos.手, lv:45});}
+                                pos:EqPos.手, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async afterBeAtk(dmg:Dmg){
                 if(dmg.hasType("魔法","過去") && dmg.canCounter && Math.random() < 0.7){
@@ -755,7 +755,7 @@ export namespace Eq{
     /**冥土の底財宝. */
     export const                         洗浄の腕輪:Eq = new class extends Eq{
         constructor(){super({uniqueName:"洗浄の腕輪", info:"＜毒・病気＞耐性",
-                                pos:EqPos.手, lv:199});}
+                                pos:EqPos.手, lv:50});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
                 unit.removeCondition(Condition.毒);
@@ -785,14 +785,15 @@ export namespace Eq{
                 
                 if(Battle.turn % 5 === 0){
                     unit.removeCondition(Condition.暴走);
+                    unit.removeCondition(Condition.混乱);
                 }
             }
         };}
     }
     /**冥界王朝宮財宝. */
     export const                         僧兵の腕輪:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"僧兵の腕輪", info:"格闘攻撃時、『天籟』発動  MP-1  TP-1",
-                                pos:EqPos.手, lv:79});}
+        constructor(){super({uniqueName:"僧兵の腕輪", info:"格闘攻撃時、『天籟』発動  MP-1TP-1",
+                                pos:EqPos.手, lv:29});}
         createForce(_this:Eq){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
                 if(dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.mp >= 1 && dmg.attacker.tp >= 1){
@@ -816,7 +817,7 @@ export namespace Eq{
     }
     export const                         アカデミーバッヂ:Eq = new class extends Eq{
         constructor(){super({uniqueName:"アカデミーバッヂ", info:"全ステータス+10",
-                                pos:EqPos.指, lv:30});}
+                                pos:EqPos.指, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async equip(u:Unit){
                 [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR].forEach(prm=> u.prm(prm).eq += 10);
@@ -836,7 +837,7 @@ export namespace Eq{
     }
     export const                         アメーバリング:Eq = new class extends Eq{
         constructor(){super({uniqueName:"アメーバリング", info:"被魔法・神格・過去攻撃-20%",
-                                pos:EqPos.指, lv:40});}
+                                pos:EqPos.指, lv:7});}
         createForce(_this:Eq){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
                 if(dmg.hasType("魔法","神格","過去")){
@@ -868,7 +869,7 @@ export namespace Eq{
     /**精霊寺院財宝. */
     export const                         エスペラント:Eq = new class extends Eq{
         constructor(){super({uniqueName:"エスペラント", info:"魔法・神格・過去・ペット攻撃+20%",
-                                pos:EqPos.指, lv:77});}
+                                pos:EqPos.指, lv:0});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("魔法","神格","過去","ペット")){
@@ -897,7 +898,7 @@ export namespace Eq{
     /**塔6666階財宝. */
     export const                         力の指輪:Eq = new class extends Eq{
         constructor(){super({uniqueName:"力の指輪", info:"格闘攻撃+20%",
-                                pos:EqPos.指, lv:30});}
+                                pos:EqPos.指, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 if(dmg.hasType("格闘")){
