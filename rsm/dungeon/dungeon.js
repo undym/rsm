@@ -813,7 +813,7 @@ Dungeon.musicCount = 0;
                 e.name = "幻影魔王";
                 e.img = new Img("img/unit/ex_maou.png");
                 e.prm(Prm.MAX_HP).base = 2500;
-                e.pet = Pet.ネーレイス.create(2);
+                e.pet = Pet.ネーレイス.create(4);
             };
         }
         dungeonClearEvent() {

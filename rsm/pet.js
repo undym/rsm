@@ -50,7 +50,7 @@ export class Pet {
             this._hp = Pet.HP_LIMIT;
         }
         else {
-            this._hp = value;
+            this._hp = value | 0;
         }
     }
     toString() { return this.uniqueName; }

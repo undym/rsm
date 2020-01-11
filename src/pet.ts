@@ -47,7 +47,7 @@ export class Pet implements ForceIns{
     set hp(value:number){
              if(value < 0)           {this._hp = 0;}
         else if(value > Pet.HP_LIMIT){this._hp = Pet.HP_LIMIT;}
-        else                         {this._hp = value;}
+        else                         {this._hp = value|0;}
     }
 
     toString(){return this.uniqueName;}
