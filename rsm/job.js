@@ -52,6 +52,19 @@ lv max_hp
 960 322563
 990 343038
 */
+/**そのレベルのステータス倍率を計算したものをストック。 */
+class PrmMuls {
+    static get(lv) {
+        const mapped = this.map.get(lv);
+        if (mapped) {
+            return mapped;
+        }
+        const mul = Math.pow(1.1, 1 + lv / 10);
+        this.map.set(lv, mul);
+        return mul;
+    }
+}
+PrmMuls.map = new Map();
 export class Job {
     constructor(args) {
         this.args = args;
@@ -84,7 +97,7 @@ export class Job {
     get maxLv() { return 20; }
     setEnemy(e, lv) {
         return __awaiter(this, void 0, void 0, function* () {
-            const prmMul = Math.pow(1.1, 1 + lv / 10);
+            const prmMul = PrmMuls.get(lv);
             for (const prm of Prm.values) {
                 const set = e.prm(prm);
                 set.base = 4 * Math.random() + lv * Math.random();

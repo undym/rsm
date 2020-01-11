@@ -513,7 +513,7 @@ export const FX_鎖術 = (attacker, target) => {
     });
 };
 FXTest.add(FX_鎖術.name, () => FX_鎖術(FXTest.attacker, FXTest.target));
-export const FX_過去 = (target) => {
+export const FX_過去 = (attacker, target) => {
     FX.add((count) => {
         const over = 20;
         const color = { r: 0, g: 0, b: 0, a: 1 };
@@ -521,25 +521,49 @@ export const FX_過去 = (target) => {
             color.r = color.g = color.b = Math.random();
             return color;
         };
-        //line: target
-        const loop = 60;
-        const points = [];
-        for (let i = 0; i < loop; i++) {
-            const rad = Math.PI * 2 * i / loop * 2.5;
-            const r = 40 * i / loop + 40 * Math.random();
-            let x = target.x + Math.cos(rad) * r * Graphics.dotW;
-            let y = target.y + Math.sin(rad) * r * Graphics.dotH;
-            points.push({ x: x, y: y });
+        { //attacker-target
+            const loop = 7;
+            const points = [];
+            const a = 3;
+            for (let i = 0; i < loop; i++) {
+                if (i < a) {
+                    points.push(new Point((target.x * i + attacker.x * (loop - i)) / loop, (target.y * i + attacker.y * (a - i)) / a));
+                }
+                else {
+                    points.push(new Point((target.x * i + attacker.x * (loop - i)) / loop, target.y));
+                }
+            }
+            for (let i = 1; i < points.length - 1; i++) {
+                const v = 0.05;
+                const v_2 = v / 2;
+                points[i] = new Point(points[i].x - v_2 + Math.random() * v, points[i].y - v_2 + Math.random() * v);
+            }
+            for (let i = 0; i < points.length - 1; i++) {
+                Graphics.setLineWidth(1 + Math.random() * 6, () => {
+                    Graphics.line(points[i], points[i + 1], rndColor());
+                });
+            }
         }
-        for (let i = 0; i < points.length - 1; i++) {
-            Graphics.setLineWidth(1 + Math.random() * 6, () => {
-                Graphics.line(points[i], points[i + 1], rndColor());
-            });
+        { //target
+            const loop = 60;
+            const points = [];
+            for (let i = 0; i < loop; i++) {
+                const rad = Math.PI * 2 * i / loop * 2.5;
+                const r = 40 * i / loop + 40 * Math.random();
+                let x = target.x + Math.cos(rad) * r * Graphics.dotW;
+                let y = target.y + Math.sin(rad) * r * Graphics.dotH;
+                points.push({ x: x, y: y });
+            }
+            for (let i = 0; i < points.length - 1; i++) {
+                Graphics.setLineWidth(1 + Math.random() * 6, () => {
+                    Graphics.line(points[i], points[i + 1], rndColor());
+                });
+            }
         }
         return count < over;
     });
 };
-FXTest.add(FX_過去.name, () => FX_過去(FXTest.target));
+FXTest.add(FX_過去.name, () => FX_過去(FXTest.attacker, FXTest.target));
 export const FX_銃 = (attacker, target) => {
     let particles = [];
     for (let i = 0; i < 20; i++) {

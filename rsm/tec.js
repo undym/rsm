@@ -96,7 +96,7 @@ TecType._values = [];
             });
         }
         effect(dmg) { FX_槍(dmg.target.imgBounds.center); }
-        sound() { Sound.PUNCH.play(); }
+        sound() { Sound.yari.play(); }
         getCounterTec() { return Tec.格闘反撃; }
     };
     TecType.魔法 = new class extends TecType {
@@ -192,7 +192,7 @@ TecType._values = [];
                 types: ["過去"],
             });
         }
-        effect(dmg) { FX_過去(dmg.target.imgBounds.center); }
+        effect(dmg) { FX_過去(dmg.attacker.imgCenter, dmg.target.imgCenter); }
         sound() { Sound.kako.play(); }
         getCounterTec() { return Tec.過去反撃; }
     };
@@ -3957,7 +3957,7 @@ ActiveTec._valueOf = new Map();
             return new class extends Force {
                 beforeBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (Math.random() < 0.3) {
+                        if (Math.random() < 0.2) {
                             Util.msg.set("＞すりぬけ");
                             dmg.hit.base = 0;
                         }

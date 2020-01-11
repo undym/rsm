@@ -220,6 +220,7 @@ Music.mute = false;
     Sound.xp = createSound("sound/xp.mp3");
     /**arr. */
     Sound.ya = createSound("sound/ya.mp3");
+    Sound.yari = createSound("sound/yari.mp3");
 })(Sound || (Sound = {}));
 (function (Music) {
     const _values = [];

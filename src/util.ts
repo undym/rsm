@@ -170,10 +170,14 @@ export namespace Flag{
         = create("story_Kabe1");
     export const  story_Kabe2
         = create("story_Kabe2");
-    export const  story_Main30
-        = create("story_Main30");
     export const  story_Main31
         = create("story_Main31");
+    export const  story_Main33
+        = create("story_Main33");
+    export const  story_Main34
+        = create("story_Main34");
+    export const  story_Main35
+        = create("story_Main35");
 
     export const  yuki_beastOnly
         = create("yuki_beastOnly");

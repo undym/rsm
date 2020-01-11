@@ -107,7 +107,7 @@ export namespace TecType{
             });
         }
         effect(dmg:Dmg){FX_槍(dmg.target.imgBounds.center);}
-        sound(){Sound.PUNCH.play();}
+        sound(){Sound.yari.play();}
         getCounterTec(){return Tec.格闘反撃;}
     };
     export const             魔法 = new class extends TecType{
@@ -204,7 +204,7 @@ export namespace TecType{
                 types:["過去"],
             });
         }
-        effect(dmg:Dmg){FX_過去(dmg.target.imgBounds.center);}
+        effect(dmg:Dmg){FX_過去(dmg.attacker.imgCenter, dmg.target.imgCenter);}
         sound(){Sound.kako.play();}
         getCounterTec(){return Tec.過去反撃;}
     };
@@ -3168,7 +3168,7 @@ export namespace Tec{
         });}
         createForce(_this:PassiveTec){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
-                if(Math.random() < 0.3){
+                if(Math.random() < 0.2){
                     Util.msg.set("＞すりぬけ");
                     dmg.hit.base = 0;
                 }

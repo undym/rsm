@@ -47,7 +47,18 @@ lv max_hp
 990 343038
 */
 
+/**そのレベルのステータス倍率を計算したものをストック。 */
+class PrmMuls{
+    private static map = new Map<number,number>();
+    static get(lv:number):number{
+        const mapped = this.map.get(lv);
+        if(mapped){return mapped;}
 
+        const mul = Math.pow(1.1, 1 + lv / 10);
+        this.map.set(lv, mul);
+        return mul;
+    }
+}
 
 
 export abstract class Job{
@@ -91,11 +102,8 @@ export abstract class Job{
     ){
 
         Job._values.push(this);
-        if(Job._valueOf.has(args.uniqueName)){
-            console.log(`!!Job already has uniqueName "${args.uniqueName}".`);
-        }else{
-            Job._valueOf.set(args.uniqueName, this);
-        }
+        if(Job._valueOf.has(args.uniqueName)){console.log(`!!Job already has uniqueName "${args.uniqueName}".`);}
+        else                                 {Job._valueOf.set(args.uniqueName, this);}
     }
 
     toString(){return this.args.uniqueName;}
@@ -104,7 +112,8 @@ export abstract class Job{
     
     async setEnemy(e:EUnit, lv:number){
 
-        const prmMul = Math.pow(1.1, 1 + lv / 10);
+        const prmMul:number = PrmMuls.get(lv);
+
         for(const prm of Prm.values){
             const set = e.prm(prm);
             set.base = 4 * Math.random() + lv * Math.random();

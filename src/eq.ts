@@ -593,6 +593,19 @@ export namespace Eq{
             }
         };}
     }
+    /**占星術師の館EX. */
+    export const                         お化けマント:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"お化けマント", info:"稀にすりぬけ（攻撃無効化）発動",
+                                pos:EqPos.体, lv:120});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeBeAtk(dmg:Dmg){
+                if(Math.random() < 0.2){
+                    Util.msg.set("＞すりぬけ");
+                    dmg.pow.base = 0;
+                }
+            }
+        };}
+    }
     //--------------------------------------------------------------------------
     //
     //-体
@@ -930,6 +943,18 @@ export namespace Eq{
                     && (action === Tec.ガルダ || action === Tec.ヤクシャ || action === Tec.キンナラ)
                 ){
                     aForce.add += 1;
+                }
+            }
+        };}
+    }
+    /**占星術師の館財宝. */
+    export const                         塔:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"塔", info:"槍攻撃+30",
+                                pos:EqPos.指, lv:0});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("槍")){
+                    dmg.pow.add += 30;
                 }
             }
         };}

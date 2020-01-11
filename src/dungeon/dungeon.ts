@@ -171,7 +171,6 @@ export abstract class Dungeon{
         }
         return DungeonEvent.empty;
     }
-
     //-----------------------------------------------------------------
     //
     //
@@ -789,10 +788,14 @@ export namespace Dungeon{
 
                 DungeonArea.now = DungeonArea.冥界;
             }
-            if(Flag.story_Main30.done && !Flag.story_Main31.done){
+            if(Dungeon.冥界王朝宮.dungeonClearCount > 0 && !Flag.story_Main31.done){
                 Flag.story_Main31.done = true;
                 await Story3.runMain31();
                 DungeonArea.now = DungeonArea.冥界;
+            }
+            if(Flag.story_Main34.done && !Flag.story_Main35.done){
+                Flag.story_Main35.done = true;
+                await Story3.runMain35();
             }
         }
     };
@@ -1156,7 +1159,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:0, au:222, btn:[DungeonArea.冥界, new Rect(0.4, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.洗浄の腕輪],
                                 exItems:    ()=>[Eq.アングラの泥腕輪],
-                                trendItems: ()=>[Item.肉, Item.失った思い出, Item.血粉末, Item.バッタ, Item.かんな],
+                                trendItems: ()=>[Item.肉, Item.失った思い出, Item.血粉末, Item.バッタ, Item.かんな, Item.ヒノキ],
                                 ghost:true,
         });}
         isVisible = ()=>true;
@@ -1191,7 +1194,7 @@ export namespace Dungeon{
                                 rank:2, enemyLv:6, au:201, btn:[DungeonArea.冥界, new Rect(0.5, 0.5, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.光色の靴],
                                 exItems:    ()=>[Eq.ハデスの腹剣],
-                                trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜],
+                                trendItems: ()=>[Item.肉, Item.銅板, Item.ガラス, Item.松, Item.桜, Item.杉],
                                 ghost:true,
         });}
         isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
@@ -1334,12 +1337,6 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 1){
                 await Story2.runMain29();
             }
-            // if(Flag.story_Kabe2.done && !Flag.story_Main30.done){
-            //     Flag.story_Main30.done = true;
-
-            //     await Story3.runMain30();
-            //     DungeonArea.now = DungeonArea.中央島;
-            // }
         }
     };
     export const                         冥界王朝宮:Dungeon = new class extends Dungeon{
@@ -1347,13 +1344,12 @@ export namespace Dungeon{
                                 rank:6, enemyLv:17, au:266, btn:[DungeonArea.冥界, new Rect(0.1, 0.85, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.僧兵の腕輪],
                                 exItems:    ()=>[Eq.僧兵の盾],
-                                trendItems: ()=>[Item.鬼火, Item.松, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.クリスタル, Item.桜],
+                                trendItems: ()=>[Item.鬼火, Item.松, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.杉, Item.桜],
                                 ghost:true,
         });}
         isVisible = ()=>{
-            if(Dungeon.ハデスの口.dungeonClearCount === 0){return false;}
-            if(!Flag.story_Kabe2.done){return false;}
-            if(Flag.story_Main30.done){return false;}
+            if(Dungeon.ハデスの口.dungeonClearCount > 0 && Flag.story_Kabe2.done && this.dungeonClearCount === 0){return true;}
+            if(Dungeon.占星術師の館.dungeonClearCount >= 2){return true;}
             return true;
         };
         setBossInner = ()=>{
@@ -1364,7 +1360,7 @@ export namespace Dungeon{
             }
             
             let e = Unit.enemies[0];
-            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
+            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 20);
             e.name = "王朝兵";
             e.prm(Prm.MAX_HP).base = 1200;
         };
@@ -1378,9 +1374,52 @@ export namespace Dungeon{
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
             if(this.dungeonClearCount === 1){
-                Flag.story_Main30.done = true;
                 await Story3.runMain30();
                 DungeonArea.now = DungeonArea.中央島;
+            }
+            if(Flag.story_Main33.done && !Flag.story_Main34.done){
+                Flag.story_Main34.done = true;
+                await Story3.runMain34();
+                DungeonArea.now = DungeonArea.中央島;
+            }
+        }
+    };
+    export const                         占星術師の館:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"占星術師の館", info:"",
+                                rank:6, enemyLv:18, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.塔],
+                                exItems:    ()=>[Eq.お化けマント],
+                                trendItems: ()=>[Item.クリスタル, Item.ドラッグ, Item.バッタ, Item.エレタクレヨン, Item.清水, Item.ドンゴの鱗],
+                                ghost:true,
+        });}
+        isVisible = ()=>Flag.story_Main31.done;
+        setBossInner = ()=>{
+            for(const e of Unit.enemies){
+                for(const prm of Prm.atkPrms){
+                    e.prm(prm).base *= 1.5;
+                }
+            }
+            
+            let e = Unit.enemies[0];
+            Job.ロボット.setEnemy(e, e.prm(Prm.LV).base + 10);
+            e.name = "館の番人";
+            e.prm(Prm.MAX_HP).base = 1300;
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.魔砲士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "聖戦士・魔王";
+            e.img = new Img("img/unit/ex_ariran.png");
+            e.prm(Prm.MAX_HP).base = 3000;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story3.runMain32();
+            }
+            if(this.dungeonClearCount === 2){
+                Flag.story_Main33.done = true;
+                await Story3.runMain33();
             }
         }
     };

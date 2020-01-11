@@ -264,6 +264,7 @@ export namespace Sound{
     export const xp         = createSound("sound/xp.mp3");
     /**arr. */
     export const ya         = createSound("sound/ya.mp3");
+    export const yari       = createSound("sound/yari.mp3");
 }
 
 
