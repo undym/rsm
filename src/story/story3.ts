@@ -603,6 +603,121 @@ export namespace Story3{
                 [f_oranpia,"オランピア","「スペシャリストを生きたまま保存したいから連れて帰るだなんて、子供みたい･･･」"],
             ]
         );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第36話『彼女の夢』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    /**オランピア・ドラギャレットとの対戦後。ストーリー無し。 */
+    export const runMain37 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第37話『うずまきまみえる闇』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    /**このストーリー後、ヴィクトリーヌ達との戦闘。 */
+    export const runMain38 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_pea    = new Img("img/face/p_pea.jpg");
+        const f_1      = new Img("img/face/p_1.jpg");
+        const f_ruin   = new Img("img/face/p_ruin.jpg");
+        const f_nana  = new Img("img/face/p_nana.jpg");
+        const f_jisrof  = new Img("img/face/p_jis.jpg");
+        const f_oranpia  = new Img("img/face/p_oranpia.jpg");
+        const f_siki  = new Img("img/face/p_siki.jpg");
+        const f_vic  = new Img("img/face/p_vic.jpg");
+        const f_ryu  = new Img("img/face/p_ryu.jpg");
+        const f_dora  = new Img("img/face/p_dora.jpg");
+        const f_osyama  = new Img("img/face/p_osyama.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic22.jpg"),
+            [
+                [f_pea,    "ピアー",    "「くそっ、まーだ追ってきとる！」"],
+                [f_pea,    "ピアー",    "「このまま逃げんのか！？一号！」"],
+                [f_1,      "一号",      "「･･･何度も戦える相手じゃない、立ち向かうのは･･･」"],
+                [f_pea,    "ピアー",    "「･･･自殺行為か！！自殺行為！」"],
+                [f_empty,  "",          "オランピア達との戦いを経て、なんとか逃げ延びたルイン達だったが、尚もシキ達は彼等を追ってきていた。"],
+                [f_ruin,   "ルイン",    "「待って･･･何か･･･いる･･･」"],
+                [f_pea,    "ピアー",    "「どしたっ」"],
+                [f_ruin,   "ルイン",    "「人が･･････」"],
+                [f_1,      "一号",      "「ルイン急げ！！奴等が来てしまう！！」"],
+                [f_nana,   "ナナ",      "「ジ･･･ジスロフ･･･」"],
+                [f_jisrof, "ジスロフ",  "「ああ･･････」"],
+                [f_empty,  "",          "ナナとジスロフも足を止めた。"],
+                [f_empty,  "",          "その時、先頭を走っていたピアーと一号の目前の床が一気に崩れ落ちた。"],
+                [f_pea,    "ピアー",    "「うわっ」"],
+                [f_oranpia,"オランピア","「つ・か・ま・え・た」"],
+                [f_empty,  "",          "オランピアの大剣が床に大きな亀裂を走らせたのだ。"],
+                [f_empty,  "",          "すぐに後方から、シキとドラギャレットが現れた。"],
+                [f_siki,   "シキ",      "「残念だったな･･･、ここで決着をつけさせてもらおうか」"],
+                [f_1,      "一号",      "「くっ･･･」"],
+                [f_empty,  "",          "「･･････何を手間取っているのです？シキ」"],
+                [f_empty,  "",          "突然、予期せぬ声が聞こえた。"],
+                [f_empty,  "",          "ルインが足を止めた先に、２つの人影があった。"],
+                [f_siki,   "シキ",      "「･･･！？」"],
+                [f_vic,"ヴィクトリーヌ","「ラプソディアから報告を受けましたよ」"],
+                [f_vic,"ヴィクトリーヌ","「･･･事をうまく運べていないそうですね」"],
+                [f_siki,   "シキ",      "「･･････帝釈天子･･･ヴィクトリーヌかっ･･･何故ここに･･･」"],
+                [f_empty,  "",          "ヴィクトリーヌの隣には、小さな背丈の子供が立っている。"],
+                [f_ryu,    "流",        "「やっぱりこんな奴に任せたのが間違いだったんだよっ」"],
+                [f_ryu,    "流",        "「僕ならもっと上手くやれるよ！」"],
+                [f_siki,   "シキ",      "「お黙りっ、流っ。今はシキと話しているのです」"],
+                [f_ryu,    "流",        "「ちぇー」"],
+                [f_siki,   "シキ",      "「･･･そんな餓鬼まで連れてわざわざやって来たのか？」"],
+                [f_siki,   "シキ",      "「私は順調に事を進めている･･･おまえらにケチをつけられる憶えはない！」"],
+                [f_vic,"ヴィクトリーヌ","「･･･口を慎みなさい！！」"],
+                [f_empty,  "",          "ヴィクトリーヌが声を張り上げた。"],
+                [f_vic,"ヴィクトリーヌ","「･･･誰の御ん前だとお思いです」"],
+                [f_siki,   "シキ",      "「！？」"],
+                [f_oranpia,"オランピア","「！」"],
+                [f_dora,"ドラギャレット","「！」"],
+                [f_empty,  "",          "オランピアとドラギャレットがすぐさま跪いた。"],
+                [f_vic,"ヴィクトリーヌ","「恐れ多くも、ジスマ皇帝の御ん前であらせられるぞ！！！！！」"],
+            ]
+        );
+        await s.set(
+            new Img("img/story/s_pic38.jpg"),
+            [
+                [f_empty,  "",          "シキが唖然とする中、ヴィクトリーヌと流の間から、チュルホロ帝国皇帝ジスマが姿を現した。"],
+                [f_osyama, "ジスマ",    "「シキ･････････」"],
+                [f_empty,  "",          "その声は気高く、その一言で畏怖の念を抱かせるに十分なほどの威圧感を感じさせた。"],
+                [f_osyama, "ジスマ",    "「私は失望したくない」"],
+                [f_siki,   "シキ",      "「ははっ･･････」"],
+                [f_empty,  "",          "正気に戻ったかのように、シキは膝を床におろし、頭を垂れた。"],
+                [f_osyama, "ジスマ",    "「ここに、この天子達を置いてゆく」"],
+                [f_siki,   "シキ",      "「分かりました･･････」"],
+                [f_empty,  "",          "そうしてジスマは再び闇の中へと戻ってゆく。"],
+                [f_nana,   "ナナ",      "「おしゃま！！！！」"],
+                [f_empty,  "",          "ナナがジスマに向かって叫んだ。"],
+                [f_osyama, "ジスマ",    "「･････････」"],
+            ]
+        );
+        await s.set(
+            Img.empty,
+            [
+                [f_empty,  "",          "ジスマはしばらくの沈黙の後、すっと闇に消えた。"],
+                [f_nana,   "ナナ",      "「おしゃま･････････」"],
+                [f_ryu,    "流",        "「でもさ～、いくら皇帝様の命令とは言え、先代様をやっちゃってもいいのかナ～？」"],
+                [f_empty,  "",          "残った流が口を開いた。"],
+                [f_vic,"ヴィクトリーヌ","「流っ、皇帝陛下の命は絶対です･･･」"],
+                [f_ryu,    "流",        "「はいはい･･･分かってるってば」"],
+                [f_oranpia,"オランピア","「まさか陛下が御出向きになるとはな」"],
+                [f_empty,  "",          "跪いていたオランピアが立ちあがり、ヴィクトリーヌの方を見て言った。"],
+                [f_vic,"ヴィクトリーヌ","「オランピア、抜け駆けは許しませんよ」"],
+                [f_vic,"ヴィクトリーヌ","「ラプソディアのあの満足そうな顔といったら･･････」"],
+                [f_oranpia,"オランピア","「御付きのあんた達を呼ぶわけにも行かなかったのよ」"],
+                [f_oranpia,"オランピア","「今度は先代様と戦えるんだから、これで満足できるでしょ」"],
+                [f_vic,"ヴィクトリーヌ","「では･･･いざ参りましょう」"],
+            ]
+        );
         /*
                 [f_empty,  "",          ""],
                 [f_1,      "一号",      ""],
@@ -614,6 +729,9 @@ export namespace Story3{
                 [f_pea,    "ピアー",    ""],
                 [f_oranpia,"オランピア",""],
                 [f_dora,"ドラギャレット",""],
+                [f_vic,"ヴィクトリーヌ",""],
+                [f_ryu,    "流",        ""],
+                [f_osyama, "ジスマ",    ""],
         */
 
         s.end();
@@ -621,7 +739,7 @@ export namespace Story3{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第n話『』", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第38話『畏れ多き出現』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }
 /*
@@ -648,12 +766,14 @@ export namespace Story3{
         const f_jiyuu  = new Img("img/face/p_jiyuu.jpg");
         const f_syao  = new Img("img/face/p_syao.jpg");
         const f_vinus  = new Img("img/face/p_vinus.jpg");
+        const f_vic  = new Img("img/face/p_vic.jpg");
+        const f_ryu  = new Img("img/face/p_ryu.jpg");
         const f_kabe  = new Img("img/face/p_majo.jpg");
         const f_kabe2  = new Img("img/face/p_majo2.jpg");//帽子無し
         const f_kimi  = new Img("img/face/p_kimi.jpg");
         const f_sayaka  = new Img("img/face/p_sayaka.jpg");
 
-    export const runMain37 = async()=>{
+    export const runMain38 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
 
         const s = new Story();

@@ -59,17 +59,18 @@ export class DungeonArea{
 }
 
 export namespace DungeonArea{
-    export const 中央島 =    new DungeonArea("中央島", "img/map1.jpg",
+    export const 中央島:DungeonArea =    new DungeonArea("中央島", "img/map1.jpg",
                                 ()=>[
                                     [DungeonArea.黒地域,     new Rect(0.7, 0.45, 0.3, 0.1), ()=>Dungeon.黒平原.isVisible()],
                                     [DungeonArea.古マーザン, new Rect(0.0, 0.4, 0.3, 0.1),   ()=>Dungeon.古マーザン森.isVisible()],
+                                    [DungeonArea.塔地下,     new Rect(0.35, 0.9, 0.3, 0.1), ()=>Flag.story_Main35.done],
                                 ],
                                 ()=>[
                                     [Item.肉まん, 0.001],
                                     [Item.地球塔粉末, 0.001],
                                 ],
                             );
-    export const 黒地域 =    new DungeonArea("黒地域", "img/map2.jpg",
+    export const 黒地域:DungeonArea =    new DungeonArea("黒地域", "img/map2.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ],
@@ -79,7 +80,7 @@ export namespace DungeonArea{
                                     [Item.B火薬, 0.001],
                                 ],
                             );
-    export const 月 =       new DungeonArea("月", "img/map4.jpg",
+    export const 月:DungeonArea =       new DungeonArea("月", "img/map4.jpg",
                                 ()=>[
                                     // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
                                 ],
@@ -87,7 +88,7 @@ export namespace DungeonArea{
                                     [Item.月の石, 0.001],
                                 ],
                             );
-    export const 古マーザン =    new DungeonArea("古マーザン", "img/map3.jpg",
+    export const 古マーザン:DungeonArea =    new DungeonArea("古マーザン", "img/map3.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.7, 0.25, 0.3, 0.1), ()=>Dungeon.古マーザン森.isVisible()],
                                 ],
@@ -95,13 +96,20 @@ export namespace DungeonArea{
                                     [Item.マーザン, 0.001],
                                 ],
                             );
-    export const 冥界 =    new DungeonArea("冥界", "img/map5.jpg",
+    export const 冥界:DungeonArea =    new DungeonArea("冥界", "img/map5.jpg",
                                 ()=>[
                                 ],
                                 ()=>[
                                     [Item.冥石, 0.001],
                                 ],
                             );
+    export const 塔地下:DungeonArea =    new DungeonArea("塔地下", "img/map5.jpg",
+                            ()=>[
+                                [DungeonArea.中央島,     new Rect(0.35, 0.0, 0.3, 0.1), ()=>Flag.story_Toutika.done],
+                            ],
+                            ()=>[
+                            ],
+                        );
 }
 
 
@@ -334,6 +342,7 @@ export abstract class Dungeon{
         for(const e of Unit.enemies){
             e.prm(Prm.MAX_HP).base *= 3;
             e.ep = Unit.DEF_MAX_EP;
+            e.xp = Unit.DEF_MAX_XP;
         }
 
         this.setBossInner();
@@ -353,6 +362,7 @@ export abstract class Dungeon{
 
             e.prm(Prm.MAX_HP).base *= 3;
             e.ep = Unit.DEF_MAX_EP;
+            e.xp = Unit.DEF_MAX_XP;
         }
 
         this.setExInner();
@@ -1360,7 +1370,7 @@ export namespace Dungeon{
             }
             
             let e = Unit.enemies[0];
-            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 20);
+            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 15);
             e.name = "王朝兵";
             e.prm(Prm.MAX_HP).base = 1200;
         };
@@ -1424,4 +1434,3 @@ export namespace Dungeon{
         }
     };
 }
-

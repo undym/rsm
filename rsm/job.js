@@ -118,6 +118,7 @@ export class Job {
             e.prm(Prm.MAX_MP).base = 3 + lv / 8 + Math.random() * lv / 5;
             e.prm(Prm.MAX_TP).base = 3 + lv / 8 + Math.random() * lv / 5;
             e.ep = Math.random() < 0.01 ? 1 : 0;
+            e.xp = Math.random() < 0.01 ? 1 : 0;
             e.ghost *= 50;
             for (const pos of EqPos.values) {
                 e.setEq(pos, Eq.rnd(pos, lv));

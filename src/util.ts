@@ -180,6 +180,9 @@ export namespace Flag{
     export const  story_Main35
         = create("story_Main35");
 
+    export const  story_Toutika
+        = create("story_Toutika");
+
     export const  yuki_beastOnly
         = create("yuki_beastOnly");
 }

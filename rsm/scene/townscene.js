@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Scene } from "../undym/scene.js";
 import { RatioLayout, ILayout, VariableLayout, Labels } from "../undym/layout.js";
-import { Place, Util, PlayData, Debug, SceneType } from "../util.js";
+import { Place, Util, PlayData, Debug, SceneType, Flag } from "../util.js";
 import { Btn } from "../widget/btn.js";
 import { Dungeon, DungeonArea } from "../dungeon/dungeon.js";
 import { Rect, Color, Point } from "../undym/type.js";
@@ -34,6 +34,7 @@ import { SaveData } from "../savedata.js";
 import { Sound } from "../sound.js";
 import { MemberChangeScene } from "./memberchangescene.js";
 import { OptionScene } from "./optionscene.js";
+import { Story3 } from "../story/story3.js";
 let choosedDungeon;
 export class TownScene extends Scene {
     static get ins() { return this._ins ? this._ins : (this._ins = new TownScene()); }
@@ -155,6 +156,15 @@ const createDungeonBtnLayout = () => {
         btn.frameColor = () => Color.YELLOW;
         btn.stringColor = () => Color.YELLOW;
         l.add(am.bounds, btn);
+    });
+    TownEvent.values()
+        .filter(ev => ev.isVisible())
+        .forEach(ev => {
+        const btn = new Btn(ev.toString(), () => __awaiter(this, void 0, void 0, function* () { return yield ev.run(); }));
+        btn.groundColor = () => Color.BLACK;
+        btn.frameColor = () => Color.YELLOW;
+        btn.stringColor = () => Color.YELLOW;
+        l.add(ev.bounds, btn);
     });
     return l;
 };
@@ -363,3 +373,35 @@ const FX_DungeonName = (name, bounds) => {
         return true;
     });
 };
+class TownEvent {
+    constructor(args) {
+        this.args = args;
+        TownEvent._values.push(this);
+    }
+    static values() { return this._values; }
+    get bounds() { return this.args.bounds(); }
+    toString() { return this.args.name; }
+    run() {
+        return __awaiter(this, void 0, void 0, function* () { yield this.args.run(); });
+    }
+    isVisible() { return this.args.visible(); }
+}
+TownEvent._values = [];
+(function (TownEvent) {
+    TownEvent.塔地下 = new TownEvent({
+        name: "＞塔地下",
+        bounds: () => {
+            for (const set of DungeonArea.中央島.areaMoveBtns) {
+                if (set.to === DungeonArea.塔地下) {
+                    return set.bounds;
+                }
+            }
+            return Rect.ZERO;
+        },
+        run: () => __awaiter(this, void 0, void 0, function* () {
+            Flag.story_Toutika.done = true;
+            yield Story3.runMain35a();
+        }),
+        visible: () => Flag.story_Main35.done && !Flag.story_Toutika.done,
+    });
+})(TownEvent || (TownEvent = {}));
