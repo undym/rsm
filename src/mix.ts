@@ -203,22 +203,22 @@ export namespace Mix{
     });
     const           ルインドアースLv12:Mix = new Mix({
         uniqueName:"ルインドアースLv12", limit:1, info:"",
-        materials:()=>[[Item.うんち, 1]],
+        materials:()=>[[Item.うんち, 3]],
         isVisible:()=>ルインドアースLv11.count > 0,
     });
     const           ルインドアースLv13:Mix = new Mix({
         uniqueName:"ルインドアースLv13", limit:1, info:"",
-        materials:()=>[[Item.たんぽぽ, 10]],
+        materials:()=>[[Item.たんぽぽ, 20]],
         isVisible:()=>ルインドアースLv12.count > 0,
     });
     const           ルインドアースLv14:Mix = new Mix({
         uniqueName:"ルインドアースLv14", limit:1, info:"",
-        materials:()=>[[Item.銅板, 5], [Item.発砲ツル, 5]],
+        materials:()=>[[Item.銅板, 20], [Item.発砲ツル, 20]],
         isVisible:()=>ルインドアースLv13.count > 0,
     });
     const           ルインドアースLv15:Mix = new Mix({
         uniqueName:"ルインドアースLv15", limit:1, info:"",
-        materials:()=>[[Item.サクラ材, 5], [Item.クワ, 3]],
+        materials:()=>[[Item.サクラ材, 5], [Item.クワ, 10]],
         isVisible:()=>ルインドアースLv14.count > 0,
     });
     const           ルインドアースLv16:Mix = new Mix({
