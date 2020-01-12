@@ -1245,7 +1245,7 @@ Item.DEF_NUM_LIMIT = 9999;
                 }),
             });
         }
-        get info() { return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `${Util.dungeonBookMark}の最深部に移動する` : this.args.info; }
+        get info() { return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `[${Util.dungeonBookMark}]の最深部に移動する` : this.args.info; }
         canUse(user, targets) {
             if (!super.canUse(user, targets)) {
                 return false;

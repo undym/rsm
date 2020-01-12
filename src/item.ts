@@ -1126,7 +1126,7 @@ export namespace Item{
                                     //-------------------------
                                 },
         })}
-        get info(){return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `${Util.dungeonBookMark}の最深部に移動する` : this.args.info;}
+        get info(){return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `[${Util.dungeonBookMark}]の最深部に移動する` : this.args.info;}
         canUse(user:Unit, targets:Unit[]){
             if(!super.canUse( user, targets )){return false;}
             if(SceneType.now !== SceneType.DUNGEON){return false;}
