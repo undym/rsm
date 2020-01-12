@@ -450,9 +450,11 @@ class EventImg {
                 Battle.setup(BattleType.BOSS, (result) => __awaiter(this, void 0, void 0, function* () {
                     switch (result) {
                         case BattleResult.WIN:
+                            Util.dungeonBookMark = undefined;
                             yield DungeonEvent.CLEAR_DUNGEON.happen();
                             break;
                         case BattleResult.LOSE:
+                            Util.dungeonBookMark = Dungeon.now;
                             yield DungeonEvent.ESCAPE_DUNGEON.happen();
                             break;
                         case BattleResult.ESCAPE:

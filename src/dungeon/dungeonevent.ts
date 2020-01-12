@@ -459,9 +459,11 @@ export namespace DungeonEvent{
             Battle.setup( BattleType.BOSS, async(result)=>{
                 switch(result){
                     case BattleResult.WIN:
+                        Util.dungeonBookMark = undefined;
                         await DungeonEvent.CLEAR_DUNGEON.happen();
                         break;
                     case BattleResult.LOSE:
+                        Util.dungeonBookMark = Dungeon.now;
                         await DungeonEvent.ESCAPE_DUNGEON.happen();
                         break;
                     case BattleResult.ESCAPE:

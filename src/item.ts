@@ -189,7 +189,7 @@ export class Item implements Action, Num{
 
     
     protected constructor(
-        private args:{
+        protected args:{
             uniqueName:string,
             info:string,
             type:ItemType,
@@ -1117,20 +1117,23 @@ export namespace Item{
     export const                         動かない映写機:Item = new class extends Item{
         constructor(){super({uniqueName:"動かない映写機", info:"壊れている...",
                                 type:ItemType.ダンジョン, rank:10, drop:ItemDrop.NO,
-                                // consumable:true, 
-                                // use:async(user,target)=>{
-                                //     //-------------------------
-                                //     //この関数の後に使用回数が減らされるため、このままセーブするとロード時に回数が減っていないままになる。
-                                //     //なのでremainingUseNumを--してセーブし、セーブ後に++する。
-                                //     this.remainingUseNum--;
-                                //     Sound.save.play();
-                                //     SaveData.save();
-                                //     this.remainingUseNum++;
-                                //     //-------------------------
-                                //     FX_Str(Font.def, `セーブしました`, Point.CENTER, Color.WHITE);
-                                // },
+                                consumable:true,
+                                use:async(user,target)=>{
+                                    if(!Util.dungeonBookMark || Util.dungeonBookMark !== Dungeon.now){return;}
+                                    //-------------------------
+                                    Dungeon.auNow = Dungeon.now.au - 1;
+                                    Util.msg.set("ダンジョンの最深部に移動した");
+                                    //-------------------------
+                                },
         })}
-        // canUse(user:Unit, targets:Unit[]){return super.canUse( user, targets ) && SceneType.now === SceneType.DUNGEON;}
+        get info(){return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `${Util.dungeonBookMark}の最深部に移動する` : this.args.info;}
+        canUse(user:Unit, targets:Unit[]){
+            if(!super.canUse( user, targets )){return false;}
+            if(SceneType.now !== SceneType.DUNGEON){return false;}
+            if(Mix.動く映写機.count === 0){return false;}
+            if(Util.dungeonBookMark !== Dungeon.now){return false;}
+            return true;
+        }
     };
     export const                         脱出ポッド:Item = new class extends Item{
         constructor(){super({uniqueName:"脱出ポッド", info:"ダンジョンから脱出する。なくならない。",
@@ -1746,6 +1749,11 @@ export namespace Item{
         constructor(){super({uniqueName:"ファーストキス", info:"",
                                 type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
     };
+    export const                         にじゅうよん:Item = new class extends Item{
+        constructor(){super({uniqueName:"にじゅうよん", info:"",
+                                type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+        toString(){return "24";}
+    };
     export const                         退魔の十字架:Item = new class extends Item{
         constructor(){super({uniqueName:"退魔の十字架", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
@@ -1766,7 +1774,7 @@ export namespace Item{
         toString(){return "小説『おやすみ、コネコ』";}
     };
     export const                         うんち:Item = new class extends Item{
-        constructor(){super({uniqueName:"うんち", info:"",
+        constructor(){super({uniqueName:"うんち", info:"うんち",
                                 type:ItemType.素材, rank:4, drop:ItemDrop.BOX})}
     };
     export const                         太陽の欠片:Item = new class extends Item{
@@ -1818,8 +1826,9 @@ export namespace Item{
                                 type:ItemType.素材, rank:9, drop:ItemDrop.BOX})}
     };
     export const                         きゅうせん:Item = new class extends Item{
-        constructor(){super({uniqueName:"9000", info:"",
+        constructor(){super({uniqueName:"きゅうせん", info:"",
                                 type:ItemType.素材, rank:10, drop:ItemDrop.BOX})}
+        toString(){return "9000";}
     };
     export const                         セルダンの危機:Item = new class extends Item{
         constructor(){super({uniqueName:"セルダンの危機", info:"",

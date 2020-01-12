@@ -29,6 +29,7 @@ export class Util{
     private constructor(){}
     
     static msg:Msg;
+    static dungeonBookMark:Dungeon|undefined;
 
     static init(){
         this.msg = new Msg();

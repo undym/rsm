@@ -557,6 +557,13 @@ const storagePlayData = (type, json) => {
     for (const flag of Flag.values()) {
         ioBool(type, flagObj, flag.uniqueName, flag.done, load => flag.done = load);
     }
+    const bookMarkedDungeonName = Util.dungeonBookMark ? Util.dungeonBookMark.uniqueName : "";
+    ioStr(type, json, "dungeonBookMark", bookMarkedDungeonName, load => {
+        const dungeon = Dungeon.valueOf(load);
+        if (dungeon) {
+            Util.dungeonBookMark = dungeon;
+        }
+    });
 };
 const storageCollectingSkill = (type, json) => {
     for (const cs of CollectingSkill.values) {

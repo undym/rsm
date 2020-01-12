@@ -254,6 +254,11 @@ export namespace Mix{
         materials:()=>[[Item.杉, 3], [Item.ヒノキ, 3], [Item.かんな, 3]],
         isVisible:()=>ルインドアースLv4.count > 0,
     });
+    export const    動く映写機:Mix = new Mix({
+        uniqueName:"動く映写機", limit:1, info:"動かない映写機を修理する",
+        materials:()=>[[Item.にじゅうよん, 24], [Item.少女の心を持ったおっさん, 1],],
+        isVisible:()=>ルインドアースLv10.count > 0,
+    });
     // export const    集会所:Mix = new Mix({
     //     uniqueName:"集会所", limit:1, info:"パーティースキルをセットできるようになる",
     //     materials:()=>[[Item.エレタクレヨン, 6], [Item.エデン樹, 3]],

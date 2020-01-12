@@ -15,7 +15,7 @@ import { FX_Str, FX_回復, FX_Buff, FX_RemoveCondition, FX_約束 } from "./fx/
 import { Dmg, Heal } from "./force.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
-import { Num } from "./mix.js";
+import { Num, Mix } from "./mix.js";
 import { DungeonEvent } from "./dungeon/dungeonevent.js";
 import DungeonScene from "./scene/dungeonscene.js";
 import { Tec } from "./tec.js";
@@ -1233,7 +1233,33 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "動かない映写機", info: "壊れている...",
                 type: ItemType.ダンジョン, rank: 10, drop: ItemDrop.NO,
+                consumable: true,
+                use: (user, target) => __awaiter(this, void 0, void 0, function* () {
+                    if (!Util.dungeonBookMark || Util.dungeonBookMark !== Dungeon.now) {
+                        return;
+                    }
+                    //-------------------------
+                    Dungeon.auNow = Dungeon.now.au - 1;
+                    Util.msg.set("ダンジョンの最深部に移動した");
+                    //-------------------------
+                }),
             });
+        }
+        get info() { return (Mix.動く映写機.count > 0 && Util.dungeonBookMark) ? `${Util.dungeonBookMark}の最深部に移動する` : this.args.info; }
+        canUse(user, targets) {
+            if (!super.canUse(user, targets)) {
+                return false;
+            }
+            if (SceneType.now !== SceneType.DUNGEON) {
+                return false;
+            }
+            if (Mix.動く映写機.count === 0) {
+                return false;
+            }
+            if (Util.dungeonBookMark !== Dungeon.now) {
+                return false;
+            }
+            return true;
         }
     };
     Item.脱出ポッド = new class extends Item {
@@ -2014,6 +2040,13 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
         }
     };
+    Item.にじゅうよん = new class extends Item {
+        constructor() {
+            super({ uniqueName: "にじゅうよん", info: "",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
+        }
+        toString() { return "24"; }
+    };
     Item.退魔の十字架 = new class extends Item {
         constructor() {
             super({ uniqueName: "退魔の十字架", info: "",
@@ -2043,7 +2076,7 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.うんち = new class extends Item {
         constructor() {
-            super({ uniqueName: "うんち", info: "",
+            super({ uniqueName: "うんち", info: "うんち",
                 type: ItemType.素材, rank: 4, drop: ItemDrop.BOX });
         }
     };
@@ -2121,9 +2154,10 @@ Item.DEF_NUM_LIMIT = 9999;
     };
     Item.きゅうせん = new class extends Item {
         constructor() {
-            super({ uniqueName: "9000", info: "",
+            super({ uniqueName: "きゅうせん", info: "",
                 type: ItemType.素材, rank: 10, drop: ItemDrop.BOX });
         }
+        toString() { return "9000"; }
     };
     Item.セルダンの危機 = new class extends Item {
         constructor() {
