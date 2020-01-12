@@ -1052,6 +1052,7 @@ EqEar._valueOf = new Map();
                 afterDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.mp >= 1 && dmg.attacker.tp >= 1) {
+                            Util.msg.set("＞僧兵の腕輪");
                             dmg.attacker.mp -= 1;
                             dmg.attacker.tp -= 1;
                             yield Tec.天籟.run(dmg.attacker, dmg.target);

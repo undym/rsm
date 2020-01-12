@@ -60,8 +60,9 @@ export class MemberChangeScene extends Scene {
                     if (p.boxBounds.contains(Input.point)) {
                         this.choosed = p.player;
                         this.exchangeBtn = new Btn("外す", () => {
-                            FX_Str(Font.def, `${p.name}を外した`, Point.CENTER, Color.WHITE);
+                            this.exchangeBtn = ILayout.empty;
                             Unit.setPlayer(i, Player.empty);
+                            FX_Str(Font.def, `${p.name}を外した`, Point.CENTER, Color.WHITE);
                             this.setList();
                         });
                         this.setInfo(p.player);
@@ -90,6 +91,7 @@ export class MemberChangeScene extends Scene {
                     this.exchangeBtn = new Btn("入れる", () => {
                         for (let i = 0; i < Unit.players.length; i++) {
                             if (Unit.players[i].player === Player.empty) {
+                                this.exchangeBtn = ILayout.empty;
                                 Unit.setPlayer(i, p);
                                 FX_Str(Font.def, `${p}を入れた`, Point.CENTER, Color.WHITE);
                                 this.setList();

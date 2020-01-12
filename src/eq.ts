@@ -810,6 +810,7 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async afterDoAtk(dmg:Dmg){
                 if(dmg.canCounter && dmg.hasType("格闘") && dmg.attacker.mp >= 1 && dmg.attacker.tp >= 1){
+                    Util.msg.set("＞僧兵の腕輪");
                     dmg.attacker.mp -= 1;
                     dmg.attacker.tp -= 1;
                     await Tec.天籟.run( dmg.attacker, dmg.target );
