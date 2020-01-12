@@ -64,7 +64,7 @@ export abstract class TecType{
     toString(){return this.name;}
 
     abstract createDmg(attacker:Unit, target:Unit):Dmg;
-    abstract effect(dmg:Dmg):void;
+    abstract effect(attacker:Unit, target:Unit):void;
     abstract sound():void;
     abstract getCounterTec():ActiveTec;
 
@@ -91,7 +91,7 @@ export namespace TecType{
                 types:["格闘"],
             });
         }
-        effect(dmg:Dmg){FX_格闘(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_格闘(target.imgBounds.center);}
         sound(){Sound.PUNCH.play();}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -106,7 +106,7 @@ export namespace TecType{
                 types:["槍"],
             });
         }
-        effect(dmg:Dmg){FX_槍(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_槍(target.imgBounds.center);}
         sound(){Sound.yari.play();}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -121,7 +121,7 @@ export namespace TecType{
                 types:["魔法"],
             });
         }
-        effect(dmg:Dmg){FX_魔法(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_魔法(target.imgBounds.center);}
         sound(){Sound.MAGIC.play();}
         getCounterTec(){return Tec.魔法反撃;}
     };
@@ -136,7 +136,7 @@ export namespace TecType{
                 types:["神格"],
             });
         }
-        effect(dmg:Dmg){FX_神格(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_神格(target.imgBounds.center);}
         sound(){Sound.sin.play();}
         getCounterTec(){return Tec.神格反撃;}
     };
@@ -151,7 +151,7 @@ export namespace TecType{
                 types:["暗黒"],
             });
         }
-        effect(dmg:Dmg){FX_暗黒(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_暗黒(target.imgBounds.center);}
         sound(){Sound.KEN.play();}
         getCounterTec(){return Tec.暗黒反撃;}
     };
@@ -174,7 +174,7 @@ export namespace TecType{
                 types:["怨霊"],
             });
         }
-        effect(dmg:Dmg){FX_暗黒(dmg.target.imgCenter);}
+        effect(attacker:Unit, target:Unit){FX_暗黒(target.imgCenter);}
         sound(){Sound.KEN.play();}
         getCounterTec(){return Tec.暗黒反撃;}
     };
@@ -189,7 +189,7 @@ export namespace TecType{
                 types:["鎖術"],
             });
         }
-        effect(dmg:Dmg){FX_鎖術(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_鎖術(attacker.imgBounds.center, target.imgBounds.center);}
         sound(){Sound.chain.play();}
         getCounterTec(){return Tec.鎖術反撃;}
     };
@@ -204,7 +204,7 @@ export namespace TecType{
                 types:["過去"],
             });
         }
-        effect(dmg:Dmg){FX_過去(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+        effect(attacker:Unit, target:Unit){FX_過去(attacker.imgCenter, target.imgCenter);}
         sound(){Sound.kako.play();}
         getCounterTec(){return Tec.過去反撃;}
     };
@@ -219,7 +219,7 @@ export namespace TecType{
                 types:["銃"],
             });
         }
-        effect(dmg:Dmg){FX_銃(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_銃(attacker.imgBounds.center, target.imgBounds.center);}
         sound(){Sound.gun.play();}
         getCounterTec(){return Tec.銃反撃;}
     };
@@ -234,7 +234,7 @@ export namespace TecType{
                 types:["機械"],
             });
         }
-        effect(dmg:Dmg){FX_機械(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_機械(attacker.imgBounds.center, target.imgBounds.center);}
         sound(){Sound.lazer.play();}
         getCounterTec(){return Tec.銃反撃;}
     };
@@ -249,7 +249,7 @@ export namespace TecType{
                 types:["弓"],
             });
         }
-        effect(dmg:Dmg){FX_弓(dmg.attacker.imgBounds.center, dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_弓(attacker.imgBounds.center, target.imgBounds.center);}
         sound(){Sound.ya.play();}
         getCounterTec(){return Tec.弓反撃;}
     };
@@ -259,7 +259,7 @@ export namespace TecType{
             attacker:attacker,
             target:target,
         });}
-        effect(dmg:Dmg){}
+        effect(attacker:Unit, target:Unit){}
         sound(){}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -272,7 +272,7 @@ export namespace TecType{
                 absPow:attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total,
             });
         }
-        effect(dmg:Dmg){FX_回復(dmg.target.imgBounds.center);}
+        effect(attacker:Unit, target:Unit){FX_回復(target.imgBounds.center);}
         sound(){}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -282,7 +282,7 @@ export namespace TecType{
             attacker:attacker,
             target:target,
         });}
-        effect(dmg:Dmg){}
+        effect(attacker:Unit, target:Unit){}
         sound(){}
         getCounterTec(){return Tec.格闘反撃;}
     };
@@ -463,8 +463,8 @@ export abstract class ActiveTec extends Tec implements Action{
         }
     }
 
-    effect(dmg:Dmg):void{
-        this.type.effect(dmg);
+    effect(attacker:Unit, target:Unit):void{
+        this.type.effect(attacker, target);
     }
     sound():void{
         this.type.sound();
@@ -511,7 +511,7 @@ export abstract class ActiveTec extends Tec implements Action{
             if(this.targetings.some(t=> t === "all"))   {await wait(1);}
             else                                        {await wait();}
         };
-        this.effect(dmg);
+        this.effect(dmg.attacker, dmg.target);
         this.sound();
         await dmg.run(); await _wait();
 
@@ -761,7 +761,7 @@ export namespace Tec{
         }
         async run(attacker:Unit, target:Unit){
             Tec.殴る.sound();
-            Tec.殴る.effect(Dmg.empty);
+            Tec.殴る.effect(attacker, target);
 
             const dmg = new Dmg({
                 attacker:attacker,
@@ -1406,7 +1406,7 @@ export namespace Tec{
                               mul:0.5, num:1, hit:1.1, mp:2,
         });}
         sound(){Sound.drain.play();}
-        effect(dmg:Dmg){FX_吸収(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+        effect(attacker:Unit, target:Unit){FX_吸収(attacker.imgCenter, target.imgCenter);}
         createDmg(attacker:Unit, target:Unit):Dmg{
             const dmg = super.createDmg(attacker, target);
             dmg.types.push("吸収");
@@ -2228,7 +2228,7 @@ export namespace Tec{
                 return dmg;
             }
             sound(){Sound.bom2.play();}
-            effect(dmg:Dmg){FX_ナーガ着弾(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+            effect(attacker:Unit, target:Unit){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
 
         async run(attacker:Unit, target:Unit){
@@ -2273,7 +2273,7 @@ export namespace Tec{
                 return dmg;
             }
             sound(){Sound.bom2.play();}
-            effect(dmg:Dmg){FX_ナーガ着弾(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+            effect(attacker:Unit, target:Unit){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
 
         async run(attacker:Unit, target:Unit){
@@ -2318,7 +2318,7 @@ export namespace Tec{
                 return dmg;
             }
             sound(){Sound.bom2.play();}
-            effect(dmg:Dmg){FX_ナーガ着弾(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+            effect(attacker:Unit, target:Unit){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         }
 
         async run(attacker:Unit, target:Unit){
@@ -2503,7 +2503,7 @@ export namespace Tec{
                                   mul:1, num:1, hit:0.8,
             });}
             sound(){Sound.ya.play();}
-            effect(dmg:Dmg){FX_ナーガ着弾(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+            effect(attacker:Unit, target:Unit){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         };
 
         async use(attacker:Unit, fakeTargets:Unit[]){
@@ -2559,7 +2559,7 @@ export namespace Tec{
                                   mul:1, num:1, hit:0.8,
             });}
             sound(){Sound.ya.play();}
-            effect(dmg:Dmg){FX_ナーガ着弾(dmg.attacker.imgCenter, dmg.target.imgCenter);}
+            effect(attacker:Unit, target:Unit){FX_ナーガ着弾(attacker.imgCenter, target.imgCenter);}
         };
 
         async use(attacker:Unit, fakeTargets:Unit[]){
@@ -3420,7 +3420,7 @@ export namespace Tec{
         });}
         async run(attacker:Unit, target:Unit){
             Sound.KAIFUKU.play();
-            this.effect( Dmg.empty );
+            this.effect(attacker, target);
             Heal.run("HP", attacker.prm(Prm.LIG).total + attacker.prm(Prm.LV).total, attacker, target, this, true); await wait();
         }
     }
@@ -3490,7 +3490,7 @@ export namespace Tec{
             target.clearConditions();
 
             Sound.KAIFUKU.play();
-            this.effect( Dmg.empty );
+            this.effect(attacker, target);
             Util.msg.set(`${target.name}は全回復した！`, Color.GREEN.bright); await wait();
         }
     }
@@ -3517,7 +3517,7 @@ export namespace Tec{
             Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
 
             Sound.KAIFUKU.play();
-            this.effect( Dmg.empty );
+            this.effect(attacker, target);
             Util.msg.set("全回復！"); await wait();
 
             for(const prm of [Prm.STR, Prm.MAG, Prm.LIG, Prm.DRK, Prm.CHN, Prm.PST, Prm.GUN, Prm.ARR]){
@@ -3663,7 +3663,7 @@ export namespace Tec{
             Heal.run("MP", target.prm(Prm.MAX_MP).total, attacker, target, this, false);
             Heal.run("TP", target.prm(Prm.MAX_TP).total, attacker, target, this, false);
 
-            this.effect( Dmg.empty );
+            this.effect(attacker, target);
             Sound.KAIFUKU.play();
             Util.msg.set("最大HPMPTPx2！"); await wait();
         }
