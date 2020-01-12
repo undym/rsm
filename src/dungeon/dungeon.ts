@@ -622,7 +622,7 @@ export namespace Dungeon{
                                 rank:4, enemyLv:20, au:70, btn:[DungeonArea.中央島, new Rect(0.7, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.悪夢],
                                 exItems:    ()=>[Eq.猛者の鎧],
-                                trendItems: ()=>[Item.肉, Item.錫, Item.高野槙, Item.桜],
+                                trendItems: ()=>[Item.肉, Item.錫, Item.高野槙, Item.桜, Item.にじゅうよん],
         });}
         isVisible = ()=>Dungeon.クラウンボトル.dungeonClearCount >= 1;
         setBossInner = ()=>{
@@ -754,7 +754,7 @@ export namespace Dungeon{
                                 rank:5, enemyLv:30, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.アンマシンベルト],
                                 exItems:    ()=>[Eq.ロングドレスの剣],
-                                trendItems: ()=>[Item.肉, Item.燃える髪, Item.石溶け水, Item.恒星型リュスティック],
+                                trendItems: ()=>[Item.肉, Item.燃える髪, Item.石溶け水, Item.恒星型リュスティック, Item.にじゅうよん],
         });}
         isVisible = ()=>Dungeon.塔6666階.dungeonClearCount >= 2;
         setBossInner = ()=>{
@@ -931,7 +931,7 @@ export namespace Dungeon{
                                 rank:0, enemyLv:0, au:100, btn:[DungeonArea.月, new Rect(0.35, 0.1, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.鎖のマント],
                                 exItems:    ()=>[Eq.アリランナイフ],
-                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油],
+                                trendItems: ()=>[Item.テント木, Item.発砲ツル, Item.円形ハゲミミズの油, Item.にじゅうよん],
                                 trendEvents:()=>[[DungeonEvent.TREE, 0.05]],
                                 beast:true,
         });}
@@ -1389,7 +1389,7 @@ export namespace Dungeon{
                                 rank:6, enemyLv:18, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.塔],
                                 exItems:    ()=>[Eq.お化けマント],
-                                trendItems: ()=>[Item.クリスタル, Item.ドラッグ, Item.バッタ, Item.エレタクレヨン, Item.清水, Item.ドンゴの鱗],
+                                trendItems: ()=>[Item.クリスタル, Item.ドラッグ, Item.バッタ, Item.にじゅうよん, Item.清水, Item.ドンゴの鱗],
                                 ghost:true,
         });}
         isVisible = ()=>Flag.story_Main31.done;
