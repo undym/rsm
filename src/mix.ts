@@ -692,7 +692,7 @@ export namespace Mix{
     const           蔓の鎖:Mix = new Mix({
         uniqueName:"蔓の鎖", limit:1,
         result:()=>[Eq.蔓の鎖, 1],
-        materials:()=>[[Item.月の石, 1], [Item.発砲ツル, 30], [Item.地球のひも, 10], [Item.石, 30]],
+        materials:()=>[[Item.月の石, 1], [Item.発砲ツル, 30], [Item.石, 30], [Item.地球のひも, 10],],
         isVisible:()=>月のレシピ.count > 0,
     });
     //--------------------------------------------------------
