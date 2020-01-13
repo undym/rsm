@@ -118,11 +118,7 @@ class EventImg {
                         Sound.TRAGER.play();
                         Util.msg.set(`開けた(${_key}残り${_key.num})`);
                         yield DungeonEvent.OPEN_KEY_BOX.happen();
-                        for (let i = 0; i < 5; i++) {
-                            yield wait();
-                            openKeyBox(/*base*/ 2, /*fluctuateRange*/ 2);
-                        }
-                        open();
+                        yield open();
                     }
                     else {
                         Sound.no.play();
@@ -134,31 +130,31 @@ class EventImg {
         };
     };
     DungeonEvent.KEY_BOX_RANK2 = createKeyBoxEvent("KEY_BOX_RANK2", "丸い箱だ", () => Item.丸い鍵, () => __awaiter(this, void 0, void 0, function* () {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             yield wait();
             openKeyBox(/*base*/ 2, /*fluctuateRange*/ 2);
         }
     }));
     DungeonEvent.KEY_BOX_RANK3 = createKeyBoxEvent("KEY_BOX_RANK3", "三角形の箱だ", () => Item.三角鍵, () => __awaiter(this, void 0, void 0, function* () {
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 7; i++) {
             yield wait();
             openKeyBox(/*base*/ 3, /*fluctuateRange*/ 2);
         }
     }));
     DungeonEvent.KEY_BOX_RANK4 = createKeyBoxEvent("KEY_BOX_RANK4", "トゲトゲの箱だ", () => Item.トゲトゲ鍵, () => __awaiter(this, void 0, void 0, function* () {
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 8; i++) {
             yield wait();
             openKeyBox(/*base*/ 4, /*fluctuateRange*/ 2);
         }
     }));
     DungeonEvent.KEY_BOX_RANK5 = createKeyBoxEvent("KEY_BOX_RANK5", "ツルツルの箱だ", () => Item.ツルツル鍵, () => __awaiter(this, void 0, void 0, function* () {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 9; i++) {
             yield wait();
             openKeyBox(/*base*/ 5, /*fluctuateRange*/ 2);
         }
     }));
     DungeonEvent.KEY_BOX_RANK6 = createKeyBoxEvent("KEY_BOX_RANK6", "ヘンテコな箱だ", () => Item.ヘンテコ鍵, () => __awaiter(this, void 0, void 0, function* () {
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             yield wait();
             openKeyBox(/*base*/ 6, /*fluctuateRange*/ 2);
         }

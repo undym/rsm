@@ -107,7 +107,7 @@ export namespace DungeonEvent{
         createBtnLayout = DungeonEvent.empty.createBtnLayout;
     };
 
-    const createKeyBoxEvent = (name:string, msg:string, key:()=>Item, open:()=>void)=>{
+    const createKeyBoxEvent = (name:string, msg:string, key:()=>Item, open:()=>Promise<void>)=>{
         return new class extends DungeonEvent{
             constructor(){super(name);}
             createImg(){return EventImg.BOX.img;}
@@ -122,11 +122,7 @@ export namespace DungeonEvent{
                                     Util.msg.set(`開けた(${_key}残り${_key.num})`);
                                     await DungeonEvent.OPEN_KEY_BOX.happen();
 
-                                    for(let i = 0; i < 5; i++){
-                                        await wait();
-                                        openKeyBox(/*base*/2, /*fluctuateRange*/2);
-                                    }
-                                    open();
+                                    await open();
                                 }else{
                                     Sound.no.play();
                                     Util.msg.set("鍵を持っていない");
@@ -139,7 +135,7 @@ export namespace DungeonEvent{
     export const             KEY_BOX_RANK2:DungeonEvent = createKeyBoxEvent(
                             "KEY_BOX_RANK2", "丸い箱だ", ()=>Item.丸い鍵,
                             async()=>{
-                                for(let i = 0; i < 5; i++){
+                                for(let i = 0; i < 6; i++){
                                     await wait();
                                     openKeyBox(/*base*/2, /*fluctuateRange*/2);
                                 }
@@ -148,7 +144,7 @@ export namespace DungeonEvent{
     export const             KEY_BOX_RANK3:DungeonEvent = createKeyBoxEvent(
                             "KEY_BOX_RANK3", "三角形の箱だ", ()=>Item.三角鍵,
                             async()=>{
-                                for(let i = 0; i < 6; i++){
+                                for(let i = 0; i < 7; i++){
                                     await wait();
                                     openKeyBox(/*base*/3, /*fluctuateRange*/2);
                                 }
@@ -157,7 +153,7 @@ export namespace DungeonEvent{
     export const             KEY_BOX_RANK4:DungeonEvent = createKeyBoxEvent(
                             "KEY_BOX_RANK4", "トゲトゲの箱だ", ()=>Item.トゲトゲ鍵,
                             async()=>{
-                                for(let i = 0; i < 7; i++){
+                                for(let i = 0; i < 8; i++){
                                     await wait();
                                     openKeyBox(/*base*/4, /*fluctuateRange*/2);
                                 }
@@ -166,7 +162,7 @@ export namespace DungeonEvent{
     export const             KEY_BOX_RANK5:DungeonEvent = createKeyBoxEvent(
                             "KEY_BOX_RANK5", "ツルツルの箱だ", ()=>Item.ツルツル鍵,
                             async()=>{
-                                for(let i = 0; i < 8; i++){
+                                for(let i = 0; i < 9; i++){
                                     await wait();
                                     openKeyBox(/*base*/5, /*fluctuateRange*/2);
                                 }
@@ -175,7 +171,7 @@ export namespace DungeonEvent{
     export const             KEY_BOX_RANK6:DungeonEvent = createKeyBoxEvent(
                             "KEY_BOX_RANK6", "ヘンテコな箱だ", ()=>Item.ヘンテコ鍵,
                             async()=>{
-                                for(let i = 0; i < 9; i++){
+                                for(let i = 0; i < 10; i++){
                                     await wait();
                                     openKeyBox(/*base*/6, /*fluctuateRange*/2);
                                 }
