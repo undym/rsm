@@ -1758,6 +1758,10 @@ export namespace Item{
         constructor(){super({uniqueName:"退魔の十字架", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
     };
+    export const                         モーター:Item = new class extends Item{
+        constructor(){super({uniqueName:"モーター", info:"",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
+    };
     export const                         エレタの絵の具:Item = new class extends Item{
         constructor(){super({uniqueName:"エレタの絵の具", info:"ぬりぬりしようね",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX})}
@@ -2003,6 +2007,14 @@ export namespace Item{
     export const                         クリスタル:Item = new class extends Item{
         constructor(){super({uniqueName:"クリスタル", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         惑星エネルギー:Item = new class extends Item{
+        constructor(){super({uniqueName:"惑星エネルギー", info:"",
+                                type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
+    };
+    export const                         イリジウム:Item = new class extends Item{
+        constructor(){super({uniqueName:"イリジウム", info:"",
+                                type:ItemType.素材, rank:4, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
     export const                         金:Item = new class extends Item{
         constructor(){super({uniqueName:"金", info:"",

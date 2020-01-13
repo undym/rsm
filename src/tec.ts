@@ -773,7 +773,7 @@ export namespace Tec{
     }
     /**朱雀. */
     export const                          踏み潰す:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"踏み潰す", info:"対象に格闘攻撃x3  稀に＜衰弱5＞(行動開始時最大HP-10%)化  反撃有",
+        constructor(){super({ uniqueName:"踏み潰す", info:"対象に格闘攻撃x3  稀に＜衰弱5＞(毎ターン最大HP-10%)化  反撃有",
                               sort:TecSort.格闘, type:TecType.格闘, targetings:["select"],
                               mul:3, num:1, hit:1, tp:7,
                               counter:true,
@@ -899,7 +899,7 @@ export namespace Tec{
     };
     /**剣士. */
     export const                         パワーファクト:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"パワーファクト", info:"行動開始時力+1%",
+        constructor(){super({uniqueName:"パワーファクト", info:"毎ターン力+1%",
                                 sort:TecSort.格闘, type:TecType.格闘,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1085,7 +1085,7 @@ export namespace Tec{
     };
     /**魔剣士. */
     export const                         トロスの魔力:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"トロスの魔力", info:"格闘・魔法攻撃に現在MP値を加算  行動開始時MP-1",
+        constructor(){super({uniqueName:"トロスの魔力", info:"格闘・魔法攻撃に現在MP値を加算  毎ターンMP-1",
                                 sort:TecSort.格闘, type:TecType.格闘,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1491,7 +1491,7 @@ export namespace Tec{
     //
     //--------------------------------------------------------------------------
     export const                         衝動:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"衝動", info:"防御値-10%　行動開始時、暗黒+5",
+        constructor(){super({uniqueName:"衝動", info:"防御値-10%　毎ターン暗黒+5",
                                 sort:TecSort.暗黒, type:TecType.暗黒,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1733,7 +1733,7 @@ export namespace Tec{
     //--------------------------------------------------------------------------
     /**霊術戦士. */
     export const                         怨霊使い:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"怨霊使い", info:"倒した相手のLvを怨霊として吸収できるようになる 行動開始時、HP-<怨霊値÷500+1>",
+        constructor(){super({uniqueName:"怨霊使い", info:"倒した相手のLvを怨霊として吸収できるようになる 毎ターン、HP-<怨霊値÷500+1>",
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1754,7 +1754,7 @@ export namespace Tec{
     };
     /**霊術戦士. */
     export const                         怨霊回復:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"怨霊回復", info:"行動開始時怨霊+20",
+        constructor(){super({uniqueName:"怨霊回復", info:"毎ターン怨霊+20",
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1765,7 +1765,7 @@ export namespace Tec{
     };
     /**落武者. */
     export const                         怨霊回復3:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"怨霊回復3", info:"行動開始時怨霊+50 HP-5%",
+        constructor(){super({uniqueName:"怨霊回復3", info:"毎ターン怨霊+50 HP-5%",
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         toString(){return "怨霊回復Ⅲ";}
@@ -1851,7 +1851,7 @@ export namespace Tec{
     };
     /**ネクロマンサー. */
     export const                         霊族意識:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"霊族意識", info:"暗黒・怨霊攻撃を吸収  吸血を無効化  行動開始時HP-10%",
+        constructor(){super({uniqueName:"霊族意識", info:"暗黒・怨霊攻撃を吸収  吸血を無効化  毎ターンHP-10%",
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1878,7 +1878,7 @@ export namespace Tec{
     };
     /**ゾンビ. */
     export const                         腐敗:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"腐敗", info:"怨霊攻撃+50%  行動開始時HP-5%",
+        constructor(){super({uniqueName:"腐敗", info:"怨霊攻撃+50%  毎ターンHP-5%",
                                 sort:TecSort.暗黒, type:TecType.怨霊,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -1924,7 +1924,7 @@ export namespace Tec{
     //--------------------------------------------------------------------------
     /**ペガサス. */
     export const                         練ファクト:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"練ファクト", info:"行動開始時、鎖+3%",
+        constructor(){super({uniqueName:"練ファクト", info:"毎ターン鎖+3%",
                                 sort:TecSort.鎖術, type:TecType.鎖術,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -2056,7 +2056,7 @@ export namespace Tec{
     //--------------------------------------------------------------------------
     /**魔砲士. */
     export const                         魔砲:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"魔砲", info:"銃攻撃に現在MP値を加える 行動開始時MP-2",
+        constructor(){super({uniqueName:"魔砲", info:"銃攻撃に現在MP値を加える 毎ターンMP-2",
                                 sort:TecSort.銃, type:TecType.機械,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -2635,7 +2635,7 @@ export namespace Tec{
         };}
     };
     export const                         摩喉羅我:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"摩喉羅我", info:"弓攻撃に暗黒を加算、行動開始時HP-5%",
+        constructor(){super({uniqueName:"摩喉羅我", info:"弓攻撃に暗黒を加算、毎ターンHP-5%",
                                 sort:TecSort.弓, type:TecType.弓,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3059,7 +3059,7 @@ export namespace Tec{
     };
     /**羅文騎士. */
     export const                         ナナ命:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"ナナ命", info:"かばう 戦闘開始時、味方にナナがいる場合、ステータス+10",
+        constructor(){super({uniqueName:"ナナ命", info:"かばう付与  戦闘開始時、味方にナナがいる場合、ステータス+10",
                                 sort:TecSort.強化, type:TecType.その他,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3177,7 +3177,7 @@ export namespace Tec{
     };
     /**魔剣士. */
     export const                         ミルテの魔壁:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"ミルテの魔壁", info:"HPが0になった時、稀にMPを0にすることで死を逃れる  MP10以上必要  行動開始時MP-1",
+        constructor(){super({uniqueName:"ミルテの魔壁", info:"HPが0になった時、稀にMPを0にすることで死を逃れる  MP10以上必要  毎ターンMP-1",
                                 sort:TecSort.強化, type:TecType.その他,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3290,7 +3290,7 @@ export namespace Tec{
     }
     /**アングラ. */
     export const                          感染:ActiveTec = new class extends ActiveTec{
-        constructor(){super({ uniqueName:"感染", info:"一体を＜病気＞(行動開始時、味方全体にダメージ)化",
+        constructor(){super({ uniqueName:"感染", info:"一体を＜病気＞(毎ターン、味方全体にダメージ)化",
                               sort:TecSort.弱体, type:TecType.状態, targetings:["select"],
                               mul:1, num:1, hit:1, mp:3,
         });}
@@ -3727,7 +3727,7 @@ export namespace Tec{
     //--------------------------------------------------------------------------
     /**訓練生. */
     export const                         HP自動回復:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"HP自動回復", info:"行動開始時HP+1%",
+        constructor(){super({uniqueName:"HP自動回復", info:"毎ターンHP+1%",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3738,7 +3738,7 @@ export namespace Tec{
     };
     /**医師. */
     export const                         衛生:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"衛生", info:"行動開始時味方全体のHP+5%",
+        constructor(){super({uniqueName:"衛生", info:"毎ターン味方全体のHP+5%",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3762,7 +3762,7 @@ export namespace Tec{
     // };
     /**天使・妖精. */
     export const                         MP自動回復:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"MP自動回復", info:"行動開始時MP+1",
+        constructor(){super({uniqueName:"MP自動回復", info:"毎ターンMP+1",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3773,7 +3773,7 @@ export namespace Tec{
     };
     /**メイガス. */
     export const                         MP自動回復2:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"MP自動回復2", info:"行動開始時MP+2",
+        constructor(){super({uniqueName:"MP自動回復2", info:"毎ターンMP+2",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         toString(){return "MP自動回復Ⅱ";}
@@ -3785,7 +3785,7 @@ export namespace Tec{
     };
     /**ガーディアン. */
     export const                         HPMP回復:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"HPMP回復", info:"行動開始時HP+1%MP+1",
+        constructor(){super({uniqueName:"HPMP回復", info:"毎ターンHP+1%MP+1",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3796,7 +3796,7 @@ export namespace Tec{
         };}
     };
     export const                         TP自動回復:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"TP自動回復", info:"行動開始時TP+1　HPMP-1",
+        constructor(){super({uniqueName:"TP自動回復", info:"毎ターンTP+1　HPMP-1",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3835,7 +3835,7 @@ export namespace Tec{
     };
     /**ドラゴン. */
     export const                         自然治癒:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"自然治癒", info:"行動開始時HP+5%",
+        constructor(){super({uniqueName:"自然治癒", info:"毎ターンHP+5%",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{
@@ -3846,7 +3846,7 @@ export namespace Tec{
     };
     /**勇者. */
     export const                         友情の陣形:PassiveTec = new class extends PassiveTec{
-        constructor(){super({uniqueName:"友情の陣形", info:"行動開始時、自分を除く味方のTP+1",
+        constructor(){super({uniqueName:"友情の陣形", info:"毎ターン、自分を除く味方のTP+1",
                                 sort:TecSort.回復, type:TecType.回復,
         });}
         createForce(_this:PassiveTec){return new class extends Force{

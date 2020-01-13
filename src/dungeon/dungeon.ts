@@ -6,7 +6,7 @@ import { Unit, EUnit, Prm } from "../unit.js";
 import { Btn } from "../widget/btn.js";
 import { Tec } from "../tec.js";
 import { Item } from "../item.js";
-import { Num } from "../mix.js";
+import { Num, Mix } from "../mix.js";
 import { Eq } from "../eq.js";
 import { Util, Flag } from "../util.js";
 import { cwait, wait } from "../undym/scene.js";
@@ -73,6 +73,7 @@ export namespace DungeonArea{
     export const 黒地域:DungeonArea =    new DungeonArea("黒地域", "img/map2.jpg",
                                 ()=>[
                                     [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+                                    [DungeonArea.月, new Rect(0.0, 0.0, 0.3, 0.1), ()=>Mix.月読転移装置.count > 0],
                                 ],
                                 ()=>[
                                     [Item.タンホイザーの砂飯, 0.001],
@@ -82,7 +83,7 @@ export namespace DungeonArea{
                             );
     export const 月:DungeonArea =       new DungeonArea("月", "img/map4.jpg",
                                 ()=>[
-                                    // [DungeonArea.中央島, new Rect(0.0, 0.4, 0.3, 0.1), ()=>true],
+                                    [DungeonArea.黒地域, new Rect(0.5, 0.7, 0.3, 0.1), ()=>Mix.月読転移装置.count > 0],
                                 ],
                                 ()=>[
                                     [Item.月の石, 0.001],
@@ -907,7 +908,7 @@ export namespace Dungeon{
                                 rank:3, enemyLv:19, au:250, btn:[DungeonArea.黒地域, new Rect(0.55, 0.9, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.機工の指輪],
                                 exItems:    ()=>[Item.霊術戦士の血],
-                                trendItems: ()=>[Item.ロウ, Item.桐, Item.銅, Item.鉄],
+                                trendItems: ()=>[Item.ロウ, Item.桐, Item.銅, Item.鉄, Item.イリジウム],
                                 trendEvents:()=>[[DungeonEvent.STRATUM, 0.05]],
         });}
         isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount >= 1;
@@ -1351,7 +1352,7 @@ export namespace Dungeon{
     };
     export const                         冥界王朝宮:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"冥界王朝宮", info:"",
-                                rank:6, enemyLv:17, au:266, btn:[DungeonArea.冥界, new Rect(0.1, 0.85, 0.3, 0.1)],
+                                rank:6, enemyLv:20, au:266, btn:[DungeonArea.冥界, new Rect(0.1, 0.85, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.僧兵の腕輪],
                                 exItems:    ()=>[Eq.僧兵の盾],
                                 trendItems: ()=>[Item.鬼火, Item.松, Item.精神安定剤, Item.クワ, Item.銀, Item.金, Item.杉, Item.桜],
@@ -1370,7 +1371,7 @@ export namespace Dungeon{
             }
             
             let e = Unit.enemies[0];
-            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 15);
+            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "王朝兵";
             e.prm(Prm.MAX_HP).base = 1200;
         };
@@ -1396,7 +1397,7 @@ export namespace Dungeon{
     };
     export const                         占星術師の館:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"占星術師の館", info:"",
-                                rank:6, enemyLv:18, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
+                                rank:6, enemyLv:30, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.塔],
                                 exItems:    ()=>[Eq.お化けマント],
                                 trendItems: ()=>[Item.クリスタル, Item.ドラッグ, Item.バッタ, Item.にじゅうよん, Item.清水, Item.ドンゴの鱗],
@@ -1413,7 +1414,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.ロボット.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "館の番人";
-            e.prm(Prm.MAX_HP).base = 1300;
+            e.prm(Prm.MAX_HP).base = 2000;
         };
         setExInner = ()=>{
             let e = Unit.enemies[0];
@@ -1433,4 +1434,43 @@ export namespace Dungeon{
             }
         }
     };
+    //-冥界
+    ///////////////////////////////////////////////////////////////////////
+    //塔地下
+    ///////////////////////////////////////////////////////////////////////
+    // export const                         塔地下777階:Dungeon = new class extends Dungeon{
+    //     constructor(){super({uniqueName:"塔地下777階", info:"",
+    //                             rank:5, enemyLv:32, au:200, btn:[DungeonArea.塔地下, new Rect(0.2, 0.15, 0.3, 0.1)],
+    //                             treasures:  ()=>[Eq.誓いの靴],
+    //                             exItems:    ()=>[Eq.退霊の盾],
+    //                             trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+    //     });}
+    //     isVisible = ()=>Flag.story_Main35.done;
+    //     setBossInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
+    //         e.name = "塔の遺物";
+    //         e.prm(Prm.MAX_HP).base = 2200;
+    //     };
+    //     setExInner = ()=>{
+    //         let e = Unit.enemies[0];
+    //         Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
+    //         e.name = "聖戦士・月光";
+    //         e.img = new Img("img/unit/ex_ariran.png");
+    //         e.prm(Prm.MAX_HP).base = 3500;
+    //     };
+    //     async dungeonClearEvent(){
+    //         await super.dungeonClearEvent();
+    //         if(this.dungeonClearCount === 1){
+    //             await Story3.runMain36();
+    //         }
+    //     }
+    // };
+
+
+
+    //-塔地下
+    ///////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////
 }

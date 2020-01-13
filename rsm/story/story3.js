@@ -321,7 +321,6 @@ export var Story3;
     Story3.runMain34 = () => __awaiter(this, void 0, void 0, function* () {
         const f_empty = new Img("img/face/p_rs.jpg");
         const f_kimi = new Img("img/face/p_kimi.jpg");
-        const f_sayaka = new Img("img/face/p_sayaka.jpg");
         const f_jisrof = new Img("img/face/p_jis.jpg");
         const f_nana = new Img("img/face/p_nana.jpg");
         const s = new Story();

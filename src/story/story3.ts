@@ -335,7 +335,6 @@ export namespace Story3{
     export const runMain34 = async()=>{
         const f_empty  = new Img("img/face/p_rs.jpg");
         const f_kimi  = new Img("img/face/p_kimi.jpg");
-        const f_sayaka  = new Img("img/face/p_sayaka.jpg");
         const f_jisrof  = new Img("img/face/p_jis.jpg");
         const f_nana  = new Img("img/face/p_nana.jpg");
 

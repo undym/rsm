@@ -454,6 +454,19 @@ export namespace Eq{
             }  
         };} 
     }
+    /**塔地下777階EX. */
+    export const                         退霊の盾:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"退霊の盾", info:"怨霊攻撃を稀に無効化",
+                                pos:EqPos.盾, lv:0});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeBeAtk(dmg:Dmg){
+                if(dmg.hasType("怨霊") && Math.random() < 0.6){
+                    Util.msg.set("＞退霊の盾");
+                    dmg.pow.base = 0;
+                }
+            }  
+        };} 
+    }
     //--------------------------------------------------------------------------
     //
     //-盾
@@ -550,7 +563,7 @@ export namespace Eq{
     }
     /**聖なる洞窟EX. */
     export const                         ルナローブ:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"ルナローブ", info:"行動開始時TP+1",
+        constructor(){super({uniqueName:"ルナローブ", info:"毎ターンTP+1",
                                 pos:EqPos.体, lv:20});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
@@ -585,7 +598,7 @@ export namespace Eq{
     }
     /**魂人の廃都財宝. */
     export const                         暖かい布:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"暖かい布", info:"行動開始時HP+5%",
+        constructor(){super({uniqueName:"暖かい布", info:"毎ターンHP+5%",
                                 pos:EqPos.体, lv:120});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
@@ -754,7 +767,7 @@ export namespace Eq{
     }
     /**魔鳥の岩壁財宝. */
     export const                         水晶の手首飾り:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"水晶の手首飾り", info:"最大HP+50　行動開始時HP+1%",
+        constructor(){super({uniqueName:"水晶の手首飾り", info:"最大HP+50　毎ターンHP+1%",
                                 pos:EqPos.手, lv:99});}
         createForce(_this:Eq){return new class extends Force{
             async equip(unit:Unit){
@@ -862,7 +875,7 @@ export namespace Eq{
     }
     /**古マーザン森財宝. */
     export const                         魔ヶ玉:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"魔ヶ玉", info:"行動開始時MP+1",
+        constructor(){super({uniqueName:"魔ヶ玉", info:"毎ターンMP+1",
                                 pos:EqPos.指, lv:98});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
@@ -872,7 +885,7 @@ export namespace Eq{
     }
     /**古マーザン森EX. */
     export const                         水晶の指輪:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"水晶の指輪", info:"行動開始時HP+5%",
+        constructor(){super({uniqueName:"水晶の指輪", info:"毎ターンHP+5%",
                                 pos:EqPos.指, lv:97});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit){
@@ -1048,6 +1061,19 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async beforeBeAtk(dmg:Dmg){
                 dmg.hit.mul *= 0.95;
+            }
+        };}
+    }
+    /**塔地下777階財宝. */
+    export const                         誓いの靴:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"誓いの靴", info:"毎ターン全ステータス+10%",
+                                pos:EqPos.脚, lv:55});}
+        createForce(_this:Eq){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                if(unit.dead){return;}
+                for(const prm of Prm.atkPrms){
+                    unit.prm(prm).battle += unit.prm(prm).get("base","eq") * 0.1;
+                }
             }
         };}
     }

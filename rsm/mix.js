@@ -175,7 +175,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const ルインドアースLv13 = new Mix({
         uniqueName: "ルインドアースLv13", limit: 1, info: "",
-        materials: () => [[Item.たんぽぽ, 20]],
+        materials: () => [[Item.たんぽぽ, 30]],
         isVisible: () => ルインドアースLv12.count > 0,
     });
     const ルインドアースLv14 = new Mix({
@@ -185,7 +185,7 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
     });
     const ルインドアースLv15 = new Mix({
         uniqueName: "ルインドアースLv15", limit: 1, info: "",
-        materials: () => [[Item.サクラ材, 5], [Item.クワ, 10]],
+        materials: () => [[Item.サクラ材, 10], [Item.クワ, 10]],
         isVisible: () => ルインドアースLv14.count > 0,
     });
     const ルインドアースLv16 = new Mix({
@@ -222,6 +222,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         uniqueName: "動く映写機", limit: 1, info: "動かない映写機を修理する",
         materials: () => [[Item.にじゅうよん, 24], [Item.少女の心を持ったおっさん, 1],],
         isVisible: () => ルインドアースLv10.count > 0,
+    });
+    Mix.月読転移装置 = new Mix({
+        uniqueName: "月読転移装置", limit: 1, info: "月に行けるようになる",
+        materials: () => [[Item.太陽の欠片, 4], [Item.惑星エネルギー, 10], [Item.イリジウム, 20], [Item.モーター, 10],],
+        isVisible: () => ルインドアースLv16.count > 0 && Dungeon.月狼の森.dungeonClearCount > 0,
     });
     // export const    集会所:Mix = new Mix({
     //     uniqueName:"集会所", limit:1, info:"パーティースキルをセットできるようになる",

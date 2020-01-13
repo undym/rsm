@@ -2053,6 +2053,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
         }
     };
+    Item.モーター = new class extends Item {
+        constructor() {
+            super({ uniqueName: "モーター", info: "",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX });
+        }
+    };
     Item.エレタの絵の具 = new class extends Item {
         constructor() {
             super({ uniqueName: "エレタの絵の具", info: "ぬりぬりしようね",
@@ -2408,6 +2414,18 @@ Item.DEF_NUM_LIMIT = 9999;
         constructor() {
             super({ uniqueName: "クリスタル", info: "",
                 type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.惑星エネルギー = new class extends Item {
+        constructor() {
+            super({ uniqueName: "惑星エネルギー", info: "",
+                type: ItemType.素材, rank: 3, drop: ItemDrop.BOX | ItemDrop.STRATUM });
+        }
+    };
+    Item.イリジウム = new class extends Item {
+        constructor() {
+            super({ uniqueName: "イリジウム", info: "",
+                type: ItemType.素材, rank: 4, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
     Item.金 = new class extends Item {

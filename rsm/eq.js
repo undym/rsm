@@ -522,6 +522,25 @@ EqEar._valueOf = new Map();
             };
         }
     };
+    /**塔地下777階EX. */
+    Eq.退霊の盾 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "退霊の盾", info: "怨霊攻撃を稀に無効化",
+                pos: EqPos.盾, lv: 0 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeBeAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("怨霊") && Math.random() < 0.6) {
+                            Util.msg.set("＞退霊の盾");
+                            dmg.pow.base = 0;
+                        }
+                    });
+                }
+            };
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-盾
@@ -667,7 +686,7 @@ EqEar._valueOf = new Map();
     /**聖なる洞窟EX. */
     Eq.ルナローブ = new class extends Eq {
         constructor() {
-            super({ uniqueName: "ルナローブ", info: "行動開始時TP+1",
+            super({ uniqueName: "ルナローブ", info: "毎ターンTP+1",
                 pos: EqPos.体, lv: 20 });
         }
         createForce(_this) {
@@ -720,7 +739,7 @@ EqEar._valueOf = new Map();
     /**魂人の廃都財宝. */
     Eq.暖かい布 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "暖かい布", info: "行動開始時HP+5%",
+            super({ uniqueName: "暖かい布", info: "毎ターンHP+5%",
                 pos: EqPos.体, lv: 120 });
         }
         createForce(_this) {
@@ -965,7 +984,7 @@ EqEar._valueOf = new Map();
     /**魔鳥の岩壁財宝. */
     Eq.水晶の手首飾り = new class extends Eq {
         constructor() {
-            super({ uniqueName: "水晶の手首飾り", info: "最大HP+50　行動開始時HP+1%",
+            super({ uniqueName: "水晶の手首飾り", info: "最大HP+50　毎ターンHP+1%",
                 pos: EqPos.手, lv: 99 });
         }
         createForce(_this) {
@@ -1127,7 +1146,7 @@ EqEar._valueOf = new Map();
     /**古マーザン森財宝. */
     Eq.魔ヶ玉 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "魔ヶ玉", info: "行動開始時MP+1",
+            super({ uniqueName: "魔ヶ玉", info: "毎ターンMP+1",
                 pos: EqPos.指, lv: 98 });
         }
         createForce(_this) {
@@ -1143,7 +1162,7 @@ EqEar._valueOf = new Map();
     /**古マーザン森EX. */
     Eq.水晶の指輪 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "水晶の指輪", info: "行動開始時HP+5%",
+            super({ uniqueName: "水晶の指輪", info: "毎ターンHP+5%",
                 pos: EqPos.指, lv: 97 });
         }
         createForce(_this) {
@@ -1391,6 +1410,27 @@ EqEar._valueOf = new Map();
                 beforeBeAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         dmg.hit.mul *= 0.95;
+                    });
+                }
+            };
+        }
+    };
+    /**塔地下777階財宝. */
+    Eq.誓いの靴 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "誓いの靴", info: "毎ターン全ステータス+10%",
+                pos: EqPos.脚, lv: 55 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (unit.dead) {
+                            return;
+                        }
+                        for (const prm of Prm.atkPrms) {
+                            unit.prm(prm).battle += unit.prm(prm).get("base", "eq") * 0.1;
+                        }
                     });
                 }
             };
