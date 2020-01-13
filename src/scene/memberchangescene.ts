@@ -74,8 +74,8 @@ export class MemberChangeScene extends Scene{
             if(!Input.click){return;}
 
             let i = 0;
-            for(let p of Unit.players.filter(p=> p.exists)){
-                if(p.boxBounds.contains( Input.point )){
+            for(let p of Unit.players){
+                if(p.boxBounds.contains( Input.point ) && p.exists){
                     this.choosed = p.player;
                     this.exchangeBtn = new Btn("外す", ()=>{
                         this.exchangeBtn = ILayout.empty;
