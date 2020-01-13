@@ -1917,6 +1917,14 @@ export namespace Item{
         constructor(){super({uniqueName:"翌檜", info:"",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.BOX | ItemDrop.TREE})}
     };
+    export const                         サクラ材:Item = new class extends Item{
+        constructor(){super({uniqueName:"サクラ材", info:"",
+                                type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
+    };
+    export const                         松材:Item = new class extends Item{
+        constructor(){super({uniqueName:"松材", info:"",
+                                type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
+    };
     export const                         テント木:Item = new class extends Item{
         constructor(){super({uniqueName:"テント木", info:"",
                                 type:ItemType.素材, rank:6, drop:ItemDrop.BOX | ItemDrop.TREE})}
@@ -1940,19 +1948,6 @@ export namespace Item{
     //-----------------------------------------------------------------
     //
     //-TREE
-    //加工木材
-    //
-    //-----------------------------------------------------------------
-    export const                         サクラ材:Item = new class extends Item{
-        constructor(){super({uniqueName:"サクラ材", info:"",
-                                type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
-    };
-    export const                         松材:Item = new class extends Item{
-        constructor(){super({uniqueName:"松材", info:"",
-                                type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
-    };
-    //-----------------------------------------------------------------
-    //
     //STRATUM
     //
     //-----------------------------------------------------------------

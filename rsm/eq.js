@@ -202,6 +202,22 @@ EqEar._valueOf = new Map();
             };
         }
     };
+    /**合成:月のレシピ. */
+    Eq.花水飾り = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "花水飾り", info: "防御値+500",
+                pos: EqPos.頭, lv: 40 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeBeAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        dmg.def.add += 500;
+                    });
+                }
+            };
+        }
+    };
     // export const                         山男のとんかつ帽:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"山男のとんかつ帽", info:"最大TP+10", 
     //                             pos:EqPos.頭, lv:3});}
@@ -421,6 +437,40 @@ EqEar._valueOf = new Map();
                         if (dmg.hasType("格闘")) {
                             dmg.pow.add += dmg.attacker.prm(Prm.MAX_HP).total - dmg.attacker.hp;
                         }
+                    });
+                }
+            };
+        }
+    };
+    /**月のレシピ. */
+    Eq.天秤 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "天秤", info: "光闇+100",
+                pos: EqPos.武, lv: 70 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                equip(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        unit.prm(Prm.LIG).eq += 100;
+                        unit.prm(Prm.DRK).eq += 100;
+                    });
+                }
+            };
+        }
+    };
+    /**月のレシピ. */
+    Eq.蔓の鎖 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "蔓の鎖", info: "鎖過+100",
+                pos: EqPos.武, lv: 70 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                equip(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        unit.prm(Prm.CHN).eq += 100;
+                        unit.prm(Prm.PST).eq += 100;
                     });
                 }
             };
@@ -1284,6 +1334,23 @@ EqEar._valueOf = new Map();
                         if (dmg.hasType("槍")) {
                             dmg.pow.add += 30;
                         }
+                    });
+                }
+            };
+        }
+    };
+    /**合成:月のレシピ. */
+    Eq.シャドウムーン = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "シャドウムーン", info: "最大MPTP+40",
+                pos: EqPos.指, lv: 0 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                equip(unit) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        unit.prm(Prm.MAX_MP).eq += 40;
+                        unit.prm(Prm.MAX_TP).eq += 40;
                     });
                 }
             };

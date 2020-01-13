@@ -228,6 +228,16 @@ export namespace Eq{
             }
         };}
     }
+    /**合成:月のレシピ. */
+    export const                         花水飾り:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"花水飾り", info:"防御値+500", 
+                                pos:EqPos.頭, lv:40});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeBeAtk(dmg:Dmg){
+                dmg.def.add += 500;
+            }
+        };}
+    }
     // export const                         山男のとんかつ帽:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"山男のとんかつ帽", info:"最大TP+10", 
     //                             pos:EqPos.頭, lv:3});}
@@ -385,6 +395,28 @@ export namespace Eq{
                 if(dmg.hasType("格闘")){
                     dmg.pow.add += dmg.attacker.prm(Prm.MAX_HP).total - dmg.attacker.hp;
                 }
+            }
+        };}
+    }
+    /**月のレシピ. */
+    export const                         天秤:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"天秤", info:"光闇+100",
+                                pos:EqPos.武, lv:70});}
+        createForce(_this:Eq){return new class extends Force{
+            async equip(unit:Unit){
+                unit.prm(Prm.LIG).eq += 100;
+                unit.prm(Prm.DRK).eq += 100;
+            }
+        };}
+    }
+    /**月のレシピ. */
+    export const                         蔓の鎖:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"蔓の鎖", info:"鎖過+100",
+                                pos:EqPos.武, lv:70});}
+        createForce(_this:Eq){return new class extends Force{
+            async equip(unit:Unit){
+                unit.prm(Prm.CHN).eq += 100;
+                unit.prm(Prm.PST).eq += 100;
             }
         };}
     }
@@ -970,6 +1002,17 @@ export namespace Eq{
                 if(dmg.hasType("槍")){
                     dmg.pow.add += 30;
                 }
+            }
+        };}
+    }
+    /**合成:月のレシピ. */
+    export const                         シャドウムーン:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"シャドウムーン", info:"最大MPTP+40",
+                                pos:EqPos.指, lv:0});}
+        createForce(_this:Eq){return new class extends Force{
+            async equip(unit:Unit){
+                unit.prm(Prm.MAX_MP).eq += 40;
+                unit.prm(Prm.MAX_TP).eq += 40;
             }
         };}
     }

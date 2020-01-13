@@ -2285,6 +2285,18 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 5, drop: ItemDrop.BOX | ItemDrop.TREE });
         }
     };
+    Item.サクラ材 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "サクラ材", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
+    Item.松材 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "松材", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
     Item.テント木 = new class extends Item {
         constructor() {
             super({ uniqueName: "テント木", info: "",
@@ -2318,23 +2330,6 @@ Item.DEF_NUM_LIMIT = 9999;
     //-----------------------------------------------------------------
     //
     //-TREE
-    //加工木材
-    //
-    //-----------------------------------------------------------------
-    Item.サクラ材 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "サクラ材", info: "",
-                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
-        }
-    };
-    Item.松材 = new class extends Item {
-        constructor() {
-            super({ uniqueName: "松材", info: "",
-                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
-        }
-    };
-    //-----------------------------------------------------------------
-    //
     //STRATUM
     //
     //-----------------------------------------------------------------

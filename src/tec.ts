@@ -1122,14 +1122,18 @@ export namespace Tec{
             await super.run(attacker, target);
 
             const lim = 99;
-
+            let pow = (attacker.prm(Prm.DRK).total - attacker.prm(Prm.LIG).total)
+            if(pow < 0)  {pow = 0;}
+            if(pow > lim){pow = lim;}
             const selfHarm = new Dmg({
                                 attacker:attacker,
                                 target:attacker,
-                                absPow:attacker.prm(Prm.DRK).total < lim ? attacker.prm(Prm.DRK).total : lim,
+                                absPow:pow,
                                 canCounter:false,
                             });
             await selfHarm.run();
+
+            attacker.prm(Prm.DRK).battle += 1;
         }
     }
     /**鳥. */

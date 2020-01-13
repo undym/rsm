@@ -261,7 +261,7 @@ export namespace Mix{
     });
     export const    月読転移装置:Mix = new Mix({
         uniqueName:"月読転移装置", limit:1, info:"月に行けるようになる",
-        materials:()=>[[Item.太陽の欠片, 4], [Item.惑星エネルギー, 10], [Item.イリジウム, 20], [Item.モーター, 10],],
+        materials:()=>[[Item.タンホイザーの砂飯, 1], [Item.惑星エネルギー, 10], [Item.イリジウム, 20], [Item.モーター, 10],],
         isVisible:()=>ルインドアースLv16.count > 0 && Dungeon.月狼の森.dungeonClearCount > 0,
     });
     // export const    集会所:Mix = new Mix({
@@ -269,6 +269,12 @@ export namespace Mix{
     //     materials:()=>[[Item.エレタクレヨン, 6], [Item.エデン樹, 3]],
     //     isVisible:()=>ルインドアースLv20.count > 0,
     // });
+
+    export const    月のレシピ:Mix = new Mix({
+        uniqueName:"月のレシピ", limit:1, info:"月小人に伝わる秘伝の装備レシピ",
+        materials:()=>[[Item.月の石, 1], [Item.錫, 10], [Item.粘土, 10],],
+        isVisible:()=>ルインドアースLv16.count > 0 && Dungeon.月狼の森.dungeonClearCount > 0,
+    });
 
 
 
@@ -664,6 +670,30 @@ export namespace Mix{
         result:()=>[Eq.空飛ぶ靴, 1],
         materials:()=>[[Item.イズミミズ, 5], [Item.杉, 10], [Item.ヒノキ, 10], [Item.針金, 1]],
         isVisible:()=>Item.イスレシピ.totalGetCount > 0,
+    });
+    const           シャドウムーン:Mix = new Mix({
+        uniqueName:"シャドウムーン", limit:1,
+        result:()=>[Eq.シャドウムーン, 1],
+        materials:()=>[[Item.月の石, 1], [Item.粘土, 10], [Item.地球のひも, 10], [Item.針金, 5]],
+        isVisible:()=>月のレシピ.count > 0,
+    });
+    const           花水飾り:Mix = new Mix({
+        uniqueName:"花水飾り", limit:1,
+        result:()=>[Eq.花水飾り, 1],
+        materials:()=>[[Item.月の石, 1], [Item.たんぽぽ, 10], [Item.桜, 10], [Item.梅, 5]],
+        isVisible:()=>月のレシピ.count > 0,
+    });
+    const           天秤:Mix = new Mix({
+        uniqueName:"天秤", limit:1,
+        result:()=>[Eq.天秤, 1],
+        materials:()=>[[Item.月の石, 1], [Item.桐, 20], [Item.鉄, 10], [Item.銅, 10]],
+        isVisible:()=>月のレシピ.count > 0,
+    });
+    const           蔓の鎖:Mix = new Mix({
+        uniqueName:"蔓の鎖", limit:1,
+        result:()=>[Eq.蔓の鎖, 1],
+        materials:()=>[[Item.月の石, 1], [Item.発砲ツル, 30], [Item.地球のひも, 10], [Item.石, 30]],
+        isVisible:()=>月のレシピ.count > 0,
     });
     //--------------------------------------------------------
     //
