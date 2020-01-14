@@ -1109,13 +1109,13 @@ export namespace Eq{
     }
     /**塔地下777階財宝. */
     export const                         誓いの靴:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"誓いの靴", info:"毎ターン全ステータス+10%",
+        constructor(){super({uniqueName:"誓いの靴", info:"毎ターン全ステータス+5%",
                                 pos:EqPos.脚, lv:55});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
                 if(unit.dead){return;}
                 for(const prm of Prm.atkPrms){
-                    unit.prm(prm).battle += unit.prm(prm).get("base","eq") * 0.1;
+                    unit.prm(prm).battle += unit.prm(prm).get("base","eq") * 0.05;
                 }
             }
         };}

@@ -20,6 +20,7 @@ import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
 import { Story3 } from "../story/story3.js";
 import { Condition } from "../condition.js";
+import { Battle } from "../battle.js";
 
 
 export class DungeonArea{
@@ -104,7 +105,7 @@ export namespace DungeonArea{
                                     [Item.冥石, 0.001],
                                 ],
                             );
-    export const 塔地下:DungeonArea =    new DungeonArea("塔地下", "img/map5.jpg",
+    export const 塔地下:DungeonArea =    new DungeonArea("塔地下", "img/map6.jpg",
                             ()=>[
                                 [DungeonArea.中央島,     new Rect(0.35, 0.0, 0.3, 0.1), ()=>Flag.story_Toutika.done],
                             ],
@@ -323,7 +324,7 @@ export abstract class Dungeon{
         return num === 0 ? 1 : num;
     }
 
-    async setEnemy(num:number = 0){
+    async setEnemy(num:number = 0):Promise<void>{
         if(num === 0){
             num = this.rndEnemyNum();
         }
@@ -334,11 +335,11 @@ export abstract class Dungeon{
         }
     }
 
-    async setEnemyInner(e:EUnit){
+    async setEnemyInner(e:EUnit):Promise<void>{
         await this.rndJob().setEnemy(e, (Math.random() * 0.5 + 0.75) * this.enemyLv);
     }
 
-    async setBoss(){
+    async setBoss():Promise<void>{
         await this.setEnemy( Unit.enemies.length );
         for(const e of Unit.enemies){
             e.prm(Prm.MAX_HP).base *= 3;
@@ -354,7 +355,7 @@ export abstract class Dungeon{
         }
     }
 
-    async setEx(){
+    async setEx():Promise<void>{
         for(const e of Unit.enemies){
             const _killCount = this.exKillCount < 10 ? this.exKillCount : 10;
             const lv = this.originalEnemyLv * (1 + _killCount * 0.1);
@@ -374,7 +375,7 @@ export abstract class Dungeon{
         }
     }
 
-    async dungeonClearEvent(){
+    async dungeonClearEvent():Promise<void>{
         if(this.dungeonClearCount <= 100 && this.dungeonClearCount % 10 === 0){
             Util.msg.set(`[${this}]を${this.dungeonClearCount}回踏破！`); await cwait();
             Sound.rare.play();
@@ -1438,34 +1439,65 @@ export namespace Dungeon{
     ///////////////////////////////////////////////////////////////////////
     //塔地下
     ///////////////////////////////////////////////////////////////////////
-    // export const                         塔地下777階:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"塔地下777階", info:"",
-    //                             rank:5, enemyLv:32, au:200, btn:[DungeonArea.塔地下, new Rect(0.2, 0.15, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.誓いの靴],
-    //                             exItems:    ()=>[Eq.退霊の盾],
-    //                             trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
-    //     });}
-    //     isVisible = ()=>Flag.story_Main35.done;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
-    //         e.name = "塔の遺物";
-    //         e.prm(Prm.MAX_HP).base = 2200;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "聖戦士・月光";
-    //         e.img = new Img("img/unit/ex_ariran.png");
-    //         e.prm(Prm.MAX_HP).base = 3500;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story3.runMain36();
-    //         }
-    //     }
-    // };
+    export const                         塔地下777階:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔地下777階", info:"",
+                                rank:5, enemyLv:32, au:200, btn:[DungeonArea.塔地下, new Rect(0.2, 0.15, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.誓いの靴],
+                                exItems:    ()=>[Eq.退霊の盾],
+                                trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+        });}
+        isVisible = ()=>Flag.story_Main35.done;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
+            e.name = "塔の遺物";
+            e.prm(Prm.MAX_HP).base = 2200;
+
+            if(this.dungeonClearCount === 0){
+                Battle.setReserveUnits.push(async()=>{
+                    if(!Flag.story_Main36.done){
+                        Music.stop();
+
+                        Flag.story_Main36.done = true;
+                        await Story3.runMain36();
+
+                        choice(Music.getMusics("boss")).play();
+                    }
+                    await this.setEnemy( Unit.enemies.length );
+                    {
+                        const e = Unit.enemies[0];
+                        Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
+                        e.name = "オランピア";
+                        e.img = new Img("img/unit/boss_oranpia.png");
+                        e.prm(Prm.MAX_HP).base = 3000;
+                    }
+                    {
+                        const e = Unit.enemies[1];
+                        Job.月弓子.setEnemy(e, e.prm(Prm.LV).base + 10);
+                        e.name = "ドラギャレット";
+                        e.img = new Img("img/unit/boss_dora.png");
+                        e.prm(Prm.MAX_HP).base = 1200;
+                        e.setEq(Eq.呪縛の弓矢.pos, Eq.呪縛の弓矢);
+                    }
+                });
+            }
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "聖戦士・月光";
+            e.img = new Img("img/unit/ex_ariran.png");
+            e.prm(Prm.MAX_HP).base = 3500;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                Sound.rare.play();
+                Item.月弓子の血.add(1); await cwait();
+                await Story3.runMain37();
+            }
+        }
+    };
 
 
 

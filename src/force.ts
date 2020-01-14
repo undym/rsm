@@ -28,18 +28,18 @@ export class Force{
 
     walk(unit:Unit, au:AUForce){}
     /**死亡していても通る.死亡時発動させたくない場合は、ガードする。*/
-    async battleStart(unit:Unit){}
-    async phaseStart(unit:Unit, pForce:PhaseStartForce){}
-    async deadPhaseStart(unit:Unit){}
+    async battleStart(unit:Unit):Promise<void>{}
+    async phaseStart(unit:Unit, pForce:PhaseStartForce):Promise<void>{}
+    async deadPhaseStart(unit:Unit):Promise<void>{}
     attackNum(action:Action, unit:Unit, aForce:AttackNumForce){}
-    async beforeDoAtk(dmg:Dmg){}
-    async beforeBeAtk(dmg:Dmg){}
+    async beforeDoAtk(dmg:Dmg):Promise<void>{}
+    async beforeBeAtk(dmg:Dmg):Promise<void>{}
     /**ダメージを受ける直前、calc()された後に通る。resultを操作。 */
-    async beDamage(dmg:Dmg){}
-    async afterDoAtk(dmg:Dmg){}
-    async afterBeAtk(dmg:Dmg){}
-    async memberAfterDoAtk(me:Unit, dmg:Dmg){}
-    async whenDead(unit:Unit){}
+    async beDamage(dmg:Dmg):Promise<void>{}
+    async afterDoAtk(dmg:Dmg):Promise<void>{}
+    async afterBeAtk(dmg:Dmg):Promise<void>{}
+    async memberAfterDoAtk(me:Unit, dmg:Dmg):Promise<void>{}
+    async whenDead(unit:Unit):Promise<void>{}
     /**
      * 自分以外の死亡時.
      * 他のキャラクターのwhenAnyoneDeadによって死亡が回避された場合でも、残りの全ての生存キャラクター分呼ばれるので、
@@ -351,7 +351,7 @@ export class Heal{
 
 
 export abstract class Action{
-    abstract use(attacker:Unit, targets:Unit[]):void;
+    abstract use(attacker:Unit, targets:Unit[]):Promise<void>;
 }
 
 // export type Targeting = number;

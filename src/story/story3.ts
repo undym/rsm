@@ -605,10 +605,7 @@ export namespace Story3{
 
         s.end();
         
-        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第36話『彼女の夢』", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第36話『彼女の夢』", Color.L_GRAY);
     };
     /**オランピア・ドラギャレットとの対戦後。ストーリー無し。 */
     export const runMain37 = async()=>{

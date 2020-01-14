@@ -568,18 +568,7 @@ export var Story3;
             [f_oranpia, "オランピア", "「スペシャリストを生きたまま保存したいから連れて帰るだなんて、子供みたい･･･」"],
         ]);
         s.end();
-        Util.msg.set(".", Color.L_GRAY);
-        Sound.moji.play();
-        yield cwait();
-        Util.msg.set(".", Color.L_GRAY);
-        Sound.moji.play();
-        yield cwait();
-        Util.msg.set(".", Color.L_GRAY);
-        Sound.moji.play();
-        yield cwait();
         Util.msg.set("第36話『彼女の夢』", Color.L_GRAY);
-        Sound.moji.play();
-        yield cwait();
     });
     /**オランピア・ドラギャレットとの対戦後。ストーリー無し。 */
     Story3.runMain37 = () => __awaiter(this, void 0, void 0, function* () {

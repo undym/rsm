@@ -162,8 +162,7 @@ export class BattleScene extends Scene{
                 return true;
             }
             if(Unit.enemies.every(u=> !u.exists || u.dead)){
-                await win();
-                return true;
+                return await win();
             }
             return false;
         };
@@ -423,8 +422,22 @@ export class BattleScene extends Scene{
 }
 
 
+/**敵がBattle.setReserveUnitsによって敵が補充された場合、trueを返す。 */
+const win = async():Promise<boolean>=>{
+    if(Battle.setReserveUnits.length > 0){
+        Util.msg.set("敵を殲滅した..."); await cwait();
+        Util.msg.set("."); await cwait();
+        Util.msg.set("."); await cwait();
+        Util.msg.set("."); await cwait();
 
-const win = async()=>{
+        await Battle.setReserveUnits[0]();
+        Battle.setReserveUnits.shift();
+
+        Util.msg.set(`${Unit.enemies[0].name}達が現れた！`, Color.RED.bright);
+
+        return false;
+    }
+
     Battle.result = BattleResult.WIN;
     Sound.win.play();
     Util.msg.set("勝った"); await wait();
@@ -465,6 +478,8 @@ const win = async()=>{
 
     await finish();
     await Battle.battleEndAction(BattleResult.WIN);
+
+    return true;
 };
 
 
@@ -496,6 +511,8 @@ const finish = async()=>{
         }
         u.clearInvisibleConditions();
     }
+
+    Battle.setReserveUnits = [];
 
     btnSpace.clear();
 

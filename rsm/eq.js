@@ -1485,7 +1485,7 @@ EqEar._valueOf = new Map();
     /**塔地下777階財宝. */
     Eq.誓いの靴 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "誓いの靴", info: "毎ターン全ステータス+10%",
+            super({ uniqueName: "誓いの靴", info: "毎ターン全ステータス+5%",
                 pos: EqPos.脚, lv: 55 });
         }
         createForce(_this) {
@@ -1496,7 +1496,7 @@ EqEar._valueOf = new Map();
                             return;
                         }
                         for (const prm of Prm.atkPrms) {
-                            unit.prm(prm).battle += unit.prm(prm).get("base", "eq") * 0.1;
+                            unit.prm(prm).battle += unit.prm(prm).get("base", "eq") * 0.05;
                         }
                     });
                 }

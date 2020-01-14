@@ -21,14 +21,16 @@ export class Battle{
     static turn = 0;
     // static attacker:Unit;
     // static target:Unit;
-    static battleEndAction:(result:BattleResult)=>void;
+    static battleEndAction:(result:BattleResult)=>Promise<void>;
+    /**敵の補充ルーチンを書く。敵全滅時実行され、敵ユニットを補充する。配列が空になるまで、全滅・補充を繰り返す。 */
+    static setReserveUnits:(()=>Promise<void>)[] = [];
     
 
     static getPhaseUnit():Unit{
         return Unit.all[this.phase];
     }
 
-    static setup(type:BattleType, battleEndAction:(result:BattleResult)=>void){
+    static setup(type:BattleType, battleEndAction:(result:BattleResult)=>Promise<void>){
         this.start = true;
         this.type = type;
         this.result = BattleResult.LOSE;

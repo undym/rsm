@@ -21,6 +21,8 @@ Battle.start = false;
 Battle.phase = 0;
 Battle.firstPhase = 0;
 Battle.turn = 0;
+/**敵の補充ルーチンを書く。敵全滅時実行され、敵ユニットを補充する。配列が空になるまで、全滅・補充を繰り返す。 */
+Battle.setReserveUnits = [];
 export class BattleType {
     constructor() { }
 }

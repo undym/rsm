@@ -477,7 +477,7 @@ export abstract class ActiveTec extends Tec implements Action{
         Util.msg.set(`${attacker.name}の[${this}]`, Color.D_GREEN.bright); await wait();
     }
 
-    async use(attacker:Unit, targets:Unit[]){
+    async use(attacker:Unit, targets:Unit[]):Promise<void>{
         
         await this.useMessage(attacker);
 
@@ -495,7 +495,7 @@ export abstract class ActiveTec extends Tec implements Action{
         }
     }
 
-    async run(attacker:Unit, target:Unit){
+    async run(attacker:Unit, target:Unit):Promise<void>{
         let dmg = this.createDmg(attacker, target);
         await attacker.beforeDoAtk(dmg);
         await target.beforeBeAtk(dmg);
@@ -506,7 +506,7 @@ export abstract class ActiveTec extends Tec implements Action{
         await target.afterBeAtk(dmg);
     }
 
-    async runInner(dmg:Dmg){
+    async runInner(dmg:Dmg):Promise<void>{
         const _wait = async()=>{
             if(this.targetings.some(t=> t === "all"))   {await wait(1);}
             else                                        {await wait();}

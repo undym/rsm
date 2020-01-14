@@ -25,6 +25,7 @@ import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
 import { Story3 } from "../story/story3.js";
+import { Battle } from "../battle.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns, _areaItems) {
         this.uniqueName = uniqueName;
@@ -82,7 +83,7 @@ DungeonArea._valueOf = new Map();
     DungeonArea.冥界 = new DungeonArea("冥界", "img/map5.jpg", () => [], () => [
         [Item.冥石, 0.001],
     ]);
-    DungeonArea.塔地下 = new DungeonArea("塔地下", "img/map5.jpg", () => [
+    DungeonArea.塔地下 = new DungeonArea("塔地下", "img/map6.jpg", () => [
         [DungeonArea.中央島, new Rect(0.35, 0.0, 0.3, 0.1), () => Flag.story_Toutika.done],
     ], () => []);
 })(DungeonArea || (DungeonArea = {}));
@@ -1601,34 +1602,70 @@ Dungeon.musicCount = 0;
     ///////////////////////////////////////////////////////////////////////
     //塔地下
     ///////////////////////////////////////////////////////////////////////
-    // export const                         塔地下777階:Dungeon = new class extends Dungeon{
-    //     constructor(){super({uniqueName:"塔地下777階", info:"",
-    //                             rank:5, enemyLv:32, au:200, btn:[DungeonArea.塔地下, new Rect(0.2, 0.15, 0.3, 0.1)],
-    //                             treasures:  ()=>[Eq.誓いの靴],
-    //                             exItems:    ()=>[Eq.退霊の盾],
-    //                             trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
-    //     });}
-    //     isVisible = ()=>Flag.story_Main35.done;
-    //     setBossInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
-    //         e.name = "塔の遺物";
-    //         e.prm(Prm.MAX_HP).base = 2200;
-    //     };
-    //     setExInner = ()=>{
-    //         let e = Unit.enemies[0];
-    //         Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
-    //         e.name = "聖戦士・月光";
-    //         e.img = new Img("img/unit/ex_ariran.png");
-    //         e.prm(Prm.MAX_HP).base = 3500;
-    //     };
-    //     async dungeonClearEvent(){
-    //         await super.dungeonClearEvent();
-    //         if(this.dungeonClearCount === 1){
-    //             await Story3.runMain36();
-    //         }
-    //     }
-    // };
+    Dungeon.塔地下777階 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "塔地下777階", info: "",
+                rank: 5, enemyLv: 32, au: 200, btn: [DungeonArea.塔地下, new Rect(0.2, 0.15, 0.3, 0.1)],
+                treasures: () => [Eq.誓いの靴],
+                exItems: () => [Eq.退霊の盾],
+                trendItems: () => [Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+            });
+            this.isVisible = () => Flag.story_Main35.done;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
+                e.name = "塔の遺物";
+                e.prm(Prm.MAX_HP).base = 2200;
+                if (this.dungeonClearCount === 0) {
+                    Battle.setReserveUnits.push(() => __awaiter(this, void 0, void 0, function* () {
+                        if (!Flag.story_Main36.done) {
+                            Music.stop();
+                            Flag.story_Main36.done = true;
+                            yield Story3.runMain36();
+                            choice(Music.getMusics("boss")).play();
+                        }
+                        yield this.setEnemy(Unit.enemies.length);
+                        {
+                            const e = Unit.enemies[0];
+                            Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
+                            e.name = "オランピア";
+                            e.img = new Img("img/unit/boss_oranpia.png");
+                            e.prm(Prm.MAX_HP).base = 3000;
+                        }
+                        {
+                            const e = Unit.enemies[1];
+                            Job.月弓子.setEnemy(e, e.prm(Prm.LV).base + 10);
+                            e.name = "ドラギャレット";
+                            e.img = new Img("img/unit/boss_dora.png");
+                            e.prm(Prm.MAX_HP).base = 1200;
+                            e.setEq(Eq.呪縛の弓矢.pos, Eq.呪縛の弓矢);
+                        }
+                    }));
+                }
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "聖戦士・月光";
+                e.img = new Img("img/unit/ex_ariran.png");
+                e.prm(Prm.MAX_HP).base = 3500;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    Sound.rare.play();
+                    Item.月弓子の血.add(1);
+                    yield cwait();
+                    yield Story3.runMain37();
+                }
+            });
+        }
+    };
     //-塔地下
     ///////////////////////////////////////////////////////////////////////
     //

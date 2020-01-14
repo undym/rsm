@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Scene, wait } from "../undym/scene.js";
+import { Scene, wait, cwait } from "../undym/scene.js";
 import { Place, Util, PlayData, SceneType } from "../util.js";
 import { DrawSTBoxes, DrawDungeonData, DrawUnitDetail, DrawYen, DrawUnits } from "./sceneutil.js";
 import { VariableLayout, ILayout, Layout, Labels } from "../undym/layout.js";
@@ -133,8 +133,7 @@ export class BattleScene extends Scene {
                     return true;
                 }
                 if (Unit.enemies.every(u => !u.exists || u.dead)) {
-                    yield win();
-                    return true;
+                    return yield win();
                 }
                 return false;
             });
@@ -364,7 +363,22 @@ export class BattleScene extends Scene {
         });
     }
 }
+/**敵がBattle.setReserveUnitsによって敵が補充された場合、trueを返す。 */
 const win = () => __awaiter(this, void 0, void 0, function* () {
+    if (Battle.setReserveUnits.length > 0) {
+        Util.msg.set("敵を殲滅した...");
+        yield cwait();
+        Util.msg.set(".");
+        yield cwait();
+        Util.msg.set(".");
+        yield cwait();
+        Util.msg.set(".");
+        yield cwait();
+        yield Battle.setReserveUnits[0]();
+        Battle.setReserveUnits.shift();
+        Util.msg.set(`${Unit.enemies[0].name}達が現れた！`, Color.RED.bright);
+        return false;
+    }
     Battle.result = BattleResult.WIN;
     Sound.win.play();
     Util.msg.set("勝った");
@@ -399,6 +413,7 @@ const win = () => __awaiter(this, void 0, void 0, function* () {
     yield wait();
     yield finish();
     yield Battle.battleEndAction(BattleResult.WIN);
+    return true;
 });
 const lose = () => __awaiter(this, void 0, void 0, function* () {
     Sound.gameover.play();
@@ -425,6 +440,7 @@ const finish = () => __awaiter(this, void 0, void 0, function* () {
         }
         u.clearInvisibleConditions();
     }
+    Battle.setReserveUnits = [];
     btnSpace.clear();
     BattleScene.ins.background = emptyBG;
 });

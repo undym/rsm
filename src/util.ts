@@ -179,6 +179,8 @@ export namespace Flag{
         = create("story_Main34");
     export const  story_Main35
         = create("story_Main35");
+    export const  story_Main36
+        = create("story_Main36");
 
     export const  story_Toutika
         = create("story_Toutika");

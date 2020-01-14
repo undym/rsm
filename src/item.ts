@@ -1604,15 +1604,17 @@ export namespace Item{
         };
     };
     export const ヴァンパイアの血 = createBlood(
-                "ヴァンパイアの血", "ヴァンパイア", ()=>Job.ヴァンパイア);
+                "ヴァンパイアの血", "ヴァンパイア",()=>Job.ヴァンパイア);
     export const 霊術戦士の血 = createBlood(
                 "霊術戦士の血",     "霊術戦士",    ()=>Job.霊術戦士);
     export const ホークマンの血 = createBlood(
-                "ホークマンの血",   "ホークマン",   ()=>Job.ホークマン);
+                "ホークマンの血",   "ホークマン",  ()=>Job.ホークマン);
     export const 精霊使いの血 = createBlood(
-                "精霊使いの血",     "精霊使い",     ()=>Job.精霊使い);
+                "精霊使いの血",     "精霊使い",    ()=>Job.精霊使い);
     export const 鬼の血 = createBlood(
                 "鬼の血",           "鬼",          ()=>Job.鬼);
+    export const 月弓子の血 = createBlood(
+                "月弓子の血",       "月弓子",      ()=>Job.月弓子);
     //-----------------------------------------------------------------
     //
     //書
