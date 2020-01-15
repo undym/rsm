@@ -49,7 +49,7 @@ export class MeisouScene extends Scene {
             } }))
             .add(new Labels(Font.def)
             .add(() => `[${this.target.name}]`)
-            .add(() => `BP:${this.target.bp}`)
+            .add(() => `BP:${this.target.bp}`, () => Color.ORANGE)
             .add(() => `HP:${this.target.prm(Prm.MAX_HP).total}`)
             .add(() => `MP:${this.target.prm(Prm.MAX_MP).total}`)
             .add(() => `TP:${this.target.prm(Prm.MAX_TP).total}`)

@@ -114,7 +114,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
@@ -130,7 +129,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
@@ -145,7 +143,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.ファイアブレス]);
@@ -160,7 +157,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
@@ -175,7 +171,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
@@ -190,7 +185,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.サイクロン]);
@@ -206,7 +200,6 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
                 createForce(_this:Pet){return new class extends Force{
                     async phaseStart(unit:Unit, pForce:PhaseStartForce){
                         await _this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
