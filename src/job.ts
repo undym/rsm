@@ -110,7 +110,7 @@ export abstract class Job{
     
     get maxLv(){return 20;}
     
-    async setEnemy(e:EUnit, lv:number){
+    async setEnemy(e:EUnit, lv:number):Promise<void>{
 
         const prmMul:number = PrmMuls.get(lv);
 
