@@ -108,10 +108,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.パンチ]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.パンチ]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -123,10 +127,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -138,10 +146,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -152,10 +164,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.ファイアブレス]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.ファイアブレス]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -166,10 +182,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -180,10 +200,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -194,10 +218,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.サイクロン]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.サイクロン]);
+                            });
+                        }
+                    };
                 }
             };
         }
@@ -209,10 +237,14 @@ Pet.HP_NAMES = ["死亡", "瀕死", "衰弱", "弱体", "通常", "頑丈", "鉄
             const factory = this;
             return new class extends Pet {
                 constructor() { super(factory.uniqueName, factory.img, hp); }
-                phaseStart(unit, pForce) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
-                    });
+                createForce(_this) {
+                    return new class extends Force {
+                        phaseStart(unit, pForce) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield _this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
+                            });
+                        }
+                    };
                 }
             };
         }

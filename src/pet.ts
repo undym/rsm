@@ -58,7 +58,7 @@ export class Pet implements ForceIns{
         return "あの世";
     }
 
-    async useRndPetTec(summoner:Unit, tecs:ActiveTec[]){
+    async useRndPetTec(summoner:Unit, tecs:ActiveTec[]):Promise<void>{
         if(tecs.length === 0){return undefined;}
         for(let i = 0; i < 10; i++){
             const tec = choice( tecs );
@@ -99,10 +99,11 @@ export namespace Pet{
             const factory = this;
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
-    
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.パンチ]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.パンチ]);
+                    }
+                };}
             };
         }
     };
@@ -114,9 +115,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.キュア, Tec.ラクサスキュア]);
+                    }
+                };}
             };
         }
     };
@@ -128,9 +131,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.シルフ, Tec.レヴィーナの歌声, Tec.ヴァルナパンチ]);
+                    }
+                };}
             };
         }
     };
@@ -141,9 +146,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.ファイアブレス]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.ファイアブレス]);
+                    }
+                };}
             };
         }
     };
@@ -154,9 +161,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.人魚の歌, Tec.生命の歌]);
+                    }
+                };}
             };
         }
     };
@@ -167,9 +176,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.ブラッドパンチ]);
+                    }
+                };}
             };
         }
     };
@@ -180,9 +191,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.サイクロン]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.サイクロン]);
+                    }
+                };}
             };
         }
     };
@@ -194,9 +207,11 @@ export namespace Pet{
             return new class extends Pet{
                 constructor(){super(factory.uniqueName, factory.img, hp);}
     
-                async phaseStart(unit:Unit, pForce:PhaseStartForce){
-                    await this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
-                }
+                createForce(_this:Pet){return new class extends Force{
+                    async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                        await _this.useRndPetTec(unit, [Tec.VIRGINレーザー, Tec.VIRGINバリア, Tec.補給]);
+                    }
+                };}
             };
         }
     };

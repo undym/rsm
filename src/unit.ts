@@ -319,30 +319,30 @@ export abstract class Unit{
     //force
     //
     //---------------------------------------------------------
-    async equip(){
+    async equip():Promise<void>{
         for(const prm of Prm.values){
             this.prm(prm).eq = 0;
         }
         await this.force(async f=> f.equip(this));
     }
-    async walk(au:AUForce)                                  {await this.force(async f=> await f.walk(this,au));}
-    async battleStart()                                     {await this.force(async f=> await f.battleStart(this));}
-    async deadPhaseStart()                                  {await this.force(async f=> await f.deadPhaseStart(this));}
-    async phaseStart(pForce:PhaseStartForce)                {await this.force(async f=> await f.phaseStart(this, pForce));}
+    async walk(au:AUForce):Promise<void>                    {await this.force(async f=> await f.walk(this,au));}
+    async battleStart():Promise<void>                       {await this.force(async f=> await f.battleStart(this));}
+    async deadPhaseStart():Promise<void>                    {await this.force(async f=> await f.deadPhaseStart(this));}
+    async phaseStart(pForce:PhaseStartForce):Promise<void>  {await this.force(async f=> await f.phaseStart(this, pForce));}
     attackNum(action:Action, aForce:AttackNumForce)         {this.force(async f=> await f.attackNum(action, this, aForce));}
-    async beforeDoAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeDoAtk(dmg));}
-    async beforeBeAtk(dmg:Dmg)                              {await this.force(async f=> await f.beforeBeAtk(dmg));}
-    async beDamage(dmg:Dmg)                                 {await this.force(async f=> await f.beDamage(dmg));}
-    async afterDoAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterDoAtk(dmg));}
-    async afterBeAtk(dmg:Dmg)                               {await this.force(async f=> await f.afterBeAtk(dmg));}
-    async memberAfterDoAtk(dmg:Dmg)                         {await this.force(async f=> await f.memberAfterDoAtk(this, dmg));}
-    async whenDead()                                        {await this.force(async f=> await f.whenDead(this));}
-    async whenAnyoneDead(deadUnit:Unit)                     {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
-    async beHeal(heal:Heal)                                 {await this.force(async f=> await f.beHeal(heal));}
-    async doHeal(heal:Heal)                                 {await this.force(async f=> await f.doHeal(heal));}
-    async phaseEnd()                                        {await this.force(async f=> await f.phaseEnd(this));}
+    async beforeDoAtk(dmg:Dmg):Promise<void>                {await this.force(async f=> await f.beforeDoAtk(dmg));}
+    async beforeBeAtk(dmg:Dmg):Promise<void>                {await this.force(async f=> await f.beforeBeAtk(dmg));}
+    async beDamage(dmg:Dmg):Promise<void>                   {await this.force(async f=> await f.beDamage(dmg));}
+    async afterDoAtk(dmg:Dmg):Promise<void>                 {await this.force(async f=> await f.afterDoAtk(dmg));}
+    async afterBeAtk(dmg:Dmg):Promise<void>                 {await this.force(async f=> await f.afterBeAtk(dmg));}
+    async memberAfterDoAtk(dmg:Dmg):Promise<void>           {await this.force(async f=> await f.memberAfterDoAtk(this, dmg));}
+    async whenDead():Promise<void>                          {await this.force(async f=> await f.whenDead(this));}
+    async whenAnyoneDead(deadUnit:Unit):Promise<void>       {await this.force(async f=> await f.whenAnyoneDead(this, deadUnit))}
+    async beHeal(heal:Heal):Promise<void>                   {await this.force(async f=> await f.beHeal(heal));}
+    async doHeal(heal:Heal):Promise<void>                   {await this.force(async f=> await f.doHeal(heal));}
+    async phaseEnd():Promise<void>                          {await this.force(async f=> await f.phaseEnd(this));}
 
-    protected async force(forceDlgt:(f:Force)=>Promise<void>){
+    protected async force(forceDlgt:(f:Force)=>Promise<void>):Promise<void>{
         for(const tec of this.tecs){
             await forceDlgt( tec.force );
         }

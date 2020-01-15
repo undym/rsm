@@ -198,7 +198,7 @@ export class Item implements Action, Num{
             targetings?:Targeting[],
             numLimit?:number,
             consumable?:boolean,
-            use?:(user:Unit,target:Unit)=>void,
+            use?:(user:Unit,target:Unit)=>Promise<void>,
         }
     ){
         
@@ -226,7 +226,7 @@ export class Item implements Action, Num{
         Num.add(this, v);
     }
 
-    async use(user:Unit, targets:Unit[]){
+    async use(user:Unit, targets:Unit[]):Promise<void>{
         if(!this.canUse(user, targets)){return;}
 
         for(let t of targets){
@@ -237,7 +237,7 @@ export class Item implements Action, Num{
         else                {this.num--;}
     }
 
-    protected async useInner(user:Unit, target:Unit){
+    protected async useInner(user:Unit, target:Unit):Promise<void>{
         if(this.args.use){await this.args.use(user, target);}
     }
 
