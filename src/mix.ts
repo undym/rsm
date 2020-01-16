@@ -456,6 +456,71 @@ export namespace Mix{
         },
     });
 
+
+    const           ピアーの肉まんレシピ:Mix = new Mix({
+        uniqueName:"ピアーの肉まんレシピ", limit:10, info:"ピアー直伝肉まんレシピが解放される",
+        materials:()=>[[Item.動かないゴーグル, 20]],
+        isVisible:()=>ルインドアースLv17.count > 0,
+    });
+    const           たんぽぽまん:Mix = new Mix({
+        uniqueName:"たんぽぽまん", limit:5, info:"ルインの全ステータス+10",
+        materials:()=>[[Item.肉まん, 1], [Item.たんぽぽ, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.ルイン.member,
+        action:()=>{
+            Prm.atkPrms.forEach(prm=> Player.ルイン.ins.prm(prm).base += 10);
+        },
+    });
+    const           筍まん:Mix = new Mix({
+        uniqueName:"筍まん", limit:5, info:"ピアーの魔+10",
+        materials:()=>[[Item.肉まん, 1], [Item.竹, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.ピアー.member,
+        action:()=>{
+            Player.ピアー.ins.prm(Prm.MAG).base += 10;
+        },
+    });
+    const           バッタまん:Mix = new Mix({
+        uniqueName:"バッタまん", limit:5, info:"一号の闇+10",
+        materials:()=>[[Item.肉まん, 1], [Item.バッタ, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.一号.member,
+        action:()=>{
+            Player.一号.ins.prm(Prm.DRK).base += 10;
+        },
+    });
+    const           水まん:Mix = new Mix({
+        uniqueName:"水まん", limit:5, info:"雪の鎖+10",
+        materials:()=>[[Item.肉まん, 1], [Item.水, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.雪.member,
+        action:()=>{
+            Player.雪.ins.prm(Prm.CHN).base += 10;
+        },
+    });
+    const           かにまん:Mix = new Mix({
+        uniqueName:"かにまん", limit:5, info:"ベガの全ステータス+10",
+        materials:()=>[[Item.肉まん, 1], [Item.かに, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.ベガ.member,
+        action:()=>{
+            Prm.atkPrms.forEach(prm=> Player.ベガ.ins.prm(prm).base += 10);
+        },
+    });
+    const           にじゅうよんまん:Mix = new Mix({
+        uniqueName:"にじゅうよんまん", limit:5, info:"ジスロフの全ステータス+10",
+        to_string:"24万",
+        materials:()=>[[Item.肉まん, 1], [Item.にじゅうよん, 24]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.ジスロフ.member,
+        action:()=>{
+            Prm.atkPrms.forEach(prm=> Player.ジスロフ.ins.prm(prm).base += 10);
+        },
+    });
+    const           トマトまん:Mix = new Mix({
+        uniqueName:"トマトまん", limit:5, info:"ナナの光+10",
+        materials:()=>[[Item.肉まん, 1], [Item.トマト, 30]],
+        isVisible:()=>ピアーの肉まんレシピ.count > 0 && Player.ナナ.member,
+        action:()=>{
+            Player.ナナ.ins.prm(Prm.LIG).base += 10;
+        },
+    });
+
+
     //Force
     export const    飛行:Mix = new Mix({
         uniqueName:"飛行", limit:1, info:"白い鳥が特性[進む時稀に+1]を覚える",
@@ -479,7 +544,7 @@ export namespace Mix{
     const           技の極み2:Mix = new Mix({
         uniqueName:"技の極み2", limit:1, info:"技セット上限数増加アイテムの合成が解放される",
         to_string: "技の極み+",
-        materials:()=>[[Item.エデン樹, 10], [Item.桜, 10]],
+        materials:()=>[[Item.エデン樹, 20], [Item.桜, 20]],
         isVisible:()=>ルインドアースLv12.count > 0 && 技の極み.count > 0,
     });
 
