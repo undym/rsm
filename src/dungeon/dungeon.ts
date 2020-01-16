@@ -440,7 +440,7 @@ export namespace Dungeon{
     };
     export const                         見知らぬ海岸:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"見知らぬ海岸", info:"",
-                                rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.1, 0.3, 0.3, 0.1)],
+                                rank:0, enemyLv:3, au:60, btn:[DungeonArea.中央島, new Rect(0.05, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.銅板],
                                 exItems:    ()=>[Eq.草の服],
                                 trendItems: ()=>[Item.草, Item.水, Item.竹, Item.かんな],
