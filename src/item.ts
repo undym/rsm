@@ -1993,6 +1993,10 @@ export namespace Item{
         constructor(){super({uniqueName:"バーミキュライト", info:"",
                                 type:ItemType.素材, rank:2, drop:ItemDrop.BOX | ItemDrop.STRATUM})}
     };
+    export const                         動かないゴーグル:Item = new class extends Item{
+        constructor(){super({uniqueName:"動かないゴーグル", info:"壊れて動かなくなったゴーグル",
+                                type:ItemType.素材, rank:2, drop:ItemDrop.BOX})}
+    };
     export const                         銀:Item = new class extends Item{
         constructor(){super({uniqueName:"銀", info:"",
                                 type:ItemType.素材, rank:3, drop:ItemDrop.BOX | ItemDrop.STRATUM})}

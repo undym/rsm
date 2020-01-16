@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Force, Dmg, Heal } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num } from "./mix.js";
-import { ActiveTec, Tec } from "./tec.js";
+import { ActiveTec, TecType, Tec } from "./tec.js";
 import { Condition } from "./condition.js";
 import { Util, PlayData } from "./util.js";
 import { Battle } from "./battle.js";
@@ -476,6 +476,57 @@ EqEar._valueOf = new Map();
             };
         }
     };
+    /**イベントバトル:塔地下782階. */
+    Eq.パイプ銃 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "パイプ銃", info: "銃攻撃+1",
+                pos: EqPos.武, lv: 170 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                attackNum(action, attacker, aForce) {
+                    if (action instanceof ActiveTec && action.type.any(TecType.銃)) {
+                        aForce.add += 1;
+                    }
+                }
+            };
+        }
+    };
+    /**イベントバトル:塔地下782階. */
+    Eq.オランピアの竜剣 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "オランピアの竜剣", info: "格闘攻撃時稀に相手を＜眠＞化",
+                pos: EqPos.武, lv: 170 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("格闘") && Math.random() < 0.3) {
+                            Unit.setCondition(dmg.target, Condition.眠, 1);
+                            yield wait();
+                        }
+                    });
+                }
+            };
+        }
+    };
+    /**イベントバトル:塔地下782階. */
+    Eq.三日月弓 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "三日月弓", info: "ヤクシャ・ガルダの攻撃回数x2",
+                pos: EqPos.武, lv: 180 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                attackNum(action, attacker, aForce) {
+                    if (action instanceof ActiveTec && (action === Tec.ヤクシャ || action === Tec.ガルダ)) {
+                        aForce.add += action.baseAttackNum;
+                    }
+                }
+            };
+        }
+    };
     //--------------------------------------------------------------------------
     //
     //-武
@@ -935,6 +986,56 @@ EqEar._valueOf = new Map();
                         if (dmg.hasType("過去")) {
                             Heal.run("HP", dmg.attacker.prm(Prm.MAX_HP).total * 0.02, dmg.attacker, dmg.attacker, Eq.卯月ベルト, false);
                         }
+                    });
+                }
+            };
+        }
+    };
+    /**イベントバトル:塔地下782階. */
+    Eq.黒帯 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "黒帯", info: "[印]回復量x5",
+                pos: EqPos.腰, lv: 180 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                doHeal(heal) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (heal.action === Tec.印) {
+                            heal.value *= 5;
+                        }
+                    });
+                }
+            };
+        }
+    };
+    /**塔地下782階EX */
+    Eq.魔ヶ玉の腰巻 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "魔ヶ玉の腰巻", info: "毎ターンMP+1",
+                pos: EqPos.腰, lv: 40 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                phaseStart(unit, pForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        Heal.run("MP", 1, unit, unit, _this, false);
+                    });
+                }
+            };
+        }
+    };
+    /**塔地下782階財宝 */
+    Eq.ゲルマンベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ゲルマンベルト", info: "攻撃+Lv/4",
+                pos: EqPos.腰, lv: 67 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        dmg.pow.add += dmg.attacker.prm(Prm.LV).total / 4;
                     });
                 }
             };

@@ -25,6 +25,7 @@ import { Sound, Music } from "../sound.js";
 import { Story2 } from "../story/story2.js";
 import { Pet } from "../pet.js";
 import { Story3 } from "../story/story3.js";
+import { Condition } from "../condition.js";
 import { Battle } from "../battle.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns, _areaItems) {
@@ -1619,8 +1620,8 @@ Dungeon.musicCount = 0;
                 if (this.dungeonClearCount === 0) {
                     Battle.setReserveUnits.push(() => __awaiter(this, void 0, void 0, function* () {
                         if (!Flag.story_Main36.done) {
-                            Music.stop();
                             Flag.story_Main36.done = true;
+                            Music.stop();
                             yield Story3.runMain36();
                             choice(Music.getMusics("boss")).play();
                         }
@@ -1647,7 +1648,7 @@ Dungeon.musicCount = 0;
                 let e = Unit.enemies[0];
                 Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
                 e.name = "聖戦士・月光";
-                e.img = new Img("img/unit/ex_ariran.png");
+                e.img = new Img("img/unit/ex_gekkou.png");
                 e.prm(Prm.MAX_HP).base = 3500;
             };
         }
@@ -1662,6 +1663,100 @@ Dungeon.musicCount = 0;
                     Item.月弓子の血.add(1);
                     yield cwait();
                     yield Story3.runMain37();
+                }
+            });
+        }
+    };
+    Dungeon.塔地下782階 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "塔地下782階", info: "",
+                rank: 6, enemyLv: 32, au: 150, btn: [DungeonArea.塔地下, new Rect(0.15, 0.3, 0.3, 0.1)],
+                treasures: () => [Eq.ゲルマンベルト],
+                exItems: () => [Eq.魔ヶ玉の腰巻],
+                trendItems: () => [Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+            });
+            this.isVisible = () => Dungeon.塔地下777階.dungeonClearCount > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "塔の遺物・弟";
+                e.prm(Prm.MAX_HP).base = 2200;
+                if (this.dungeonClearCount === 0) {
+                    Battle.setReserveUnits.push(() => __awaiter(this, void 0, void 0, function* () {
+                        if (!Flag.story_Main38.done) {
+                            Flag.story_Main38.done = true;
+                            Music.stop();
+                            yield Story3.runMain38();
+                            choice(Music.getMusics("boss")).play();
+                        }
+                        for (const e of Unit.enemies) {
+                            e.exists = true;
+                            e.dead = false;
+                        }
+                        {
+                            const e = Unit.enemies[0];
+                            Job.体術士.setEnemy(e, e.prm(Prm.LV).base + 15);
+                            e.name = "帝釈天子ヴィクトリーヌ";
+                            e.img = new Img("img/unit/p_vic.png");
+                            e.prm(Prm.MAX_HP).base = 3650;
+                            e.setEq(Eq.黒帯.pos, Eq.黒帯);
+                        }
+                        {
+                            const e = Unit.enemies[1];
+                            Job.霊弾の射手.setEnemy(e, e.prm(Prm.LV).base + 15);
+                            e.name = "羅刹天子・流";
+                            e.img = new Img("img/unit/boss_ryu.png");
+                            e.prm(Prm.MAX_HP).base = 1500;
+                            e.setEq(Eq.パイプ銃.pos, Eq.パイプ銃);
+                            e.setCondition(Condition.吸収, 1);
+                        }
+                        {
+                            const e = Unit.enemies[2];
+                            Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
+                            e.name = "オランピア";
+                            e.img = new Img("img/unit/boss_oranpia.png");
+                            e.prm(Prm.MAX_HP).base = 3000;
+                            e.setEq(Eq.オランピアの竜剣.pos, Eq.オランピアの竜剣);
+                        }
+                        {
+                            const e = Unit.enemies[3];
+                            Job.月弓子.setEnemy(e, e.prm(Prm.LV).base + 10);
+                            e.name = "ドラギャレット";
+                            e.img = new Img("img/unit/boss_dora.png");
+                            e.prm(Prm.MAX_HP).base = 1200;
+                            e.setEq(Eq.三日月弓.pos, Eq.三日月弓);
+                            e.setCondition(Condition.回避, 2);
+                        }
+                    }));
+                }
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
+                e.name = "聖戦士・不滅の人";
+                e.img = new Img("img/unit/ex_fumetu.png");
+                e.prm(Prm.MAX_HP).base = 3700;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (this.dungeonClearCount === 1) {
+                    Sound.rare.play();
+                    Eq.黒帯.add(1);
+                    yield cwait();
+                    Sound.rare.play();
+                    Eq.パイプ銃.add(1);
+                    yield cwait();
+                    Sound.rare.play();
+                    Eq.オランピアの竜剣.add(1);
+                    yield cwait();
+                    Sound.rare.play();
+                    Eq.三日月弓.add(1);
+                    yield cwait();
                 }
             });
         }

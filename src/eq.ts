@@ -420,6 +420,42 @@ export namespace Eq{
             }
         };}
     }
+    /**イベントバトル:塔地下782階. */
+    export const                         パイプ銃:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"パイプ銃", info:"銃攻撃+1",
+                                pos:EqPos.武, lv:170});}
+        createForce(_this:Eq){return new class extends Force{
+            attackNum(action:Action, attacker:Unit, aForce:AttackNumForce){
+                if(action instanceof ActiveTec && action.type.any(TecType.銃)){
+                    aForce.add += 1;
+                }
+            }
+        };}
+    }
+    /**イベントバトル:塔地下782階. */
+    export const                         オランピアの竜剣:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"オランピアの竜剣", info:"格闘攻撃時稀に相手を＜眠＞化",
+                                pos:EqPos.武, lv:170});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("格闘") && Math.random() < 0.3){
+                    Unit.setCondition( dmg.target, Condition.眠, 1 ); await wait();
+                }
+            }
+        };}
+    }
+    /**イベントバトル:塔地下782階. */
+    export const                         三日月弓:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"三日月弓", info:"ヤクシャ・ガルダの攻撃回数x2",
+                                pos:EqPos.武, lv:180});}
+        createForce(_this:Eq){return new class extends Force{
+            attackNum(action:Action, attacker:Unit, aForce:AttackNumForce){
+                if(action instanceof ActiveTec && (action === Tec.ヤクシャ || action === Tec.ガルダ)){
+                    aForce.add += action.baseAttackNum;
+                }
+            }
+        };}
+    }
     //--------------------------------------------------------------------------
     //
     //-武
@@ -729,6 +765,38 @@ export namespace Eq{
                 if(dmg.hasType("過去")){
                     Heal.run("HP", dmg.attacker.prm(Prm.MAX_HP).total * 0.02, dmg.attacker, dmg.attacker, Eq.卯月ベルト, false);
                 }
+            }
+        };}
+    }
+    /**イベントバトル:塔地下782階. */
+    export const                         黒帯:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"黒帯", info:"[印]回復量x5",
+                                pos:EqPos.腰, lv:180});}
+        createForce(_this:Eq){return new class extends Force{
+            async doHeal(heal:Heal){
+                if(heal.action === Tec.印){
+                    heal.value *= 5;
+                }
+            }
+        };}
+    }
+    /**塔地下782階EX */
+    export const                         魔ヶ玉の腰巻:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"魔ヶ玉の腰巻", info:"毎ターンMP+1",
+                                pos:EqPos.腰, lv:40});}
+        createForce(_this:Eq){return new class extends Force{
+            async phaseStart(unit:Unit, pForce:PhaseStartForce){
+                Heal.run("MP", 1, unit, unit, _this, false);
+            }
+        };}
+    }
+    /**塔地下782階財宝 */
+    export const                         ゲルマンベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ゲルマンベルト", info:"攻撃+Lv/4",
+                                pos:EqPos.腰, lv:67});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                dmg.pow.add += dmg.attacker.prm(Prm.LV).total / 4;
             }
         };}
     }

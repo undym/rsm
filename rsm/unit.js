@@ -65,7 +65,7 @@ export class Prm {
         Prm._values.push(this);
     }
     static get values() { return this._values; }
-    static get atkPrms() { return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR]; }
+    static get atkPrms() { return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR, this.GHOST]; }
 }
 Prm._values = [];
 Prm.ordinalNow = 0;
@@ -221,7 +221,7 @@ export class Unit {
     set bp(value) { this.prm(Prm.BP).base = value | 0; }
     get ghost() { return this.prm(Prm.GHOST).base; }
     set ghost(value) {
-        const lim = 999999;
+        const lim = 9999999;
         this.prm(Prm.GHOST).base = value < lim ? value : lim;
     }
     fixPrm(checkPrm, maxPrm) {

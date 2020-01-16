@@ -181,6 +181,8 @@ export namespace Flag{
         = create("story_Main35");
     export const  story_Main36
         = create("story_Main36");
+    export const  story_Main38
+        = create("story_Main38");
 
     export const  story_Toutika
         = create("story_Toutika");

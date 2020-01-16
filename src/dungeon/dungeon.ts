@@ -1456,9 +1456,9 @@ export namespace Dungeon{
             if(this.dungeonClearCount === 0){
                 Battle.setReserveUnits.push(async()=>{
                     if(!Flag.story_Main36.done){
+                        Flag.story_Main36.done = true;
                         Music.stop();
 
-                        Flag.story_Main36.done = true;
                         await Story3.runMain36();
 
                         choice(Music.getMusics("boss")).play();
@@ -1486,7 +1486,7 @@ export namespace Dungeon{
             let e = Unit.enemies[0];
             Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "聖戦士・月光";
-            e.img = new Img("img/unit/ex_ariran.png");
+            e.img = new Img("img/unit/ex_gekkou.png");
             e.prm(Prm.MAX_HP).base = 3500;
         };
         async dungeonClearEvent(){
@@ -1495,6 +1495,90 @@ export namespace Dungeon{
                 Sound.rare.play();
                 Item.月弓子の血.add(1); await cwait();
                 await Story3.runMain37();
+            }
+        }
+    };
+    export const                         塔地下782階:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔地下782階", info:"",
+                                rank:6, enemyLv:32, au:150, btn:[DungeonArea.塔地下, new Rect(0.15, 0.3, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.ゲルマンベルト],
+                                exItems:    ()=>[Eq.魔ヶ玉の腰巻],
+                                trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+        });}
+        isVisible = ()=>Dungeon.塔地下777階.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "塔の遺物・弟";
+            e.prm(Prm.MAX_HP).base = 2200;
+
+            if(this.dungeonClearCount === 0){
+                Battle.setReserveUnits.push(async()=>{
+                    if(!Flag.story_Main38.done){
+                        Flag.story_Main38.done = true;
+                        Music.stop();
+
+                        await Story3.runMain38();
+
+                        choice(Music.getMusics("boss")).play();
+                    }
+                    
+                    for(const e of Unit.enemies){
+                        e.exists= true;
+                        e.dead = false;
+                    }
+
+                    {
+                        const e = Unit.enemies[0];
+                        Job.体術士.setEnemy(e, e.prm(Prm.LV).base + 15);
+                        e.name = "帝釈天子ヴィクトリーヌ";
+                        e.img = new Img("img/unit/p_vic.png");
+                        e.prm(Prm.MAX_HP).base = 3650;
+                        e.setEq(Eq.黒帯.pos, Eq.黒帯);
+                    }
+                    {
+                        const e = Unit.enemies[1];
+                        Job.霊弾の射手.setEnemy(e, e.prm(Prm.LV).base + 15);
+                        e.name = "羅刹天子・流";
+                        e.img = new Img("img/unit/boss_ryu.png");
+                        e.prm(Prm.MAX_HP).base = 1500;
+                        e.setEq(Eq.パイプ銃.pos, Eq.パイプ銃);
+                        e.setCondition(Condition.吸収, 1);
+                    }
+                    {
+                        const e = Unit.enemies[2];
+                        Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
+                        e.name = "オランピア";
+                        e.img = new Img("img/unit/boss_oranpia.png");
+                        e.prm(Prm.MAX_HP).base = 3000;
+                        e.setEq(Eq.オランピアの竜剣.pos, Eq.オランピアの竜剣);
+                    }
+                    {
+                        const e = Unit.enemies[3];
+                        Job.月弓子.setEnemy(e, e.prm(Prm.LV).base + 10);
+                        e.name = "ドラギャレット";
+                        e.img = new Img("img/unit/boss_dora.png");
+                        e.prm(Prm.MAX_HP).base = 1200;
+                        e.setEq(Eq.三日月弓.pos, Eq.三日月弓);
+                        e.setCondition(Condition.回避, 2);
+                    }
+                });
+            }
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "聖戦士・不滅の人";
+            e.img = new Img("img/unit/ex_fumetu.png");
+            e.prm(Prm.MAX_HP).base = 3700;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                Sound.rare.play(); Eq.黒帯.add(1); await cwait();
+                Sound.rare.play(); Eq.パイプ銃.add(1); await cwait();
+                Sound.rare.play(); Eq.オランピアの竜剣.add(1); await cwait();
+                Sound.rare.play(); Eq.三日月弓.add(1); await cwait();
             }
         }
     };

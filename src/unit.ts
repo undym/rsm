@@ -56,7 +56,7 @@ export class Prm{
     private static _values:Prm[] = [];
     static get values():ReadonlyArray<Prm>{return this._values;}
 
-    static get atkPrms():Prm[]{return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR];}
+    static get atkPrms():Prm[]{return [this.STR, this.MAG, this.LIG, this.DRK, this.CHN, this.PST, this.GUN, this.ARR, this.GHOST];}
 
     private static ordinalNow:number = 0;
 
@@ -275,7 +275,7 @@ export abstract class Unit{
 
     get ghost():number   {return this.prm(Prm.GHOST).base;}
     set ghost(value:number){
-        const lim = 999999;
+        const lim = 9999999;
         this.prm(Prm.GHOST).base = value < lim ? value : lim;
     }
 

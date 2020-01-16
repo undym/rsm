@@ -468,7 +468,7 @@ export namespace Condition{
                 if(Math.random() < 0.5){
                     pForce.phaseSkip = true;
                     
-                    Util.msg.set(`${unit.name}は混乱している...`); await wait();
+                    Util.msg.set(`${unit.name}は混乱している...`); await wait(1);
                     const targets = unit.searchUnits( Tec.混乱殴り.targetings, Tec.混乱殴り.rndAttackNum(unit) );
                     await Tec.混乱殴り.use( unit, targets );
                     

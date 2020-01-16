@@ -123,6 +123,7 @@ export var Flag;
     Flag_1.story_Main34 = create("story_Main34");
     Flag_1.story_Main35 = create("story_Main35");
     Flag_1.story_Main36 = create("story_Main36");
+    Flag_1.story_Main38 = create("story_Main38");
     Flag_1.story_Toutika = create("story_Toutika");
     Flag_1.yuki_beastOnly = create("yuki_beastOnly");
 })(Flag || (Flag = {}));

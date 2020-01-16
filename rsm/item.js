@@ -2394,6 +2394,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 2, drop: ItemDrop.BOX | ItemDrop.STRATUM });
         }
     };
+    Item.動かないゴーグル = new class extends Item {
+        constructor() {
+            super({ uniqueName: "動かないゴーグル", info: "壊れて動かなくなったゴーグル",
+                type: ItemType.素材, rank: 2, drop: ItemDrop.BOX });
+        }
+    };
     Item.銀 = new class extends Item {
         constructor() {
             super({ uniqueName: "銀", info: "",

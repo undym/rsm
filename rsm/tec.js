@@ -375,6 +375,8 @@ export class ActiveTec extends Tec {
     }
     /**攻撃倍率 */
     get mul() { return this.args.mul; }
+    /**固定の基礎攻撃回数を得る。実際の攻撃回数はrndAttackNum()で得る。 */
+    get baseAttackNum() { return this.args.num; }
     /**攻撃回数生成.継承禁止。継承する場合はrndAttackNumInner()を継承する。*/
     rndAttackNum(unit) { return this.rndAttackNumInner(unit); }
     /**攻撃回数生成 */

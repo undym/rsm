@@ -98,7 +98,7 @@ export class Job {
     setEnemy(e, lv) {
         return __awaiter(this, void 0, void 0, function* () {
             const prmMul = PrmMuls.get(lv);
-            for (const prm of Prm.values) {
+            for (const prm of Prm.atkPrms) {
                 const set = e.prm(prm);
                 set.base = 4 * Math.random() + lv * Math.random();
                 set.base *= prmMul;

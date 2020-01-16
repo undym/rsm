@@ -114,7 +114,7 @@ export abstract class Job{
 
         const prmMul:number = PrmMuls.get(lv);
 
-        for(const prm of Prm.values){
+        for(const prm of Prm.atkPrms){
             const set = e.prm(prm);
             set.base = 4 * Math.random() + lv * Math.random();
             set.base *= prmMul;
