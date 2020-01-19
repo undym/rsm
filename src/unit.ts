@@ -295,7 +295,6 @@ export abstract class Unit{
         
         Sound.death.play();
         this.dead = true;
-        Util.msg.set(`${this.name}は死んだ`, Color.RED); await wait();
 
         for(const u of Unit.all.filter(u=> u.exists && !u.dead && u !== this)){
             await u.whenAnyoneDead(this);
@@ -305,7 +304,7 @@ export abstract class Unit{
         await this.whenDead();
         if(!this.dead){return;}
 
-
+        Util.msg.set(`${this.name}は死んだ`, Color.RED); await wait();
 
         for(const set of this.conditions){
             set.condition = Condition.empty;

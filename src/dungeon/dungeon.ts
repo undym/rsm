@@ -763,7 +763,7 @@ export namespace Dungeon{
     };
     export const                         塔地下二百階の門:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"塔地下二百階の門", info:"",
-                                rank:5, enemyLv:30, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
+                                rank:5, enemyLv:29, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.アンマシンベルト],
                                 exItems:    ()=>[Eq.ロングドレスの剣],
                                 trendItems: ()=>[Item.肉, Item.燃える髪, Item.石溶け水, Item.恒星型リュスティック, Item.にじゅうよん],
@@ -1398,7 +1398,7 @@ export namespace Dungeon{
     };
     export const                         占星術師の館:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"占星術師の館", info:"",
-                                rank:6, enemyLv:30, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
+                                rank:6, enemyLv:29, au:266, btn:[DungeonArea.冥界, new Rect(0, 0.2, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.塔],
                                 exItems:    ()=>[Eq.お化けマント],
                                 trendItems: ()=>[Item.クリスタル, Item.ドラッグ, Item.バッタ, Item.にじゅうよん, Item.清水, Item.ドンゴの鱗],
@@ -1503,7 +1503,7 @@ export namespace Dungeon{
                                 rank:6, enemyLv:32, au:150, btn:[DungeonArea.塔地下, new Rect(0.15, 0.3, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.ゲルマンベルト],
                                 exItems:    ()=>[Eq.魔ヶ玉の腰巻],
-                                trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.モーター, Item.イリジウム],
+                                trendItems: ()=>[Item.にじゅうよん, Item.惑星エネルギー, Item.かに, Item.清龍, Item.烈火, Item.高野槙, Item.ミヂンコ],
         });}
         isVisible = ()=>Dungeon.塔地下777階.dungeonClearCount > 0;
         setBossInner = ()=>{

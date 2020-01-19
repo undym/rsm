@@ -247,8 +247,6 @@ export class Unit {
             }
             Sound.death.play();
             this.dead = true;
-            Util.msg.set(`${this.name}は死んだ`, Color.RED);
-            yield wait();
             for (const u of Unit.all.filter(u => u.exists && !u.dead && u !== this)) {
                 yield u.whenAnyoneDead(this);
             }
@@ -259,6 +257,8 @@ export class Unit {
             if (!this.dead) {
                 return;
             }
+            Util.msg.set(`${this.name}は死んだ`, Color.RED);
+            yield wait();
             for (const set of this.conditions) {
                 set.condition = Condition.empty;
                 set.value = 0;
