@@ -1,4 +1,4 @@
-import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal } from "./force.js";
+import { Force, Dmg, Action, PhaseStartForce, AttackNumForce, ForceIns, Heal, AUForce } from "./force.js";
 import { Unit, Prm, PUnit } from "./unit.js";
 import { Num, Mix } from "./mix.js";
 import { Item } from "./item.js";
@@ -1063,11 +1063,11 @@ export namespace Eq{
     }
     /**占星術師の館財宝. */
     export const                         塔:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"塔", info:"槍攻撃+30",
+        constructor(){super({uniqueName:"塔", info:"槍・神格・暗黒・過去攻撃+30",
                                 pos:EqPos.指, lv:0});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
-                if(dmg.hasType("槍")){
+                if(dmg.hasType("槍","神格","暗黒","過去")){
                     dmg.pow.add += 30;
                 }
             }
@@ -1081,6 +1081,18 @@ export namespace Eq{
             async equip(unit:Unit){
                 unit.prm(Prm.MAX_MP).eq += 40;
                 unit.prm(Prm.MAX_TP).eq += 40;
+            }
+        };}
+    }
+    /**魔水路EX. */
+    export const                         猫の喫茶:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"猫の喫茶", info:"格闘・槍・暗黒・鎖術・過去攻撃+15%",
+                                pos:EqPos.指, lv:40});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("格闘","槍","暗黒","鎖術","過去")){
+                    dmg.pow.mul *= 1.15;
+                }
             }
         };}
     }
@@ -1188,6 +1200,16 @@ export namespace Eq{
             }
         };}
     }
+    /**魔水路財宝. */
+    export const                         ルクシオンの尾:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"ルクシオンの尾", info:"歩く度HP+1%",
+                                pos:EqPos.脚, lv:0});}
+        createForce(_this:Eq){return new class extends Force{
+            async walk(unit:Unit, auForce:AUForce){
+                Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1 + 1, unit, unit, _this, false);
+            }
+        };}
+    }
     // export const                         鉄下駄:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"鉄下駄", info:"攻撃命中率x0.9 防御値x2",
     //                             pos:EqPos.脚, lv:21});}
@@ -1202,6 +1224,7 @@ export namespace Eq{
     //         }
     //     }
     // }
+    //-脚
 }
 
 //耳は全て店売りにする

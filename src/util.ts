@@ -189,4 +189,7 @@ export namespace Flag{
 
     export const  yuki_beastOnly
         = create("yuki_beastOnly");
+
+    export const  maya0
+        = create("maya0");
 }

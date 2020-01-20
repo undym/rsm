@@ -126,4 +126,5 @@ export var Flag;
     Flag_1.story_Main38 = create("story_Main38");
     Flag_1.story_Toutika = create("story_Toutika");
     Flag_1.yuki_beastOnly = create("yuki_beastOnly");
+    Flag_1.maya0 = create("maya0");
 })(Flag || (Flag = {}));

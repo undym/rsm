@@ -27,6 +27,7 @@ import { Pet } from "../pet.js";
 import { Story3 } from "../story/story3.js";
 import { Condition } from "../condition.js";
 import { Battle } from "../battle.js";
+import { SubStory } from "../story/substory.js";
 export class DungeonArea {
     constructor(uniqueName, imgSrc, _areaMoveBtns, _areaItems) {
         this.uniqueName = uniqueName;
@@ -1232,6 +1233,10 @@ Dungeon.musicCount = 0;
                     Util.msg.set("パーティーメンバーの入れ替えができるようになった！");
                     yield cwait();
                 }
+                if (!Flag.maya0.done && this.dungeonClearCount >= 10) {
+                    Flag.maya0.done = true;
+                    yield SubStory.runMaya0();
+                }
             });
         }
     };
@@ -1279,6 +1284,81 @@ Dungeon.musicCount = 0;
             });
         }
     };
+    Dungeon.魔水路 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "魔水路", info: "",
+                rank: 0, enemyLv: 28, au: 499, btn: [DungeonArea.古マーザン, new Rect(0.6, 0.5, 0.3, 0.1)],
+                treasures: () => [Eq.ルクシオンの尾],
+                exItems: () => [Eq.猫の喫茶],
+                trendItems: () => [Item.退魔の十字架, Item.シェイクスピア分子2, Item.水, Item.呪い水],
+            });
+            this.isVisible = () => Flag.maya0.done;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base + 10);
+                e.name = "死せる騎士";
+                e.prm(Prm.MAX_HP).base = 3000;
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
+                e.name = "聖戦士・祖国";
+                e.img = new Img("img/unit/ex_sokoku.png");
+                e.prm(Prm.MAX_HP).base = 3250;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+            });
+        }
+    };
+    /*
+    export const                         魔界門:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"魔界門", info:"",
+                                rank:7, enemyLv:40, au:999, btn:[DungeonArea.古マーザン, new Rect(0.2, 0.6, 0.3, 0.1)],
+                                treasures:  ()=>[],
+                                exItems:    ()=>[],
+                                trendItems: ()=>[Item.退魔の十字架],
+        });}
+        isVisible = ()=>Dungeon.魔水路.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "真夜";
+            e.prm(Prm.MAX_HP).base = 16500;
+            e.setCondition(Condition.吸収, 3);
+            e.pet = Pet.ネーレイス.create(4);
+        };
+        setExInner = ()=>{
+            let e = Unit.enemies[0];
+            Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
+            e.name = "新王ブレッシュ";
+            e.img = new Img("img/unit/ex_bresh.png");
+            e.prm(Prm.MAX_HP).base = 800;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story1.runMain19();
+                
+                Player.一号.member = false;
+                Player.雪.member = false;
+                for(let i = 0; i < Unit.players.length; i++){
+                    Unit.setPlayer( i, Player.empty );
+                }
+                
+                Player.ルイン.join();
+                Player.ピアー.join();
+                Player.ベガ.join();
+                Player.luka.join();
+            }
+        }
+    };
+    */
     //-古マーザン
     ///////////////////////////////////////////////////////////////////////
     //冥界

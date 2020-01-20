@@ -1425,14 +1425,14 @@ EqEar._valueOf = new Map();
     /**占星術師の館財宝. */
     Eq.塔 = new class extends Eq {
         constructor() {
-            super({ uniqueName: "塔", info: "槍攻撃+30",
+            super({ uniqueName: "塔", info: "槍・神格・暗黒・過去攻撃+30",
                 pos: EqPos.指, lv: 0 });
         }
         createForce(_this) {
             return new class extends Force {
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (dmg.hasType("槍")) {
+                        if (dmg.hasType("槍", "神格", "暗黒", "過去")) {
                             dmg.pow.add += 30;
                         }
                     });
@@ -1452,6 +1452,24 @@ EqEar._valueOf = new Map();
                     return __awaiter(this, void 0, void 0, function* () {
                         unit.prm(Prm.MAX_MP).eq += 40;
                         unit.prm(Prm.MAX_TP).eq += 40;
+                    });
+                }
+            };
+        }
+    };
+    /**魔水路EX. */
+    Eq.猫の喫茶 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "猫の喫茶", info: "格闘・槍・暗黒・鎖術・過去攻撃+15%",
+                pos: EqPos.指, lv: 40 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("格闘", "槍", "暗黒", "鎖術", "過去")) {
+                            dmg.pow.mul *= 1.15;
+                        }
                     });
                 }
             };
@@ -1604,6 +1622,22 @@ EqEar._valueOf = new Map();
             };
         }
     };
+    /**魔水路財宝. */
+    Eq.ルクシオンの尾 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "ルクシオンの尾", info: "歩く度HP+1%",
+                pos: EqPos.脚, lv: 0 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                walk(unit, auForce) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1 + 1, unit, unit, _this, false);
+                    });
+                }
+            };
+        }
+    };
     // export const                         鉄下駄:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"鉄下駄", info:"攻撃命中率x0.9 防御値x2",
     //                             pos:EqPos.脚, lv:21});}
@@ -1618,6 +1652,7 @@ EqEar._valueOf = new Map();
     //         }
     //     }
     // }
+    //-脚
 })(Eq || (Eq = {}));
 //耳は全て店売りにする
 (function (EqEar) {
