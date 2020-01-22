@@ -153,10 +153,12 @@ export class Item implements Action, Num{
     /**
      * return res > 0 ? res : 0;
      * */
-    static fluctuateRank(baseRank:number, rankFluctuatePassProb = 0.25){
+    static fluctuateRank(baseRank:number, rankFluctuatePassProb = 0.3){
         let add = 0;
 
-        while(Math.random() <= rankFluctuatePassProb){
+        const loopLim = 20;
+        let loop = 0;
+        while(Math.random() <= rankFluctuatePassProb && loop++ < loopLim){
             add += 0.5 + Math.random() * 0.5;
         }
 

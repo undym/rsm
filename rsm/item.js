@@ -136,9 +136,11 @@ export class Item {
     /**
      * return res > 0 ? res : 0;
      * */
-    static fluctuateRank(baseRank, rankFluctuatePassProb = 0.25) {
+    static fluctuateRank(baseRank, rankFluctuatePassProb = 0.3) {
         let add = 0;
-        while (Math.random() <= rankFluctuatePassProb) {
+        const loopLim = 20;
+        let loop = 0;
+        while (Math.random() <= rankFluctuatePassProb && loop++ < loopLim) {
             add += 0.5 + Math.random() * 0.5;
         }
         if (Math.random() < 0.5) {
