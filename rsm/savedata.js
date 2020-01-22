@@ -42,7 +42,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 36, 0);
+Version.NOW = new Version(0, 37, 0);
 Version.updateInfo = [
     "(0.31.21)いろいろ",
     "(0.32.0)ダンジョン追加  バグ修正",
@@ -56,6 +56,7 @@ Version.updateInfo = [
     "(0.34.0)ダンジョン追加",
     "(0.35.0)ダンジョン追加  バグ修正  他",
     "(0.36.0)ダンジョン追加  他",
+    "(0.37.0)ダンジョン追加  他",
 ];
 let saveDataVersion;
 export class SaveData {
