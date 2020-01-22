@@ -1316,49 +1316,43 @@ Dungeon.musicCount = 0;
             });
         }
     };
-    /*
-    export const                         魔界門:Dungeon = new class extends Dungeon{
-        constructor(){super({uniqueName:"魔界門", info:"",
-                                rank:7, enemyLv:40, au:999, btn:[DungeonArea.古マーザン, new Rect(0.2, 0.6, 0.3, 0.1)],
-                                treasures:  ()=>[],
-                                exItems:    ()=>[],
-                                trendItems: ()=>[Item.退魔の十字架],
-        });}
-        isVisible = ()=>Dungeon.魔水路.dungeonClearCount > 0;
-        setBossInner = ()=>{
-            let e = Unit.enemies[0];
-            Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base);
-            e.name = "真夜";
-            e.prm(Prm.MAX_HP).base = 16500;
-            e.setCondition(Condition.吸収, 3);
-            e.pet = Pet.ネーレイス.create(4);
-        };
-        setExInner = ()=>{
-            let e = Unit.enemies[0];
-            Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
-            e.name = "新王ブレッシュ";
-            e.img = new Img("img/unit/ex_bresh.png");
-            e.prm(Prm.MAX_HP).base = 800;
-        };
-        async dungeonClearEvent(){
-            await super.dungeonClearEvent();
-            if(this.dungeonClearCount === 1){
-                await Story1.runMain19();
-                
-                Player.一号.member = false;
-                Player.雪.member = false;
-                for(let i = 0; i < Unit.players.length; i++){
-                    Unit.setPlayer( i, Player.empty );
+    Dungeon.魔界門 = new class extends Dungeon {
+        constructor() {
+            super({ uniqueName: "魔界門", info: "",
+                rank: 7, enemyLv: 40, au: 999, btn: [DungeonArea.古マーザン, new Rect(0.2, 0.6, 0.3, 0.1)],
+                treasures: () => [Eq.文武の腕輪],
+                exItems: () => [Eq.魔道のベルト],
+                trendItems: () => [Item.退魔の十字架, Item.呪い水, Item.サクラ材, Item.銀, Item.銅板, Item.紫死草, Item.高ビタミンドラッグ],
+            });
+            this.isVisible = () => Mix.封印の魔十字架.count > 0;
+            this.setBossInner = () => {
+                let e = Unit.enemies[0];
+                Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 20);
+                e.name = "真夜";
+                e.prm(Prm.MAX_HP).base = 16500;
+                e.setCondition(Condition.吸収, 3);
+                e.pet = Pet.ネーレイス.create(4);
+            };
+            this.setExInner = () => {
+                let e = Unit.enemies[0];
+                Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 10);
+                e.name = "魔界門番";
+                e.img = new Img("img/unit/ex_bresh.png");
+                e.prm(Prm.MAX_HP).base = 13000;
+            };
+        }
+        dungeonClearEvent() {
+            const _super = Object.create(null, {
+                dungeonClearEvent: { get: () => super.dungeonClearEvent }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.dungeonClearEvent.call(this);
+                if (!Player.真夜.member) {
+                    Player.真夜.join();
                 }
-                
-                Player.ルイン.join();
-                Player.ピアー.join();
-                Player.ベガ.join();
-                Player.luka.join();
-            }
+            });
         }
     };
-    */
     //-古マーザン
     ///////////////////////////////////////////////////////////////////////
     //冥界

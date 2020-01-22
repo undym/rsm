@@ -374,6 +374,36 @@ Player._valueOf = new Map();
             return res;
         }
     };
+    Player.真夜 = new class extends Player {
+        constructor() { super("真夜", "♂"); }
+        createInner(p) {
+            p.job = Job.魔剣士;
+            p.img = new Img("img/unit/p_maya.png");
+            p.prm(Prm.MAX_HP).base = 30;
+            p.prm(Prm.MAX_MP).base = 18;
+            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.STR).base = 25;
+            p.prm(Prm.MAG).base = 25;
+            p.tecs = [
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+        }
+        setJobChangeList(map) {
+            map.set(Job.魔剣士, true);
+        }
+        createForce(_this) {
+            return new class extends Force {
+            };
+        }
+        getSpecialInfo() {
+            const res = [];
+            return res;
+        }
+    };
 })(Player || (Player = {}));
 const setDefJobChangeList = (map, u) => {
     const add = (addJob, checkJobs) => {

@@ -384,6 +384,36 @@ export namespace Player{
             return res;
         }
     };
+    export const             真夜 = new class extends Player{
+        constructor(){super("真夜", "♂");}
+        createInner(p:PUnit){
+            p.job = Job.魔剣士;
+            p.img = new Img("img/unit/p_maya.png");
+            p.prm(Prm.MAX_HP).base = 30;
+            p.prm(Prm.MAX_MP).base = 18;
+            p.prm(Prm.MAX_TP).base = 1;
+            p.prm(Prm.STR).base = 25;
+            p.prm(Prm.MAG).base = 25;
+
+            p.tecs = [
+                Tec.殴る,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+                Tec.empty,
+            ];
+
+        }
+        setJobChangeList(map:Map<Job,true>){
+            map.set(Job.魔剣士, true);
+        }
+        createForce(_this:Player){return new class extends Force{
+        };}
+        getSpecialInfo(){
+            const res:string[] = [];
+            return res;
+        }
+    };
 }
 
 

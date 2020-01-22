@@ -1028,7 +1028,7 @@ EqEar._valueOf = new Map();
     /**塔地下782階財宝 */
     Eq.ゲルマンベルト = new class extends Eq {
         constructor() {
-            super({ uniqueName: "ゲルマンベルト", info: "攻撃+Lv/4",
+            super({ uniqueName: "ゲルマンベルト", info: "全攻撃+Lv/4",
                 pos: EqPos.腰, lv: 67 });
         }
         createForce(_this) {
@@ -1036,6 +1036,26 @@ EqEar._valueOf = new Map();
                 beforeDoAtk(dmg) {
                     return __awaiter(this, void 0, void 0, function* () {
                         dmg.pow.add += dmg.attacker.prm(Prm.LV).total / 4;
+                    });
+                }
+            };
+        }
+    };
+    /**魔界門Ex */
+    Eq.魔道のベルト = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "魔道のベルト", info: "魔道連携参加",
+                pos: EqPos.腰, lv: 67 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                memberAfterDoAtk(me, dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.canCounter && dmg.hasType("魔法") && dmg.attacker.tecs.some(tec => tec === Tec.魔道連携)) {
+                            Util.msg.set(`${me.name}の連携攻撃`);
+                            yield wait(1);
+                            yield Tec.魔法反撃.run(me, dmg.target);
+                        }
                     });
                 }
             };
@@ -1226,6 +1246,24 @@ EqEar._valueOf = new Map();
                             dmg.attacker.mp -= 1;
                             dmg.attacker.tp -= 1;
                             yield Tec.天籟.run(dmg.attacker, dmg.target);
+                        }
+                    });
+                }
+            };
+        }
+    };
+    /**魔界門財宝. */
+    Eq.文武の腕輪 = new class extends Eq {
+        constructor() {
+            super({ uniqueName: "文武の腕輪", info: "格闘・魔法攻撃+20%",
+                pos: EqPos.手, lv: 69 });
+        }
+        createForce(_this) {
+            return new class extends Force {
+                beforeDoAtk(dmg) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (dmg.hasType("格闘", "魔法")) {
+                            dmg.pow.mul *= 1.2;
                         }
                     });
                 }

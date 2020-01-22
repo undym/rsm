@@ -792,11 +792,24 @@ export namespace Eq{
     }
     /**塔地下782階財宝 */
     export const                         ゲルマンベルト:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"ゲルマンベルト", info:"攻撃+Lv/4",
+        constructor(){super({uniqueName:"ゲルマンベルト", info:"全攻撃+Lv/4",
                                 pos:EqPos.腰, lv:67});}
         createForce(_this:Eq){return new class extends Force{
             async beforeDoAtk(dmg:Dmg){
                 dmg.pow.add += dmg.attacker.prm(Prm.LV).total / 4;
+            }
+        };}
+    }
+    /**魔界門Ex */
+    export const                         魔道のベルト:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"魔道のベルト", info:"魔道連携参加",
+                                pos:EqPos.腰, lv:67});}
+        createForce(_this:Eq){return new class extends Force{
+            async memberAfterDoAtk(me:Unit, dmg:Dmg){
+                if(dmg.canCounter && dmg.hasType("魔法") && dmg.attacker.tecs.some(tec=> tec === Tec.魔道連携)){
+                    Util.msg.set(`${me.name}の連携攻撃`); await wait(1);
+                    await Tec.魔法反撃.run(me, dmg.target);
+                }
             }
         };}
     }
@@ -927,6 +940,18 @@ export namespace Eq{
                     dmg.attacker.mp -= 1;
                     dmg.attacker.tp -= 1;
                     await Tec.天籟.run( dmg.attacker, dmg.target );
+                }
+            }
+        };}
+    }
+    /**魔界門財宝. */
+    export const                         文武の腕輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"文武の腕輪", info:"格闘・魔法攻撃+20%",
+                                pos:EqPos.手, lv:69});}
+        createForce(_this:Eq){return new class extends Force{
+            async beforeDoAtk(dmg:Dmg){
+                if(dmg.hasType("格闘","魔法")){
+                    dmg.pow.mul *= 1.2;
                 }
             }
         };}

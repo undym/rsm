@@ -228,11 +228,11 @@ Mix.LIMIT_INF = Number.POSITIVE_INFINITY;
         materials: () => [[Item.タンホイザーの砂飯, 1], [Item.惑星エネルギー, 10], [Item.イリジウム, 20], [Item.モーター, 10],],
         isVisible: () => ルインドアースLv16.count > 0 && Dungeon.月狼の森.dungeonClearCount > 0,
     });
-    // export const    封印の魔十字架:Mix = new Mix({
-    //     uniqueName:"封印の魔十字架", limit:1, info:"魔界門を開く",
-    //     materials:()=>[[Item.退魔の十字架, 99],],
-    //     isVisible:()=>Dungeon.魔水路.dungeonClearCount > 0,
-    // });
+    Mix.封印の魔十字架 = new Mix({
+        uniqueName: "封印の魔十字架", limit: 1, info: "魔界門を開く",
+        materials: () => [[Item.退魔の十字架, 99], [Item.呪い水, 39],],
+        isVisible: () => Dungeon.魔水路.dungeonClearCount > 0,
+    });
     // export const    集会所:Mix = new Mix({
     //     uniqueName:"集会所", limit:1, info:"パーティースキルをセットできるようになる",
     //     materials:()=>[[Item.エレタクレヨン, 6], [Item.エデン樹, 3]],

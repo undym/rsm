@@ -1193,18 +1193,17 @@ export namespace Dungeon{
             await super.dungeonClearEvent();
         }
     };
-    /*
     export const                         魔界門:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"魔界門", info:"",
                                 rank:7, enemyLv:40, au:999, btn:[DungeonArea.古マーザン, new Rect(0.2, 0.6, 0.3, 0.1)],
-                                treasures:  ()=>[],
-                                exItems:    ()=>[],
-                                trendItems: ()=>[Item.退魔の十字架],
+                                treasures:  ()=>[Eq.文武の腕輪],
+                                exItems:    ()=>[Eq.魔道のベルト],
+                                trendItems: ()=>[Item.退魔の十字架, Item.呪い水, Item.サクラ材, Item.銀, Item.銅板, Item.紫死草, Item.高ビタミンドラッグ],
         });}
-        isVisible = ()=>Dungeon.魔水路.dungeonClearCount > 0;
+        isVisible = ()=>Mix.封印の魔十字架.count > 0;
         setBossInner = ()=>{
             let e = Unit.enemies[0];
-            Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base);
+            Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 20);
             e.name = "真夜";
             e.prm(Prm.MAX_HP).base = 16500;
             e.setCondition(Condition.吸収, 3);
@@ -1212,30 +1211,18 @@ export namespace Dungeon{
         };
         setExInner = ()=>{
             let e = Unit.enemies[0];
-            Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
-            e.name = "新王ブレッシュ";
+            Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 10);
+            e.name = "魔界門番";
             e.img = new Img("img/unit/ex_bresh.png");
-            e.prm(Prm.MAX_HP).base = 800;
+            e.prm(Prm.MAX_HP).base = 13000;
         };
         async dungeonClearEvent(){
             await super.dungeonClearEvent();
-            if(this.dungeonClearCount === 1){
-                await Story1.runMain19();
-                
-                Player.一号.member = false;
-                Player.雪.member = false;
-                for(let i = 0; i < Unit.players.length; i++){
-                    Unit.setPlayer( i, Player.empty );
-                }
-                
-                Player.ルイン.join();
-                Player.ピアー.join();
-                Player.ベガ.join();
-                Player.luka.join();
+            if(!Player.真夜.member){
+                Player.真夜.join();
             }
         }
     };
-    */
     //-古マーザン
     ///////////////////////////////////////////////////////////////////////
     //冥界
