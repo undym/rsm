@@ -18,7 +18,7 @@ import { Sound } from "../sound.js";
 
 export class ItemScene extends Scene{
     private static _ins:ItemScene;
-    static ins(args:{selectUser:boolean, user:Unit, use:(item:Item, user:Unit)=>void, returnScene:()=>void}):ItemScene{
+    static ins(args:{selectUser:boolean, user:Unit, use:(item:Item, user:Unit)=>Promise<void>, returnScene:()=>void}):ItemScene{
         this._ins ? this._ins : (this._ins = new ItemScene());
 
         this._ins.selectUser = args.selectUser;
@@ -31,7 +31,7 @@ export class ItemScene extends Scene{
     
     private selectUser:boolean;
     private user:Unit;
-    private use:(item:Item, user:Unit)=>void;
+    private use:(item:Item, user:Unit)=>Promise<void>;
     private returnScene:()=>void;
 
     private selected:boolean = false;
@@ -77,7 +77,7 @@ export class ItemScene extends Scene{
                                                             return `${num}個${limit}`;
                                                         }, ()=>Color.WHITE)
                                                         .add(()=>`<${this.selectedItem.itemType}>`, ()=>Color.WHITE)
-                                                        .add(()=>`Rank:${this.selectedItem.rank}`, ()=>Color.WHITE)
+                                                        .add(()=>`レア度:${this.selectedItem.rank}`, ()=>Color.WHITE)
                                                         .addln(()=>this.selectedItem.info, ()=>Color.WHITE)
                                                         ;
                                     return new VariableLayout(()=> this.selected ? info : ILayout.empty);

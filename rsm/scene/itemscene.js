@@ -54,7 +54,7 @@ export class ItemScene extends Scene {
                 return `${num}個${limit}`;
             }, () => Color.WHITE)
                 .add(() => `<${this.selectedItem.itemType}>`, () => Color.WHITE)
-                .add(() => `Rank:${this.selectedItem.rank}`, () => Color.WHITE)
+                .add(() => `レア度:${this.selectedItem.rank}`, () => Color.WHITE)
                 .addln(() => this.selectedItem.info, () => Color.WHITE);
             return new VariableLayout(() => this.selected ? info : ILayout.empty);
         })()))
