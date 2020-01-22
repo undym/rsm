@@ -1290,7 +1290,7 @@ Dungeon.musicCount = 0;
                 rank: 0, enemyLv: 28, au: 499, btn: [DungeonArea.古マーザン, new Rect(0.6, 0.5, 0.3, 0.1)],
                 treasures: () => [Eq.ルクシオンの尾],
                 exItems: () => [Eq.猫の喫茶],
-                trendItems: () => [Item.退魔の十字架, Item.シェイクスピア分子2, Item.水, Item.呪い水],
+                trendItems: () => [Item.退魔の十字架, Item.水, Item.呪い水, Item.杉, Item.ヒノキ],
             });
             this.isVisible = () => Flag.maya0.done;
             this.setBossInner = () => {

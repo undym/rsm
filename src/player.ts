@@ -24,6 +24,7 @@ export abstract class Player implements ForceIns{
     }
 
     member = false;
+    abstract readonly img:Img;
 
     constructor(readonly uniqueName:string, readonly sex:"♂"|"♀"){
         this.toString = ()=>this.uniqueName;
@@ -84,6 +85,7 @@ export abstract class Player implements ForceIns{
 export namespace Player{
     export const             empty = new class extends Player{
         constructor(){super("empty", "♂");}
+        get img(){return Img.empty;}
         createInner(p:PUnit){
             p.exists = false;
         }
@@ -95,9 +97,12 @@ export namespace Player{
     };
     export const             ルイン = new class extends Player{
         constructor(){super("ルイン", "♂");}
+
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_ruin.png"));}
+        
         createInner(p:PUnit){
             p.job = Job.訓練生;
-            p.img = new Img("img/unit/p_ruin.png");
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -119,9 +124,12 @@ export namespace Player{
     };
     export const             ピアー = new class extends Player{
         constructor(){super("ピアー", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_pea.png"));}
+        
         createInner(p:PUnit){
             p.job = Job.魔法使い;
-            p.img = new Img("img/unit/p_pea.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 4;
             p.prm(Prm.MAX_TP).base = 1;
@@ -147,9 +155,12 @@ export namespace Player{
     };
     export const             一号 = new class extends Player{
         constructor(){super("一号", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_1.png"));}
+
         createInner(p:PUnit){
             p.job = Job.暗黒戦士;
-            p.img = new Img("img/unit/p_1.png");
             p.prm(Prm.MAX_HP).base = 30;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 1;
@@ -178,12 +189,20 @@ export namespace Player{
         private hito:Img;
 
         constructor(){super("雪", "♂");}
-        createInner(p:PUnit){
-            this.uma = Job.ペガサス.img;
-            this.hito = new Img("img/unit/p_yuki.png");
+        
+        get img(){
+            if(!this.uma){this.uma = Job.ペガサス.img;}
+            if(!this.hito){this.hito = new Img("img/unit/p_yuki.png");}
+            
+            if(Flag.yuki_beastOnly.done){
+                return this.uma;
+            }else{
+                return this.hito;
+            }
+        }
 
+        createInner(p:PUnit){
             p.job = Job.鎖使い;
-            p.img = this.hito;
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -213,21 +232,15 @@ export namespace Player{
 
         };}
         getSpecialInfo(){return [];}
-        get ins(){
-            const _ins = super.ins;
-            if(Flag.yuki_beastOnly.done){
-                _ins.img = this.uma;
-            }else{
-                _ins.img = this.hito;
-            }
-            return _ins;
-        }
     };
     export const             ベガ = new class extends Player{
         constructor(){super("ベガ", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/unit108.png"));}
+
         createInner(p:PUnit){
             p.job = Job.ドラゴン;
-            p.img = new Img("img/unit/unit108.png");
             p.prm(Prm.MAX_HP).base = 70;
             p.prm(Prm.MAX_MP).base = 0;
             p.prm(Prm.MAX_TP).base = 3;
@@ -254,9 +267,12 @@ export namespace Player{
     };
     export const             luka = new class extends Player{
         constructor(){super("luka", "♀");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_luka.png"));}
+
         createInner(p:PUnit){
             p.job = Job.カウボーイ;
-            p.img = new Img("img/unit/p_luka.png");
             p.prm(Prm.MAX_HP).base = 35;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -281,9 +297,12 @@ export namespace Player{
     };
     export const             ジスロフ = new class extends Player{
         constructor(){super("ジスロフ", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_jisrof.png"));}
+
         createInner(p:PUnit){
             p.job = Job.羅文騎士;
-            p.img = new Img("img/unit/p_jisrof.png");
             p.prm(Prm.MAX_HP).base = 99;
             p.prm(Prm.MAX_MP).base = 5;
             p.prm(Prm.MAX_TP).base = 5;
@@ -309,9 +328,12 @@ export namespace Player{
     };
     export const             ナナ = new class extends Player{
         constructor(){super("ナナ", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_nana.png"));}
+
         createInner(p:PUnit){
             p.job = Job.僧兵;
-            p.img = new Img("img/unit/p_nana.png");
             p.prm(Prm.MAX_HP).base = 45;
             p.prm(Prm.MAX_MP).base = 7;
             p.prm(Prm.MAX_TP).base = 1;
@@ -339,9 +361,12 @@ export namespace Player{
     };
     export const             白い鳥 = new class extends Player{
         constructor(){super("白い鳥", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/unit118.png"));}
+
         createInner(p:PUnit){
             p.job = Job.鳥;
-            p.img = new Img("img/unit/unit118.png");
             p.prm(Prm.MAX_HP).base = 75;
             p.prm(Prm.MAX_MP).base = 3;
             p.prm(Prm.MAX_TP).base = 1;
@@ -386,9 +411,12 @@ export namespace Player{
     };
     export const             真夜 = new class extends Player{
         constructor(){super("真夜", "♂");}
+        
+        private _img:Img;
+        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_maya.png"));}
+
         createInner(p:PUnit){
             p.job = Job.魔剣士;
-            p.img = new Img("img/unit/p_maya.png");
             p.prm(Prm.MAX_HP).base = 30;
             p.prm(Prm.MAX_MP).base = 18;
             p.prm(Prm.MAX_TP).base = 1;

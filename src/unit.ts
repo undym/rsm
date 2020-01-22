@@ -167,7 +167,7 @@ export abstract class Unit{
     imgBounds:Rect;
     get imgCenter(){return this.imgBounds.center;}
 
-    img:Img;
+    readonly img:Img;
 
     tecs:Tec[] = [];
     /**戦闘時の。 */
@@ -190,8 +190,6 @@ export abstract class Unit{
     constructor(){
         this.boxBounds = Rect.ZERO;
         this.imgBounds = Rect.ZERO;
-
-        this.img = Img.empty;
 
         for(const prm of Prm.values){
             this.prmSets.push(new PrmSet());
@@ -566,6 +564,8 @@ export class PUnit extends Unit{
         }
     }
 
+    get img(){return this.player.img;}
+
     isFriend(u:Unit):boolean{return (u instanceof PUnit);}
     //---------------------------------------------------------
     //
@@ -708,6 +708,10 @@ export class EUnit extends Unit{
     yen:number = 0;
 
     ai = EUnit.DEF_AI;
+
+    private _img:Img;
+    get img(){return this._img;}
+    set img(setImg:Img){this._img = setImg;}
 
     constructor(){
         super();

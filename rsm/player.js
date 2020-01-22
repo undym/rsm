@@ -66,6 +66,7 @@ Player._valueOf = new Map();
 (function (Player) {
     Player.empty = new class extends Player {
         constructor() { super("empty", "♂"); }
+        get img() { return Img.empty; }
         createInner(p) {
             p.exists = false;
         }
@@ -78,9 +79,9 @@ Player._valueOf = new Map();
     };
     Player.ルイン = new class extends Player {
         constructor() { super("ルイン", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_ruin.png")); }
         createInner(p) {
             p.job = Job.訓練生;
-            p.img = new Img("img/unit/p_ruin.png");
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -102,9 +103,9 @@ Player._valueOf = new Map();
     };
     Player.ピアー = new class extends Player {
         constructor() { super("ピアー", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_pea.png")); }
         createInner(p) {
             p.job = Job.魔法使い;
-            p.img = new Img("img/unit/p_pea.png");
             p.prm(Prm.MAX_HP).base = 16;
             p.prm(Prm.MAX_MP).base = 4;
             p.prm(Prm.MAX_TP).base = 1;
@@ -130,9 +131,9 @@ Player._valueOf = new Map();
     };
     Player.一号 = new class extends Player {
         constructor() { super("一号", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_1.png")); }
         createInner(p) {
             p.job = Job.暗黒戦士;
-            p.img = new Img("img/unit/p_1.png");
             p.prm(Prm.MAX_HP).base = 30;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 1;
@@ -158,11 +159,22 @@ Player._valueOf = new Map();
     };
     Player.雪 = new class extends Player {
         constructor() { super("雪", "♂"); }
+        get img() {
+            if (!this.uma) {
+                this.uma = Job.ペガサス.img;
+            }
+            if (!this.hito) {
+                this.hito = new Img("img/unit/p_yuki.png");
+            }
+            if (Flag.yuki_beastOnly.done) {
+                return this.uma;
+            }
+            else {
+                return this.hito;
+            }
+        }
         createInner(p) {
-            this.uma = Job.ペガサス.img;
-            this.hito = new Img("img/unit/p_yuki.png");
             p.job = Job.鎖使い;
-            p.img = this.hito;
             p.prm(Prm.MAX_HP).base = 20;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -192,22 +204,12 @@ Player._valueOf = new Map();
             };
         }
         getSpecialInfo() { return []; }
-        get ins() {
-            const _ins = super.ins;
-            if (Flag.yuki_beastOnly.done) {
-                _ins.img = this.uma;
-            }
-            else {
-                _ins.img = this.hito;
-            }
-            return _ins;
-        }
     };
     Player.ベガ = new class extends Player {
         constructor() { super("ベガ", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/unit108.png")); }
         createInner(p) {
             p.job = Job.ドラゴン;
-            p.img = new Img("img/unit/unit108.png");
             p.prm(Prm.MAX_HP).base = 70;
             p.prm(Prm.MAX_MP).base = 0;
             p.prm(Prm.MAX_TP).base = 3;
@@ -233,9 +235,9 @@ Player._valueOf = new Map();
     };
     Player.luka = new class extends Player {
         constructor() { super("luka", "♀"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_luka.png")); }
         createInner(p) {
             p.job = Job.カウボーイ;
-            p.img = new Img("img/unit/p_luka.png");
             p.prm(Prm.MAX_HP).base = 35;
             p.prm(Prm.MAX_MP).base = 1;
             p.prm(Prm.MAX_TP).base = 2;
@@ -259,9 +261,9 @@ Player._valueOf = new Map();
     };
     Player.ジスロフ = new class extends Player {
         constructor() { super("ジスロフ", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_jisrof.png")); }
         createInner(p) {
             p.job = Job.羅文騎士;
-            p.img = new Img("img/unit/p_jisrof.png");
             p.prm(Prm.MAX_HP).base = 99;
             p.prm(Prm.MAX_MP).base = 5;
             p.prm(Prm.MAX_TP).base = 5;
@@ -286,9 +288,9 @@ Player._valueOf = new Map();
     };
     Player.ナナ = new class extends Player {
         constructor() { super("ナナ", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_nana.png")); }
         createInner(p) {
             p.job = Job.僧兵;
-            p.img = new Img("img/unit/p_nana.png");
             p.prm(Prm.MAX_HP).base = 45;
             p.prm(Prm.MAX_MP).base = 7;
             p.prm(Prm.MAX_TP).base = 1;
@@ -315,9 +317,9 @@ Player._valueOf = new Map();
     };
     Player.白い鳥 = new class extends Player {
         constructor() { super("白い鳥", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/unit118.png")); }
         createInner(p) {
             p.job = Job.鳥;
-            p.img = new Img("img/unit/unit118.png");
             p.prm(Prm.MAX_HP).base = 75;
             p.prm(Prm.MAX_MP).base = 3;
             p.prm(Prm.MAX_TP).base = 1;
@@ -376,9 +378,9 @@ Player._valueOf = new Map();
     };
     Player.真夜 = new class extends Player {
         constructor() { super("真夜", "♂"); }
+        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_maya.png")); }
         createInner(p) {
             p.job = Job.魔剣士;
-            p.img = new Img("img/unit/p_maya.png");
             p.prm(Prm.MAX_HP).base = 30;
             p.prm(Prm.MAX_MP).base = 18;
             p.prm(Prm.MAX_TP).base = 1;

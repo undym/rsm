@@ -18,7 +18,6 @@ import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
-import { Img } from "./graphics/texture.js";
 // import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
 class PrmSet {
@@ -113,7 +112,6 @@ export class Unit {
         this.invisibleConditions = [];
         this.boxBounds = Rect.ZERO;
         this.imgBounds = Rect.ZERO;
-        this.img = Img.empty;
         for (const prm of Prm.values) {
             this.prmSets.push(new PrmSet());
         }
@@ -562,6 +560,7 @@ export class PUnit extends Unit {
             this.masteredTecs.set(tec, false);
         }
     }
+    get img() { return this.player.img; }
     isFriend(u) { return (u instanceof PUnit); }
     //---------------------------------------------------------
     //
@@ -686,6 +685,8 @@ export class EUnit extends Unit {
         this.yen = 0;
         this.ai = EUnit.DEF_AI;
     }
+    get img() { return this._img; }
+    set img(setImg) { this._img = setImg; }
     isFriend(u) { return (u instanceof EUnit); }
 }
 EUnit.DEF_AI = (attacker, targetCandidates) => __awaiter(this, void 0, void 0, function* () {
