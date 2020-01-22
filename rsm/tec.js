@@ -4602,6 +4602,17 @@ ActiveTec._valueOf = new Map();
                 mul: 1, num: 1, hit: 1, ep: 1,
             });
         }
+        useMessage(attacker) {
+            const _super = Object.create(null, {
+                useMessage: { get: () => super.useMessage }
+            });
+            return __awaiter(this, void 0, void 0, function* () {
+                yield _super.useMessage.call(this, attacker);
+                if (attacker instanceof PUnit && attacker.player === Player.ジスロフ && this.checkCost(attacker)) {
+                    Player.jisrofUsedRamonsuisei = true;
+                }
+            });
+        }
         run(attacker, target) {
             return __awaiter(this, void 0, void 0, function* () {
                 target.prm(Prm.MAX_HP).battle = target.prm(Prm.MAX_HP).base + target.prm(Prm.MAX_HP).eq;

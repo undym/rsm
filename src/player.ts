@@ -83,6 +83,8 @@ export abstract class Player implements ForceIns{
 
 //セーブデータの互換性のため、プレイヤーの定義の順番をかえてはいけない。
 export namespace Player{
+    export let jisrofUsedRamonsuisei = false;
+
     export const             empty = new class extends Player{
         constructor(){super("empty", "♂");}
         get img(){return Img.empty;}
@@ -298,8 +300,15 @@ export namespace Player{
     export const             ジスロフ = new class extends Player{
         constructor(){super("ジスロフ", "♂");}
         
-        private _img:Img;
-        get img(){return this._img ? this._img : (this._img = new Img("img/unit/p_jisrof.png"));}
+        private normal:Img;
+        private ramon:Img;
+        get img(){
+            if(!this.normal){this.normal = new Img("img/unit/p_jisrof.png");}
+            if(!this.ramon){this.ramon = new Img("img/unit/p_jisrof2.png");}
+
+            if(Player.jisrofUsedRamonsuisei){return this.ramon;}
+            return this.normal;
+        }
 
         createInner(p:PUnit){
             p.job = Job.羅文騎士;

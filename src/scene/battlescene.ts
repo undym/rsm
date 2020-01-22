@@ -512,6 +512,8 @@ const finish = async()=>{
         u.clearInvisibleConditions();
     }
 
+    Player.jisrofUsedRamonsuisei = false;
+
     Battle.setReserveUnits = [];
 
     btnSpace.clear();

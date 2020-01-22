@@ -3660,6 +3660,12 @@ export namespace Tec{
                               sort:TecSort.回復, type:TecType.回復, targetings:["self"],
                               mul:1, num:1, hit:1, ep:1,
         });}
+        async useMessage(attacker:Unit){
+            await super.useMessage(attacker);
+            if(attacker instanceof PUnit && attacker.player === Player.ジスロフ && this.checkCost(attacker)){
+                Player.jisrofUsedRamonsuisei = true;
+            }
+        }
         async run(attacker:Unit, target:Unit){
             target.prm(Prm.MAX_HP).battle = target.prm(Prm.MAX_HP).base + target.prm(Prm.MAX_HP).eq;
             target.prm(Prm.MAX_MP).battle = target.prm(Prm.MAX_MP).base + target.prm(Prm.MAX_MP).eq;

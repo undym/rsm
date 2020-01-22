@@ -16,6 +16,7 @@ import { Battle, BattleResult, BattleType } from "../battle.js";
 import { Tec, ActiveTec, PassiveTec } from "../tec.js";
 import { Input } from "../undym/input.js";
 import { PhaseStartForce } from "../force.js";
+import { Player } from "../player.js";
 import { List } from "../widget/list.js";
 import { ItemScene } from "./itemscene.js";
 import { Font, Graphics } from "../graphics/graphics.js";
@@ -440,6 +441,7 @@ const finish = () => __awaiter(this, void 0, void 0, function* () {
         }
         u.clearInvisibleConditions();
     }
+    Player.jisrofUsedRamonsuisei = false;
     Battle.setReserveUnits = [];
     btnSpace.clear();
     BattleScene.ins.background = emptyBG;

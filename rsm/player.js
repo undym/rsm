@@ -64,6 +64,7 @@ Player._values = [];
 Player._valueOf = new Map();
 //セーブデータの互換性のため、プレイヤーの定義の順番をかえてはいけない。
 (function (Player) {
+    Player.jisrofUsedRamonsuisei = false;
     Player.empty = new class extends Player {
         constructor() { super("empty", "♂"); }
         get img() { return Img.empty; }
@@ -261,7 +262,18 @@ Player._valueOf = new Map();
     };
     Player.ジスロフ = new class extends Player {
         constructor() { super("ジスロフ", "♂"); }
-        get img() { return this._img ? this._img : (this._img = new Img("img/unit/p_jisrof.png")); }
+        get img() {
+            if (!this.normal) {
+                this.normal = new Img("img/unit/p_jisrof.png");
+            }
+            if (!this.ramon) {
+                this.ramon = new Img("img/unit/p_jisrof2.png");
+            }
+            if (Player.jisrofUsedRamonsuisei) {
+                return this.ramon;
+            }
+            return this.normal;
+        }
         createInner(p) {
             p.job = Job.羅文騎士;
             p.prm(Prm.MAX_HP).base = 99;
