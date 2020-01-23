@@ -76,6 +76,34 @@ export var SubStory;
         Sound.moji.play();
         yield cwait();
     });
+    //ラストリゾートクリア、白い鳥がヘブンズになる
+    SubStory.runSiroitoriHito = () => __awaiter(this, void 0, void 0, function* () {
+        const f_empty = new Img("img/face/p_rs.jpg");
+        const f_tori = new Img("img/face/p_bird.jpg");
+        const s = new Story();
+        yield s.set(new Img("img/story/s_pic6.jpg"), [
+            [f_tori, "白い鳥", "「･･････････････････」"],
+            [f_tori, "白い鳥", "「･･････！！！！」"],
+            [f_empty, "", "何やら白い鳥の様子が変だ･･･。"],
+            [f_empty, "", "白い鳥の目の前に、突然、幽霊猫の幻影が浮かび上がったかと思うと･･･"],
+            [f_empty, "", "幽霊猫は白い鳥をじっと見つめ、すぅっと闇の中へと消えて行った。"],
+            [f_empty, "", "白い鳥はいつの間にか人間の姿を取り戻していた！！"],
+        ]);
+        /*
+                [f_empty,  "",      ""],
+                [f_tori,   "白い鳥",""],
+        */
+        s.end();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+        Util.msg.set(".", Color.GRAY);
+        Sound.moji.play();
+        yield cwait();
+    });
 })(SubStory || (SubStory = {}));
 /*
         const f_empty  = new Img("img/face/p_rs.jpg");

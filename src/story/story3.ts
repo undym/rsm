@@ -714,6 +714,61 @@ export namespace Story3{
                 [f_vic,"ヴィクトリーヌ","「では･･･いざ参りましょう」"],
             ]
         );
+
+        s.end();
+        
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第38話『畏れ多き出現』", Color.L_GRAY); Sound.moji.play(); await cwait();
+    };
+    /**塔地下801階クリア。 */
+    export const runMain39 = async()=>{
+        const f_empty  = new Img("img/face/p_rs.jpg");
+        const f_pea    = new Img("img/face/p_pea.jpg");
+        const f_ruin   = new Img("img/face/p_ruin.jpg");
+
+        const s = new Story();
+
+        await s.set(
+            new Img("img/story/s_pic39.jpg"),
+            [
+                [f_empty,  "",          "十二天子4人の襲撃によって、ルイン達は負傷していた。"],
+                [f_empty,  "",          "命からがら逃げおおせたものの、もう後戻りはできない状況にあった。"],
+                [f_ruin,   "ルイン",    "「ピアー･･･、僕はこのままこの声に従ってもいいのかな」"],
+                [f_empty,  "",          "皆が寝静まる中、ルインはピアーに聞いた。"],
+                [f_pea,    "ピアー",    "「声って、おまえがゆっとった女の子の声じゃろ？」"],
+                [f_ruin,   "ルイン",    "「うん･･･」"],
+                [f_ruin,   "ルイン",    "「本当は、帝国の人達に任せた方がいいんじゃないかって･･･」"],
+                [f_pea,    "ピアー",    "「それって、おまえが殺されるっちゅーことじゃぞっ」"],
+                [f_ruin,   "ルイン",    "「それがこの宇宙にとって正しいことなら･･･、僕が死ぬ事もこの宇宙には必要な事かもしれない･･･」"],
+                [f_pea,    "ピアー",    "「馬鹿か！！！」"],
+                [f_pea,    "ピアー",    "「この宇宙この宇宙って･･･、おまえは、とっくにこの宇宙の人間じゃ！！！」"],
+                [f_empty,  "",          "ピアーの大声が地球塔の壁に反射して響いた。"],
+                [f_empty,  "",          "ピアーは慌てて、皆が目を覚まさなかったか周囲を見渡した。"],
+                [f_pea,    "ピアー",    "「ふう･･･」"],
+                [f_pea,    "ピアー",    "「おまえはこの宇宙の人間じゃし･･･、そうである以上、この宇宙もこの星もおまえの物じゃろ」"],
+                [f_ruin,   "ルイン",    "「僕の物？」"],
+                [f_pea,    "ピアー",    "「そうじゃ･･･」"],
+                [f_pea,    "ピアー",    "「この宇宙におるやつは皆、この宇宙で好きに生きる権利があるわい」"],
+                [f_pea,    "ピアー",    "「おまえがキューブとペルセポネの力を得ようが、この宇宙を滅ぼしてしまおうが、自分の好きにしたらええじゃろ」"],
+                [f_pea,    "ピアー",    "「帝国にまかせたいっちゅーんなら、それでもええかもしれんが」"],
+                [f_pea,    "ピアー",    "「おまえが宇宙を粉々にしてもたって、･･･それならそれで、この宇宙の望んだ事じゃないんかの」"],
+                [f_ruin,   "ルイン",    "「･････････」"],
+                [f_ruin,   "ルイン",    "「僕、この声の子･･･ラブに会いたいんだ」"],
+                [f_ruin,   "ルイン",    "「会って･･･、お礼が言いたい」"],
+                [f_pea,    "ピアー",    "「お礼？」"],
+                [f_ruin,   "ルイン",    "「うん、僕をこの宇宙へ呼んでくれて、ありがとうって」"],
+                [f_ruin,   "ルイン",    "「ここに来て、ピアーやみんなと友達になれたから･･･」"],
+                [f_pea,    "ピアー",    "「･･････そか」"],
+                [f_pea,    "ピアー",    "「もう寝るわっ」"],
+                [f_ruin,   "ルイン",    "「おやすみ･･･」"],
+                [f_pea,    "ピアー",    "「ルイン･･･」"],
+                [f_ruin,   "ルイン",    "「え？」"],
+                [f_pea,    "ピアー",    "「･･･俺もお礼言うよ、その子に会えたら」"],
+                [f_pea,    "ピアー",    "「ルインを呼んでくれて、ありがとうってな･･･」"],
+            ]
+        );
         /*
                 [f_empty,  "",          ""],
                 [f_1,      "一号",      ""],
@@ -723,11 +778,6 @@ export namespace Story3{
                 [f_ruin,   "ルイン",    ""],
                 [f_siki,   "シキ",      ""],
                 [f_pea,    "ピアー",    ""],
-                [f_oranpia,"オランピア",""],
-                [f_dora,"ドラギャレット",""],
-                [f_vic,"ヴィクトリーヌ",""],
-                [f_ryu,    "流",        ""],
-                [f_osyama, "ジスマ",    ""],
         */
 
         s.end();
@@ -735,7 +785,7 @@ export namespace Story3{
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
         Util.msg.set(".", Color.L_GRAY); Sound.moji.play(); await cwait();
-        Util.msg.set("第38話『畏れ多き出現』", Color.L_GRAY); Sound.moji.play(); await cwait();
+        Util.msg.set("第39話『ルインの不安』", Color.L_GRAY); Sound.moji.play(); await cwait();
     };
 }
 /*
