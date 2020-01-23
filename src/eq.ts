@@ -12,6 +12,7 @@ import { SaveData } from "./savedata.js";
 import { Player } from "./player.js";
 import { Sound } from "./sound.js";
 import { FX_反射 } from "./fx/fx.js";
+import { Dungeon } from "./dungeon/dungeon.js";
 
 
 export class EqPos{
@@ -1121,6 +1122,16 @@ export namespace Eq{
             }
         };}
     }
+    /**塔地下801階EX. */
+    export const                         現の指輪:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"現の指輪", info:"戦闘中Lv x1.5",
+                                pos:EqPos.指, lv:60});}
+        createForce(_this:Eq){return new class extends Force{
+            async battleStart(unit:Unit){
+                unit.prm(Prm.LV).battle += unit.prm(Prm.LV).get("base","eq") * 0.5;
+            }
+        };}
+    }
     // /**塔地下二百階の門財宝. */
     // export const                         治癒の指輪:Eq = new class extends Eq{
     //     constructor(){super({uniqueName:"治癒の指輪", info:"行動終了時HP+5%",
@@ -1214,13 +1225,13 @@ export namespace Eq{
     }
     /**塔地下777階財宝. */
     export const                         誓いの靴:Eq = new class extends Eq{
-        constructor(){super({uniqueName:"誓いの靴", info:"毎ターン全ステータス+5%",
+        constructor(){super({uniqueName:"誓いの靴", info:"毎ターン全ステータス+4%",
                                 pos:EqPos.脚, lv:55});}
         createForce(_this:Eq){return new class extends Force{
             async phaseStart(unit:Unit, pForce:PhaseStartForce){
                 if(unit.dead){return;}
                 for(const prm of Prm.atkPrms){
-                    unit.prm(prm).battle += unit.prm(prm).get("base","eq") * 0.05;
+                    unit.prm(prm).battle += unit.prm(prm).get("base","eq") * 0.04;
                 }
             }
         };}
@@ -1232,6 +1243,16 @@ export namespace Eq{
         createForce(_this:Eq){return new class extends Force{
             async walk(unit:Unit, auForce:AUForce){
                 Heal.run("HP", unit.prm(Prm.MAX_HP).total * 0.1 + 1, unit, unit, _this, false);
+            }
+        };}
+    }
+    /**塔地下801階財宝. */
+    export const                         旅人の靴:Eq = new class extends Eq{
+        constructor(){super({uniqueName:"旅人の靴", info:"歩く時稀にMP+1",
+                                pos:EqPos.脚, lv:0});}
+        createForce(_this:Eq){return new class extends Force{
+            async walk(unit:Unit, auForce:AUForce){
+                if(Dungeon.auNow % 5 === 0){Heal.run("MP", 1, unit, unit, _this, false);}
             }
         };}
     }

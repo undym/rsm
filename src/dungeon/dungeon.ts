@@ -411,14 +411,14 @@ export namespace Dungeon{
         });}
         isVisible = ()=>true;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "自我";
             e.prm(Prm.MAX_HP).base = 30;
             e.prm(Prm.STR).base = 3;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "チョコチョコ";
             e.img = new Img("img/unit/ex_choco.png");
@@ -448,14 +448,14 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.再構成トンネル.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "危険な光線";
             e.prm(Prm.MAX_HP).base = 40;
             e.prm(Prm.STR).base = 5;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "アイアンチョコチョコ";
             e.img = new Img("img/unit/ex_choco2.png");
@@ -485,14 +485,14 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.見知らぬ海岸.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "導びく者";
             e.prm(Prm.MAX_HP).base = 80;
             e.prm(Prm.STR).base = 10;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊ドロシー";
             e.img = new Img("img/unit/ex_dorosy.png");
@@ -515,13 +515,13 @@ export namespace Dungeon{
         toString(){return "予感の街・レ";}
         isVisible = ()=>Dungeon.はじまりの丘.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.魔法使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "レ町長";
             e.prm(Prm.MAX_HP).base = 80;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影リリア";
             e.img = new Img("img/unit/ex_riria.png");
@@ -550,13 +550,13 @@ export namespace Dungeon{
         toString(){return "水の都・イス";}
         isVisible = ()=>Dungeon.黒い丘.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "イス都長";
             e.prm(Prm.MAX_HP).base = 250;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ハインリヒ";
             e.img = new Img("img/unit/ex_haine.png");
@@ -583,13 +583,13 @@ export namespace Dungeon{
         toString(){return "リ・テの門";}
         isVisible = ()=>Dungeon.水の都イス.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.剣士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "リテの門番";
             e.prm(Prm.MAX_HP).base = 280;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊運命兄さん";
             e.img = new Img("img/unit/ex_unmei.png");
@@ -611,13 +611,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.黒の廃村.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.カウボーイ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "無限の壺人";
             e.prm(Prm.MAX_HP).base = 350;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊ガニュメート";
             e.img = new Img("img/unit/ex_ganyu.png");
@@ -639,13 +639,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.クラウンボトル.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.機械士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "機械仕掛けA";
             e.prm(Prm.MAX_HP).base = 500;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.格闘家.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影トレジャー";
             e.img = new Img("img/unit/ex_trager.png");
@@ -675,13 +675,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.精霊寺院跡.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.暗黒戦士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "太古の亜人";
             e.prm(Prm.MAX_HP).base = 1000;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.スネイカー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ユキエモン";
             e.img = new Img("img/unit/ex_yukiemon.png");
@@ -707,13 +707,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.塔4000階.dungeonClearCount >= 2;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "殺意ホログラフ";
             e.prm(Prm.MAX_HP).base = 1500;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影フィガロ";
             e.img = new Img("img/unit/ex_figaro.png");
@@ -735,13 +735,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.塔6665階.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.侍.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "6666階門番";
             e.prm(Prm.MAX_HP).base = 1600;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影バンバ・エンヤ";
             e.img = new Img("img/unit/ex_banba.png");
@@ -764,20 +764,20 @@ export namespace Dungeon{
     };
     export const                         塔地下二百階の門:Dungeon = new class extends Dungeon{
         constructor(){super({uniqueName:"塔地下二百階の門", info:"",
-                                rank:5, enemyLv:29, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
+                                rank:5, enemyLv:28, au:200, btn:[DungeonArea.中央島, new Rect(0.35, 0.75, 0.3, 0.1)],
                                 treasures:  ()=>[Eq.アンマシンベルト],
                                 exItems:    ()=>[Eq.ロングドレスの剣],
                                 trendItems: ()=>[Item.肉, Item.燃える髪, Item.石溶け水, Item.恒星型リュスティック, Item.にじゅうよん],
         });}
         isVisible = ()=>Dungeon.塔6666階.dungeonClearCount >= 2;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
-            Job.ロボット.setEnemy(e, e.prm(Prm.LV).base);
+            const e = Unit.enemies[0];
+            Job.ロボット.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "地下への門番";
             e.prm(Prm.MAX_HP).base = 1800;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アルケミスト.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影魔王";
             e.img = new Img("img/unit/ex_maou.png");
@@ -827,14 +827,14 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.予感の街レ.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.毒使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "黒き誘い";
             e.prm(Prm.MAX_HP).base = 130;
             e.prm(Prm.DRK).base = 10;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影オーロラ";
             e.img = new Img("img/unit/ex_orora.png");
@@ -857,13 +857,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.黒平原.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アーチャー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "黒き獰猛";
             e.prm(Prm.MAX_HP).base = 250;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鎖使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ジレンマ";
             e.img = new Img("img/unit/ex_jirenma.png");
@@ -886,13 +886,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.リテの門.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ヴァンパイア.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "スプリガン";
             e.prm(Prm.MAX_HP).base = 330;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生二年生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "亡霊VBS";
             e.img = new Img("img/unit/ex_vbs2.png");
@@ -915,13 +915,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.黒遺跡.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "黒の門番";
             e.prm(Prm.MAX_HP).base = 350;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "ティル王";
             e.img = new Img("img/unit/ex_tilou.png");
@@ -950,13 +950,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.トトの郊外.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.雷鳥.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "大雷鳥";
             e.prm(Prm.MAX_HP).base = 250;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.訓練生.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影ニュース";
             e.img = new Img("img/unit/ex_news.png");
@@ -980,13 +980,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.テント樹林.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アメーバ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "スライム";
             e.prm(Prm.MAX_HP).base = 300;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影パンドラ";
             e.img = new Img("img/unit/ex_pandora.png");
@@ -1009,13 +1009,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.小人集落周辺.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.妖精.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "聖なる妖精";
             e.prm(Prm.MAX_HP).base = 450;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影オルガ";
             e.img = new Img("img/unit/ex_orga.png");
@@ -1040,13 +1040,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.聖なる洞窟.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鬼火.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "ビッグファイヤー";
             e.prm(Prm.MAX_HP).base = 650;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.忍者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体オルガ";
             e.img = new Img("img/unit/ex_orga2.png");
@@ -1074,13 +1074,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.月狼の森.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.天使.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "朱雀";
             e.prm(Prm.MAX_HP).base = 700;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.天使.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "幻影キキツキ";
             e.img = new Img("img/unit/ex_kiki.png");
@@ -1102,13 +1102,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.古マーザン森.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "鳥人";
             e.prm(Prm.MAX_HP).base = 750;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ホークマン.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "魔鳥ぱと";
             e.img = new Img("img/unit/ex_hato.png");
@@ -1138,13 +1138,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.魔鳥の岩壁.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.テンプルナイト.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "死せる住職";
             e.prm(Prm.MAX_HP).base = 750;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.精霊使い.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "新王ブレッシュ";
             e.img = new Img("img/unit/ex_bresh.png");
@@ -1177,13 +1177,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Flag.maya0.done;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.霊術戦士.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "死せる騎士";
             e.prm(Prm.MAX_HP).base = 3000;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.侍.setEnemy(e, e.prm(Prm.LV).base + 15);
             e.name = "聖戦士・祖国";
             e.img = new Img("img/unit/ex_sokoku.png");
@@ -1202,7 +1202,7 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Mix.封印の魔十字架.count > 0;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 20);
             e.name = "真夜";
             e.prm(Prm.MAX_HP).base = 16500;
@@ -1210,7 +1210,7 @@ export namespace Dungeon{
             e.pet = Pet.ネーレイス.create(4);
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.魔剣士.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "魔界門番";
             e.img = new Img("img/unit/ex_bresh.png");
@@ -1237,13 +1237,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>true;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アングラ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "底主";
             e.prm(Prm.MAX_HP).base = 400;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.アイス.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体ブリザード";
             e.img = new Img("img/unit/ex_bli.png");
@@ -1272,13 +1272,13 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.冥土の底.dungeonClearCount >= 1;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.孤独のクグワ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "腹虫";
             e.prm(Prm.MAX_HP).base = 500;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.魔砲士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体ビジョン";
             e.img = new Img("img/unit/ex_vision.png");
@@ -1317,13 +1317,13 @@ export namespace Dungeon{
                 }
             }
 
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.絶望のクグワ.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "絶望の大クグワ";
             e.prm(Prm.MAX_HP).base = 600;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.クピド.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体・葵";
             e.img = new Img("img/unit/ex_aoi.png");
@@ -1357,7 +1357,7 @@ export namespace Dungeon{
                 }
             }
 
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "小鬼";
             e.img = new Img("img/unit/boss_syao.png");
@@ -1393,13 +1393,13 @@ export namespace Dungeon{
                 }
             }
             
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "口に住まう亡霊";
             e.prm(Prm.MAX_HP).base = 1000;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ダウザー.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "霊体・卯月";
             e.img = new Img("img/unit/ex_uzuki.png");
@@ -1432,13 +1432,13 @@ export namespace Dungeon{
                 }
             }
             
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.僧兵.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "王朝兵";
             e.prm(Prm.MAX_HP).base = 1200;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.鬼.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "アリラン";
             e.img = new Img("img/unit/ex_ariran.png");
@@ -1473,13 +1473,13 @@ export namespace Dungeon{
                 }
             }
             
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.ロボット.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "館の番人";
             e.prm(Prm.MAX_HP).base = 2000;
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.魔砲士.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "聖戦士・魔王";
             e.img = new Img("img/unit/ex_ariran.png");
@@ -1509,7 +1509,7 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Flag.story_Main35.done;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.落武者.setEnemy(e, e.prm(Prm.LV).base + 10);
             e.name = "塔の遺物";
             e.prm(Prm.MAX_HP).base = 2200;
@@ -1544,7 +1544,7 @@ export namespace Dungeon{
             }
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.僧兵.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "聖戦士・月光";
             e.img = new Img("img/unit/ex_gekkou.png");
@@ -1568,7 +1568,7 @@ export namespace Dungeon{
         });}
         isVisible = ()=>Dungeon.塔地下777階.dungeonClearCount > 0;
         setBossInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.考古学者.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "塔の遺物・弟";
             e.prm(Prm.MAX_HP).base = 2200;
@@ -1627,7 +1627,7 @@ export namespace Dungeon{
             }
         };
         setExInner = ()=>{
-            let e = Unit.enemies[0];
+            const e = Unit.enemies[0];
             Job.お化け.setEnemy(e, e.prm(Prm.LV).base);
             e.name = "聖戦士・不滅の人";
             e.img = new Img("img/unit/ex_fumetu.png");
@@ -1640,6 +1640,36 @@ export namespace Dungeon{
                 Sound.rare.play(); Eq.パイプ銃.add(1); await cwait();
                 Sound.rare.play(); Eq.オランピアの竜剣.add(1); await cwait();
                 Sound.rare.play(); Eq.三日月弓.add(1); await cwait();
+            }
+        }
+    };
+    export const                         塔地下801階:Dungeon = new class extends Dungeon{
+        constructor(){super({uniqueName:"塔地下801階", info:"",
+                                rank:7, enemyLv:33, au:250, btn:[DungeonArea.塔地下, new Rect(0.5, 0.4, 0.3, 0.1)],
+                                treasures:  ()=>[Eq.旅人の靴],
+                                exItems:    ()=>[Eq.現の指輪],
+                                trendItems: ()=>[Item.高野槙, Item.ミヂンコ, Item.エレタの絵の具, Item.アポーちゃんの林檎, Item.草, Item.ヒノキ, Item.サクラ材],
+        });}
+        isVisible = ()=>Dungeon.塔地下782階.dungeonClearCount > 0;
+        setBossInner = ()=>{
+            const e = Unit.enemies[0];
+            Job.エスパー.setEnemy(e, e.prm(Prm.LV).base + 15);
+            e.name = "塔の遺物・妹";
+            e.prm(Prm.MAX_HP).base = 2300;
+            e.prm(Prm.MAX_MP).base = 200;
+        };
+        setExInner = ()=>{
+            const e = Unit.enemies[0];
+            Job.エスパー.setEnemy(e, e.prm(Prm.LV).base + 20);
+            e.name = "聖戦士・神曲";
+            e.img = new Img("img/unit/ex_fumetu.png");
+            e.prm(Prm.MAX_HP).base = 3900;
+            e.prm(Prm.MAX_MP).base = 200;
+        };
+        async dungeonClearEvent(){
+            await super.dungeonClearEvent();
+            if(this.dungeonClearCount === 1){
+                await Story3.runMain39();
             }
         }
     };

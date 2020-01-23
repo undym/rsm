@@ -54,6 +54,7 @@ lv max_hp
 */
 /**そのレベルのステータス倍率を計算したものをストック。 */
 class PrmMuls {
+    constructor() { }
     static get(lv) {
         const mapped = this.map.get(lv);
         if (mapped) {

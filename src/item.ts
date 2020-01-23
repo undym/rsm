@@ -1797,6 +1797,10 @@ export namespace Item{
         constructor(){super({uniqueName:"思い出そのもの", info:"",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
     };
+    export const                         アポーちゃんの林檎:Item = new class extends Item{
+        constructor(){super({uniqueName:"アポーちゃんの林檎", info:"",
+                                type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}
+    };
     export const                         あらくれ剣:Item = new class extends Item{
         constructor(){super({uniqueName:"あらくれ剣", info:"",
                                 type:ItemType.素材, rank:5, drop:ItemDrop.BOX})}

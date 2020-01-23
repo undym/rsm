@@ -49,6 +49,7 @@ lv max_hp
 
 /**そのレベルのステータス倍率を計算したものをストック。 */
 class PrmMuls{
+    private constructor(){}
     private static map = new Map<number,number>();
     static get(lv:number):number{
         const mapped = this.map.get(lv);

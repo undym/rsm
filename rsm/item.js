@@ -2107,6 +2107,12 @@ Item.DEF_NUM_LIMIT = 9999;
                 type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
         }
     };
+    Item.アポーちゃんの林檎 = new class extends Item {
+        constructor() {
+            super({ uniqueName: "アポーちゃんの林檎", info: "",
+                type: ItemType.素材, rank: 5, drop: ItemDrop.BOX });
+        }
+    };
     Item.あらくれ剣 = new class extends Item {
         constructor() {
             super({ uniqueName: "あらくれ剣", info: "",
