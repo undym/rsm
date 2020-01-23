@@ -715,6 +715,8 @@ export class EUnit extends Unit{
 
     constructor(){
         super();
+
+        this._img = Img.empty;
     }
 
     isFriend(u:Unit):boolean{return (u instanceof EUnit);}

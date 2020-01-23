@@ -18,6 +18,7 @@ import { ConditionType, Condition, InvisibleCondition } from "./condition.js";
 import { Eq, EqPos, EqEar } from "./eq.js";
 import { choice } from "./undym/random.js";
 import { Font } from "./graphics/graphics.js";
+import { Img } from "./graphics/texture.js";
 // import { DrawSTBox } from "./scene/sceneutil.js";
 import { Sound } from "./sound.js";
 class PrmSet {
@@ -684,6 +685,7 @@ export class EUnit extends Unit {
         super();
         this.yen = 0;
         this.ai = EUnit.DEF_AI;
+        this._img = Img.empty;
     }
     get img() { return this._img; }
     set img(setImg) { this._img = setImg; }
