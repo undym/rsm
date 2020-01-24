@@ -497,7 +497,7 @@ export namespace DungeonEvent{
                         await DungeonEvent.ESCAPE_DUNGEON.happen();
                         break;
                     case BattleResult.ESCAPE:
-                        await DungeonEvent.ESCAPE_DUNGEON.happen();
+                        Scene.load( DungeonScene.ins );
                         break;
                 }
             });

@@ -487,7 +487,7 @@ class EventImg {
                             yield DungeonEvent.ESCAPE_DUNGEON.happen();
                             break;
                         case BattleResult.ESCAPE:
-                            yield DungeonEvent.ESCAPE_DUNGEON.happen();
+                            Scene.load(DungeonScene.ins);
                             break;
                     }
                 }));
