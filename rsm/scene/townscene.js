@@ -381,10 +381,10 @@ class TownEvent {
     static values() { return this._values; }
     get bounds() { return this.args.bounds(); }
     toString() { return this.args.name; }
+    isVisible() { return this.args.visible(); }
     run() {
         return __awaiter(this, void 0, void 0, function* () { yield this.args.run(); });
     }
-    isVisible() { return this.args.visible(); }
 }
 TownEvent._values = [];
 (function (TownEvent) {
@@ -398,10 +398,10 @@ TownEvent._values = [];
             }
             return Rect.ZERO;
         },
+        visible: () => Flag.story_Main35.done && !Flag.story_Toutika.done,
         run: () => __awaiter(this, void 0, void 0, function* () {
             Flag.story_Toutika.done = true;
             yield Story3.runMain35a();
         }),
-        visible: () => Flag.story_Main35.done && !Flag.story_Toutika.done,
     });
 })(TownEvent || (TownEvent = {}));

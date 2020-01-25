@@ -441,8 +441,8 @@ class TownEvent{
 
     toString(){return this.args.name;}
 
-    async run(){await this.args.run();}
     isVisible():boolean{return this.args.visible();}
+    async run():Promise<void>{await this.args.run();}
 }
 
 namespace TownEvent{
@@ -456,10 +456,10 @@ namespace TownEvent{
             }
             return Rect.ZERO;
         },
+        visible:()=> Flag.story_Main35.done && !Flag.story_Toutika.done,
         run:async()=>{
             Flag.story_Toutika.done = true;
             await Story3.runMain35a();
         },
-        visible:()=> Flag.story_Main35.done && !Flag.story_Toutika.done,
     });
 }

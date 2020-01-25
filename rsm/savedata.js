@@ -42,7 +42,7 @@ export class Version {
     }
     toString() { return `${this.major}.${this.minior}.${this.mentener}`; }
 }
-Version.NOW = new Version(0, 38, 1);
+Version.NOW = new Version(0, 38, 2);
 Version.updateInfo = [
     "(0.31.21)いろいろ",
     "(0.32.0)ダンジョン追加  バグ修正",
@@ -60,6 +60,7 @@ Version.updateInfo = [
     "(0.37.1)バグ修正  他",
     "(0.38.0)ダンジョン追加  バグ修正  他",
     "(0.38.1)エクストラエネミーから逃げるとダンジョンから出てしまっていたのを修正",
+    "(0.38.2)一部ダンジョンが正常に表示されていなかったのを修正",
 ];
 let saveDataVersion;
 export class SaveData {
@@ -121,9 +122,9 @@ export class SaveData {
         storageDungeon(type, ioObject(type, json, "Dungeon"));
         storagePlayer(type, ioObject(type, json, "Player"));
         storageMix(type, ioObject(type, json, "Mix"));
-        storagePlayData(type, ioObject(type, json, "PlayData"));
         storageCollectingSkill(type, ioObject(type, json, "CollectingSkill"));
         storagePartySkill(type, ioObject(type, json, "PartySkill"));
+        storagePlayData(type, ioObject(type, json, "PlayData")); //この関数内でSceneの読み込みを行うため、この関数を最後に置く
     }
 }
 SaveData.data = "data";
@@ -536,16 +537,6 @@ const storagePlayData = (type, json) => {
         }
     });
     ioInt(type, json, "dungeonAU", Dungeon.auNow, load => Dungeon.auNow = load);
-    ioStr(type, json, "sceneType", SceneType.now.uniqueName, load => {
-        const type = SceneType.valueOf(load);
-        if (type) {
-            type.loadAction();
-        }
-        else {
-            SceneType.TOWN.set();
-            SceneType.TOWN.loadAction();
-        }
-    });
     for (let i = 0; i < Unit.players.length; i++) {
         ioStr(type, json, `players_${i}`, Unit.players[i].player.uniqueName, load => {
             const p = Player.valueOf(load);
@@ -565,6 +556,17 @@ const storagePlayData = (type, json) => {
         const dungeon = Dungeon.valueOf(load);
         if (dungeon) {
             Util.dungeonBookMark = dungeon;
+        }
+    });
+    //シーンの読み込みをここで行うため、これを一番最後に置く
+    ioStr(type, json, "sceneType", SceneType.now.uniqueName, load => {
+        const type = SceneType.valueOf(load);
+        if (type) {
+            type.loadAction();
+        }
+        else {
+            SceneType.TOWN.set();
+            SceneType.TOWN.loadAction();
         }
     });
 };

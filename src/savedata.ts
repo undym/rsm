@@ -17,7 +17,7 @@ import { PetFactory } from "./pet.js";
 
 
 export class Version{
-    static readonly NOW = new Version(0,38,1);
+    static readonly NOW = new Version(0,38,2);
     static readonly updateInfo =    [
                                         "(0.31.21)いろいろ",
                                         "(0.32.0)ダンジョン追加  バグ修正",
@@ -35,6 +35,7 @@ export class Version{
                                         "(0.37.1)バグ修正  他",
                                         "(0.38.0)ダンジョン追加  バグ修正  他",
                                         "(0.38.1)エクストラエネミーから逃げるとダンジョンから出てしまっていたのを修正",
+                                        "(0.38.2)一部ダンジョンが正常に表示されていなかったのを修正",
                                     ];
 
     private values:number[];
@@ -143,10 +144,9 @@ export class SaveData{
         storageDungeon(type,         ioObject(type, json, "Dungeon"));
         storagePlayer(type,          ioObject(type, json, "Player"));
         storageMix(type,             ioObject(type, json, "Mix"));
-        storagePlayData(type,        ioObject(type, json, "PlayData"));
         storageCollectingSkill(type, ioObject(type, json, "CollectingSkill"));
         storagePartySkill(type,      ioObject(type, json, "PartySkill"));
-
+        storagePlayData(type,        ioObject(type, json, "PlayData"));//この関数内でSceneの読み込みを行うため、この関数を最後に置く
     }
 }
 
@@ -609,15 +609,6 @@ const storagePlayData = (type:ioType, json:any)=>{
         }
     });
     ioInt(type, json, "dungeonAU", Dungeon.auNow, load=> Dungeon.auNow = load);
-    ioStr(type, json, "sceneType", SceneType.now.uniqueName, load=>{
-        const type = SceneType.valueOf(load);
-        if(type){
-            type.loadAction();
-        }else{
-            SceneType.TOWN.set();
-            SceneType.TOWN.loadAction();
-        }
-    });
 
     for(let i = 0; i < Unit.players.length; i++){
         ioStr(type, json, `players_${i}`, Unit.players[i].player.uniqueName, load=>{
@@ -633,7 +624,7 @@ const storagePlayData = (type:ioType, json:any)=>{
 
     const flagObj = ioObject(type, json, "Flag");
     for(const flag of Flag.values()){
-        ioBool(type, flagObj, flag.uniqueName, flag.done, load=> flag.done = load);
+        ioBool(type, flagObj, flag.uniqueName, flag.done, load=>flag.done = load);
     }
 
     const bookMarkedDungeonName = Util.dungeonBookMark ? Util.dungeonBookMark.uniqueName : "";
@@ -641,6 +632,16 @@ const storagePlayData = (type:ioType, json:any)=>{
         const dungeon = Dungeon.valueOf(load);
         if(dungeon){
             Util.dungeonBookMark = dungeon;
+        }
+    });
+    //シーンの読み込みをここで行うため、これを一番最後に置く
+    ioStr(type, json, "sceneType", SceneType.now.uniqueName, load=>{
+        const type = SceneType.valueOf(load);
+        if(type){
+            type.loadAction();
+        }else{
+            SceneType.TOWN.set();
+            SceneType.TOWN.loadAction();
         }
     });
 };
